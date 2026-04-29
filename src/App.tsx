@@ -2,17 +2,11 @@ import React, { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Helmet } from "react-helmet-async";
 import { GoogleGenAI, Type } from "@google/genai";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
-import * as pdfjsLib from "pdfjs-dist";
-import pdfWorker from "pdfjs-dist/build/pdf.worker.mjs?url";
-import { Home } from "./components/Home";
 import { Toast } from "./components/Toast";
 import { Moon, Sun } from "lucide-react";
 
-pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorker;
-
-import { BuilderView } from "./components/BuilderView";
+const BuilderView = React.lazy(() => import("./components/BuilderView").then(module => ({ default: module.BuilderView })));
+const Home = React.lazy(() => import("./components/Home").then(module => ({ default: module.Home })));
 import {
   Plus,
   Trash2,
@@ -611,6 +605,11 @@ export default function App() {
     try {
       setIsParsingPDF(true);
       const arrayBuffer = await file.arrayBuffer();
+      
+      const pdfjsLib = await import("pdfjs-dist");
+      const pdfWorker = await import("pdfjs-dist/build/pdf.worker.mjs?url");
+      pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorker.default;
+
       const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
       let fullText = "";
 
@@ -651,6 +650,25 @@ export default function App() {
   const [enhancingExp, setEnhancingExp] = useState<string | null>(null);
   const [enhancingProj, setEnhancingProj] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  
+  const previewContainerRef = useRef<HTMLDivElement>(null);
+  const [previewScale, setPreviewScale] = useState(1);
+
+  useEffect(() => {
+    const update = () => {
+      if (previewContainerRef.current) {
+        const w = previewContainerRef.current.clientWidth;
+        const docW = paperSize === "letter" ? 816 : 794;
+        const padding = window.innerWidth < 768 ? 32 : 64;
+        setPreviewScale(Math.min(1, (w - padding) / docW));
+      }
+    };
+    update();
+    const ro = new ResizeObserver(update);
+    if (previewContainerRef.current) ro.observe(previewContainerRef.current);
+    return () => ro.disconnect();
+  }, [paperSize, activeTab]);
+
   const [toast, setToast] = useState<{
     message: string;
     type: "success" | "error" | "loading" | "info";
@@ -984,7 +1002,6 @@ export default function App() {
 
   const generateAIResume = async (roleOverride?: string) => {
     const role = roleOverride || roleInputText;
-    if (!role) return;
     if (!role) return;
 
     setIsGenerating(true);
@@ -1330,7 +1347,7 @@ export default function App() {
       {/* ATS Score Checker Modal */}
       {showATSModal && (
         <div className="fixed inset-0 bg-[var(--color-bg)]/80 backdrop-blur-md flex items-center justify-center z-[200] p-4 animate-in fade-in duration-200">
-          <div className="glass-card rounded-[24px] shadow-[0_20px_60px_rgba(0,0,0,0.6)] w-full max-w-xl overflow-hidden flex flex-col max-h-[90vh] border border-[var(--color-border-hover)]">
+          <div className="glass-card rounded-[24px] shadow-[0_20px_60px_rgba(0,0,0,0.6)] w-full max-w-xl overflow-hidden flex flex-col max-h-[85vh] border border-[var(--color-border-hover)]">
             <div className="p-6 border-b border-[var(--color-border)] flex justify-between items-center bg-[var(--color-border)]">
               <h2 className="text-xl font-bold text-[var(--text-main)] flex items-center gap-2">
                 <CheckCircle className="text-emerald-500" /> Detailed ATS
@@ -1343,7 +1360,7 @@ export default function App() {
                 <XCircle size={24} />
               </button>
             </div>
-            <div className="p-8 overflow-y-auto flex-1 flex flex-col items-center hide-scrollbar">
+            <div className="p-8 overflow-y-auto overscroll-contain flex-1 flex flex-col items-center hide-scrollbar">
               <div className="relative w-32 h-32 mb-6">
                 <svg
                   className="w-full h-full transform -rotate-90"
@@ -1727,7 +1744,7 @@ export default function App() {
       {/* Interview Prep Modal */}
       {showInterviewModal && (
         <div className="fixed inset-0 bg-[var(--color-bg)]/80 backdrop-blur-md flex items-center justify-center z-50 p-4 animate-in fade-in duration-200">
-          <div className="glass-card rounded-[24px] shadow-[0_20px_60px_rgba(0,0,0,0.6)] w-full max-w-4xl overflow-hidden flex flex-col max-h-[90vh] border border-[var(--color-border-hover)]">
+          <div className="glass-card rounded-[24px] shadow-[0_20px_60px_rgba(0,0,0,0.6)] w-full max-w-4xl overflow-hidden flex flex-col max-h-[85vh] border border-[var(--color-border-hover)]">
             <div className="p-6 border-b border-[var(--color-border)] flex justify-between items-center bg-[var(--color-border)] shrink-0">
               <h2 className="text-xl font-bold text-[var(--text-main)] flex items-center gap-2">
                 <Brain className="text-purple-500" /> AI Interview Prep Kit
@@ -1836,7 +1853,7 @@ export default function App() {
       {/* AI Resume Maker Modal */}
       {showAIModal && (
         <div className="fixed inset-0 bg-[var(--color-bg)]/80 backdrop-blur-md flex items-center justify-center z-50 p-4 animate-in fade-in duration-200">
-          <div className="glass-card rounded-[24px] shadow-[0_20px_60px_rgba(0,0,0,0.6)] w-full max-w-2xl overflow-hidden flex flex-col max-h-[90vh] border border-[var(--color-border-hover)]">
+          <div className="glass-card rounded-[24px] shadow-[0_20px_60px_rgba(0,0,0,0.6)] w-full max-w-2xl overflow-hidden flex flex-col max-h-[85vh] border border-[var(--color-border-hover)]">
             <div className="p-6 border-b border-[var(--color-border)] flex justify-between items-center bg-[var(--color-border)]">
               <h2 className="text-xl font-bold text-[var(--text-main)] flex items-center gap-2">
                 <Sparkles className="text-emerald-500" /> AI Resume Architect
@@ -2323,21 +2340,23 @@ export default function App() {
       )}
 
       {currentView === "home" ? (
-        <Home
-          setCurrentView={setCurrentView}
-          data={data}
-          setShowAIModal={setShowAIModal}
-          setActiveTab={setActiveTab}
-          setShowATSModal={setShowATSModal}
-          setShowInterviewModal={setShowInterviewModal}
-          setDemoTitle={setDemoTitle}
-          setCategory={setCategory}
-          setBuilderStep={setBuilderStep}
-          onInstantBuild={(text) => {
-            setAiInputText(text);
-            handleAIBuild(text);
-          }}
-        />
+        <React.Suspense fallback={<div className="h-screen w-screen flex items-center justify-center bg-[var(--color-bg)]"><Loader2 className="animate-spin text-[var(--color-primary)] w-12 h-12" /></div>}>
+          <Home
+            setCurrentView={setCurrentView}
+            data={data}
+            setShowAIModal={setShowAIModal}
+            setActiveTab={setActiveTab}
+            setShowATSModal={setShowATSModal}
+            setShowInterviewModal={setShowInterviewModal}
+            setDemoTitle={setDemoTitle}
+            setCategory={setCategory}
+            setBuilderStep={setBuilderStep}
+            onInstantBuild={(text) => {
+              setAiInputText(text);
+              handleAIBuild(text);
+            }}
+          />
+        </React.Suspense>
       ) : currentView === "demo" ? (
         <div className="flex-1 flex flex-col items-center justify-center bg-[var(--color-bg)] relative overflow-hidden">
           <div className="absolute top-0 w-full h-[600px] bg-emerald-600/5 skew-y-6 transform origin-top-left -z-10 blur-3xl"></div>
@@ -2370,10 +2389,10 @@ export default function App() {
           </div>
         </div>
       ) : activeTab === "coverLetter" ? (
-        <div className="flex flex-col md:flex-row flex-1 flex-grow overflow-hidden min-h-0 pb-[calc(4.5rem+env(safe-area-inset-bottom))] md:pb-0 text-[var(--text-main)]">
+        <div className="flex flex-col md:flex-row flex-1 flex-grow overflow-hidden min-h-0 pb-[calc(4.5rem+env(safe-area-bottom))] md:pb-0 text-[var(--text-main)]">
           {/* Left Column - Editor */}
           <div
-            className={`${mobileView === "preview" ? "hidden" : "flex"} md:flex w-full md:w-[40%] h-full overflow-y-auto border-r border-[var(--color-border-hover)] bg-[var(--color-bg)] flex-col`}
+            className={`${mobileView === "preview" ? "hidden md:flex" : "flex"} w-full md:w-[40%] h-full overflow-y-auto border-r border-[var(--color-border-hover)] bg-[var(--color-bg)] flex-col`}
           >
             <div className="p-6 border-b border-[var(--color-border-hover)] sticky top-0 bg-[var(--color-bg)]/95 backdrop-blur z-10 shadow-[0_10px_30px_rgba(0,0,0,0.3)]">
               <div className="flex bg-[var(--color-bg-2)] border border-[var(--color-border-hover)] p-1.5 rounded-xl self-start mb-6 overflow-hidden max-w-fit shadow-inner">
@@ -2518,7 +2537,8 @@ export default function App() {
 
           {/* Right Column - Preview & Dashboard */}
           <div
-            className={`${mobileView === "editor" ? "hidden" : "flex"} md:flex w-full md:w-[60%] h-full overflow-y-auto bg-[var(--color-bg)] flex-col`}
+            ref={previewContainerRef}
+            className={`${mobileView === "editor" ? "hidden md:flex" : "flex"} w-full md:w-[60%] h-full overflow-y-auto overflow-x-hidden bg-[var(--color-bg)] flex-col`}
           >
             {/* Top Bar (Hidden on Print) */}
             <div className="bg-[var(--color-bg-2)] border-b border-[var(--color-border-hover)] p-4 sticky top-0 z-10 shadow-[0_10px_30px_rgba(0,0,0,0.3)] flex flex-col xl:flex-row gap-4 justify-between items-start xl:items-center">
@@ -2827,7 +2847,7 @@ export default function App() {
             </div>
 
             {/* Resume Canvas */}
-            <div className="p-4 md:p-8 flex-1 overflow-auto bg-[var(--color-bg)] flex justify-center">
+            <div className="p-4 md:p-8 flex-1 overflow-auto bg-[var(--color-bg)] flex justify-center w-full">
               {!data.name && !isGenerating ? (
                 <div className="max-w-[210mm] min-h-[297mm] mx-auto bg-[var(--color-bg-2)] border border-[var(--color-border-hover)] flex flex-col items-center justify-center p-8 text-center shadow-[0_10px_30px_rgba(0,0,0,0.3)]">
                   <div className="w-24 h-24 bg-[var(--color-bg-2)] rounded-full flex items-center justify-center mb-6 text-[var(--text-muted)] shadow-inner">
@@ -2848,15 +2868,19 @@ export default function App() {
                   </button>
                 </div>
               ) : (
-                <div
-                  id="preview-content"
-                  className={`pb-10 print:pb-0 shadow-[0_10px_30px_rgba(0,0,0,0.3)] print:shadow-none bg-white relative shrink-0 break-words preserve-colors ${paperSize === "a4" ? "w-[210mm] min-h-[297mm]" : "w-[215.9mm] min-h-[279.4mm]"}`}
-                  style={{
-                    maxWidth: paperSize === "a4" ? "210mm" : "215.9mm",
-                    overflowX: "hidden",
-                  }}
-                >
-                  {(isGenerating || isGeneratingLetter) && (
+                <div className="relative mx-auto flex-shrink-0"
+                  style={{ width: `${previewScale * (paperSize === "letter" ? 816 : 794)}px`, height: `${previewScale * (paperSize === "letter" ? 1056 : 1123)}px` }}>
+                  <div className="absolute top-0 left-0 origin-top-left"
+                    style={{ width: `${paperSize === "letter" ? 816 : 794}px`, transform: `scale(${previewScale})` }}>
+                    <div
+                      id="preview-content"
+                      className={`pb-10 print:pb-0 shadow-[0_10px_30px_rgba(0,0,0,0.3)] print:shadow-none bg-white relative shrink-0 break-words preserve-colors ${paperSize === "a4" ? "w-[210mm] min-h-[297mm]" : "w-[215.9mm] min-h-[279.4mm]"}`}
+                      style={{
+                        maxWidth: paperSize === "a4" ? "210mm" : "215.9mm",
+                        overflowX: "hidden",
+                      }}
+                    >
+                      {(isGenerating || isGeneratingLetter) && (
                     <div className="absolute inset-0 bg-white/70 backdrop-blur-sm z-50 flex items-start pt-64 justify-center">
                       <div className="flex flex-col items-center gap-4 bg-[var(--color-bg-2)] p-8 rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.3)] border border-[var(--color-border-hover)] animate-in zoom-in-95 duration-300">
                         <Loader2
@@ -2923,7 +2947,7 @@ export default function App() {
                           ?.component({ data, color: themeColor })}
                     </>
                   ) : (
-                    <div className="max-w-[210mm] min-h-[297mm] mx-auto bg-white p-[20mm] text-slate-800 font-sans">
+                    <div className="w-full min-h-[297mm] mx-auto bg-white p-[20mm] text-slate-800 font-sans">
                       <div className="mb-12 border-b-2 border-slate-200 pb-6">
                         <h1 className="text-3xl font-bold text-slate-900 mb-2 uppercase tracking-wider">
                           {data.name}
@@ -2967,31 +2991,35 @@ export default function App() {
                     </div>
                   )}
                 </div>
+                </div>
+                </div>
               )}
             </div>
           </div>
         </div>
       ) : (
-        <BuilderView
-          handleShare={handleShare}
-          data={data}
-          setData={setData}
-          builderStep={builderStep}
-          setBuilderStep={setBuilderStep}
-          category={category}
-          setCategory={setCategory}
-          themeColor={themeColor}
-          setThemeColor={setThemeColor}
-          paperSize={paperSize}
-          setPaperSize={setPaperSize}
-          handleExportDocx={handleExportDocx}
-          handlePrint={handlePrint}
-          setCurrentView={setCurrentView}
-          setActiveTab={setActiveTab}
-          setShowAIModal={setShowAIModal}
-          mobileView={mobileView}
-          setMobileView={setMobileView}
-        />
+        <React.Suspense fallback={<div className="h-full w-full flex items-center justify-center p-20"><Loader2 className="animate-spin text-emerald-500 w-12 h-12" /></div>}>
+          <BuilderView
+            handleShare={handleShare}
+            data={data}
+            setData={setData}
+            builderStep={builderStep}
+            setBuilderStep={setBuilderStep}
+            category={category}
+            setCategory={setCategory}
+            themeColor={themeColor}
+            setThemeColor={setThemeColor}
+            paperSize={paperSize}
+            setPaperSize={setPaperSize}
+            handleExportDocx={handleExportDocx}
+            handlePrint={handlePrint}
+            setCurrentView={setCurrentView}
+            setActiveTab={setActiveTab}
+            setShowAIModal={setShowAIModal}
+            mobileView={mobileView}
+            setMobileView={setMobileView}
+          />
+        </React.Suspense>
       )}
 
       {currentView === "app" && (
@@ -3056,7 +3084,7 @@ export default function App() {
       {/* Theme Toggle Button */}
       <button
         onClick={() => setIsLightMode(!isLightMode)}
-        className="fixed bottom-20 right-6 z-[100] w-12 h-12 bg-[var(--color-bg-2)] text-[var(--text-main)] rounded-full shadow-[0_4px_20px_rgba(0,0,0,0.5)] border border-[var(--color-border-hover)] flex items-center justify-center hover:bg-[var(--color-bg-3)] hover:scale-110 active:scale-95 transition-all md:bottom-10 md:right-10"
+        className="fixed bottom-24 right-4 z-[100] w-12 h-12 bg-[var(--color-bg-2)] text-[var(--text-main)] rounded-full shadow-[0_4px_20px_rgba(0,0,0,0.5)] border border-[var(--color-border-hover)] flex items-center justify-center hover:bg-[var(--color-bg-3)] hover:scale-110 active:scale-95 transition-all md:bottom-10 md:right-10"
         aria-label="Toggle Theme"
       >
         {isLightMode ? <Moon size={22} className="text-blue-400" /> : <Sun size={22} className="text-yellow-400" />}

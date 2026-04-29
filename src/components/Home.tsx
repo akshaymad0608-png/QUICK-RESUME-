@@ -72,8 +72,8 @@ export const Home: React.FC<HomeProps> = ({
     e.preventDefault();
     if (email.trim() && email.includes('@')) {
       setSubscribed(true);
-      setEmail("");
       setTimeout(() => setSubscribed(false), 5000);
+      setEmail("");
     }
   };
 
@@ -209,7 +209,7 @@ export const Home: React.FC<HomeProps> = ({
       </div>
 
       {/* 1. Hero Section */}
-      <section className="relative px-6 pt-32 pb-32">
+      <section className="relative px-6 pt-20 sm:pt-24 md:pt-32 pb-16 sm:pb-24 md:pb-32">
         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-20">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -221,7 +221,7 @@ export const Home: React.FC<HomeProps> = ({
               <Sparkles size={14} /> AI-Powered ATS Resume Builder
             </div>
 
-            <h1 className="text-6xl lg:text-[80px] font-black leading-[0.95] tracking-tight mb-8">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[80px] font-black leading-[0.95] tracking-tight mb-8">
               <span className="text-gradient hover:drop-shadow-[0_0_30px_var(--color-primary-glow)] transition-all">
                 Reimagined by AI
               </span>
@@ -347,7 +347,7 @@ export const Home: React.FC<HomeProps> = ({
             <motion.div
               animate={{ y: [0, -10, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -top-6 -left-6 z-20 glass-card px-4 py-3 rounded-2xl flex items-center gap-3 shadow-[0_15px_30px_rgba(0,0,0,0.4)]"
+              className="absolute -top-6 -left-6 z-20 glass-card px-4 py-3 rounded-2xl hidden sm:flex items-center gap-3 shadow-[0_15px_30px_rgba(0,0,0,0.4)]"
             >
               <div className="bg-[var(--color-success)]/20 p-2 rounded-full text-[var(--color-success)]">
                 <Search size={18} />
@@ -370,7 +370,7 @@ export const Home: React.FC<HomeProps> = ({
                 ease: "easeInOut",
                 delay: 1,
               }}
-              className="absolute -bottom-8 -right-6 z-20 glass-card px-4 py-3 rounded-2xl flex items-center gap-3 shadow-[0_15px_30px_rgba(0,0,0,0.4)]"
+              className="absolute -bottom-8 -right-6 z-20 glass-card px-4 py-3 rounded-2xl hidden sm:flex items-center gap-3 shadow-[0_15px_30px_rgba(0,0,0,0.4)]"
             >
               <div className="bg-[var(--color-primary)]/20 p-2 rounded-full text-[var(--color-primary-light)]">
                 <MessageSquare size={18} />
@@ -414,7 +414,7 @@ export const Home: React.FC<HomeProps> = ({
                   <div className="absolute top-3 right-3 text-xs font-bold text-white bg-[var(--color-success)] px-3 py-1 rounded shadow-sm z-20">
                     AFTER
                   </div>
-                  <div className="scale-[0.4] origin-top-left w-[250%] pointer-events-none mt-2 ml-2">
+                  <div className="scale-[0.4] origin-top-left w-[250%] pointer-events-none mt-2 ml-2 overflow-hidden rounded-[20px]">
                     <ExecutiveTemplate
                       data={data}
                       color="var(--color-primary)"
@@ -430,7 +430,7 @@ export const Home: React.FC<HomeProps> = ({
       {/* 2. Stats Section (after hero) */}
       <section className="py-16 border-y border-[var(--color-border)] bg-[var(--color-bg)] relative overflow-hidden">
         {/* Stats Row */}
-        <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 lg:grid-cols-4 gap-8 divide-x divide-[var(--color-border)] text-center mb-16">
+        <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8 lg:divide-x divide-[var(--color-border)] text-center mb-16">
           {[
             { value: "50,000+", label: "Resumes Built" },
             { value: "94%", label: "ATS Pass Rate" },
@@ -638,7 +638,7 @@ export const Home: React.FC<HomeProps> = ({
               </div>
             </div>
 
-            <div className="flex-1 w-full glass-card rounded-[2rem] p-2 md:p-4 min-h-[500px] flex items-center justify-center relative overflow-hidden border-[var(--color-border)]">
+            <div className="flex-1 w-full glass-card rounded-[2rem] p-2 md:p-4 min-h-[300px] md:min-h-[500px] flex items-center justify-center relative overflow-hidden border-[var(--color-border)]">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activeAITab}
@@ -902,7 +902,7 @@ export const Home: React.FC<HomeProps> = ({
                   <div
                     className={`glass-card rounded-[24px] overflow-hidden relative shadow-2xl transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,0,0,0.5)] border border-[var(--color-border-hover)] hover:border-[var(--color-primary)]/50 ${
                       i === 0 && activeTemplateTab === "all"
-                        ? "aspect-auto h-full min-h-[500px]"
+                        ? "aspect-auto h-full min-h-[300px] md:min-h-[500px]"
                         : "aspect-[1/1.414]"
                     }`}
                   >
@@ -985,8 +985,8 @@ export const Home: React.FC<HomeProps> = ({
         </div>
 
         {/* Real Footer Links */}
-        <div className="max-w-7xl mx-auto px-6 py-16 grid grid-cols-2 md:grid-cols-5 gap-8 relative z-10">
-          <div className="col-span-2 md:col-span-2">
+        <div className="max-w-7xl mx-auto px-6 py-16 grid grid-cols-2 lg:grid-cols-5 gap-8 relative z-10 text-sm md:text-base">
+          <div className="col-span-2 lg:col-span-2">
             <div className="text-2xl font-black tracking-tight text-[var(--text-main)] mb-4 flex items-center gap-2">
               <div className="relative overflow-hidden flex items-center justify-center w-8 h-8 rounded-lg bg-[var(--color-bg-2)] shadow-[0_0_15px_var(--color-primary-glow)] border border-[var(--color-border)]">
                 <div className="absolute inset-0 bg-gradient-to-tr from-[var(--color-primary)] to-[var(--color-accent)] opacity-20" />
@@ -1021,7 +1021,7 @@ export const Home: React.FC<HomeProps> = ({
                 className="bg-[var(--color-bg)] border border-[var(--color-border)] rounded-xl px-4 py-3 text-sm flex-1 focus:outline-none focus:border-[var(--color-primary)] transition-colors placeholder:text-[var(--text-subtle)] min-w-0"
               />
               <button type="submit" disabled={subscribed} className="bg-[var(--color-primary)] text-[var(--color-primary-foreground)] px-5 py-3 rounded-xl text-sm font-bold hover:bg-[var(--color-primary-light)] transition-colors whitespace-nowrap disabled:opacity-70 disabled:cursor-not-allowed">
-                {subscribed ? "Subscribed!" : "Subscribe"}
+                {subscribed ? "We'll add this soon!" : "Get Notified Soon"}
               </button>
             </form>
 

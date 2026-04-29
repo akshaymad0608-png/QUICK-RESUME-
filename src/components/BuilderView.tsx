@@ -652,7 +652,7 @@ export const BuilderView = ({
                     onClick={() => setBuilderStep(s.id)}
                     className={`cursor-pointer flex items-center justify-center rounded-full text-xs font-bold transition-all ${isActive ? 'bg-[var(--color-primary)] text-[var(--color-primary-foreground)] px-3 py-1.5' : isPast ? 'w-6 h-6 bg-[var(--color-accent)]/20 text-[var(--color-accent)]' : 'w-6 h-6 border border-[var(--color-border)] text-[var(--text-muted)]'}`}
                   >
-                    {isPast ? <CheckCircle2 size={12} strokeWidth={3} /> : isActive ? s.label : (index + 1)}
+                    {isPast ? <CheckCircle2 size={12} strokeWidth={3} /> : isActive ? <span className="hidden xs:inline">{s.label}</span> : (index + 1)}
                   </div>
                   {index < steps.length - 1 && (
                     <div className="w-4 h-[2px] rounded-full mx-1 bg-[var(--color-border)]" />
@@ -704,13 +704,13 @@ export const BuilderView = ({
               {/* STEP: TEMPLATES */}
               {builderStep === "templates" && (
                 <div className="space-y-6">
-                  <div className="flex gap-2 p-1 bg-[var(--color-border)] rounded-xl border border-[var(--color-border-hover)] overflow-x-auto no-scrollbar">
+                  <div className="flex gap-2 p-1 bg-[var(--color-border)] rounded-xl border border-[var(--color-border-hover)] overflow-x-auto no-scrollbar snap-x snap-mandatory">
                     {["all", "classic", "modern", "creative", "minimal"].map(
                       (f) => (
                         <button
                           key={f}
                           onClick={() => setTemplateFilter(f as any)}
-                          className={`px-4 py-2 text-sm font-semibold rounded-lg capitalize whitespace-nowrap transition-colors ${templateFilter === f ? "bg-emerald-500 text-white shadow-md" : "text-[var(--text-muted)] hover:text-white"}`}
+                          className={`snap-start px-4 py-2 text-sm font-semibold rounded-lg capitalize whitespace-nowrap transition-colors ${templateFilter === f ? "bg-emerald-500 text-white shadow-md" : "text-[var(--text-muted)] hover:text-white"}`}
                         >
                           {f}
                         </button>
@@ -1386,33 +1386,22 @@ export const BuilderView = ({
         </div>
 
         {/* Floating Action Bar */}
-        <div className="fixed md:absolute bottom-24 md:bottom-6 left-1/2 -translate-x-1/2 md:translate-x-0 md:left-auto md:right-8 bg-[var(--color-bg-2)]/95 backdrop-blur-xl px-2 py-2 rounded-full flex gap-2 shadow-[0_20px_50px_rgba(0,0,0,0.8)] border border-[var(--color-border)] z-[100] transform transition-transform duration-500 ease-out slide-in-from-bottom-24">
-          <button
-            onClick={() => {
-              const url = new URL(window.location.href);
-              url.searchParams.set('ref', 'quickresume');
-              navigator.clipboard.writeText(url.toString());
-              alert("✅ Link copied!");
-            }}
-            className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-full font-bold text-sm text-[var(--color-primary-foreground)] bg-gradient-to-r from-blue-500 to-indigo-500 hover:scale-105 transition-transform"
-          >
-            <Share2 size={16} /> Share
-          </button>
+        <div className="fixed md:absolute bottom-[5rem] md:bottom-6 left-1/2 -translate-x-1/2 md:translate-x-0 md:left-auto md:right-8 bg-[var(--color-bg-2)]/95 backdrop-blur-xl px-2 py-2 rounded-full flex gap-2 shadow-[0_20px_50px_rgba(0,0,0,0.8)] border border-[var(--color-border)] z-[100] transform transition-transform duration-500 ease-out slide-in-from-bottom-24">
           <button
               onClick={handleShare}
-              className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-full font-bold text-sm text-[var(--color-primary-foreground)] bg-gradient-to-r from-blue-500 to-indigo-500 hover:scale-105 transition-transform"
+              className="flex items-center justify-center gap-2 px-3 py-2 md:px-5 md:py-2.5 rounded-full font-bold text-xs md:text-sm text-[var(--color-primary-foreground)] bg-gradient-to-r from-blue-500 to-indigo-500 hover:scale-105 transition-transform"
             >
               <Share2 size={16} /> Share
             </button>
           <button
             onClick={handlePrint}
-            className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-full font-bold text-sm text-[var(--color-primary-foreground)] bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-light)] hover:scale-105 transition-transform"
+            className="flex items-center justify-center gap-2 px-3 py-2 md:px-5 md:py-2.5 rounded-full font-bold text-xs md:text-sm text-[var(--color-primary-foreground)] bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-light)] hover:scale-105 transition-transform"
           >
             <Download size={16} /> Export PDF
           </button>
           <button
             onClick={handleExportDocx}
-            className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-full font-bold text-sm text-[var(--text-main)] bg-[var(--color-bg-3)] hover:bg-slate-700 transition-colors border border-[var(--color-border-hover)]"
+            className="flex items-center justify-center gap-2 px-3 py-2 md:px-5 md:py-2.5 rounded-full font-bold text-xs md:text-sm text-[var(--text-main)] bg-[var(--color-bg-3)] hover:bg-slate-700 transition-colors border border-[var(--color-border-hover)]"
           >
             <FileText size={16} /> Export DOCX
           </button>
