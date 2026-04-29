@@ -620,7 +620,7 @@ export const BuilderView = ({
 
       {/* CENTER PANEL - FORM */}
       <div
-        className={`w-full md:flex-1 xl:w-[45%] flex flex-col md:border-r border-[var(--color-border)] bg-[var(--color-bg-2)] relative ${mobileView === "preview" ? "hidden md:flex" : "flex"}`}
+        className={`w-full flex-1 xl:w-[45%] flex flex-col md:border-r border-[var(--color-border)] bg-[var(--color-bg-2)] relative ${mobileView === "preview" ? "hidden md:flex" : "flex"}`}
       >
         <Helmet>
           <title>Free AI Resume Builder Editor | Quick Resume</title>
@@ -681,8 +681,8 @@ export const BuilderView = ({
         </div>
 
         {/* Form Content Area */}
-        <div className="flex-1 overflow-y-auto p-6 md:p-10 no-scrollbar relative min-h-0 flex justify-center">
-          <div className="w-full max-w-2xl h-max pb-24">
+        <div className="flex-1 overflow-y-auto p-6 md:p-10 no-scrollbar relative min-h-0">
+          <div className="w-full max-w-2xl pb-24 mx-auto">
             <div className="md:hidden mb-8">
               <h2 className="text-3xl font-black text-[var(--text-main)] mb-2 font-heading tracking-tight">
                 {steps.find((s) => s.id === builderStep)?.label}
@@ -1336,7 +1336,7 @@ export const BuilderView = ({
         {/* Document Area */}
         <div
           ref={containerRef}
-          className="flex-1 overflow-y-auto w-full p-4 md:p-8 flex justify-center relative hide-scrollbar pb-32"
+          className="flex-1 overflow-y-auto w-full p-4 md:p-8 relative hide-scrollbar pb-32"
         >
           {(!data.name) ? (
             

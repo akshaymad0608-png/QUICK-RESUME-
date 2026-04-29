@@ -1262,66 +1262,25 @@ export default function App() {
   };
 
   const handlePrint = async () => {
+    // We use standard widow print. The @media print CSS in index.css will hide everything
+    // except the #preview-content. This ensures the output is a native text-searchable PDF format
+    // which is critical for ATS tracking systems.
     const element = document.getElementById("preview-content");
     if (!element) return;
-
-    const printWindow = window.open("", "_blank");
-    if (!printWindow) {
-      showToast("Please allow popups to download PDF.", "error");
-      return;
-    }
-
-    const htmlContent = element.outerHTML;
-    const styles = Array.from(
-      document.querySelectorAll('style, link[rel="stylesheet"]'),
-    )
-      .map((node) => node.outerHTML)
-      .join("\n");
-
-    printWindow.document.write(`
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <title>${activeTab === "resume" ? "Resume" : "Cover Letter"}</title>
-          ${styles}
-          <style>
-            @page {
-              size: ${paperSize === "a4" ? "210mm 297mm" : "215.9mm 279.4mm"};
-              margin: 0 !important;
-            }
-            body {
-              margin: 0;
-              padding: 0;
-              background-color: white !important;
-              -webkit-print-color-adjust: exact !important;
-              color-adjust: exact !important;
-              print-color-adjust: exact !important;
-            }
-            #preview-content {
-              width: ${paperSize === "a4" ? "210mm" : "215.9mm"} !important;
-              box-shadow: none !important;
-              margin: 0 !important;
-              overflow: hidden !important;
-            }
-          </style>
-        </head>
-        <body>
-          ${htmlContent}
-          <script>
-            window.onload = () => {
-              window.print();
-              setTimeout(() => { window.close(); }, 500);
-            };
-          </script>
-        </body>
-      </html>
-    `);
-    printWindow.document.close();
-    showToast("✅ Resume exported as PDF!", "success");
+    
+    // Scale must be reset for printing so it prints full size instead of scaled mobile view
+    const originalTransform = element.style.transform;
+    element.style.transform = 'none';
+    
+    window.print();
+    
+    // Restore original transform (scale) 
+    element.style.transform = originalTransform;
+    showToast("✅ Use 'Save as PDF' from your print options", "success");
   };
 
   return (
-    <main className="flex flex-col h-screen bg-[var(--color-bg)] overflow-hidden">
+    <main className="flex flex-col h-[100dvh] bg-[var(--color-bg)] overflow-hidden">
       <Helmet>
         <title>QuickResume | Free AI ATS Resume Builder & Cover Letter Generator</title>
         <meta
