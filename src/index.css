@@ -147,16 +147,35 @@
 
 @media print {
   @page { margin: 0; }
-  * { overflow: visible !important; }
-  html, body, #root, main { height: auto !important; min-height: auto !important; visibility: hidden; }
-  body * { visibility: hidden; }
-  #preview-content, #preview-content * { visibility: visible; }
-  #preview-content {
-    position: absolute;
-    left: 0; top: 0;
-    width: 100%; margin: 0; padding: 0;
+  * { 
     overflow: visible !important;
-    background: transparent !important;
+  }
+
+  html, body, #root, main { 
+    height: auto !important; 
+    min-height: auto !important; 
+    visibility: hidden; 
+    background: white !important;
+  }
+
+  /* Reset layout for everything to keep document flowing correctly, but NOT inside preview-content */
+  body *:not(#preview-content):not(#preview-content *) {
+    visibility: hidden;
+    position: static !important;
+    transform: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  
+  #preview-content, #preview-content * { 
+    visibility: visible; 
+  }
+  
+  #preview-content {
+    position: absolute !important;
+    left: 0 !important; top: 0 !important;
+    margin: 0 !important;
+    background: white !important;
     -webkit-print-color-adjust: exact !important;
     color-adjust: exact !important;
     print-color-adjust: exact !important;

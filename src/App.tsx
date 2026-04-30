@@ -1298,25 +1298,28 @@ export default function App() {
   };
 
   const handlePrint = async () => {
-    // We use standard widow print. The @media print CSS in index.css will hide everything
-    // except the #preview-content. This ensures the output is a native text-searchable PDF format
-    // which is critical for ATS tracking systems.
     const element = document.getElementById("preview-content");
-    if (!element) return;
+    const parentElement = element?.parentElement;
+    if (!element || !parentElement) return;
 
     // Scale must be reset for printing so it prints full size instead of scaled mobile view
-    const originalTransform = element.style.transform;
-    element.style.transform = "none";
+    const originalTransform = parentElement.style.transform;
+    parentElement.style.transform = "none";
 
-    window.print();
+    // Wait two frames to ensure DOM layout is updated before opening the blocking print dialog
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        window.print();
 
-    // Restore original transform (scale)
-    element.style.transform = originalTransform;
-    showToast("✅ Use 'Save as PDF' from your print options", "success");
+        // Restore original transform (scale)
+        parentElement.style.transform = originalTransform;
+        showToast("✅ Use 'Save as PDF' from your print options", "success");
+      });
+    });
   };
 
   return (
-    <main className="flex flex-col h-[100dvh] bg-[var(--color-bg)] overflow-hidden">
+    <div className={currentView === "home" || currentView === "demo" ? "flex flex-col min-h-[100dvh] bg-[var(--color-bg)]" : "flex flex-col h-[100dvh] bg-[var(--color-bg)] overflow-hidden"}>
       <Helmet>
         <title>
           QuickResume | Free AI ATS Resume Builder & Cover Letter Generator
@@ -3129,6 +3132,6 @@ export default function App() {
         type={toast?.type || "success"}
         onClose={() => setToast(null)}
       />
-    </main>
+    </div>
   );
 }

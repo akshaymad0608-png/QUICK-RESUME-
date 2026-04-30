@@ -91,7 +91,7 @@ export const Home: React.FC<HomeProps> = ({
   const filteredTemplates = activeTemplateTab === "all" ? templates : templates.filter(t => t.category === activeTemplateTab);
 
   return (
-    <main className="w-full flex-1 min-h-0 bg-[var(--color-bg)] overflow-y-auto overflow-x-hidden relative">
+    <main className="w-full flex-1 bg-[var(--color-bg)] relative">
       <Helmet>
         <title>QuickResume | AI-Powered Builder</title>
         <meta name="description" content="Build your ATS-optimized resume in minutes with Gemini AI." />
