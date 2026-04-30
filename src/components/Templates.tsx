@@ -1892,8 +1892,8 @@ export const ModernProTemplate = ({
 );
 
 export const ExecutiveTemplate = ({ data, color }: { data: ResumeData; color: string }) => (
-  <div className="font-serif bg-white text-gray-900 w-full min-h-full p-[15mm]">
-    <div className="border-b-4 pb-6 mb-8 flex justify-between items-end" style={{ borderColor: color }}>
+  <div className="font-serif bg-white text-gray-900 w-full min-h-full p-[15mm] box-border">
+    <div className="border-b-4 pb-6 mb-8 flex flex-col md:flex-row justify-between items-start md:items-end gap-6" style={{ borderColor: color }}>
       <div className="flex items-center gap-6">
         {data.photoUrl && (
           <img src={data.photoUrl} alt="Resume Profile" className="w-20 h-20 rounded-full object-cover shadow-sm" />

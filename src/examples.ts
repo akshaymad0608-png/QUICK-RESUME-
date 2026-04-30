@@ -1,62 +1,67 @@
 import { ResumeData } from "./types";
 
 export const softwareEngineerExample: ResumeData = {
-  name: "Alex Sterling",
-  title: "Senior Software Engineer",
-  email: "alex.sterling@example.com",
+  name: "Alex Morgan",
+  title: "Computer Engineer",
+  email: "alex.morgan@example.com",
   phone: "(555) 987-6543",
-  location: "Seattle, WA",
-  linkedin: "linkedin.com/in/alexsterling",
-  summary: "Innovative and results-driven Senior Software Engineer with over 7 years of experience in designing, developing, and deploying scalable full-stack applications. Proven expertise in cloud architecture, performance optimization, and mentoring engineering teams. Adept at collaborating with cross-functional partners to deliver business-critical products.",
+  location: "Austin, TX",
+  linkedin: "linkedin.com/in/alexmorgan-ce",
+  summary:
+    "Innovative Computer Engineer with 6+ years of experience designing and optimizing embedded systems, hardware-software interfaces, and IoT devices. Proficient in C/C++, Verilog, and ARM Microcontrollers, with a strong background in PCB design and real-time operating systems (RTOS).",
   experience: [
     {
       id: "e1",
-      jobTitle: "Lead Frontend Engineer",
-      company: "CloudScale Analytics",
+      jobTitle: "Senior Embedded Systems Engineer",
+      company: "TechHardware Solutions",
       startDate: "Mar 2021",
       endDate: "Present",
-      responsibilities: "Spearheaded the migration of a legacy monolithic dashboard to a modern React SPA, reducing initial load times by 45%.\nArchitected a reusable component system used across 3 major product lines, saving over 200 hours of development time quarterly.\nManaged and mentored a team of 4 junior/mid-level engineers, resulting in 2 internal promotions."
+      responsibilities:
+        "Led the hardware-software co-design of a next-generation IoT sensor platform, reducing power consumption by 35%.\nDeveloped highly optimized firmware in C/C++ for ARM Cortex-M processors.\nCollaborated with electrical engineers for PCB layout design, schematic capture, and signal integrity testing.",
     },
     {
       id: "e2",
-      jobTitle: "Full Stack Engineer",
-      company: "FinTech Solutions",
-      startDate: "Jun 2017",
+      jobTitle: "Computer Hardware Engineer",
+      company: "InnovateTech Embedded",
+      startDate: "Jul 2018",
       endDate: "Feb 2021",
-      responsibilities: "Developed and maintained RESTful APIs using Node.js and PostgreSQL to process over 10,000 transactions daily.\nImplemented robust CI/CD pipelines with GitHub Actions and Docker, reducing deployment failures by 30%.\nIntegrated third-party payment gateways, significantly enhancing revenue collection processes."
-    }
+      responsibilities:
+        "Designed and implemented FPGA-based hardware accelerators using Verilog, improving data processing speed by 50%.\nDebugged complex hardware-software integration issues using oscilloscopes, logic analyzers, and JTAG.\nAuthored detailed technical documentation and testing protocols for hardware validation.",
+    },
   ],
   education: [
     {
       id: "edu1",
-      degree: "B.S. in Computer Science",
-      institution: "University of Washington",
-      year: "2017"
-    }
+      degree: "B.S. Computer Engineering",
+      institution: "University of Texas at Austin",
+      year: "2018",
+    },
   ],
   projects: [
     {
       id: "p1",
-      name: "MetricFlow",
-      description: "An open-source real-time event analytics tracker built with Node.js, Redis, and React. Gained over 500 stars on GitHub.",
-      link: "github.com/alexsterling/metricflow"
-    }
+      name: "Autonomous Smart Robotics Platform",
+      description:
+        "Developed a custom motor control system using STM32 microcontrollers and FreeRTOS, featuring obstacle avoidance using LiDAR sensors.",
+      link: "github.com/alexmorgan/smart-robot",
+    },
   ],
   certifications: [
     {
       id: "c1",
-      name: "AWS Certified Solutions Architect",
-      issuer: "Amazon Web Services",
-      year: "2022"
-    }
+      name: "Certified Embedded Systems Engineer",
+      issuer: "IEEE",
+      year: "2021",
+    },
   ],
-  skills: "JavaScript, TypeScript, React, Node.js, Python, PostgreSQL, MongoDB, Redis, Docker, Kubernetes, AWS, GraphQL",
+  skills:
+    "C/C++, Python, Verilog/SystemVerilog, ARM Microcontrollers, RTOS (FreeRTOS), Altium Designer, PCB Design, FPGA (Xilinx, Altera), I2C, SPI, UART, Hardware Debugging",
   coverLetter: {
-    recipientName: "Hiring Manager",
-    companyName: "TechCorp",
-    jobReference: "Senior Software Engineer",
-    body: "I am writing to express my interest in the Senior Software Engineer position at TechCorp. With a solid foundation in building scalable full-stack web applications and leading technical teams, I am confident in my ability to immediately add value to your engineering department..."
-  }
+    recipientName: "Engineering Hiring Manager",
+    companyName: "NextGen Electronics",
+    jobReference: "Senior Computer Engineer Position",
+    body: "I am writing to express my interest in the Senior Computer Engineer position at NextGen Electronics. With over 6 years of experience in hardware-software co-design, embedded systems development, and IoT solutions, I have a proven track record of bringing complex electronic devices from concept to production.\n\nIn my previous role at TechHardware Solutions, I spearheaded the development of an ultra-low-power IoT sensor platform, successfully reducing power consumption by 35% through meticulous firmware optimization on ARM Cortex processors. I am deeply passionate about pushing the boundaries of embedded architecture, seamlessly integrating custom PCBs with robust real-time operating systems.\n\nI have long admired NextGen Electronics for its commitment to cutting-edge hardware innovation and rigorous engineering standards. I am confident that my expertise in C/C++, Verilog, and hardware debugging perfectly aligns with the technical demands of your team.\n\nThank you for considering my application. I look forward to the opportunity to discuss how my background in computer engineering will drive impactful results for your upcoming projects.",
+  },
 };
 
 export const marketingManagerExample: ResumeData = {
@@ -243,7 +248,7 @@ export const productDesignerExample: ResumeData = {
 };
 
 export const exampleProfiles = [
-  { id: "swe", name: "Software Engineer", data: softwareEngineerExample },
+  { id: "comp_eng", name: "Computer Engineer", data: softwareEngineerExample },
   { id: "marketing", name: "Marketing Manager", data: marketingManagerExample },
   { id: "data", name: "Data Scientist", data: dataScientistExample },
   { id: "design", name: "Product Designer", data: productDesignerExample }

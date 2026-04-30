@@ -1,49 +1,32 @@
-import fs from "fs";
+import fs from 'fs';
 
-const files = [
-  "src/App.tsx",
-  "src/components/Home.tsx",
-  "src/components/BuilderView.tsx",
-  "src/components/LightInputs.tsx",
-];
+let indexCss = fs.readFileSync('src/index.css', 'utf-8');
 
-let replacements = [
-  ["bg-slate-50", "bg-slate-950"],
-  ["text-slate-900", "text-slate-100"],
-  ["text-slate-800", "text-slate-200"],
-  ["text-slate-700", "text-slate-300"],
-  ["text-slate-600", "text-slate-400"],
-  ["border-slate-200", "border-slate-800"],
-  ["border-slate-300", "border-slate-700"],
-  ["bg-slate-100", "bg-slate-900"],
-  ["bg-slate-200", "bg-slate-800"],
-  [/bg-white(?!(\/|\w))/g, "bg-slate-900"], 
-  [/bg-white\/([0-9]+)/g, "bg-slate-900/$1"], // Convert bg-white/xx to bg-slate-900/xx or maybe better bg-white/xx to bg-slate-800/xx
-  ["shadow-sm", "shadow-slate-950/50"],
-  ["shadow-md", "shadow-slate-950/50"],
-  ["shadow-lg", "shadow-slate-950/50"],
-  ["shadow-xl", "shadow-slate-950/50"],
-  ["shadow-2xl", "shadow-slate-950/50"],
-  ["border-black/10", "border-white/10"],
-  ["bg-black", "bg-white"],
-];
+// Replace Violet with Blue
+indexCss = indexCss.replace(/#7c3aed/g, '#2563eb'); // violet-600 -> blue-600
+indexCss = indexCss.replace(/#a78bfa/g, '#60a5fa'); // violet-400 -> blue-400
+indexCss = indexCss.replace(/124, 58, 237/g, '37, 99, 235'); // violet-600 rgb
+indexCss = indexCss.replace(/#6d28d9/g, '#1d4ed8'); // violet-700 -> blue-700
 
-files.forEach(file => {
-  if (fs.existsSync(file)) {
-    let content = fs.readFileSync(file, 'utf8');
-    
-    // Some exceptions: We don't want to make preview-content dark if it breaks printing,
-    // actually, we might want the preview to be white. Let's fix that later, or skip preview-content.
-    // In BuilderView.tsx, we have id="preview-content" which we want to remain light.
-    
-    replacements.forEach(([search, replace]) => {
-      if (typeof search === 'string') {
-        content = content.split(search).join(replace as string);
-      } else {
-        content = content.replace(search, replace as string);
-      }
-    });
+// Replace accent (cyan) with Teal
+indexCss = indexCss.replace(/#06b6d4/g, '#14b8a6'); // cyan-500 -> teal-500
+indexCss = indexCss.replace(/6, 182, 212/g, '20, 184, 166'); // cyan-500 rgb
+indexCss = indexCss.replace(/#0891b2/g, '#0f766e'); // cyan-600 -> teal-600
+indexCss = indexCss.replace(/8, 145, 178/g, '15, 118, 110'); // cyan-600 rgb
 
-    fs.writeFileSync(file, content);
-  }
-});
+fs.writeFileSync('src/index.css', indexCss);
+
+
+let homeTsx = fs.readFileSync('src/components/Home.tsx', 'utf-8');
+
+// Colors
+homeTsx = homeTsx.replace(/violet-/g, 'blue-');
+homeTsx = homeTsx.replace(/fuchsia-/g, 'emerald-');
+homeTsx = homeTsx.replace(/cyan-/g, 'teal-');
+homeTsx = homeTsx.replace(/indigo-/g, 'cyan-');
+homeTsx = homeTsx.replace(/124,58,237/g, '37,99,235'); // rgba shadow for CTA
+homeTsx = homeTsx.replace(/color="#7c3aed"/g, 'color="#2563eb"');
+
+fs.writeFileSync('src/components/Home.tsx', homeTsx);
+
+console.log("Colors replaced!");

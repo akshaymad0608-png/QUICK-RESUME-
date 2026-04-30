@@ -1,3 +1,4 @@
+import { Logo } from "./components/Logo";
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Helmet } from "react-helmet-async";
@@ -5,8 +6,14 @@ import { GoogleGenAI, Type } from "@google/genai";
 import { Toast } from "./components/Toast";
 import { Moon, Sun } from "lucide-react";
 
-const BuilderView = React.lazy(() => import("./components/BuilderView").then(module => ({ default: module.BuilderView })));
-const Home = React.lazy(() => import("./components/Home").then(module => ({ default: module.Home })));
+const BuilderView = React.lazy(() =>
+  import("./components/BuilderView").then((module) => ({
+    default: module.BuilderView,
+  })),
+);
+const Home = React.lazy(() =>
+  import("./components/Home").then((module) => ({ default: module.Home })),
+);
 import {
   Plus,
   Trash2,
@@ -186,7 +193,9 @@ const AccordionSection = ({
       </button>
       {isActive && (
         <div className="px-5 pb-6 text-[var(--text-main)] animate-in slide-in-from-top-2 fade-in duration-200">
-          <div className="pt-2 border-t border-[var(--color-border)]">{children}</div>
+          <div className="pt-2 border-t border-[var(--color-border)]">
+            {children}
+          </div>
         </div>
       )}
     </div>
@@ -228,73 +237,73 @@ const TextAreaField = ({ label, optionalRightNode, ...props }: any) => (
 );
 
 const initialData: ResumeData = {
-  name: "John Doe",
-  title: "Software Engineer",
-  email: "john.doe@example.com",
-  phone: "(555) 123-4567",
-  location: "San Francisco, CA",
-  linkedin: "linkedin.com/in/johndoe",
+  name: "Alex Morgan",
+  title: "Computer Engineer",
+  email: "alex.morgan@example.com",
+  phone: "(555) 987-6543",
+  location: "Austin, TX",
+  linkedin: "linkedin.com/in/alexmorgan-ce",
   summary:
-    "Results-driven Software Engineer with 5+ years of experience developing scalable web applications. Proven track record of improving system performance and leading cross-functional teams.",
+    "Innovative Computer Engineer with 6+ years of experience designing and optimizing embedded systems, hardware-software interfaces, and IoT devices. Proficient in C/C++, Verilog, and ARM Microcontrollers, with a strong background in PCB design and real-time operating systems (RTOS).",
   experience: [
     {
       id: "1",
-      jobTitle: "Senior Frontend Developer",
-      company: "Tech Solutions Inc.",
-      startDate: "Jan 2020",
+      jobTitle: "Senior Embedded Systems Engineer",
+      company: "TechHardware Solutions",
+      startDate: "Mar 2021",
       endDate: "Present",
       responsibilities:
-        "Led development of React-based customer portal, increased engagement by 40%.\nMentored junior developers, established code quality standards.\nOptimized performance, reduced load times by 2 seconds.",
+        "Led the hardware-software co-design of a next-generation IoT sensor platform, reducing power consumption by 35%.\nDeveloped highly optimized firmware in C/C++ for ARM Cortex-M processors.\nCollaborated with electrical engineers for PCB layout design, schematic capture, and signal integrity testing.",
     },
     {
       id: "2",
-      jobTitle: "Junior Web Developer",
-      company: "InnovateTech",
-      startDate: "Jun 2018",
-      endDate: "Dec 2019",
+      jobTitle: "Computer Hardware Engineer",
+      company: "InnovateTech Embedded",
+      startDate: "Jul 2018",
+      endDate: "Feb 2021",
       responsibilities:
-        "Developed and maintained responsive user interfaces using HTML, CSS, and JavaScript.\nCollaborated with backend teams to integrate RESTful APIs.\nParticipated in agile sprints and daily stand-ups, consistently meeting project deadlines.",
+        "Designed and implemented FPGA-based hardware accelerators using Verilog, improving data processing speed by 50%.\nDebugged complex hardware-software integration issues using oscilloscopes, logic analyzers, and JTAG.\nAuthored detailed technical documentation and testing protocols for hardware validation.",
     },
   ],
   education: [
     {
       id: "1",
-      degree: "B.S. Computer Science",
-      institution: "University of California, Berkeley",
+      degree: "B.S. Computer Engineering",
+      institution: "University of Texas at Austin",
       year: "2018",
     },
   ],
   projects: [
     {
       id: "1",
-      name: "E-commerce Analytics Dashboard",
+      name: "Autonomous Smart Robotics Platform",
       description:
-        "A full-stack dashboard built with React, Node.js, and PostgreSQL to track real-time sales metrics and inventory.",
-      link: "github.com/johndoe/ecommerce-dash",
+        "Developed a custom motor control system using STM32 microcontrollers and FreeRTOS, featuring obstacle avoidance using LiDAR sensors.",
+      link: "github.com/alexmorgan/smart-robot",
     },
     {
       id: "2",
-      name: "Task Management API",
+      name: "Custom RISC-V Soft Core",
       description:
-        "RESTful API built with Express and MongoDB featuring JWT authentication and role-based access control.",
-      link: "github.com/johndoe/task-api",
+        "Designed a pipelined RISC-V processor architecture in SystemVerilog, verified using testbenches and deployed on a Xilinx Artix-7 FPGA.",
+      link: "github.com/alexmorgan/riscv-core",
     },
   ],
   certifications: [
     {
       id: "1",
-      name: "AWS Certified Solutions Architect – Associate",
-      issuer: "Amazon Web Services",
-      year: "2022",
+      name: "Certified Embedded Systems Engineer",
+      issuer: "IEEE",
+      year: "2021",
     },
   ],
   skills:
-    "JavaScript, TypeScript, React, Node.js, Tailwind CSS, PostgreSQL, MongoDB, AWS, Git, Agile Methodology",
+    "C/C++, Python, Verilog/SystemVerilog, ARM Microcontrollers, RTOS (FreeRTOS), Altium Designer, PCB Design, FPGA (Xilinx, Altera), I2C, SPI, UART, Hardware Debugging",
   coverLetter: {
-    recipientName: "Hiring Manager",
-    companyName: "Tech Innovations LLC",
-    jobReference: "Software Engineer Position",
-    body: "I am writing to express my interest in the Software Engineer position at Tech Innovations LLC. With over 5 years of experience in full-stack development, I have a proven track record of building scalable web applications and leading cross-functional teams.\n\nIn my previous role at Tech Solutions Inc., I spearheaded the development of a React-based customer portal that increased user engagement by 40%. I am passionate about writing clean, maintainable code and mentoring junior developers to achieve their full potential.\n\nI am drawn to Tech Innovations LLC because of your commitment to cutting-edge technology and innovative solutions. I am confident that my skills in JavaScript, React, and Node.js align perfectly with your requirements.\n\nThank you for considering my application. I look forward to the opportunity to discuss how my background, skills, and certifications will be beneficial to your team.",
+    recipientName: "Engineering Hiring Manager",
+    companyName: "NextGen Electronics",
+    jobReference: "Senior Computer Engineer Position",
+    body: "I am writing to express my interest in the Senior Computer Engineer position at NextGen Electronics. With over 6 years of experience in hardware-software co-design, embedded systems development, and IoT solutions, I have a proven track record of bringing complex electronic devices from concept to production.\n\nIn my previous role at TechHardware Solutions, I spearheaded the development of an ultra-low-power IoT sensor platform, successfully reducing power consumption by 35% through meticulous firmware optimization on ARM Cortex processors. I am deeply passionate about pushing the boundaries of embedded architecture, seamlessly integrating custom PCBs with robust real-time operating systems.\n\nI have long admired NextGen Electronics for its commitment to cutting-edge hardware innovation and rigorous engineering standards. I am confident that my expertise in C/C++, Verilog, and hardware debugging perfectly aligns with the technical demands of your team.\n\nThank you for considering my application. I look forward to the opportunity to discuss how my background in computer engineering will drive impactful results for your upcoming projects.",
   },
 };
 
@@ -430,13 +439,23 @@ const calculateATSScore = (data: ResumeData) => {
 const resumeSchema = {
   type: Type.OBJECT,
   properties: {
-    name: { type: Type.STRING, description: "Full name of the person. Do not include titles here." },
-    title: { type: Type.STRING, description: "Professional title, e.g., 'Software Engineer'." },
+    name: {
+      type: Type.STRING,
+      description: "Full name of the person. Do not include titles here.",
+    },
+    title: {
+      type: Type.STRING,
+      description: "Professional title, e.g., 'Software Engineer'.",
+    },
     email: { type: Type.STRING },
     phone: { type: Type.STRING },
     location: { type: Type.STRING },
     linkedin: { type: Type.STRING },
-    summary: { type: Type.STRING, description: "A brief professional summary. Do NOT include heading words like 'Profile' or 'Summary' in the text." },
+    summary: {
+      type: Type.STRING,
+      description:
+        "A brief professional summary. Do NOT include heading words like 'Profile' or 'Summary' in the text.",
+    },
     experience: {
       type: Type.ARRAY,
       description: "List of work experiences.",
@@ -447,7 +466,11 @@ const resumeSchema = {
           company: { type: Type.STRING },
           startDate: { type: Type.STRING },
           endDate: { type: Type.STRING },
-          responsibilities: { type: Type.STRING, description: "A single string containing bullet points separated by newlines." },
+          responsibilities: {
+            type: Type.STRING,
+            description:
+              "A single string containing bullet points separated by newlines.",
+          },
         },
       },
     },
@@ -487,15 +510,16 @@ const resumeSchema = {
     skills: {
       type: Type.ARRAY,
       items: { type: Type.STRING },
-      description: "Array of technical skills. Do NOT include heading words like 'Skills'."
+      description:
+        "Array of technical skills. Do NOT include heading words like 'Skills'.",
     },
   },
 };
 
 export default function App() {
   const [data, setData] = useState<ResumeData>(() => {
-    // Changed key to v4 to clear the corrupted "DISTINGUISHED" AI data
-    const saved = localStorage.getItem("quickResumeDataV4");
+    // Changed key to v5 to ensure fresh template starts
+    const saved = localStorage.getItem("quickResumeDataV5");
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
@@ -531,7 +555,7 @@ export default function App() {
   >("modern-pro");
   const [themeColor, setThemeColor] = useState<string>("#10b981");
   const [paperSize, setPaperSize] = useState<"a4" | "letter">("a4");
-  
+
   const [isLightMode, setIsLightMode] = useState<boolean>(() => {
     return localStorage.getItem("themeMode") === "light";
   });
@@ -546,16 +570,15 @@ export default function App() {
     }
   }, [isLightMode]);
 
-  
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
+      if ((e.ctrlKey || e.metaKey) && e.key === "p") {
         e.preventDefault();
         handlePrint();
       }
     };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
   const [expandedSection, setExpandedSection] = useState<string>("personal");
@@ -581,7 +604,9 @@ export default function App() {
   const [interviewQuestions, setInterviewQuestions] = useState<any[]>([]);
   const [aiInputText, setAiInputText] = useState("");
   const [jobDescriptionText, setJobDescriptionText] = useState("");
-  const [aiSuggestedSkillsList, setAiSuggestedSkillsList] = useState<{label: string, items: string[]}[] | null>(null);
+  const [aiSuggestedSkillsList, setAiSuggestedSkillsList] = useState<
+    { label: string; items: string[] }[] | null
+  >(null);
   const [isGeneratingSkills, setIsGeneratingSkills] = useState(false);
   const [jobMatchResult, setJobMatchResult] = useState<{
     matchPercentage: number;
@@ -605,7 +630,7 @@ export default function App() {
     try {
       setIsParsingPDF(true);
       const arrayBuffer = await file.arrayBuffer();
-      
+
       const pdfjsLib = await import("pdfjs-dist");
       const pdfWorker = await import("pdfjs-dist/build/pdf.worker.mjs?url");
       pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorker.default;
@@ -650,7 +675,7 @@ export default function App() {
   const [enhancingExp, setEnhancingExp] = useState<string | null>(null);
   const [enhancingProj, setEnhancingProj] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  
+
   const previewContainerRef = useRef<HTMLDivElement>(null);
   const [previewScale, setPreviewScale] = useState(1);
 
@@ -701,7 +726,7 @@ export default function App() {
       );
       return;
     }
-    const apiKey = (import.meta.env.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY);
+    const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
       showToast(
         "Gemini API key is missing. Please check your environment variables.",
@@ -743,7 +768,7 @@ export default function App() {
       );
       return;
     }
-    const apiKey = (import.meta.env.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY);
+    const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
       showToast("Gemini API key is missing.", "error");
       return;
@@ -779,7 +804,7 @@ export default function App() {
       showToast("Please enter a Project Name first.", "info");
       return;
     }
-    const apiKey = (import.meta.env.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY);
+    const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
       showToast("Gemini API key is missing.", "error");
       return;
@@ -806,16 +831,16 @@ export default function App() {
     }
   };
 
-  
   const handleShare = () => {
     const url = new URL(window.location.href);
-    url.searchParams.set('ref', 'quickresume');
+    url.searchParams.set("ref", "quickresume");
     navigator.clipboard.writeText(url.toString());
     showToast("✅ Link copied! Share your resume layout.", "success");
   };
 
-  const getWordCount = (text: string) => text.trim() ? text.trim().split(/\s+/).length : 0;
-  
+  const getWordCount = (text: string) =>
+    text.trim() ? text.trim().split(/\s+/).length : 0;
+
   const handleExportDocx = () => {
     const header =
       "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>Export HTML to Word Document</title></head><body>";
@@ -839,7 +864,7 @@ export default function App() {
   useEffect(() => {
     const timer = setTimeout(() => {
       try {
-        localStorage.setItem("quickResumeDataV4", JSON.stringify(data));
+        localStorage.setItem("quickResumeDataV5", JSON.stringify(data));
       } catch (e) {
         console.warn("Failed to save to localStorage", e);
         showToast("Auto-save failed. Storage might be full.", "error");
@@ -1007,7 +1032,7 @@ export default function App() {
     setIsGenerating(true);
     try {
       const ai = new GoogleGenAI({
-        apiKey: (import.meta.env.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY),
+        apiKey: process.env.GEMINI_API_KEY,
       });
       const response = await ai.models.generateContent({
         model: "gemini-2.5-flash",
@@ -1020,23 +1045,28 @@ export default function App() {
 
       const generatedData = JSON.parse(response.text);
 
-      if (typeof generatedData.title === "string") generatedData.title = generatedData.title.substring(0, 100);
-      if (typeof generatedData.name === "string") generatedData.name = generatedData.name.substring(0, 80);
-      if (typeof generatedData.summary === "string") generatedData.summary = generatedData.summary.substring(0, 1500);
+      if (typeof generatedData.title === "string")
+        generatedData.title = generatedData.title.substring(0, 100);
+      if (typeof generatedData.name === "string")
+        generatedData.name = generatedData.name.substring(0, 80);
+      if (typeof generatedData.summary === "string")
+        generatedData.summary = generatedData.summary.substring(0, 1500);
 
       if (Array.isArray(generatedData.skills)) {
         generatedData.skills = generatedData.skills.join(", ");
       }
       if (typeof generatedData.skills === "string") {
-        generatedData.skills = generatedData.skills.replace(/\s*[\/\n]+\s*/g, ", ").substring(0, 3000);
+        generatedData.skills = generatedData.skills
+          .replace(/\s*[\/\n]+\s*/g, ", ")
+          .substring(0, 3000);
       }
       generatedData.experience = (generatedData.experience || []).map(
         (e: any) => ({
           ...e,
           id: crypto.randomUUID(),
-          responsibilities: Array.isArray(e.responsibilities) 
-            ? e.responsibilities.join("\n") 
-            : e.responsibilities || ""
+          responsibilities: Array.isArray(e.responsibilities)
+            ? e.responsibilities.join("\n")
+            : e.responsibilities || "",
         }),
       );
       generatedData.education = (generatedData.education || []).map(
@@ -1064,7 +1094,7 @@ export default function App() {
     setIsGeneratingInterview(true);
     try {
       const ai = new GoogleGenAI({
-        apiKey: (import.meta.env.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY),
+        apiKey: process.env.GEMINI_API_KEY,
       });
       const prompt = `You are an expert technical interviewer and recruiter. Based on the following resume data, generate 10 highly relevant behavioral and technical interview questions, along with suggested answers or tips for the candidate. Return ONLY valid JSON as an array of objects with keys: "question", "type" (Technical/Behavioral), "tips".\n\nResume Data:\n${JSON.stringify(data, null, 2)}`;
 
@@ -1106,12 +1136,13 @@ export default function App() {
     setIsGenerating(true);
     try {
       const ai = new GoogleGenAI({
-        apiKey: (import.meta.env.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY),
+        apiKey: process.env.GEMINI_API_KEY,
       });
       const response = await ai.models.generateContent({
         model: "gemini-2.5-flash",
         contents: `You are an expert resume writer. Parse the following text and build a professional, highly-optimized resume from it. 
-        If some details are missing, infer reasonable professional defaults or leave them blank. 
+        If some details are missing (like name or dates), create fictional but realistic default values to fill out a complete resume structure.
+        For example, if the user just inputs a job title like "AI Engineer", invent a fictional realistic name, experience, education strictly for that role so they can see a complete template.
         Enhance the bullet points to be action-oriented and impactful.
         Return ONLY valid JSON matching the schema.
         
@@ -1125,23 +1156,28 @@ export default function App() {
 
       const generatedData = JSON.parse(response.text);
 
-      if (typeof generatedData.title === "string") generatedData.title = generatedData.title.substring(0, 100);
-      if (typeof generatedData.name === "string") generatedData.name = generatedData.name.substring(0, 80);
-      if (typeof generatedData.summary === "string") generatedData.summary = generatedData.summary.substring(0, 1500);
+      if (typeof generatedData.title === "string")
+        generatedData.title = generatedData.title.substring(0, 100);
+      if (typeof generatedData.name === "string")
+        generatedData.name = generatedData.name.substring(0, 80);
+      if (typeof generatedData.summary === "string")
+        generatedData.summary = generatedData.summary.substring(0, 1500);
 
       if (Array.isArray(generatedData.skills)) {
         generatedData.skills = generatedData.skills.join(", ");
       }
       if (typeof generatedData.skills === "string") {
-        generatedData.skills = generatedData.skills.replace(/\s*[\/\n]+\s*/g, ", ").substring(0, 3000);
+        generatedData.skills = generatedData.skills
+          .replace(/\s*[\/\n]+\s*/g, ", ")
+          .substring(0, 3000);
       }
       generatedData.experience = (generatedData.experience || []).map(
         (e: any) => ({
           ...e,
           id: crypto.randomUUID(),
-          responsibilities: Array.isArray(e.responsibilities) 
-            ? e.responsibilities.join("\n") 
-            : e.responsibilities || ""
+          responsibilities: Array.isArray(e.responsibilities)
+            ? e.responsibilities.join("\n")
+            : e.responsibilities || "",
         }),
       );
       generatedData.education = (generatedData.education || []).map(
@@ -1174,7 +1210,7 @@ export default function App() {
     setIsGeneratingSkills(true);
     try {
       const ai = new GoogleGenAI({
-        apiKey: (import.meta.env.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY),
+        apiKey: process.env.GEMINI_API_KEY,
       });
 
       const prompt = `Based on the user's title "${data.title}" and summary "${data.summary}", suggest a categorized list of skills. 
@@ -1223,7 +1259,7 @@ export default function App() {
     setIsGeneratingLetter(true);
     try {
       const ai = new GoogleGenAI({
-        apiKey: (import.meta.env.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY),
+        apiKey: process.env.GEMINI_API_KEY,
       });
 
       const prompt = `Write a professional cover letter body for a candidate named ${data.name || "a professional"} applying for the ${data.coverLetter.jobReference} position at ${data.coverLetter.companyName}. 
@@ -1267,14 +1303,14 @@ export default function App() {
     // which is critical for ATS tracking systems.
     const element = document.getElementById("preview-content");
     if (!element) return;
-    
+
     // Scale must be reset for printing so it prints full size instead of scaled mobile view
     const originalTransform = element.style.transform;
-    element.style.transform = 'none';
-    
+    element.style.transform = "none";
+
     window.print();
-    
-    // Restore original transform (scale) 
+
+    // Restore original transform (scale)
     element.style.transform = originalTransform;
     showToast("✅ Use 'Save as PDF' from your print options", "success");
   };
@@ -1282,7 +1318,9 @@ export default function App() {
   return (
     <main className="flex flex-col h-[100dvh] bg-[var(--color-bg)] overflow-hidden">
       <Helmet>
-        <title>QuickResume | Free AI ATS Resume Builder & Cover Letter Generator</title>
+        <title>
+          QuickResume | Free AI ATS Resume Builder & Cover Letter Generator
+        </title>
         <meta
           name="description"
           content="Build a professional, ATS-friendly resume for free in minutes. Our AI-powered resume builder extracts your experience and formats it instantly."
@@ -1293,11 +1331,23 @@ export default function App() {
         />
         <meta name="author" content="QuickResume" />
         <link rel="canonical" href="https://quickresume.app" />
-        <meta property="og:title" content="QuickResume | Free AI ATS Resume Builder & Cover Letter Generator" />
-        <meta property="og:description" content="Build a professional, ATS-friendly resume for free in minutes. Our AI-powered resume builder extracts your experience and formats it instantly." />
+        <meta
+          property="og:title"
+          content="QuickResume | Free AI ATS Resume Builder & Cover Letter Generator"
+        />
+        <meta
+          property="og:description"
+          content="Build a professional, ATS-friendly resume for free in minutes. Our AI-powered resume builder extracts your experience and formats it instantly."
+        />
         <meta property="og:url" content="https://quickresume.app" />
-        <meta name="twitter:title" content="QuickResume | Free AI ATS Resume Builder & Cover Letter Generator" />
-        <meta name="twitter:description" content="Build a professional, ATS-friendly resume for free in minutes." />
+        <meta
+          name="twitter:title"
+          content="QuickResume | Free AI ATS Resume Builder & Cover Letter Generator"
+        />
+        <meta
+          name="twitter:description"
+          content="Build a professional, ATS-friendly resume for free in minutes."
+        />
         <meta name="robots" content="index, follow" />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
@@ -1535,8 +1585,7 @@ export default function App() {
                             );
                             return;
                           }
-                          const apiKey =
-                            (import.meta.env.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY);
+                          const apiKey = process.env.GEMINI_API_KEY;
                           if (!apiKey) {
                             showToast("Gemini API key is missing.", "error");
                             return;
@@ -1754,7 +1803,8 @@ export default function App() {
                     <h3 className="font-bold text-[var(--text-main)] text-lg">
                       Your Custom Questions
                     </h3>
-                    <button aria-label="Refresh"
+                    <button
+                      aria-label="Refresh"
                       onClick={handleGenerateInterviewPrep}
                       disabled={isGeneratingInterview}
                       className="text-sm text-purple-400 font-bold flex items-center gap-1.5 hover:text-purple-300 transition-colors bg-purple-400/10 px-3 py-1.5 rounded-lg border border-purple-400/20"
@@ -1904,29 +1954,10 @@ export default function App() {
           <header className="bg-[var(--color-bg-2)]/80 backdrop-blur-2xl border-b border-[var(--color-border)] px-6 h-[64px] flex justify-between items-center shrink-0 relative z-[100] transition-all">
             {/* LEFT: Logo */}
             <div
-              className="flex items-center gap-2 mr-4 cursor-pointer group"
+              className="flex items-center mr-4 cursor-pointer group transition-transform duration-300 hover:scale-[1.02]"
               onClick={() => setCurrentView("home")}
             >
-              <div className="relative overflow-hidden flex items-center justify-center w-10 h-10 rounded-[14px] bg-[#11111f] shadow-[0_0_20px_rgba(124,58,237,0.2)] group-hover:shadow-[0_0_25px_rgba(124,58,237,0.4)] transition-all duration-300 border border-[var(--color-border)] group-hover:scale-105">
-                <div className="absolute inset-0 bg-gradient-to-tr from-[#7c3aed] to-[#06b6d4] opacity-20" />
-                <div className="absolute inset-0 bg-gradient-to-tr from-[#7c3aed] to-[#06b6d4] opacity-80 blur-xl group-hover:opacity-100 transition-opacity duration-300" />
-                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent" />
-                <svg
-                  className="relative z-10 w-5 h-5 drop-shadow-md text-[var(--text-main)]"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <circle cx="10" cy="10" r="7" />
-                  <path d="M14 14l3 3 5-7" />
-                </svg>
-              </div>
-              <h1 className="text-2xl font-black tracking-tight hidden sm:block md:hidden xl:block text-[var(--text-main)] leading-none font-heading">
-                Quick<span className="text-gradient">Resume</span>
-              </h1>
+              <Logo className="h-10 sm:h-12 w-auto drop-shadow-md" />
             </div>
 
             {/* CENTER: Navigation */}
@@ -2095,7 +2126,11 @@ export default function App() {
               </button>
 
               <button
-                onClick={() => { setDemoTitle("Templates Selection"); setCurrentView("demo"); setMobileMenuOpen(false); }}
+                onClick={() => {
+                  setBuilderStep("templates");
+                  setCurrentView("app");
+                  setMobileMenuOpen(false);
+                }}
                 className="relative px-5 py-2 font-medium text-sm transition-colors rounded-full z-10 text-[var(--text-muted)] hover:text-[var(--text-main)]"
               >
                 {currentView === "demo" && (
@@ -2108,7 +2143,11 @@ export default function App() {
               </button>
 
               <button
-                onClick={() => { setDemoTitle("Pricing Details"); setCurrentView("demo"); setMobileMenuOpen(false); }}
+                onClick={() => {
+                  setDemoTitle("Pricing Details");
+                  setCurrentView("demo");
+                  setMobileMenuOpen(false);
+                }}
                 className="relative px-5 py-2 font-medium text-sm transition-colors rounded-full z-10 text-[var(--text-muted)] hover:text-[var(--text-main)]"
               >
                 Pricing
@@ -2116,7 +2155,18 @@ export default function App() {
             </nav>
 
             {/* RIGHT: Actions */}
-            <div className="hidden md:flex items-center gap-4">
+            <div className="hidden md:flex items-center gap-2 lg:gap-4">
+              <button
+                onClick={() => setIsLightMode(!isLightMode)}
+                className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-[var(--color-bg-3)] transition-colors border border-transparent hover:border-[var(--color-border-hover)]"
+                aria-label="Toggle Theme"
+              >
+                {isLightMode ? (
+                  <Moon size={20} className="text-[var(--text-main)]" />
+                ) : (
+                  <Sun size={20} className="text-[var(--text-main)]" />
+                )}
+              </button>
               {/* ATS Score Pill */}
               <button
                 onClick={() => {
@@ -2194,8 +2244,8 @@ export default function App() {
               <div className="p-6 border-b border-[var(--color-border)] sticky top-0 bg-[var(--color-bg)] flex justify-between items-center z-10">
                 <h1 className="text-[22px] font-black tracking-tight flex items-center gap-3 text-[var(--text-main)] leading-none">
                   <div className="relative overflow-hidden flex items-center justify-center w-10 h-10 rounded-[14px] bg-[#11111f] shadow-[0_0_20px_rgba(124,58,237,0.2)]">
-                    <div className="absolute inset-0 bg-gradient-to-tr from-[#7c3aed] to-[#06b6d4] opacity-20" />
-                    <div className="absolute inset-0 bg-gradient-to-tr from-[#7c3aed] to-[#06b6d4] opacity-80 blur-xl" />
+                    <div className="absolute inset-0 bg-gradient-to-tr from-[#2563eb] to-[#06b6d4] opacity-20" />
+                    <div className="absolute inset-0 bg-gradient-to-tr from-[#2563eb] to-[#06b6d4] opacity-80 blur-xl" />
                     <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent" />
                     <svg
                       className="relative z-10 w-5 h-5 drop-shadow-md text-[var(--text-main)]"
@@ -2271,6 +2321,9 @@ export default function App() {
                         ) {
                           setCurrentView("app");
                           setShowInterviewModal(true);
+                        } else if (item.title === "Templates" || item.title === "Templates Selection") {
+                          setBuilderStep("templates");
+                          setCurrentView("app");
                         } else {
                           setDemoTitle(item.title);
                           setCurrentView("demo");
@@ -2299,7 +2352,13 @@ export default function App() {
       )}
 
       {currentView === "home" ? (
-        <React.Suspense fallback={<div className="h-screen w-screen flex items-center justify-center bg-[var(--color-bg)]"><Loader2 className="animate-spin text-[var(--color-primary)] w-12 h-12" /></div>}>
+        <React.Suspense
+          fallback={
+            <div className="h-screen w-screen flex items-center justify-center bg-[var(--color-bg)]">
+              <Loader2 className="animate-spin text-[var(--color-primary)] w-12 h-12" />
+            </div>
+          }
+        >
           <Home
             setCurrentView={setCurrentView}
             data={data}
@@ -2422,76 +2481,80 @@ export default function App() {
             </div>
 
             <div className="p-6 space-y-8 flex-1">
-                  {/* Cover Letter Editor */}
-                  <section>
-                    <h2 className="text-lg font-semibold text-[var(--text-main)] mb-4 flex items-center gap-2">
-                      <Mail size={18} className="text-[var(--text-muted)]" /> Recipient
-                      Details
-                    </h2>
-                    <div className="space-y-4 pb-4">
-                      <InputField
-                        label="Recipient Name"
-                        name="recipientName"
-                        value={data.coverLetter.recipientName}
-                        onChange={handleCoverLetterChange}
-                        placeholder="e.g. Hiring Manager"
-                      />
-                      <InputField
-                        label="Company Name"
-                        name="companyName"
-                        value={data.coverLetter.companyName}
-                        onChange={handleCoverLetterChange}
-                      />
-                      <InputField
-                        label="Job Reference / Position"
-                        name="jobReference"
-                        value={data.coverLetter.jobReference}
-                        onChange={handleCoverLetterChange}
-                      />
-                    </div>
-                  </section>
-                  <section className="pb-12 pt-6 border-t border-[var(--color-border)]">
-                    <div className="flex justify-between items-center mb-4">
-                      <h2 className="text-lg font-semibold text-[var(--text-main)] flex items-center gap-2">
-                        <FileText size={18} className="text-[var(--text-muted)]" /> Letter
-                        Body
-                      </h2>
-                      <button
-                        onClick={generateAICoverLetter}
-                        disabled={isGeneratingLetter}
-                        className="text-[10px] bg-[var(--color-bg-2)] text-emerald-600 border border-emerald-600/30 hover:bg-emerald-600/10 px-3 py-1.5 rounded-lg font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all disabled:opacity-50 shadow-[0_10px_30px_rgba(0,0,0,0.3)]"
-                      >
-                        {isGeneratingLetter ? (
-                          <Loader2 className="animate-spin" size={12} />
-                        ) : (
-                          <Sparkles size={12} />
-                        )}
-                        {isGeneratingLetter ? "Generating..." : "AI Generate"}
-                      </button>
-                    </div>
-                    <div>
-                      <textarea
-                        name="body"
-                        value={data.coverLetter.body}
-                        onChange={handleCoverLetterChange}
-                        rows={15}
-                                              />
-                      {(() => {
-                        const wc = getWordCount(data.coverLetter.body);
-                        let colorClass = "text-emerald-500";
-                        if (wc < 150) colorClass = "text-rose-500";
-                        else if (wc < 250) colorClass = "text-amber-500";
-                        
-                        return (
-                          <div className="mt-2 text-xs text-right">
-                            <span className={colorClass + " font-medium"}>{wc} words</span>
-                            <span className="text-[var(--text-muted)] ml-2">· Recommended: 250–400</span>
-                          </div>
-                        );
-                      })()}
-                    </div>
-                  </section>
-                            </div>
+              {/* Cover Letter Editor */}
+              <section>
+                <h2 className="text-lg font-semibold text-[var(--text-main)] mb-4 flex items-center gap-2">
+                  <Mail size={18} className="text-[var(--text-muted)]" />{" "}
+                  Recipient Details
+                </h2>
+                <div className="space-y-4 pb-4">
+                  <InputField
+                    label="Recipient Name"
+                    name="recipientName"
+                    value={data.coverLetter.recipientName}
+                    onChange={handleCoverLetterChange}
+                    placeholder="e.g. Hiring Manager"
+                  />
+                  <InputField
+                    label="Company Name"
+                    name="companyName"
+                    value={data.coverLetter.companyName}
+                    onChange={handleCoverLetterChange}
+                  />
+                  <InputField
+                    label="Job Reference / Position"
+                    name="jobReference"
+                    value={data.coverLetter.jobReference}
+                    onChange={handleCoverLetterChange}
+                  />
+                </div>
+              </section>
+              <section className="pb-12 pt-6 border-t border-[var(--color-border)]">
+                <div className="flex justify-between items-center mb-4">
+                  <h2 className="text-lg font-semibold text-[var(--text-main)] flex items-center gap-2">
+                    <FileText size={18} className="text-[var(--text-muted)]" />{" "}
+                    Letter Body
+                  </h2>
+                  <button
+                    onClick={generateAICoverLetter}
+                    disabled={isGeneratingLetter}
+                    className="text-[10px] bg-[var(--color-bg-2)] text-emerald-600 border border-emerald-600/30 hover:bg-emerald-600/10 px-3 py-1.5 rounded-lg font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all disabled:opacity-50 shadow-[0_10px_30px_rgba(0,0,0,0.3)]"
+                  >
+                    {isGeneratingLetter ? (
+                      <Loader2 className="animate-spin" size={12} />
+                    ) : (
+                      <Sparkles size={12} />
+                    )}
+                    {isGeneratingLetter ? "Generating..." : "AI Generate"}
+                  </button>
+                </div>
+                <div>
+                  <textarea
+                    name="body"
+                    value={data.coverLetter.body}
+                    onChange={handleCoverLetterChange}
+                    rows={15}
+                  />
+                  {(() => {
+                    const wc = getWordCount(data.coverLetter.body);
+                    let colorClass = "text-emerald-500";
+                    if (wc < 150) colorClass = "text-rose-500";
+                    else if (wc < 250) colorClass = "text-amber-500";
+
+                    return (
+                      <div className="mt-2 text-xs text-right">
+                        <span className={colorClass + " font-medium"}>
+                          {wc} words
+                        </span>
+                        <span className="text-[var(--text-muted)] ml-2">
+                          · Recommended: 250–400
+                        </span>
+                      </div>
+                    );
+                  })()}
+                </div>
+              </section>
+            </div>
           </div>
 
           {/* Right Column - Preview & Dashboard */}
@@ -2827,10 +2890,20 @@ export default function App() {
                   </button>
                 </div>
               ) : (
-                <div className="relative mx-auto flex-shrink-0"
-                  style={{ width: `${previewScale * (paperSize === "letter" ? 816 : 794)}px`, height: `${previewScale * (paperSize === "letter" ? 1056 : 1123)}px` }}>
-                  <div className="absolute top-0 left-0 origin-top-left"
-                    style={{ width: `${paperSize === "letter" ? 816 : 794}px`, transform: `scale(${previewScale})` }}>
+                <div
+                  className="relative mx-auto flex-shrink-0"
+                  style={{
+                    width: `${previewScale * (paperSize === "letter" ? 816 : 794)}px`,
+                    height: `${previewScale * (paperSize === "letter" ? 1056 : 1123)}px`,
+                  }}
+                >
+                  <div
+                    className="absolute top-0 left-0 origin-top-left"
+                    style={{
+                      width: `${paperSize === "letter" ? 816 : 794}px`,
+                      transform: `scale(${previewScale})`,
+                    }}
+                  >
                     <div
                       id="preview-content"
                       className={`pb-10 print:pb-0 shadow-[0_10px_30px_rgba(0,0,0,0.3)] print:shadow-none bg-white relative shrink-0 break-words preserve-colors ${paperSize === "a4" ? "w-[210mm] min-h-[297mm]" : "w-[215.9mm] min-h-[279.4mm]"}`}
@@ -2840,125 +2913,152 @@ export default function App() {
                       }}
                     >
                       {(isGenerating || isGeneratingLetter) && (
-                    <div className="absolute inset-0 bg-white/70 backdrop-blur-sm z-50 flex items-start pt-64 justify-center">
-                      <div className="flex flex-col items-center gap-4 bg-[var(--color-bg-2)] p-8 rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.3)] border border-[var(--color-border-hover)] animate-in zoom-in-95 duration-300">
-                        <Loader2
-                          size={40}
-                          className="animate-spin text-emerald-600"
-                        />
-                        <span className="font-bold text-[var(--text-main)] text-lg animate-pulse">
-                          Building your document...
-                        </span>
-                      </div>
-                    </div>
-                  )}
-                  {(activeTab as string) === "resume" ? (
-                    <>
-                      {category === "tech" && (
-                        <TechTemplate data={data} color={themeColor} />
-                      )}
-                      {category === "business" && (
-                        <BusinessTemplate data={data} color={themeColor} />
-                      )}
-                      {category === "healthcare" && (
-                        <HealthcareTemplate data={data} color={themeColor} />
-                      )}
-                      {category === "creative" && (
-                        <CreativeTemplate data={data} color={themeColor} />
-                      )}
-                      {category === "modern" && (
-                        <ModernTemplate data={data} color={themeColor} />
-                      )}
-                      {category === "minimal" && (
-                        <MinimalTemplate data={data} color={themeColor} />
-                      )}
-                      {category === "academic" && (
-                        <AcademicTemplate data={data} color={themeColor} />
-                      )}
-                      {category === "startup" && (
-                        <StartupTemplate data={data} color={themeColor} />
-                      )}
-                      {category === "corporate" && (
-                        <CorporateTemplate data={data} color={themeColor} />
-                      )}
-                      {category === "freelancer" && (
-                        <FreelancerTemplate data={data} color={themeColor} />
-                      )}
-                      {category === "modern-pro" && (
-                        <ModernProTemplate data={data} color={themeColor} />
-                      )}
-                      {category === "clean" && (
-                        <CleanSidebarTemplate data={data} color={themeColor} />
-                      )}
-                      {category === "executive" && (
-                        <ExecutiveTemplate data={data} color={themeColor} />
-                      )}
-                      {category === "designer" && (
-                        <DesignerTemplate data={data} color={themeColor} />
-                      )}
-                      {category === "notion" && (
-                        <NotionTemplate data={data} color={themeColor} />
-                      )}
-                      {category &&
-                        category.startsWith("gen-") &&
-                        generatedTemplates
-                          .find((t) => t.id === category)
-                          ?.component({ data, color: themeColor })}
-                    </>
-                  ) : (
-                    <div className="w-full min-h-[297mm] mx-auto bg-white p-[20mm] text-slate-800 font-sans">
-                      <div className="mb-12 border-b-2 border-slate-200 pb-6">
-                        <h1 className="text-3xl font-bold text-slate-900 mb-2 uppercase tracking-wider">
-                          {data.name}
-                        </h1>
-                        <div className="text-sm text-[var(--text-subtle)] flex flex-wrap gap-x-4 gap-y-1">
-                          {data.email && <span>{data.email}</span>}
-                          {data.phone && <span>• {data.phone}</span>}
-                          {data.location && <span>• {data.location}</span>}
+                        <div className="absolute inset-0 bg-white/70 backdrop-blur-sm z-50 flex items-start pt-64 justify-center">
+                          <div className="flex flex-col items-center gap-4 bg-[var(--color-bg-2)] p-8 rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.3)] border border-[var(--color-border-hover)] animate-in zoom-in-95 duration-300">
+                            <Loader2
+                              size={40}
+                              className="animate-spin text-emerald-600"
+                            />
+                            <span className="font-bold text-[var(--text-main)] text-lg animate-pulse">
+                              Building your document...
+                            </span>
+                          </div>
                         </div>
-                      </div>
+                      )}
+                      {(activeTab as string) === "resume" ? (
+                        <>
+                          {category === "tech" && (
+                            <TechTemplate data={data} color={themeColor} />
+                          )}
+                          {category === "business" && (
+                            <BusinessTemplate data={data} color={themeColor} />
+                          )}
+                          {category === "healthcare" && (
+                            <HealthcareTemplate
+                              data={data}
+                              color={themeColor}
+                            />
+                          )}
+                          {category === "creative" && (
+                            <CreativeTemplate data={data} color={themeColor} />
+                          )}
+                          {category === "modern" && (
+                            <ModernTemplate data={data} color={themeColor} />
+                          )}
+                          {category === "minimal" && (
+                            <MinimalTemplate data={data} color={themeColor} />
+                          )}
+                          {category === "academic" && (
+                            <AcademicTemplate data={data} color={themeColor} />
+                          )}
+                          {category === "startup" && (
+                            <StartupTemplate data={data} color={themeColor} />
+                          )}
+                          {category === "corporate" && (
+                            <CorporateTemplate data={data} color={themeColor} />
+                          )}
+                          {category === "freelancer" && (
+                            <FreelancerTemplate
+                              data={data}
+                              color={themeColor}
+                            />
+                          )}
+                          {category === "modern-pro" && (
+                            <ModernProTemplate data={data} color={themeColor} />
+                          )}
+                          {category === "clean" && (
+                            <CleanSidebarTemplate
+                              data={data}
+                              color={themeColor}
+                            />
+                          )}
+                          {category === "executive" && (
+                            <ExecutiveTemplate data={data} color={themeColor} />
+                          )}
+                          {category === "designer" && (
+                            <DesignerTemplate data={data} color={themeColor} />
+                          )}
+                          {category === "notion" && (
+                            <NotionTemplate data={data} color={themeColor} />
+                          )}
+                          {category &&
+                            category.startsWith("gen-") &&
+                            generatedTemplates
+                              .find((t) => t.id === category)
+                              ?.component({ data, color: themeColor })}
+                        </>
+                      ) : (
+                        <div className="w-full min-h-[297mm] mx-auto bg-white p-[20mm] text-slate-800 font-sans">
+                          <div className="mb-12 border-b-2 border-slate-200 pb-6">
+                            <h1 className="text-3xl font-bold text-slate-900 mb-2 uppercase tracking-wider">
+                              {data.name}
+                            </h1>
+                            <div className="text-sm text-[var(--text-subtle)] flex flex-wrap gap-x-4 gap-y-1">
+                              {data.email && <span>{data.email}</span>}
+                              {data.phone && <span>• {data.phone}</span>}
+                              {data.location && <span>• {data.location}</span>}
+                            </div>
+                          </div>
 
-                      <div className="mb-8 text-slate-800">
-                        <p className="mb-1">
-                          {new Date().toLocaleDateString("en-US", {
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric",
-                          })}
-                        </p>
-                        <br />
-                        <p className="font-bold text-slate-900">
-                          {data.coverLetter.recipientName}
-                        </p>
-                        <p>{data.coverLetter.companyName}</p>
-                        <br />
-                        <p className="font-bold text-slate-900">
-                          Re: {data.coverLetter.jobReference}
-                        </p>
-                      </div>
+                          <div className="mb-8 text-slate-800">
+                            <p className="mb-1">
+                              {new Date().toLocaleDateString("en-US", {
+                                year: "numeric",
+                                month: "long",
+                                day: "numeric",
+                              })}
+                            </p>
+                            <br />
+                            <p className="font-bold text-slate-900">
+                              {data.coverLetter.recipientName}
+                            </p>
+                            <p>{data.coverLetter.companyName}</p>
+                            <br />
+                            <p className="font-bold text-slate-900">
+                              Re: {data.coverLetter.jobReference}
+                            </p>
+                          </div>
 
-                      <div className="whitespace-pre-wrap leading-relaxed text-slate-800">
-                        {data.coverLetter.body}
-                      </div>
+                          <div className="whitespace-pre-wrap leading-relaxed text-slate-800">
+                            {data.coverLetter.body}
+                          </div>
 
-                      <div className="mt-12 text-slate-800">
-                        <p>Sincerely,</p>
-                        <br />
-                        <br />
-                        <p className="font-bold text-slate-900">{data.name}</p>
-                      </div>
+                          <div className="mt-12 text-slate-800">
+                            <p>Sincerely,</p>
+                            <br />
+                            <br />
+                            <p className="font-bold text-slate-900">
+                              {data.name}
+                            </p>
+                          </div>
+                        </div>
+                      )}
                     </div>
-                  )}
-                </div>
-                </div>
+                  </div>
                 </div>
               )}
             </div>
           </div>
+
+          {/* Mobile CoverLetter Editor/Preview Toggle */}
+          <button
+            onClick={() => setMobileView(mobileView === "editor" ? "preview" : "editor")}
+            className="md:hidden fixed bottom-6 right-6 z-[160] w-14 h-14 bg-[var(--color-primary)] text-white rounded-full flex items-center justify-center shadow-[0_10px_40px_var(--color-primary-glow)] transition-transform active:scale-95"
+          >
+            {mobileView === "editor" ? <Eye size={24} /> : <Edit size={24} />}
+          </button>
         </div>
       ) : (
-        <React.Suspense fallback={<div className="h-full w-full flex items-center justify-center p-20"><Loader2 className="animate-spin text-emerald-500 w-12 h-12" /></div>}>
+        <React.Suspense
+          fallback={
+            <div className="h-full w-full flex items-center justify-center p-20">
+              <Loader2 className="animate-spin text-emerald-500 w-12 h-12" />
+            </div>
+          }
+        >
           <BuilderView
+            isLightMode={isLightMode}
+            setIsLightMode={setIsLightMode}
             handleShare={handleShare}
             data={data}
             setData={setData}
@@ -2982,28 +3082,10 @@ export default function App() {
       )}
 
       {currentView === "app" && (
-      <>{/* Mobile Bottom Navigation */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-[var(--color-bg-2)] border-t border-[var(--color-border-hover)] flex items-center justify-around p-2 z-50" style={{ paddingBottom: "max(0.5rem, env(safe-area-inset-bottom))" }}>
-        <button
-          onClick={() => setMobileView("editor")}
-          className={`flex flex-col items-center p-2 flex-1 rounded-lg transition-colors ${mobileView === "editor" ? "text-emerald-600 bg-emerald-600/10" : "text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--color-bg-2)]"}`}
-        >
-          <Edit size={20} className="mb-1" />
-          <span className="text-[10px] font-bold uppercase tracking-wider">
-            Editor
-          </span>
-        </button>
-        <button
-          onClick={() => setMobileView("preview")}
-          className={`flex flex-col items-center p-2 flex-1 rounded-lg transition-colors ${mobileView === "preview" ? "text-emerald-600 bg-emerald-600/10" : "text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--color-bg-2)]"}`}
-        >
-          <Eye size={20} className="mb-1" />
-          <span className="text-[10px] font-bold uppercase tracking-wider">
-            Preview
-          </span>
-        </button>
-      </div>
-      </>)}
+        <>
+          {/* Mobile Bottom Navigation Removed */}
+        </>
+      )}
 
       {/* Site Footer */}
       {currentView !== "app" && (
@@ -3039,15 +3121,6 @@ export default function App() {
           </div>
         </footer>
       )}
-
-      {/* Theme Toggle Button */}
-      <button
-        onClick={() => setIsLightMode(!isLightMode)}
-        className="fixed bottom-24 right-4 z-[100] w-12 h-12 bg-[var(--color-bg-2)] text-[var(--text-main)] rounded-full shadow-[0_4px_20px_rgba(0,0,0,0.5)] border border-[var(--color-border-hover)] flex items-center justify-center hover:bg-[var(--color-bg-3)] hover:scale-110 active:scale-95 transition-all md:bottom-10 md:right-10"
-        aria-label="Toggle Theme"
-      >
-        {isLightMode ? <Moon size={22} className="text-blue-400" /> : <Sun size={22} className="text-yellow-400" />}
-      </button>
 
       {/* Toast Notification */}
       <Toast
