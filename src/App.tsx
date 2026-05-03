@@ -1322,34 +1322,34 @@ export default function App() {
     <div className={currentView === "home" || currentView === "demo" ? "flex flex-col min-h-[100dvh] bg-[var(--color-bg)]" : "flex flex-col h-[100dvh] bg-[var(--color-bg)] overflow-hidden"}>
       <Helmet>
         <title>
-          QuickResume | Free AI ATS Resume Builder & Cover Letter Generator
+          Free AI Resume Builder | Create ATS-Friendly Resumes Fast
         </title>
         <meta
           name="description"
-          content="Build a professional, ATS-friendly resume for free in minutes. Our AI-powered resume builder extracts your experience and formats it instantly."
+          content="Build a professional, ATS-optimized resume in minutes with our Free AI Resume Builder. Cover letter generator included. Start creating your perfect CV now!"
         />
         <meta
           name="keywords"
-          content="resume builder, AI resume, free CV maker, ATS-friendly resume, professional resume templates, quick resume, online resume generator, smart resume maker"
+          content="resume builder, free resume builder, AI resume builder, CV maker, free CV maker, ATS friendly resume, professional resume templates, online resume generator, smart resume maker, cover letter generator, text to resume ai, perfect resume, best resume builder 2026"
         />
         <meta name="author" content="QuickResume" />
         <link rel="canonical" href="https://quickresume.app" />
         <meta
           property="og:title"
-          content="QuickResume | Free AI ATS Resume Builder & Cover Letter Generator"
+          content="Free AI Resume Builder | ATS-Friendly Resumes & Cover Letters"
         />
         <meta
           property="og:description"
-          content="Build a professional, ATS-friendly resume for free in minutes. Our AI-powered resume builder extracts your experience and formats it instantly."
+          content="Build a professional, ATS-optimized resume in minutes with our Free AI Resume Builder. Cover letter generator included. Start creating your perfect CV now!"
         />
         <meta property="og:url" content="https://quickresume.app" />
         <meta
           name="twitter:title"
-          content="QuickResume | Free AI ATS Resume Builder & Cover Letter Generator"
+          content="Free AI Resume Builder | ATS-Friendly Resumes"
         />
         <meta
           name="twitter:description"
-          content="Build a professional, ATS-friendly resume for free in minutes."
+          content="Build a professional, ATS-optimized resume in minutes with our Free AI Resume Builder. Cover letter generator included. Start creating your perfect CV now!"
         />
         <meta name="robots" content="index, follow" />
         <meta property="og:type" content="website" />

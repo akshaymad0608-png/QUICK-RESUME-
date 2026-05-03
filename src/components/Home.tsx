@@ -93,15 +93,16 @@ export const Home: React.FC<HomeProps> = ({
   return (
     <main className="w-full flex-1 bg-[var(--color-bg)] relative">
       <Helmet>
-        <title>QuickResume | AI-Powered Builder</title>
-        <meta name="description" content="Build your ATS-optimized resume in minutes with Gemini AI." />
+        <title>Free AI Resume Builder | Create ATS-Friendly Resumes Fast</title>
+        <meta name="description" content="Build a professional, ATS-optimized resume in minutes with our Free AI Resume Builder. Cover letter generator included. Start creating your perfect CV now!" />
+        <meta name="keywords" content="resume builder, free resume builder, AI resume builder, CV maker, free CV maker, ATS friendly resume, professional resume templates, online resume generator, smart resume maker, cover letter generator, text to resume ai, perfect resume, best resume builder 2026" />
         <script type="application/ld+json">
           {`
             {
               "@context": "https://schema.org",
               "@type": "WebApplication",
-              "name": "QuickResume",
-              "description": "AI-powered resume builder for ATS-optimized resumes."
+              "name": "Quick Resume AI Builder",
+              "description": "Free AI-powered ATS resume builder and cover letter generator."
             }
           `}
         </script>
