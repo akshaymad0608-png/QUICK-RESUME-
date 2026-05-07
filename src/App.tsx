@@ -737,7 +737,9 @@ export default function App() {
     try {
       setIsEnhancingSummary(true);
       const ai = new GoogleGenAI({ apiKey });
-      const prompt = `You are an expert resume writer. Enhance the following professional summary. Make it punchy, action-oriented, ATS-friendly, and highly professional without making up facts. Output ONLY the improved text:\n\n${data.summary}`;
+      const prompt = `You are an expert ATS-focused resume writer. Enhance the following professional summary. Make it punchy, action-oriented, keyword-rich, and highly professional without making up facts. 
+      Keep it to a maximum of 4 sentences. Focus on the value the candidate brings.
+      Output ONLY the improved text, with no introductory or concluding statements:\n\n${data.summary}`;
 
       const response = await ai.models.generateContent({
         model: "gemini-2.5-flash",
@@ -776,7 +778,14 @@ export default function App() {
     try {
       setEnhancingExp(id);
       const ai = new GoogleGenAI({ apiKey });
-      const prompt = `Rewrite and enhance these resume responsibilities for a ${jobTitle} role to be professional, impactful, and ATS-friendly. Use strong action verbs and highlight achievements. If the current text is empty, generate 3 standard bullet points for this role. Return ONLY the bullet points, no intro/outro.\n\nCurrent Text:\n${currentText || "Empty"}`;
+      const prompt = `Rewrite and enhance these resume responsibilities for a ${jobTitle} role to be highly professional, impactful, and ATS-optimized. 
+      Follow these guidelines:
+      1. Action Verbs: Start every bullet point with a strong action verb (e.g., Supported, Orchestrated, Developed).
+      2. Metrics: Add placeholder metrics (e.g., "by X%", "saving Y hours") if missing so the user knows where to fill them in.
+      3. Format: Output ONLY the improved bullet points, separated by newlines. No introductory or concluding text. Do not include markdown bullet points like "- " or "* ", just the text.
+
+      Current Text:
+      ${currentText || "Empty"}`;
 
       const response = await ai.models.generateContent({
         model: "gemini-2.5-flash",
@@ -812,7 +821,14 @@ export default function App() {
     try {
       setEnhancingProj(id);
       const ai = new GoogleGenAI({ apiKey });
-      const prompt = `Rewrite and enhance this project description for a resume (Project: ${projectName}). Make it professional, action-oriented, and highlight technical or business impact. If empty, generate a generic placeholder description for this project. Return ONLY the description text, no intro/outro.\n\nCurrent Text:\n${currentText || "Empty"}`;
+      const prompt = `Rewrite and enhance this project description for a resume (Project: ${projectName}). Make it highly professional, action-oriented, and highlight the technical or business impact. 
+      Follow these guidelines:
+      1. Action Verbs: Start the description or bullet points with strong action verbs.
+      2. Metrics: Suggest achievable metrics or outcomes.
+      3. Format: Return ONLY the description text, no intro/outro.
+
+      Current Text:
+      ${currentText || "Empty"}`;
 
       const response = await ai.models.generateContent({
         model: "gemini-2.5-flash",
@@ -1036,7 +1052,15 @@ export default function App() {
       });
       const response = await ai.models.generateContent({
         model: "gemini-2.5-flash",
-        contents: `Generate a complete sample resume for a '${role}'. Return ONLY valid JSON.`,
+        contents: `You are an expert ATS (Applicant Tracking System) resume writer. Generate a complete, highly-optimized sample resume for a '${role}'. 
+        Follow these strict guidelines:
+        1. Action-Oriented Bullet Points: Every experience bullet point MUST start with a strong action verb (e.g., "Spearheaded", "Architected", "Optimized") and should include quantifiable metrics or specific outcomes.
+        2. Professional Summary: Write a compelling 3-4 sentence professional summary that highlights key strengths and overarching career goals for this role.
+        3. Skills & Keywords: Naturally integrate industry-standard skills and ATS keywords relevant to the '${role}'.
+        4. Fictional Data: Invent highly realistic, professional, and industry-standard placeholder data for the name, location, contact details, experiences, and education. Ensure the timeline is logical.
+        5. Tone: Professional, confident, and concise.
+
+        Return ONLY valid JSON matching the schema. Do not include any conversational text.`,
         config: {
           responseMimeType: "application/json",
           responseSchema: resumeSchema,
@@ -1140,13 +1164,17 @@ export default function App() {
       });
       const response = await ai.models.generateContent({
         model: "gemini-2.5-flash",
-        contents: `You are an expert resume writer. Parse the following text and build a professional, highly-optimized resume from it. 
-        If some details are missing (like name or dates), create fictional but realistic default values to fill out a complete resume structure.
-        For example, if the user just inputs a job title like "AI Engineer", invent a fictional realistic name, experience, education strictly for that role so they can see a complete template.
-        Enhance the bullet points to be action-oriented and impactful.
-        Return ONLY valid JSON matching the schema.
+        contents: `You are an expert ATS (Applicant Tracking System) resume writer. Your task is to parse the input text and build a professional, highly-optimized resume. 
+        Follow these strict guidelines:
+        1. Action-Oriented Bullet Points: Every bullet point MUST start with a strong action verb (e.g., "Spearheaded", "Architected", "Optimized") and should include quantifiable metrics or specific outcomes where possible.
+        2. Summary: Write a compelling 3-4 sentence professional summary that highlights key strengths and overarching career goals.
+        3. Fictional Data Placeholder: If critical details are missing from the input (like name, dates, or specific experience/education details), invent highly realistic, professional, and industry-standard placeholder data to ensure the final output is a complete, well-structured resume.
+        4. ATS Optimization: Naturally integrate industry-standard keywords related to the input context.
+        5. Tone: Professional, confident, and concise.
+
+        Return ONLY valid JSON matching the schema. Do not include any conversational text.
         
-        Text to parse:
+        Input text to process:
         ${textToParse}`,
         config: {
           responseMimeType: "application/json",
