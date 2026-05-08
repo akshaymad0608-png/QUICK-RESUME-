@@ -671,7 +671,7 @@ export const BuilderView = ({
             name="description"
             content="Edit your ATS-friendly resume or cover letter. Add your experience, education, skills, and preview your changes instantly."
           />
-          <meta name="keywords" content="resume builder, free resume builder, AI resume builder, CV maker, free CV maker, ATS friendly resume, professional resume templates, online resume generator, smart resume maker, cover letter generator, text to resume ai, perfect resume, best resume builder 2026" />
+          <meta name="keywords" content="resume builder, free resume builder, AI resume builder, CV maker, free CV maker, ATS friendly resume, professional resume templates, online resume generator, smart resume maker, cover letter generator, text to resume ai, perfect resume, best resume builder 2026, free resume builder online, resume kaise banaye, CV maker Hindi, simple resume template download" />
           <meta name="robots" content="noindex, follow" />
         </Helmet>
 

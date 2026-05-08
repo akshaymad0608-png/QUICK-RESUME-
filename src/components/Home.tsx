@@ -95,7 +95,7 @@ export const Home: React.FC<HomeProps> = ({
       <Helmet>
         <title>Free AI Resume Builder | Create ATS-Friendly Resumes Fast</title>
         <meta name="description" content="Build a professional, ATS-optimized resume in minutes with our Free AI Resume Builder. Cover letter generator included. Start creating your perfect CV now!" />
-        <meta name="keywords" content="resume builder, free resume builder, AI resume builder, CV maker, free CV maker, ATS friendly resume, professional resume templates, online resume generator, smart resume maker, cover letter generator, text to resume ai, perfect resume, best resume builder 2026" />
+        <meta name="keywords" content="resume builder, free resume builder, AI resume builder, CV maker, free CV maker, ATS friendly resume, professional resume templates, online resume generator, smart resume maker, cover letter generator, text to resume ai, perfect resume, best resume builder 2026, free resume builder online, resume kaise banaye, CV maker Hindi, simple resume template download" />
         <script type="application/ld+json">
           {`
             {
