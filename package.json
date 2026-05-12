@@ -1,5 +1,6 @@
 {
-  "name": "react-example",
+  "name": "quick-resume",
+  "description": "Free AI Resume Builder - Create ATS-friendly resumes and cover letters in minutes.",
   "private": true,
   "version": "0.0.0",
   "type": "module",

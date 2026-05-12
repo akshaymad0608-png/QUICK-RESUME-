@@ -5,7 +5,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { 
   User, Briefcase, GraduationCap, FolderGit2, Award, Wrench, FileText, 
   Download, Sparkles, LayoutTemplate, Palette, CheckCircle2, RotateCcw, 
-  Trash2, FileOutput, Loader2, Maximize, Target, Edit, Lightbulb
+  Trash2, FileOutput, Loader2, Maximize, Target, Edit, Lightbulb, ChevronDown
 } from "lucide-react";
 import { InputField, TextAreaField, AccordionSection } from "./FormFields";
 import { ResumeData, Experience, Education, Project, Certification } from "../types";
@@ -19,36 +19,179 @@ import {
   HealthcareTemplate, CreativeTemplate, AcademicTemplate, StartupTemplate, 
   CorporateTemplate, FreelancerTemplate, CleanSidebarTemplate, ExecutiveTemplate, 
   DesignerTemplate, NotionTemplate, ModernMinimalistTemplate, AvatarTemplate, GeometricTemplate,
-  ATSClassicTemplate, ModernTemplate
+  ATSClassicTemplate, ModernTemplate, TwoColumnDarkTemplate, ElegantSerifTemplate, TimelineTemplate, StudentFresherTemplate
 } from './Templates';
 
 const DEFAULT_DATA: ResumeData = {
-  name: "Rahul Sharma",
-  title: "Senior Full Stack Engineer",
-  email: "rahul.sharma@example.in",
+  name: "Arjun Sharma",
+  title: "Senior Full-Stack Engineer",
+  email: "arjun.sharma@gmail.com",
   phone: "+91 98765 43210",
   location: "Bengaluru, Karnataka",
-  linkedin: "linkedin.com/in/rahulsharma-tech",
-  website: "rahulsharma.dev",
-  summary: "Innovative and results-driven Senior Full Stack Engineer with over 6 years of experience in designing, developing, and deploying scalable web applications. Proficient in React, Node.js, Next.js, and cloud technologies. Proven track record of leading cross-functional teams to deliver high-impact software solutions on time. Passionate about writing clean, maintainable code and building seamless user experiences.",
+  linkedin: "linkedin.com/in/arjunsharma-dev",
+  website: "arjunsharma.dev",
+  summary: "Senior Full-Stack Engineer with 6+ years building high-traffic web applications serving 10M+ users. Expert in React, Node.js, and cloud infrastructure. Led cross-functional teams at two YC-backed startups, consistently shipping features 20% ahead of schedule. Passionate about developer experience, clean APIs, and mentoring junior engineers.",
   experience: [
-    { id: "1", jobTitle: "Senior Software Engineer", company: "TechNova Solutions", location: "Bengaluru, KA", startDate: "2020-03", endDate: "Present", responsibilities: "• Spearheaded the migration of a legacy monolithic application to a microservices architecture, reducing system latency by 40%.\n• Designed and implemented robust RESTful APIs using Node.js and Express, supporting a user base of 500,000+ active users.\n• Mentored a team of 5 junior developers, conducting regular code reviews and pair programming sessions." },
-    { id: "2", jobTitle: "Software Engineer", company: "Innovatez Technologies", location: "Pune, MH", startDate: "2018-06", endDate: "2020-02", responsibilities: "• Developed responsive and user-friendly single-page applications using React and Redux.\n• Integrated third-party payment gateways (Stripe, Razorpay), securely processing transactions scaling up to ₹1M/month.\n• Automated deployment pipelines using GitHub Actions and Docker pipelines, cutting deployment times by half." }
+    {
+      id: "1",
+      jobTitle: "Senior Full-Stack Engineer",
+      company: "Razorpay",
+      location: "Bengaluru, India",
+      startDate: "Mar 2022",
+      endDate: "Present",
+      responsibilities: "• Architected and launched the new Payments Dashboard used by 500K+ merchants, reducing page load time by 62% through server-side rendering and edge caching.\n• Led a team of 6 engineers to rebuild the webhook delivery system, achieving 99.98% uptime and processing 8M+ events per day.\n• Designed a reusable component library adopted across 4 product teams, cutting UI development time by 35%.\n• Drove migration from monolith to microservices, reducing deployment time from 45 minutes to under 6 minutes."
+    },
+    {
+      id: "2",
+      jobTitle: "Full-Stack Engineer",
+      company: "Groww",
+      location: "Bengaluru, India",
+      startDate: "Jun 2020",
+      endDate: "Feb 2022",
+      responsibilities: "• Built the Mutual Funds SIP feature end-to-end, which onboarded 200K+ investors in the first quarter post-launch.\n• Optimized database queries and introduced Redis caching, reducing average API response time from 850ms to 120ms.\n• Implemented real-time portfolio tracking using WebSockets, supporting 50K concurrent connections.\n• Mentored 4 junior developers through code reviews, pair programming, and weekly tech talks."
+    },
+    {
+      id: "3",
+      jobTitle: "Software Engineer",
+      company: "Infosys",
+      location: "Pune, India",
+      startDate: "Jul 2018",
+      endDate: "May 2020",
+      responsibilities: "• Developed REST APIs for HDFC Bank handling 2M+ daily transactions using Java Spring Boot.\n• Automated regression testing suite covering 1,200+ test cases, reducing QA cycle from 5 days to 8 hours.\n• Collaborated with offshore teams across 3 time zones to deliver a $2.4M ERP integration on schedule."
+    }
   ],
   education: [
-    { id: "1", degree: "B.Tech in Computer Science & Engineering", institution: "National Institute of Technology (NIT)", year: "2018" }
+    { id: "1", degree: "B.Tech in Computer Science & Engineering", institution: "National Institute of Technology, Trichy", year: "2018", location: "Tiruchirappalli, Tamil Nadu" } as any
   ],
   projects: [
-    { id: "1", name: "E-Commerce Analytics Dashboard", description: "Real-time dashboard for vendors to track sales and user engagement. Developed using Next.js, Tailwind CSS, Recharts, and WebSockets.", link: "github.com/rahulsh/sales-dash" },
-    { id: "2", name: "Smart Task Automator", description: "AI-powered task management tool categorizing daily priorities via natural language inputs. Built via Python, FastAPI, React, and OpenAI APIs.", link: "rahulsharma.dev/smart-task" }
+    {
+      id: "1",
+      name: "DevPulse — Developer Analytics SaaS",
+      description: "SaaS platform for engineering teams to track code quality, PR velocity, and deployment frequency. Reached ₹4L MRR within 6 months. Stack: Next.js 14, tRPC, PostgreSQL, Prisma, Vercel.",
+      link: "github.com/arjun/devpulse"
+    },
+    {
+      id: "2",
+      name: "OpenBudget — Personal Finance App",
+      description: "Open-source budgeting app with UPI/PDF bank statement parsing, automatic ML categorization, and visual spending insights. 2.3K GitHub stars, 800+ active users.",
+      link: "github.com/arjun/openbudget"
+    }
   ],
   certifications: [
-    { id: "1", name: "AWS Certified Solutions Architect – Associate", issuer: "Amazon Web Services", year: "2022" },
-    { id: "2", name: "Meta Front-End Developer Professional", issuer: "Coursera", year: "2021" }
+    { id: "1", name: "AWS Certified Solutions Architect – Associate", issuer: "Amazon Web Services", year: "2023" },
+    { id: "2", name: "Google Professional Cloud Developer", issuer: "Google Cloud", year: "2022" }
   ],
-  skills: "JavaScript, TypeScript, React, Next.js, Node.js, Express, Python, PostgreSQL, MongoDB, Docker, AWS, Git",
-  coverLetter: { recipientName: "Hiring Manager", companyName: "HyperGrowth Tech", jobReference: "REQ-2024-5A", body: "Dear Hiring Manager,\n\nI am writing to express my interest in the Senior Full Stack Engineer position at HyperGrowth Tech. With my background in building scalable web applications and leading technical teams, I am confident in my ability to make an immediate impact on your engineering operations.\n\nThank you for your time and consideration. I look forward to discussing the role further.\n\nSincerely,\nRahul Sharma" }
+  skills: "TypeScript, React, Next.js, Node.js, Python, PostgreSQL, Redis, Docker, Kubernetes, AWS, GraphQL, tRPC, Prisma, System Design, CI/CD",
+  coverLetter: {
+    recipientName: "Engineering Hiring Manager",
+    companyName: "Stripe",
+    jobReference: "Senior Software Engineer – Payments Infrastructure",
+    body: "Dear Hiring Manager,\n\nI am writing to express my strong interest in the Senior Software Engineer role on Stripe's Payments Infrastructure team. Having spent the last 6 years building financial technology products at Razorpay and Groww — processing billions of rupees in transactions daily — I believe my background aligns closely with Stripe's mission.\n\nAt Razorpay, I rebuilt our webhook delivery system from the ground up, achieving 99.98% uptime while scaling to 8M+ events per day.\n\nSincerely,\nArjun Sharma"
+  }
 };
+
+const SAMPLE_RESUMES = [
+  { label: "Software Engineer", emoji: "💻", data: DEFAULT_DATA },
+  {
+    label: "Product Manager", emoji: "🧭",
+    data: {
+      name: "Priya Mehta", title: "Senior Product Manager",
+      email: "priya.mehta@outlook.com", phone: "+91 97654 32109",
+      location: "Mumbai, Maharashtra", linkedin: "linkedin.com/in/priyamehta-pm", website: "",
+      summary: "Strategic Product Manager with 7+ years driving 0-to-1 and scale products in fintech and edtech. Shipped 12 major features generating ₹80Cr+ ARR. Expert in data-driven prioritization, stakeholder alignment, and agile delivery. Former Chartered Accountant — uniquely bridging business, finance, and technology.",
+      experience: [
+        { id: "1", jobTitle: "Senior Product Manager", company: "CRED", location: "Bengaluru", startDate: "Jan 2022", endDate: "Present", responsibilities: "• Owned the CRED Mint lending product from concept to ₹500Cr+ loan disbursals.\n• Increased credit card bill payment DAU by 28% by redesigning the payments flow based on 40+ user research sessions.\n• Consistently achieved 85%+ OKR completion rate across 8 quarters.\n• Managed cross-functional squad of 18 across Engineering, Design, Risk, and Legal." },
+        { id: "2", jobTitle: "Product Manager", company: "Byju's", location: "Bengaluru", startDate: "Aug 2019", endDate: "Dec 2021", responsibilities: "• Launched the Live Classes product used by 2M+ students daily, increasing course completion by 34%.\n• Conducted 100+ customer interviews; reduced onboarding drop-off by 41%.\n• Built personalized learning path engine with ML team, lifting 7-day retention by 22%." },
+        { id: "3", jobTitle: "Associate Product Manager", company: "Paytm", location: "Noida", startDate: "Jun 2017", endDate: "Jul 2019", responsibilities: "• Supported launch of Paytm Postpaid (BNPL) — grew to 5M+ active users in 18 months.\n• Wrote PRDs and user stories for 20+ features across 2 scrum teams." }
+      ],
+      education: [
+        { id: "1", degree: "MBA – Strategy & Finance", institution: "IIM Bangalore", year: "2017", location: "Bengaluru" } as any,
+        { id: "2", degree: "B.Com (Hons) + CA Intermediate", institution: "Sydenham College of Commerce", year: "2014", location: "Mumbai" } as any
+      ],
+      projects: [{ id: "1", name: "PM Playbook — Newsletter", description: "Weekly PM newsletter on frameworks, case studies, and career advice. 12,000+ subscribers, 42% open rate.", link: "substack.com/priyapmplaybook" }],
+      certifications: [
+        { id: "1", name: "Certified Scrum Product Owner (CSPO)", issuer: "Scrum Alliance", year: "2021" },
+        { id: "2", name: "Product Analytics Certification", issuer: "Reforge", year: "2023" }
+      ],
+      skills: "Product Strategy, Roadmapping, OKRs, User Research, A/B Testing, SQL, Mixpanel, Amplitude, Figma, Agile/Scrum, Stakeholder Management, PRD Writing, Go-to-Market",
+      coverLetter: { recipientName: "", companyName: "", jobReference: "", body: "" }
+    }
+  },
+  {
+    label: "Data Scientist", emoji: "📊",
+    data: {
+      name: "Rahul Verma", title: "Lead Data Scientist",
+      email: "rahul.verma@proton.me", phone: "+91 96543 21098",
+      location: "Hyderabad, Telangana", linkedin: "linkedin.com/in/rahulverma-ds", website: "kaggle.com/rahulverma",
+      summary: "Lead Data Scientist with 5+ years applying ML and statistical modeling to e-commerce and healthcare. Published 3 papers in IEEE. Models currently serve 20M+ predictions/day. Kaggle Master, top 0.3% globally. Deep expertise in NLP, recommendation systems, and MLOps.",
+      experience: [
+        { id: "1", jobTitle: "Lead Data Scientist", company: "Flipkart", location: "Bengaluru", startDate: "Feb 2021", endDate: "Present", responsibilities: "• Designed two-tower neural recommendation system, increasing CTR by 18% and GMV by ₹120Cr annually.\n• Built real-time fraud detection pipeline, reducing chargebacks by 67%.\n• Built LLM-powered product description generator (fine-tuned LLaMA 2) serving 4M+ SKUs, cutting content workload by 80%.\n• Established MLOps standards adopted by 8 product teams." },
+        { id: "2", jobTitle: "Data Scientist", company: "Apollo Hospitals", location: "Hyderabad", startDate: "Jul 2019", endDate: "Jan 2021", responsibilities: "• Developed readmission risk model (AUC 0.89) deployed across 71 hospitals, flagging 3,200+ high-risk patients monthly.\n• Built NLP pipeline extracting structured data from 1.2M+ clinical notes using BioBERT.\n• Created patient no-show prediction model, reducing no-show rate by 24%." }
+      ],
+      education: [
+        { id: "1", degree: "M.Tech in AI & Machine Learning", institution: "IIT Hyderabad", year: "2019", location: "Hyderabad" } as any,
+        { id: "2", degree: "B.E. in Electronics & Communication", institution: "Osmania University", year: "2017", location: "Hyderabad" } as any
+      ],
+      projects: [
+        { id: "1", name: "SkinAI — Dermatology Diagnosis App", description: "CNN classifier trained on 25K+ dermoscopy images. 94.2% accuracy on ISIC 2019. FastAPI + React Native. Featured in Analytics Vidhya.", link: "github.com/rahul/skinai" },
+        { id: "2", name: "IndiaElects 2024 — Election Forecasting", description: "Bayesian ensemble aggregating 40+ polls. Predicted 487/543 Lok Sabha seats (89.7% accuracy). Covered by The Hindu and Mint.", link: "github.com/rahul/indiaelects" }
+      ],
+      certifications: [
+        { id: "1", name: "TensorFlow Developer Certificate", issuer: "Google", year: "2022" },
+        { id: "2", name: "Deep Learning Specialization", issuer: "DeepLearning.AI", year: "2020" }
+      ],
+      skills: "Python, PyTorch, TensorFlow, Scikit-learn, XGBoost, SQL, Spark, MLflow, Airflow, Docker, AWS SageMaker, NLP, LLMs, Statistical Modeling, A/B Testing, Tableau",
+      coverLetter: { recipientName: "", companyName: "", jobReference: "", body: "" }
+    }
+  },
+  {
+    label: "UX Designer", emoji: "🎨",
+    data: {
+      name: "Ananya Krishnan", title: "Senior UX / Product Designer",
+      email: "ananya.design@gmail.com", phone: "+91 95432 10987",
+      location: "Bengaluru, Karnataka", linkedin: "linkedin.com/in/ananyakrish-design", website: "ananya.design",
+      summary: "Senior UX Designer with 6 years crafting intuitive digital products for 50M+ users. Specialize in B2B SaaS and consumer fintech. CII Design Excellence Award winner. Equally fluent in research, systems design, and pixel-perfect UI. Mentor to 15+ junior designers.",
+      experience: [
+        { id: "1", jobTitle: "Senior Product Designer", company: "Zoho", location: "Chennai", startDate: "Apr 2021", endDate: "Present", responsibilities: "• Led redesign of Zoho CRM contact management, reducing task time by 38% and increasing NPS from 32 to 61.\n• Built Zoho's cross-product design system (Spectrum) with 280+ components adopted by 12 teams.\n• Conducted 80+ moderated usability tests and 200+ contextual interviews.\n• Mentored 6 designers; 4 promoted to senior roles." },
+        { id: "2", jobTitle: "UX Designer", company: "PhonePe", location: "Bengaluru", startDate: "Jun 2019", endDate: "Mar 2021", responsibilities: "• Designed Insurance vertical from scratch — 3M+ policies sold in Year 1.\n• Ran 15+ A/B tests on payments home screen; winning variant increased conversion by 11%.\n• Improved WCAG 2.1 AA compliance from 54% to 91% via accessibility audit framework." },
+        { id: "3", jobTitle: "UI/UX Designer", company: "Swiggy", location: "Bengaluru", startDate: "Aug 2018", endDate: "May 2019", responsibilities: "• Redesigned restaurant discovery page — improved add-to-cart rate by 19% and AOV by ₹42.\n• Created Lottie motion design guidelines for order tracking flow." }
+      ],
+      education: [{ id: "1", degree: "B.Des in Interaction Design", institution: "National Institute of Design", year: "2018", location: "Ahmedabad" } as any],
+      projects: [{ id: "1", name: "Accessible India — Pro-bono Initiative", description: "Led 8 designers to redesign 5 government portals for WCAG compliance. Presented findings to NIC.", link: "accessibleindia.in" }],
+      certifications: [
+        { id: "1", name: "Google UX Design Professional Certificate", issuer: "Google / Coursera", year: "2021" },
+        { id: "2", name: "Nielsen Norman Group UX Certification", issuer: "NN/g", year: "2022" }
+      ],
+      skills: "Figma, Prototyping, Design Systems, User Research, Usability Testing, Information Architecture, Interaction Design, Motion Design, Accessibility (WCAG), FigJam, Maze, Hotjar",
+      coverLetter: { recipientName: "", companyName: "", jobReference: "", body: "" }
+    }
+  },
+  {
+    label: "Marketing Manager", emoji: "📣",
+    data: {
+      name: "Vikram Nair", title: "Growth & Performance Marketing Manager",
+      email: "vikram.nair.mktg@gmail.com", phone: "+91 94321 09876",
+      location: "Gurugram, Haryana", linkedin: "linkedin.com/in/vikramnair-growth", website: "",
+      summary: "Performance Marketing Manager with 5+ years scaling D2C and SaaS brands from ₹10Cr to ₹200Cr+ ARR. Managed ₹15Cr+ monthly ad spend with consistent 4.2x+ ROAS. Expert in growth funnels, attribution modeling, and building high-performing in-house marketing teams.",
+      experience: [
+        { id: "1", jobTitle: "Growth Marketing Manager", company: "Mamaearth", location: "Gurugram", startDate: "Mar 2022", endDate: "Present", responsibilities: "• Scaled digital ad spend from ₹4Cr/month to ₹18Cr/month while improving blended ROAS from 2.8x to 4.6x.\n• Built and led a 9-person performance marketing team across paid search, social, influencer, and CRM.\n• Launched Klaviyo email/SMS program driving 22% of monthly revenue with 8x ROI.\n• Reduced CAC by 31% through creative testing framework running 200+ ad variations monthly." },
+        { id: "2", jobTitle: "Digital Marketing Manager", company: "Nykaa", location: "Mumbai", startDate: "Jan 2020", endDate: "Feb 2022", responsibilities: "• Managed ₹6Cr/month Google and Meta budgets for beauty and fashion, achieving 3.9x ROAS.\n• Drove 140% YoY organic traffic growth through SEO content strategy.\n• Launched affiliate program — 5,000+ active affiliates generating ₹1.2Cr/month." },
+        { id: "3", jobTitle: "Performance Marketing Executive", company: "Lenskart", location: "Noida", startDate: "Jun 2018", endDate: "Dec 2019", responsibilities: "• Managed ₹1.5Cr/month Google Shopping and Search campaigns at 3.2x ROAS.\n• Implemented dynamic remarketing campaigns recovering 18% of abandoned carts." }
+      ],
+      education: [
+        { id: "1", degree: "MBA – Marketing & Analytics", institution: "XLRI Jamshedpur", year: "2018", location: "Jamshedpur" } as any,
+        { id: "2", degree: "B.Com (Hons)", institution: "Delhi College of Economics, DU", year: "2016", location: "Delhi" } as any
+      ],
+      projects: [{ id: "1", name: "GrowthOps — Marketing Automation Toolkit", description: "Open-source Python toolkit for Meta Ads reporting, budget pacing, and anomaly detection. 300+ marketers. Featured in Growth.Design newsletter.", link: "github.com/vikram/growthops" }],
+      certifications: [
+        { id: "1", name: "Google Ads Certified – Search, Shopping & Display", issuer: "Google", year: "2023" },
+        { id: "2", name: "Meta Certified Digital Marketing Associate", issuer: "Meta", year: "2023" }
+      ],
+      skills: "Google Ads, Meta Ads, Performance Marketing, SEO, Email Marketing (Klaviyo), Attribution Modeling, SQL, Google Analytics 4, Tableau, A/B Testing, CRO, D2C Growth, Team Leadership",
+      coverLetter: { recipientName: "", companyName: "", jobReference: "", body: "" }
+    }
+  }
+];
 
 export default function BuilderView() {
   const [data, updateData] = useAutoSave(DEFAULT_DATA);
@@ -87,6 +230,10 @@ export default function BuilderView() {
     minimal: { name: 'Minimal', component: MinimalTemplate },
     executive: { name: 'Executive', component: ExecutiveTemplate },
     tech: { name: 'Tech Lead', component: TechTemplate },
+    timeline: { name: 'Timeline', component: TimelineTemplate },
+    dark_sidebar: { name: 'Dark Sidebar', component: TwoColumnDarkTemplate },
+    elegant_serif: { name: 'Elegant Serif', component: ElegantSerifTemplate },
+    student: { name: 'Student / Fresher', component: StudentFresherTemplate },
     business: { name: 'Business', component: BusinessTemplate },
     startup: { name: 'Startup', component: StartupTemplate },
     creative: { name: 'Creative', component: CreativeTemplate },
@@ -233,7 +380,30 @@ export default function BuilderView() {
                   <div className="flex flex-wrap gap-2">
                     <button onClick={()=>setShowRolePrompt(true)} className="px-3 py-1.5 bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-400 border border-indigo-500/20 rounded-lg text-xs font-semibold flex items-center gap-1 transition-colors"><Sparkles size={14}/> Generate from Role</button>
                     <button onClick={()=>setShowTextPrompt(true)} className="px-3 py-1.5 bg-[var(--color-bg-3)] hover:bg-gray-800 text-[var(--text-main)] border border-[var(--color-border)] rounded-lg text-xs font-semibold flex items-center gap-1 transition-colors"><FileText size={14}/> Build from Text</button>
-                    <button onClick={()=>updateData(DEFAULT_DATA)} className="px-3 py-1.5 bg-[var(--color-bg-3)] hover:bg-gray-800 text-[var(--text-main)] border border-[var(--color-border)] rounded-lg text-xs font-semibold flex items-center gap-1 transition-colors"><RotateCcw size={14}/> Load Sample</button>
+                    <div className="relative group/samples">
+                      <button className="px-3 py-1.5 bg-[var(--color-bg-3)] hover:bg-gray-800 text-[var(--text-main)] border border-[var(--color-border)] rounded-lg text-xs font-semibold flex items-center gap-1 transition-colors">
+                        <RotateCcw size={14}/> Samples <ChevronDown size={11}/>
+                      </button>
+                      <div className="absolute left-0 top-full pt-1.5 w-52 z-50 opacity-0 invisible group-hover/samples:opacity-100 group-hover/samples:visible transition-all duration-200">
+                        <div className="bg-[var(--color-bg-2)] border border-[var(--color-border)] rounded-xl shadow-2xl overflow-hidden p-1.5">
+                          <p className="text-[10px] font-bold text-[var(--text-subtle)] uppercase tracking-widest px-2 py-1.5">Load Sample Resume</p>
+                          {SAMPLE_RESUMES.map((sample, si) => (
+                            <button key={si}
+                              onClick={() => {
+                                updateData(JSON.parse(JSON.stringify(sample.data)));
+                                showToast(`Loaded ${sample.label} sample!`, 'success');
+                              }}
+                              className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg hover:bg-[var(--color-bg-3)] text-left transition-colors"
+                            >
+                              <span className="text-base">{sample.emoji}</span>
+                              <span className="text-xs font-semibold text-[var(--text-main)]">
+                                {sample.label}
+                              </span>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 )}
                 {showTextPrompt && (

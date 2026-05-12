@@ -624,6 +624,365 @@ export const ExecutiveTemplate: React.FC<TemplateProps> = ({ data, themeColor = 
   </div>
 );
 
+// ==========================================
+// Two-Column Dark Template (New)
+// ==========================================
+export const TwoColumnDarkTemplate: React.FC<TemplateProps> = ({ data, themeColor = '#10b981' }) => (
+  <div className="flex w-full h-full bg-white relative" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
+    <div style={{ width: '33%', backgroundColor: '#111827', color: '#f3f4f6', padding: '36px 28px' }}>
+      <div className="mb-8">
+        <h1 style={{ fontSize: '20pt', fontWeight: 900, color: 'white', lineHeight: '1.1', marginBottom: '8px' }}>{data.name}</h1>
+        <div style={{ fontSize: '11pt', fontWeight: 600, color: themeColor }}>{data.title}</div>
+      </div>
+
+      <div className="mb-8 space-y-2 text-[9pt] opacity-80">
+        {data.email && <div className="break-all">{data.email}</div>}
+        {data.phone && <div className="break-all">{data.phone}</div>}
+        {data.location && <div className="break-words">{data.location}</div>}
+        {data.linkedin && <div className="break-all">{data.linkedin}</div>}
+        {data.website && <div className="break-all">{data.website}</div>}
+      </div>
+
+      {data.skills && (
+        <div className="mb-8">
+          <h2 style={{ fontSize: '11pt', fontWeight: 700, color: 'white', borderBottom: '1px solid #374151', paddingBottom: '4px', marginBottom: '10px' }}>Skills</h2>
+          <div className="flex flex-col gap-1.5 opacity-80 text-[9pt]">
+            {data.skills.split(',').map((s, i) => (
+              <div key={i}>{s.trim()}</div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {data.education.length > 0 && (
+        <div className="mb-8">
+          <h2 style={{ fontSize: '11pt', fontWeight: 700, color: 'white', borderBottom: '1px solid #374151', paddingBottom: '4px', marginBottom: '10px' }}>Education</h2>
+          {data.education.map(edu => (
+            <div key={edu.id} className="mb-3">
+              <div style={{ fontSize: '9.5pt', fontWeight: 600, color: 'white' }}>{edu.degree}</div>
+              <div style={{ fontSize: '8.5pt', opacity: 0.8, marginTop: '2px' }}>{edu.institution}</div>
+              <div style={{ fontSize: '8.5pt', color: themeColor, marginTop: '2px' }}>{edu.year}</div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+
+    <div style={{ width: '67%', padding: '36px 40px', backgroundColor: 'white', color: '#111827', display: 'flex', flexDirection: 'column' }}>
+      {data.summary && (
+        <div className="mb-8 border-l-4 pl-4" style={{ borderColor: themeColor }}>
+          <div style={{ fontSize: '10pt', color: '#4B5563', lineHeight: '1.6', textJustify: 'inter-word', textAlign: 'justify' }}>{data.summary}</div>
+        </div>
+      )}
+
+      {data.experience.length > 0 && (
+        <div className="mb-8">
+          <h2 style={{ fontSize: '14pt', fontWeight: 800, color: '#111827', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '16px' }}>Experience</h2>
+          <div className="space-y-6">
+            {data.experience.map((exp: any) => (
+              <div key={exp.id}>
+                <div className="flex justify-between items-baseline mb-1">
+                  <div style={{ fontSize: '12pt', fontWeight: 700, color: '#111827' }}>{exp.jobTitle}</div>
+                  <div style={{ fontSize: '9.5pt', fontWeight: 600, color: themeColor }}>{exp.startDate} - {exp.endDate}</div>
+                </div>
+                <div style={{ fontSize: '10.5pt', fontWeight: 500, color: '#4B5563', marginBottom: '6px' }}>
+                  {exp.company}{exp.location ? ` • ${exp.location}` : ''}
+                </div>
+                <div style={{ fontSize: '9.5pt' }}>
+                  <Bullets text={exp.responsibilities} color={themeColor} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {data.projects.length > 0 && (
+        <div className="mb-6">
+          <h2 style={{ fontSize: '14pt', fontWeight: 800, color: '#111827', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '16px' }}>Projects</h2>
+          <div className="space-y-5">
+            {data.projects.map(proj => (
+              <div key={proj.id}>
+                <div className="flex justify-between items-baseline mb-1">
+                  <div style={{ fontSize: '11.5pt', fontWeight: 700, color: '#111827' }}>{proj.name}</div>
+                  {proj.link && <div style={{ fontSize: '9pt', color: themeColor, fontWeight: 500 }}>{proj.link}</div>}
+                </div>
+                <div style={{ fontSize: '10pt', color: '#4B5563', lineHeight: '1.5' }}>{proj.description}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <div className="mt-auto">
+        <FooterMark />
+      </div>
+    </div>
+  </div>
+);
+
+// ==========================================
+// Elegant Serif Template (New)
+// ==========================================
+export const ElegantSerifTemplate: React.FC<TemplateProps> = ({ data, themeColor = '#7f1d1d' }) => (
+  <div className="w-full h-full bg-[#fdfbf6] p-[40px] flex flex-col" style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}>
+    <div className="text-center mb-8 pb-6 border-b-2" style={{ borderColor: themeColor }}>
+      <h1 style={{ fontSize: '32pt', fontWeight: 400, color: '#1c1917', lineHeight: '1', letterSpacing: '1px' }}>{data.name}</h1>
+      <div style={{ fontSize: '14pt', fontStyle: 'italic', color: themeColor, marginTop: '12px' }}>{data.title}</div>
+      <div className="mt-4 flex flex-wrap justify-center gap-x-4 gap-y-1 text-[9pt]" style={{ color: '#57534e', fontFamily: 'Inter, sans-serif' }}>
+        {data.email && <span>{data.email}</span>}
+        {data.phone && <span>{data.phone}</span>}
+        {data.location && <span>{data.location}</span>}
+        {data.linkedin && <span>{data.linkedin}</span>}
+        {data.website && <span>{data.website}</span>}
+      </div>
+    </div>
+
+    {data.summary && (
+      <div className="mb-8 text-center px-8" style={{ fontSize: '10pt', color: '#44403c', lineHeight: '1.8' }}>
+        {data.summary}
+      </div>
+    )}
+
+    {data.experience.length > 0 && (
+      <div className="mb-8">
+        <h2 style={{ fontSize: '13pt', fontWeight: 700, color: '#1c1917', textTransform: 'uppercase', letterSpacing: '2px', textAlign: 'center', marginBottom: '20px' }}>Professional Experience</h2>
+        <div className="space-y-6">
+          {data.experience.map((exp: any) => (
+            <div key={exp.id}>
+              <div className="flex justify-between items-baseline mb-1">
+                <div style={{ fontSize: '11.5pt', fontWeight: 600, color: '#1c1917' }}>{exp.jobTitle}</div>
+                <div style={{ fontSize: '10pt', fontStyle: 'italic', color: themeColor }}>{exp.startDate} – {exp.endDate}</div>
+              </div>
+              <div style={{ fontSize: '10.5pt', color: '#44403c', fontStyle: 'italic', marginBottom: '8px' }}>
+                {exp.company}{exp.location ? `, ${exp.location}` : ''}
+              </div>
+              <div style={{ fontSize: '9.5pt', fontFamily: 'Inter, sans-serif' }}>
+                 <Bullets text={exp.responsibilities} color={themeColor} />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    )}
+
+    <div className="flex gap-12 mt-auto">
+      {data.education.length > 0 && (
+        <div className="flex-1">
+          <h2 style={{ fontSize: '13pt', fontWeight: 700, color: '#1c1917', textTransform: 'uppercase', letterSpacing: '2px', textAlign: 'center', marginBottom: '16px' }}>Education</h2>
+          <div className="space-y-4">
+            {data.education.map(edu => (
+              <div key={edu.id} className="text-center">
+                <div style={{ fontSize: '10.5pt', fontWeight: 600, color: '#1c1917' }}>{edu.degree}</div>
+                <div style={{ fontSize: '9.5pt', color: '#44403c', fontStyle: 'italic', marginTop: '2px' }}>{edu.institution}</div>
+                <div style={{ fontSize: '9.5pt', color: themeColor, marginTop: '2px' }}>{edu.year}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {data.skills && (
+        <div className="flex-1">
+          <h2 style={{ fontSize: '13pt', fontWeight: 700, color: '#1c1917', textTransform: 'uppercase', letterSpacing: '2px', textAlign: 'center', marginBottom: '16px' }}>Skills</h2>
+          <div className="flex flex-wrap justify-center gap-2 text-center" style={{ fontSize: '9pt', color: '#44403c', fontFamily: 'Inter, sans-serif' }}>
+            {data.skills.split(',').map((s, i) => (
+              <span key={i} className="px-2 py-1 bg-[#f5f5f4] border border-[#e7e5e4] rounded italic">{s.trim()}</span>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+
+    <div className="mt-8">
+      <FooterMark />
+    </div>
+  </div>
+);
+
+// ==========================================
+// Timeline Template (New)
+// ==========================================
+export const TimelineTemplate: React.FC<TemplateProps> = ({ data, themeColor = '#3b82f6' }) => (
+  <div className="w-full h-full bg-white p-[40px] flex flex-col" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
+    <div className="mb-10">
+      <h1 style={{ fontSize: '32pt', fontWeight: 800, color: '#111827', margin: 0, padding: 0, letterSpacing: '-0.5px' }}>{data.name}</h1>
+      <div style={{ fontSize: '14pt', fontWeight: 600, color: themeColor, marginTop: '4px' }}>{data.title}</div>
+      <div className="mt-4 flex flex-wrap gap-4 text-[9.5pt] text-gray-600 font-medium border-l-4 pl-3" style={{ borderColor: themeColor }}>
+        {data.email && <div>{data.email}</div>}
+        {data.phone && <div>{data.phone}</div>}
+        {data.location && <div>{data.location}</div>}
+        {data.website && <div>{data.website}</div>}
+      </div>
+    </div>
+
+    {data.summary && (
+      <div className="mb-10 text-[10pt] text-gray-700 leading-relaxed font-medium text-justify">
+        {data.summary}
+      </div>
+    )}
+
+    {data.experience.length > 0 && (
+      <div className="mb-10">
+        <h2 style={{ fontSize: '14pt', fontWeight: 800, color: '#111827', marginBottom: '20px', textTransform: 'uppercase', letterSpacing: '1px' }}>Experience</h2>
+        <div className="space-y-6 relative" style={{ paddingLeft: '28px' }}>
+          {/* Vertical line */ }
+          <div className="absolute top-2 bottom-2 w-0.5 bg-gray-200" style={{ left: '5px' }}></div>
+          {data.experience.map((exp: any, i: number) => (
+            <div key={exp.id} className="relative">
+              <div className="absolute w-3 h-3 rounded-full mt-1.5 border-2 border-white" style={{ left: '-27px', backgroundColor: themeColor, zIndex: 1, boxShadow: `0 0 0 3px ${themeColor}20` }}></div>
+              <div className="flex flex-col mb-1.5">
+                <span style={{ fontSize: '12pt', fontWeight: 800, color: '#111827' }}>{exp.jobTitle} <span className="mx-1 text-gray-400 font-normal">at</span> {exp.company}</span>
+                <span style={{ fontSize: '9.5pt', fontWeight: 700, color: themeColor }}>{exp.startDate} - {exp.endDate}</span>
+              </div>
+              <div style={{ fontSize: '9.5pt' }}>
+                 <Bullets text={exp.responsibilities} color={themeColor} />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    )}
+
+    {/* Education & Skills in two columns */}
+    <div className="flex gap-10 mt-auto">
+      {data.education.length > 0 && (
+         <div className="flex-1">
+           <h2 style={{ fontSize: '14pt', fontWeight: 800, color: '#111827', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '16px' }}>Education</h2>
+           {data.education.map(edu => (
+             <div key={edu.id} className="mb-4">
+                <div style={{ fontSize: '10.5pt', fontWeight: 700, color: '#111827' }}>{edu.degree}</div>
+                <div style={{ fontSize: '9.5pt', color: '#4B5563', marginTop: '2px' }}>{edu.institution}</div>
+                <div style={{ fontSize: '9pt', fontWeight: 700, color: themeColor, marginTop: '2px' }}>{edu.year}</div>
+             </div>
+           ))}
+         </div>
+      )}
+      {data.skills && (
+         <div className="flex-1">
+           <h2 style={{ fontSize: '14pt', fontWeight: 800, color: '#111827', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '16px' }}>Skills</h2>
+           <SkillsChips skills={data.skills} color={themeColor} />
+         </div>
+      )}
+    </div>
+
+    <div className="mt-8">
+      <FooterMark />
+    </div>
+  </div>
+);
+
+// ==========================================
+// Student / Fresher Template
+// ==========================================
+export const StudentFresherTemplate: React.FC<TemplateProps> = ({ data, themeColor = '#2563eb' }) => (
+  <div className="w-full h-full bg-white p-[40px] flex flex-col" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
+    <div className="text-center mb-6">
+      <h1 style={{ fontSize: '28pt', fontWeight: 800, color: '#111827', margin: '0 0 4px 0', letterSpacing: '-0.5px' }}>{data.name}</h1>
+      <div style={{ fontSize: '12pt', fontWeight: 600, color: themeColor }}>{data.title}</div>
+      <div className="mt-3 flex flex-wrap justify-center gap-x-3 gap-y-1 text-[9.5pt] text-gray-600 font-medium">
+        {data.email && <span>{data.email}</span>}
+        {data.phone && <span>• {data.phone}</span>}
+        {data.location && <span>• {data.location}</span>}
+        {data.linkedin && <span>• {data.linkedin}</span>}
+        {data.website && <span>• {data.website}</span>}
+      </div>
+    </div>
+
+    {data.summary && (
+      <div className="mb-6">
+        <h2 style={{ fontSize: '12pt', fontWeight: 800, color: '#111827', textTransform: 'uppercase', letterSpacing: '1px', borderBottom: '2px solid', borderColor: themeColor, paddingBottom: '4px', marginBottom: '10px' }}>Objective</h2>
+        <div style={{ fontSize: '10pt', color: '#374151', lineHeight: '1.6' }}>{data.summary}</div>
+      </div>
+    )}
+
+    {data.education.length > 0 && (
+      <div className="mb-6">
+        <h2 style={{ fontSize: '12pt', fontWeight: 800, color: '#111827', textTransform: 'uppercase', letterSpacing: '1px', borderBottom: '2px solid', borderColor: themeColor, paddingBottom: '4px', marginBottom: '12px' }}>Education</h2>
+        <div className="space-y-4">
+          {data.education.map((edu: any) => (
+            <div key={edu.id}>
+              <div className="flex justify-between items-baseline mb-1">
+                <div style={{ fontSize: '11pt', fontWeight: 700, color: '#111827' }}>{edu.degree}</div>
+                <div style={{ fontSize: '9.5pt', fontWeight: 600, color: themeColor }}>{edu.year}</div>
+              </div>
+              <div style={{ fontSize: '10pt', fontWeight: 500, color: '#4B5563' }}>
+                {edu.institution}{edu.location ? `, ${edu.location}` : ''}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    )}
+
+    {data.projects.length > 0 && (
+      <div className="mb-6">
+        <h2 style={{ fontSize: '12pt', fontWeight: 800, color: '#111827', textTransform: 'uppercase', letterSpacing: '1px', borderBottom: '2px solid', borderColor: themeColor, paddingBottom: '4px', marginBottom: '12px' }}>Academic / Personal Projects</h2>
+        <div className="space-y-5">
+          {data.projects.map((proj: any) => (
+            <div key={proj.id}>
+              <div className="flex justify-between items-baseline mb-1">
+                <div style={{ fontSize: '11pt', fontWeight: 700, color: '#111827' }}>{proj.name}</div>
+                {proj.link && <div style={{ fontSize: '9pt', color: themeColor, fontWeight: 500 }}>{proj.link}</div>}
+              </div>
+              <div style={{ fontSize: '10pt', color: '#4B5563', lineHeight: '1.5' }}>{proj.description}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    )}
+
+    {data.experience.length > 0 && (
+      <div className="mb-6">
+        <h2 style={{ fontSize: '12pt', fontWeight: 800, color: '#111827', textTransform: 'uppercase', letterSpacing: '1px', borderBottom: '2px solid', borderColor: themeColor, paddingBottom: '4px', marginBottom: '12px' }}>Internships & Experience</h2>
+        <div className="space-y-5">
+          {data.experience.map((exp: any) => (
+            <div key={exp.id}>
+              <div className="flex justify-between items-baseline mb-1">
+                <div style={{ fontSize: '11pt', fontWeight: 700, color: '#111827' }}>{exp.jobTitle}</div>
+                <div style={{ fontSize: '9.5pt', fontWeight: 600, color: themeColor }}>{exp.startDate} - {exp.endDate}</div>
+              </div>
+              <div style={{ fontSize: '10pt', fontWeight: 500, color: '#4B5563', marginBottom: '6px' }}>
+                {exp.company}{exp.location ? `, ${exp.location}` : ''}
+              </div>
+              <div style={{ fontSize: '9.5pt' }}>
+                 <Bullets text={exp.responsibilities} color={themeColor} />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    )}
+
+    <div className="flex gap-8 mt-auto">
+      {data.skills && (
+        <div className="flex-1">
+          <h2 style={{ fontSize: '12pt', fontWeight: 800, color: '#111827', textTransform: 'uppercase', letterSpacing: '1px', borderBottom: '2px solid', borderColor: themeColor, paddingBottom: '4px', marginBottom: '10px' }}>Skills & Tools</h2>
+          <SkillsChips skills={data.skills} color={themeColor} />
+        </div>
+      )}
+
+      {data.certifications.length > 0 && (
+        <div className="flex-1">
+          <h2 style={{ fontSize: '12pt', fontWeight: 800, color: '#111827', textTransform: 'uppercase', letterSpacing: '1px', borderBottom: '2px solid', borderColor: themeColor, paddingBottom: '4px', marginBottom: '10px' }}>Certifications & Awards</h2>
+          <div className="space-y-2">
+            {data.certifications.map((cert: any) => (
+              <div key={cert.id}>
+                <div style={{ fontSize: '9.5pt', fontWeight: 600, color: '#111827' }}>{cert.name}</div>
+                <div style={{ fontSize: '9pt', color: '#4B5563' }}>{cert.issuer} <span style={{ color: themeColor }}>• {cert.year}</span></div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+
+    <div className="mt-8">
+      <FooterMark />
+    </div>
+  </div>
+);
+
 // Map remaining logically
 export const ModernTemplate: React.FC<TemplateProps> = (p) => <GenericTemplate {...p} headerAlign="left" headerBorder={true} />;
 export const BusinessTemplate: React.FC<TemplateProps> = (p) => <GenericTemplate {...p} headerAlign="center" headerBorder={false} />;

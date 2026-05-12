@@ -1,12 +1,14 @@
 // === FILE: src/App.tsx ===
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState, useEffect, Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { motion, AnimatePresence } from "motion/react";
 import { Moon, Sun, Menu, X, ArrowRight, LayoutTemplate, Briefcase, FileText, Target, Brain, FileCheck } from "lucide-react";
 import Logo from "./components/Logo";
-import Home from "./components/Home";
-import BuilderView from "./components/BuilderView";
+
+// Lazy load heavy components
+const Home = lazy(() => import("./components/Home"));
+const BuilderView = lazy(() => import("./components/BuilderView"));
 
 // Navbar Component
 const Navbar = ({ isDark, toggleTheme }: { isDark: boolean, toggleTheme: () => void }) => {
@@ -178,6 +180,7 @@ const Navbar = ({ isDark, toggleTheme }: { isDark: boolean, toggleTheme: () => v
 };
 
 const AppContent = () => {
+  const navigate = useNavigate();
   const [isDark, setIsDark] = useState(() => {
     return localStorage.getItem('theme') !== 'light';
   });
@@ -207,9 +210,9 @@ const AppContent = () => {
       <main className="flex-1 w-full flex flex-col pt-16 relative">
         <Suspense fallback={<div className="flex-1 flex items-center justify-center text-[var(--color-primary)]"><div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[var(--color-primary)]"></div></div>}>
           <Routes>
-            <Route path="/" element={<Home onBuild={() => window.location.href = '/builder'} onPreviewTemplates={() => window.location.href = '/builder'} />} />
+            <Route path="/" element={<Home onBuild={() => navigate('/builder')} onPreviewTemplates={() => navigate('/builder')} />} />
             <Route path="/builder" element={<BuilderView />} />
-            <Route path="*" element={<Home onBuild={() => window.location.href = '/builder'} />} />
+            <Route path="*" element={<Home onBuild={() => navigate('/builder')} />} />
           </Routes>
         </Suspense>
       </main>

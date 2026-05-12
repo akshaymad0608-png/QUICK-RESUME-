@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ResumeData } from '../types';
+import { GoogleGenAI } from "@google/genai";
 
 export const useAI = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -9,35 +10,27 @@ export const useAI = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const apiKey = import.meta.env.VITE_ANTHROPIC_API_KEY;
+      const apiKey = process.env.GEMINI_API_KEY;
       
       if (!apiKey) {
-        throw new Error("API Key is missing. Please add VITE_ANTHROPIC_API_KEY to your .env file.");
+        throw new Error("API Key is missing. Please ensure GEMINI_API_KEY is available in your environment.");
       }
 
-      const response = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': apiKey,
-          'anthropic-version': '2023-06-01',
-          'anthropic-dangerous-direct-browser-access': 'true' // IMPORTANT: Only for prototyping.
-        },
-        body: JSON.stringify({
-          model: "claude-3-haiku-20240307",
-          max_tokens: 2000,
-          system: systemPrompt,
-          messages: [{ role: "user", content: prompt }]
-        })
+      const ai = new GoogleGenAI({ apiKey });
+
+      const response = await ai.models.generateContent({
+        model: 'gemini-3-flash-preview',
+        contents: prompt,
+        config: {
+          systemInstruction: systemPrompt,
+        }
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error?.message || "Failed to call AI API");
+      if (!response.text) {
+        throw new Error("Empty response from AI");
       }
 
-      const data = await response.json();
-      return data.content[0].text;
+      return response.text;
     } catch (err: any) {
       console.error("AI Generation Error:", err);
       setError(err.message);
