@@ -46,6 +46,29 @@ export const generateSummary = async (resumeData: { personalInfo: Record<string,
   return `${name ? name + ' is a' : 'A'} results-driven ${title} with ${years} experience in ${topSkills}. ${company ? `Previously at ${company}, demonstrating` : 'Known for demonstrating'} strong analytical and problem-solving abilities. Skilled at collaborating with cross-functional teams to deliver impactful outcomes and drive continuous improvement.`;
 };
 
+export const analyzeResume = async (resumeData: Record<string, unknown>): Promise<string> => {
+  const prompt = `You are an expert resume reviewer and recruiter. Analyze the following resume data and provide 3-5 concise, actionable bullet points on how to improve this specific resume. Focus on missing keywords, weak verbs, length, missing numbers, or potential gaps. Be direct and helpful.
+Do not include any <think> tags or reasoning. Write the output as a clean markdown list.
+
+Resume Data:
+${JSON.stringify(resumeData, null, 2)}
+  `;
+
+  try {
+    const res = await fetch('/api/gemini', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Failed to generate');
+    return data.text.trim();
+  } catch (error) {
+    console.error(error);
+    throw new Error('Failed to analyze resume.');
+  }
+};
+
 export const generateCoverLetter = async (resumeData: Record<string, unknown>, jobDescription: string): Promise<string> => {
   const prompt = `Write a professional cover letter based on this resume and job description.
 Do not include any <think> tags or reasoning. Write the output as a professional letter.

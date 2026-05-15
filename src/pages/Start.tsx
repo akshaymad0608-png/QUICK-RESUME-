@@ -1,17 +1,52 @@
 import { FC, useState, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
-import { UploadCloud, PenLine, ArrowLeft, FileUp } from 'lucide-react';
+import { UploadCloud, PenLine, ArrowLeft, FileUp, Loader2 } from 'lucide-react';
+import { useResume } from '../context/ResumeContext';
+import toast from 'react-hot-toast';
 
 const Start: FC = () => {
   const navigate = useNavigate();
+  const { setData, data } = useResume();
   const [showUpload, setShowUpload] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // We would parse the resume here, but for now navigate to the choose-template
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement> | { target: { files: FileList | null } }) => {
     if (e.target.files && e.target.files.length > 0) {
-      navigate('/choose-template');
+      const file = e.target.files[0];
+      const formData = new FormData();
+      formData.append('resume', file);
+
+      try {
+        setIsUploading(true);
+        toast.loading('Analyzing resume...', { id: 'upload' });
+        const res = await fetch('/api/extract-resume', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (!res.ok) {
+          const err = await res.json();
+          throw new Error(err.error || 'Failed to extract resume');
+        }
+
+        const extractedData = await res.json();
+        
+        setData({
+          ...data,
+          ...extractedData,
+          design: data.design // Keep existing design settings
+        });
+
+        toast.success('Resume imported successfully!', { id: 'upload' });
+        navigate('/build');
+      } catch (error: unknown) {
+        toast.error(error instanceof Error ? error.message : 'Error importing resume', { id: 'upload' });
+        console.error(error);
+      } finally {
+        setIsUploading(false);
+      }
     }
   };
 
@@ -24,7 +59,8 @@ const Start: FC = () => {
       <header className="px-8 py-6 flex justify-start items-center">
         <button 
           onClick={() => showUpload ? setShowUpload(false) : navigate('/')} 
-          className="flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors font-medium"
+          disabled={isUploading}
+          className="flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors font-medium disabled:opacity-50"
         >
           <ArrowLeft size={20} /> {showUpload ? "Back to Options" : "Back to Home"}
         </button>
@@ -68,13 +104,14 @@ const Start: FC = () => {
         ) : (
           <div 
             className="w-full max-w-3xl bg-white rounded-3xl p-16 border-2 border-dashed border-gray-300 text-center relative group hover:border-blue-400 transition-colors cursor-pointer" 
-            onClick={() => fileInputRef.current?.click()}
+            onClick={() => { if (!isUploading) fileInputRef.current?.click(); }}
             onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
             onDrop={(e) => {
               e.preventDefault();
               e.stopPropagation();
+              if (isUploading) return;
               if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-                navigate('/choose-template');
+                handleFileUpload({ target: { files: e.dataTransfer.files } } as unknown as React.ChangeEvent<HTMLInputElement>);
               }
             }}
           >
@@ -84,17 +121,21 @@ const Start: FC = () => {
               ref={fileInputRef} 
               onChange={handleFileUpload} 
               accept=".pdf,.doc,.docx,.html,.txt"
+              disabled={isUploading}
             />
             <div className="w-20 h-20 mx-auto mb-8 flex items-center justify-center text-gray-400 group-hover:text-blue-500 transition-colors">
-              <FileUp size={64} strokeWidth={1} />
+              {isUploading ? <Loader2 size={64} className="animate-spin text-blue-500" strokeWidth={1} /> : <FileUp size={64} strokeWidth={1} />}
             </div>
             
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4">Drag and drop your resume here</h2>
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4">
+              {isUploading ? 'Analyzing and importing...' : 'Drag and drop your resume here'}
+            </h2>
             <p className="text-gray-400 text-lg mb-8">or</p>
             
             <button 
-              className="px-8 py-3.5 bg-[#0ea5e9] hover:bg-[#0284c7] text-white font-bold rounded-xl transition-colors mb-8 shadow-sm text-lg"
-              onClick={(e) => { e.stopPropagation(); fileInputRef.current?.click(); }}
+              disabled={isUploading}
+              className="px-8 py-3.5 bg-[#0ea5e9] hover:bg-[#0284c7] disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-bold rounded-xl transition-colors mb-8 shadow-sm text-lg"
+              onClick={(e) => { e.stopPropagation(); if (!isUploading) fileInputRef.current?.click(); }}
             >
               Upload from device
             </button>

@@ -2,12 +2,89 @@ import express from "express";
 import path from "path";
 import { createServer as createViteServer } from "vite";
 import { GoogleGenAI } from "@google/genai";
+import multer from 'multer';
+import pdfParse from 'pdf-parse/lib/pdf-parse.js';
+
+const upload = multer({ storage: multer.memoryStorage() });
 
 async function startServer() {
   const app = express();
   const PORT = 3000;
 
   app.use(express.json());
+
+  // API Route for Extracting Resume Data
+  app.post("/api/extract-resume", upload.single('resume'), async (req, res) => {
+    try {
+      if (!req.file) {
+        return res.status(400).json({ error: "No file uploaded" });
+      }
+
+      let text = "";
+      if (req.file.mimetype === 'application/pdf') {
+        const data = await pdfParse(req.file.buffer);
+        text = data.text;
+      } else {
+        text = req.file.buffer.toString('utf-8');
+      }
+
+      const apiKey = process.env.GEMINI_API_KEY;
+      if (!apiKey) {
+        return res.status(500).json({ error: "Server missing GEMINI_API_KEY" });
+      }
+
+      const ai = new GoogleGenAI({
+        apiKey,
+        httpOptions: { headers: { 'User-Agent': 'aistudio-build' } }
+      });
+
+      const prompt = `Extract all relevant resume information from the following text into a structured JSON object.
+Use the following format. Ensure it follows this exact JSON structure:
+{
+  "personalInfo": {
+    "firstName": "", "lastName": "", "jobTitle": "", "email": "", "phone": "",
+    "location": "", "city": "", "country": "", "linkedin": "", "portfolio": "",
+    "website": "", "address": ""
+  },
+  "summary": "",
+  "experience": [
+    {
+      "company": "", "jobTitle": "", "city": "", "country": "", "startDate": "",
+      "endDate": "", "description": "", "isPresent": false
+    }
+  ],
+  "education": [
+    {
+      "schoolName": "", "degree": "", "fieldOfStudy": "", "city": "", "country": "",
+      "startYear": "", "endYear": "", "description": ""
+    }
+  ],
+  "skills": ["skill1", "skill2"]
+}
+
+Text to extract from:
+${text}
+      `;
+
+      const response = await ai.models.generateContent({
+        model: 'gemini-3-flash-preview',
+        contents: prompt,
+        config: {
+          responseMimeType: "application/json"
+        }
+      });
+
+      const resultText = response.text;
+      if (!resultText) throw new Error("Empty response from AI");
+      const resultObj = JSON.parse(resultText);
+
+      res.json(resultObj);
+    } catch (err: unknown) {
+      console.error(err);
+      const error = err instanceof Error ? err : new Error(String(err));
+      res.status(500).json({ error: error.message || "Failed to extract resume" });
+    }
+  });
 
   // API Route for Gemini
   app.post("/api/gemini", async (req, res) => {

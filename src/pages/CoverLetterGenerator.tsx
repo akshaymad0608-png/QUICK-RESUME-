@@ -70,12 +70,12 @@ const CoverLetterGenerator: FC = () => {
           <Link to="/" className="text-gray-500 hover:text-gray-800 transition-colors">
             <ArrowLeft size={24} />
           </Link>
-          <div className="text-xl font-bold flex items-center gap-2 text-gray-900">
+          <Link to="/" className="text-xl font-bold flex items-center gap-2 text-gray-900 hover:opacity-80 transition-opacity">
             <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center text-white">
               <FileText size={18} />
             </div>
             QuickResume
-          </div>
+          </Link>
         </div>
       </header>
 

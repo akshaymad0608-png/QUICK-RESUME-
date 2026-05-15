@@ -33,12 +33,12 @@ const Home: FC = () => {
       
       {/* Top Navigation */}
       <header className="px-8 py-4 flex justify-between items-center border-b border-gray-100">
-        <div className="text-xl font-bold tracking-tight text-brand flex items-center gap-2">
+        <Link to="/" className="text-xl font-bold tracking-tight text-brand flex items-center gap-2">
           <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center text-white">
             <FileText size={18} />
           </div>
           QuickResume.business
-        </div>
+        </Link>
         <nav className="hidden md:flex gap-6 text-sm font-medium text-gray-600">
           <Link to="/choose-template" className="hover:text-blue-500 transition-colors">Templates</Link>
           <Link to="/examples" className="hover:text-blue-500 transition-colors">Resume Examples</Link>
