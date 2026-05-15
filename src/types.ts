@@ -1,60 +1,60 @@
-export type Experience = {
-  id: string;
+export type TemplateType = string;
+
+export interface PersonalInfo {
+  firstName: string;
+  lastName: string;
   jobTitle: string;
-  company: string;
-  location?: string;
-  startDate: string;
-  endDate: string;
-  responsibilities: string;
-};
-
-export type Education = {
-  id: string;
-  degree: string;
-  institution: string;
-  school?: string;
-  location?: string;
-  startDate?: string;
-  endDate?: string;
-  year: string;
-  description?: string;
-};
-
-export type Project = {
-  id: string;
-  name: string;
-  description: string;
-  link: string;
-};
-
-export type Certification = {
-  id: string;
-  name: string;
-  issuer: string;
-  year: string;
-};
-
-export type CoverLetterData = {
-  recipientName: string;
-  companyName: string;
-  jobReference: string;
-  body: string;
-};
-
-export type ResumeData = {
-  name: string;
-  title: string;
   email: string;
   phone: string;
+  phoneCode: string;
   location: string;
+  city: string;
+  country: string;
   linkedin: string;
-  website?: string;
-  summary: string;
+  portfolio: string;
+  website: string;
+  address: string;
   photoUrl?: string;
-  experience: Experience[];
+}
+
+export interface WorkExperience {
+  id: string;
+  company: string;
+  jobTitle: string;
+  city: string;
+  country: string;
+  startDate: string;
+  endDate: string;
+  isPresent: boolean;
+  description: string;
+}
+
+export interface Education {
+  id: string;
+  degree: string;
+  fieldOfStudy: string;
+  schoolName: string;
+  city: string;
+  country: string;
+  startYear: string;
+  endYear: string;
+  description: string;
+}
+
+export interface DesignConfig {
+  template: TemplateType;
+  color: string;
+  fontFamily: string;
+  fontSize: string;
+  spacing: string;
+}
+
+export interface ResumeData {
+  personalInfo: PersonalInfo;
+  experience: WorkExperience[];
   education: Education[];
-  projects: Project[];
-  certifications: Certification[];
-  skills: string;
-  coverLetter: CoverLetterData;
-};
+  skills: string[];
+  summary: string;
+  design: DesignConfig;
+}
+

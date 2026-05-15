@@ -1,78 +1,25 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,600&display=swap');
 @import "tailwindcss";
 
-@theme {
-  --color-bg: #09090f;
-  --color-bg-2: #101018;
-  --color-bg-3: #17172a;
-  --color-border: #1f1f35;
-  --color-border-hover: #2a2a45;
-  --text-main: #eeeef8;
-  --text-muted: #7a7a9a;
-  --text-subtle: #45455a;
-  
-  --color-primary: #4F46E5;
-  --color-primary-hover: #4338CA;
-  --color-accent: #06B6D4;
-  --color-success: #10B981;
-  --color-error: #F43F5E;
-  --color-warning: #F59E0B;
-
-  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+:root {
+  --color-bg: #f8fafc;
+  --color-bg-2: #ffffff;
+  --color-bg-3: #f1f5f9;
+  --text-main: #0f172a;
+  --text-muted: #334155;
+  --text-subtle: #64748b;
+  --color-primary: #0ea5e9;
+  --color-primary-hover: #0284c7;
+  --color-border: #e2e8f0;
+  --color-success: #10b981;
 }
 
-@layer base {
-  .theme-light {
-    --color-bg: #f5f5ff;
-    --color-bg-2: #ececf8;
-    --color-bg-3: #e0e0f0;
-    --color-border: #d0d0e8;
-    --color-border-hover: #bcbcd8;
-    --text-main: #111128;
-    --text-muted: #5a5a78;
-    --text-subtle: #8a8aa8;
-  }
-
-  body {
-    background-color: var(--color-bg);
-    color: var(--text-main);
-    font-family: 'Inter', sans-serif;
-  }
+body {
+  background-color: var(--color-bg);
+  color: var(--text-main);
+  font-family: 'Inter', system-ui, sans-serif;
 }
 
-/* Custom scrollbar for builder */
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-.no-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
-}
-
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-::-webkit-scrollbar-track {
-  background: var(--color-bg); 
-}
-::-webkit-scrollbar-thumb {
-  background: var(--color-border-hover); 
-  border-radius: 10px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: var(--text-subtle); 
-}
-
-/* Gradient text */
-.text-gradient {
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-image: linear-gradient(to right, var(--color-primary), var(--color-accent));
-}
-
-/* Orb */
-.bg-orb {
-  background: radial-gradient(circle at center, rgba(79, 70, 229, 0.15) 0%, rgba(6, 182, 212, 0.05) 50%, transparent 70%);
-}
+.custom-scrollbar::-webkit-scrollbar { width: 6px; }
+.custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+.custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+.custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
