@@ -29,6 +29,20 @@ const Home: FC = () => {
         <meta property="og:title" content="Free Resume Builder | Create AI Resume Online | QuickResume" />
         <meta property="og:description" content="Build a professional, ATS-friendly resume in minutes with our free AI-powered resume builder." />
         <meta property="og:type" content="website" />
+        <link rel="canonical" href="https://quickresume.business/" />
+        <script type="application/ld+json">
+          {`
+            {
+              "@context": "https://schema.org",
+              "@type": "WebApplication",
+              "name": "QuickResume",
+              "url": "https://quickresume.business",
+              "description": "Free AI-powered resume builder",
+              "applicationCategory": "BusinessApplication",
+              "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+            }
+          `}
+        </script>
       </Helmet>
       
       {/* Top Navigation */}

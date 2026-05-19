@@ -4,19 +4,25 @@ import { Link } from 'react-router-dom';
 import { FileText, ArrowLeft } from 'lucide-react';
 
 const examples = [
-  { role: 'Software Engineer', industry: 'Technology', image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400&q=80' },
-  { role: 'Product Manager', industry: 'Business', image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&q=80' },
-  { role: 'Data Scientist', industry: 'Data', image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&q=80' },
-  { role: 'UX Designer', industry: 'Design', image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=400&q=80' },
-  { role: 'Marketing Specialist', industry: 'Marketing', image: 'https://images.unsplash.com/photo-1533750349088-cd871a92f312?w=400&q=80' },
-  { role: 'Sales Executive', industry: 'Sales', image: 'https://images.unsplash.com/photo-1556761175-4b46a572b786?w=400&q=80' }
+  { role: 'Software Engineer', industry: 'Technology', image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400&q=80', description: 'Highlight modern frameworks, cloud platforms, and successful deployments. A strong engineering resume quantifies performance improvements and clearly explains system architecture decisions.' },
+  { role: 'Product Manager', industry: 'Business', image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&q=80', description: 'Focus on metrics, roadmap execution, and cross-functional leadership. Great PM resumes show how you drove user growth and aligned engineering with business objectives.' },
+  { role: 'Data Scientist', industry: 'Data', image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&q=80', description: 'Showcase your expertise in machine learning models, statistical analysis, and data viz. The best data resumes prove how your insights directly increased revenue or saved costs.' },
+  { role: 'UX Designer', industry: 'Design', image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=400&q=80', description: 'Emphasize user research, wireframing, and interactive prototyping. Your resume must look visually perfect while explaining how your designs solved real user problems.' },
+  { role: 'Marketing Specialist', industry: 'Marketing', image: 'https://images.unsplash.com/photo-1533750349088-cd871a92f312?w=400&q=80', description: 'Highlight campaign ROI, customer acquisition costs, and channel growth. A standout marketing resume uses strong action verbs to show measurable campaign success.' },
+  { role: 'Sales Executive', industry: 'Sales', image: 'https://images.unsplash.com/photo-1556761175-4b46a572b786?w=400&q=80', description: 'Put numbers front and center—quota attainment, deal sizes, and revenue generated. Strong sales resumes use concise bullets that prove consistency in closing enterprise accounts.' }
 ];
 
 const ResumeExamples: FC = () => {
   return (
     <div className="min-h-screen bg-gray-50 font-sans">
       <Helmet>
-        <title>Resume Examples - QuickResume.business</title>
+        <title>Resume Examples by Industry | QuickResume</title>
+        <meta name="description" content="Explore professional resume examples for Software Engineers, Product Managers, Sales Executives, and more. Learn what skills to highlight for your industry." />
+        <meta name="keywords" content="resume examples, professional resume samples, software engineer resume, product manager resume, resume inspiration" />
+        <meta property="og:title" content="Resume Examples by Industry | QuickResume" />
+        <meta property="og:description" content="Explore professional resume examples for Software Engineers, Product Managers, Sales Executives, and more. Learn what skills to highlight for your industry." />
+        <meta property="og:type" content="website" />
+        <link rel="canonical" href="https://quickresume.business/examples" />
       </Helmet>
 
       <header className="w-full bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between sticky top-0 z-10">
@@ -52,7 +58,7 @@ const ResumeExamples: FC = () => {
               </div>
               <div className="p-6">
                 <h3 className="text-xl font-bold text-gray-900 mb-2">{example.role} Resume</h3>
-                <p className="text-sm text-gray-600 mb-6">Learn how to highlight your skills and experience as a {example.role.toLowerCase()}.</p>
+                <p className="text-sm text-gray-600 mb-6 leading-relaxed min-h-[60px]">{example.description}</p>
                 <Link to="/start" className="w-full py-2.5 bg-gray-50 text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-colors block text-center border border-gray-200">
                   Build this resume
                 </Link>

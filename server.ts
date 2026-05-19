@@ -141,6 +141,45 @@ ${text}
     }
   });
 
+  // Sitemap
+  app.get('/sitemap.xml', (req, res) => {
+    const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://quickresume.business/</loc>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://quickresume.business/resources</loc>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://quickresume.business/examples</loc>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://quickresume.business/cover-letter</loc>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://quickresume.business/choose-template</loc>
+    <changefreq>weekly</changefreq>
+  </url>
+</urlset>`;
+    res.header('Content-Type', 'application/xml');
+    res.send(sitemap);
+  });
+
+  // Robots.txt
+  app.get('/robots.txt', (req, res) => {
+    const robots = `User-agent: *
+Allow: /
+
+Sitemap: https://quickresume.business/sitemap.xml`;
+    res.header('Content-Type', 'text/plain');
+    res.send(robots);
+  });
+
   // Vite middleware for development
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({

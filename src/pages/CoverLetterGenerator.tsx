@@ -63,6 +63,12 @@ const CoverLetterGenerator: FC = () => {
     <div className="min-h-screen bg-gray-50 flex flex-col font-sans">
       <Helmet>
         <title>AI Cover Letter Generator | QuickResume</title>
+        <meta name="description" content="Generate a customized, professional cover letter in seconds. Paste the job description and let our AI match your resume skills to the role perfectly." />
+        <meta name="keywords" content="cover letter generator, ai cover letter builder, free cover letter maker, cover letter templates" />
+        <meta property="og:title" content="AI Cover Letter Generator | QuickResume" />
+        <meta property="og:description" content="Generate a customized, professional cover letter in seconds. Paste the job description and let our AI match your resume skills to the role perfectly." />
+        <meta property="og:type" content="website" />
+        <link rel="canonical" href="https://quickresume.business/cover-letter" />
       </Helmet>
 
       <header className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between shadow-sm shrink-0">

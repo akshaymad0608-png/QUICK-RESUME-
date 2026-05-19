@@ -205,7 +205,13 @@ const ChooseTemplate: FC = () => {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col font-sans">
       <Helmet>
-        <title>Choose Template | QuickResume.business</title>
+        <title>Choose a Resume Template | QuickResume</title>
+        <meta name="description" content="Select from our collection of professional, ATS-friendly resume templates. Customize colors and fonts to build a standout resume." />
+        <meta name="keywords" content="resume templates, professional resume templates, ATS resume templates, free resume templates" />
+        <meta property="og:title" content="Choose a Resume Template | QuickResume" />
+        <meta property="og:description" content="Select from our collection of professional, ATS-friendly resume templates. Customize colors and fonts to build a standout resume." />
+        <meta property="og:type" content="website" />
+        <link rel="canonical" href="https://quickresume.business/choose-template" />
       </Helmet>
 
       {/* Header & Progress */}

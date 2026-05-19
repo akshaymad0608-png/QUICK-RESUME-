@@ -44,7 +44,13 @@ const Resources: FC = () => {
   return (
     <div className="min-h-screen bg-gray-50 font-sans">
       <Helmet>
-        <title>Career Resources - QuickResume.business</title>
+        <title>Career Resources & Guides | QuickResume</title>
+        <meta name="description" content="Expert advice, resume templates, and formatting tips to help you build the perfect resume and land your dream job faster." />
+        <meta name="keywords" content="career resources, resume outline, action verbs, ATS resume, resume formatting best practices" />
+        <meta property="og:title" content="Career Resources & Guides | QuickResume" />
+        <meta property="og:description" content="Expert advice, resume templates, and formatting tips to help you build the perfect resume and land your dream job faster." />
+        <meta property="og:type" content="website" />
+        <link rel="canonical" href="https://quickresume.business/resources" />
       </Helmet>
 
       <header className="w-full bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between sticky top-0 z-10">
@@ -92,11 +98,11 @@ const Resources: FC = () => {
                    </div>
                  </div>
                </div>
-               {expandedId === idx && (
-                 <div className="mt-6 pt-6 border-t border-gray-100 text-gray-800 leading-relaxed text-[15px] pl-[88px] pr-4 animate-in fade-in slide-in-from-top-4 duration-300">
-                   {resource.content}
-                 </div>
-               )}
+               
+               <div className={`mt-6 pt-6 border-t border-gray-100 text-gray-800 leading-relaxed text-[15px] pl-[88px] pr-4 transition-all duration-300 overflow-hidden ${expandedId === idx ? 'opacity-100 max-h-[500px]' : 'opacity-0 max-h-0 !mt-0 !pt-0 !border-transparent py-0'}`}>
+                 {resource.content}
+               </div>
+
             </div>
           ))}
         </div>
