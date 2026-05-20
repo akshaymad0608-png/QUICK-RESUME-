@@ -1,53 +1,55 @@
 import { FC, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
-import { FileText } from 'lucide-react';
+import { FileText, ArrowRight, CheckCircle2 } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { signInWithGoogle } from '../firebase';
 
 const Login: FC = () => {
   const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [otp, setOtp] = useState('');
+  const [step, setStep] = useState<'email' | 'otp'>('email');
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleGoogleLogin = async () => {
+  const handleSendOtp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) { toast.error('Please enter your email'); return; }
     try {
       setIsLoading(true);
-      const user = await signInWithGoogle();
-      
-      // Hit welcome email api
-      try {
-        const response = await fetch('/api/send-welcome-email', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: user.email, name: user.displayName })
-        });
-        const data = await response.json();
-        if (data.success) {
-          toast.success(`Welcome email sent to ${user.email}!`);
-        }
-      } catch (err) {
-        console.error("Failed to send welcome email:", err);
-      }
-      
-      toast.success('Successfully logged in!');
-      navigate('/choose-template');
-    } catch (err) {
-      toast.error('Failed to log in with Google.');
-      console.error(err);
-    } finally {
-      setIsLoading(false);
-    }
+      const res = await fetch('/api/send-otp', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) });
+      const data = await res.json();
+      if (res.ok) {
+        if (data.demoOtp) toast.success(`Demo Mode: OTP is ${data.demoOtp}`, { duration: 6000 });
+        else toast.success('OTP sent to your email!');
+        setStep('otp');
+      } else toast.error(data.error || 'Failed to send OTP');
+    } catch (err) { console.error(err); toast.error('Network error.'); }
+    finally { setIsLoading(false); }
+  };
+
+  const handleVerifyOtp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!otp) { toast.error('Please enter the OTP'); return; }
+    try {
+      setIsLoading(true);
+      const res = await fetch('/api/verify-otp', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, otp }) });
+      const data = await res.json();
+      if (res.ok) {
+        toast.success('Successfully logged in!');
+        try { await fetch('/api/send-welcome-email', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, name: email.split('@')[0] }) }); } catch {}
+        navigate('/choose-template');
+      } else toast.error(data.error || 'Invalid OTP');
+    } catch (err) { console.error(err); toast.error('Network error.'); }
+    finally { setIsLoading(false); }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 font-sans flex flex-col">
-      <Helmet>
-        <title>Log In - QuickResume.business</title>
-      </Helmet>
+    <div className="min-h-screen font-sans flex flex-col" style={{background: 'linear-gradient(135deg, #f5f3ff 0%, #eff6ff 50%, #f0f9ff 100%)'}}>
+      <Helmet><title>Log In - QuickResume.business</title></Helmet>
 
-      <header className="w-full bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+      <header className="w-full bg-white border-b px-6 py-4 flex items-center justify-between shadow-sm" style={{borderColor: '#e9d5ff'}}>
         <Link to="/" className="text-xl font-bold flex items-center gap-2 text-gray-900">
-          <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center text-white">
+          <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white" style={{background: 'linear-gradient(135deg, #7c3aed, #0ea5e9)'}}>
             <FileText size={18} />
           </div>
           QuickResume.business
@@ -55,28 +57,53 @@ const Login: FC = () => {
       </header>
 
       <main className="flex-1 flex flex-col justify-center items-center p-6">
-        <div className="w-full max-w-md bg-white rounded-2xl shadow-sm border border-gray-100 p-8 text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Welcome back</h1>
-          <p className="text-gray-600 mb-8">Sign in to continue to your resume</p>
-          
-          <button 
-            disabled={isLoading}
-            onClick={handleGoogleLogin} 
-            className="w-full py-3.5 bg-white border-2 border-gray-200 hover:border-blue-500 hover:bg-blue-50 text-gray-800 font-bold rounded-xl transition-all flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            <svg viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
-              <g transform="matrix(1, 0, 0, 1, 27.009001, -39.238998)">
-                <path fill="#4285F4" d="M -3.264 51.509 C -3.264 50.719 -3.334 49.969 -3.454 49.239 L -14.754 49.239 L -14.754 53.749 L -8.284 53.749 C -8.574 55.229 -9.424 56.479 -10.684 57.329 L -10.684 60.329 L -6.824 60.329 C -4.564 58.239 -3.264 55.159 -3.264 51.509 Z"/>
-                <path fill="#34A853" d="M -14.754 63.239 C -11.514 63.239 -8.804 62.159 -6.824 60.329 L -10.684 57.329 C -11.764 58.049 -13.134 58.489 -14.754 58.489 C -17.884 58.489 -20.534 56.379 -21.484 53.529 L -25.464 53.529 L -25.464 56.619 C -23.494 60.539 -19.444 63.239 -14.754 63.239 Z"/>
-                <path fill="#FBBC05" d="M -21.484 53.529 C -21.734 52.809 -21.864 52.039 -21.864 51.239 C -21.864 50.439 -21.724 49.669 -21.484 48.949 L -21.484 45.859 L -25.464 45.859 C -26.284 47.479 -26.754 49.299 -26.754 51.239 C -26.754 53.179 -26.284 54.999 -25.464 56.619 L -21.484 53.529 Z"/>
-                <path fill="#EA4335" d="M -14.754 43.989 C -12.984 43.989 -11.404 44.599 -10.154 45.789 L -6.734 42.369 C -8.804 40.429 -11.514 39.239 -14.754 39.239 C -19.444 39.239 -23.494 41.939 -25.464 45.859 L -21.484 48.949 C -20.534 46.099 -17.884 43.989 -14.754 43.989 Z"/>
-              </g>
-            </svg>
-            {isLoading ? 'Signing in...' : 'Sign in with Google'}
-          </button>
+        <div className="w-full max-w-md bg-white rounded-2xl shadow-lg border p-8 text-center" style={{borderColor: '#e9d5ff'}}>
+          <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 text-white shadow-md" style={{background: 'linear-gradient(135deg, #7c3aed, #0ea5e9)'}}>
+            <FileText size={30} />
+          </div>
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">
+            {step === 'email' ? 'Welcome back 👋' : 'Check your email 📬'}
+          </h1>
+          <p className="text-gray-500 mb-8">
+            {step === 'email' ? 'Sign in with your email to continue building your resume.' : `We sent a 6-digit code to ${email}`}
+          </p>
 
-          <p className="text-center text-sm text-gray-500 mt-8 font-medium">
-            By continuing, you agree to our Terms of Service and Privacy Policy.
+          {step === 'email' ? (
+            <form onSubmit={handleSendOtp} className="flex flex-col gap-4 text-left">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1">Email Address</label>
+                <input type="email" autoFocus required value={email} onChange={e => setEmail(e.target.value)} placeholder="you@example.com"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl outline-none transition-all text-gray-900"
+                  style={{}} onFocus={e => e.target.style.borderColor='#7c3aed'} onBlur={e => e.target.style.borderColor='#e5e7eb'} />
+              </div>
+              <button type="submit" disabled={isLoading}
+                className="w-full py-3.5 text-white font-bold rounded-xl transition-all flex items-center justify-center gap-2 mt-2 disabled:opacity-50 shadow-md hover:opacity-90"
+                style={{background: 'linear-gradient(135deg, #7c3aed, #0ea5e9)'}}>
+                {isLoading ? 'Sending...' : 'Continue with Email'} <ArrowRight size={18} />
+              </button>
+            </form>
+          ) : (
+            <form onSubmit={handleVerifyOtp} className="flex flex-col gap-4 text-left">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1">Enter OTP Code</label>
+                <input type="text" autoFocus required maxLength={6} value={otp} onChange={e => setOtp(e.target.value)} placeholder="123456"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl outline-none transition-all text-center text-2xl font-mono tracking-[0.5em] text-gray-900" />
+              </div>
+              <button type="submit" disabled={isLoading}
+                className="w-full py-3.5 text-white font-bold rounded-xl transition-all flex items-center justify-center gap-2 mt-2 disabled:opacity-50 shadow-md hover:opacity-90"
+                style={{background: 'linear-gradient(135deg, #7c3aed, #0ea5e9)'}}>
+                {isLoading ? 'Verifying...' : 'Verify & Sign In'} <CheckCircle2 size={18} />
+              </button>
+              <div className="text-center mt-2">
+                <button type="button" onClick={() => setStep('email')} className="text-sm font-medium hover:underline" style={{color: '#7c3aed'}}>
+                  ← Use a different email
+                </button>
+              </div>
+            </form>
+          )}
+
+          <p className="text-center text-xs text-gray-400 mt-8">
+            By continuing, you agree to our <a href="#" className="underline">Terms of Service</a> and <a href="#" className="underline">Privacy Policy</a>.
           </p>
         </div>
       </main>

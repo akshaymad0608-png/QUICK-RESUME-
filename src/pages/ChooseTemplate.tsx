@@ -75,34 +75,6 @@ export const defaultSampleData: ResumeData = {
 };
 
 const templates: { id: TemplateType; name: string; description: string; defaultColor: string }[] = [
-  { id: 'celestial', name: 'Celestial', description: 'Soft neutral tones with refined typography for a sophisticated and professional feel.', defaultColor: '#475569' },
-  { id: 'galaxy', name: 'Galaxy', description: 'A visually striking resume template, perfect for illustrating the breadth and depth of your expertise.', defaultColor: '#3b82f6' },
-  { id: 'astral', name: 'Astral', description: 'Includes a prominent profile image for a personal touch while maintaining professionalism.', defaultColor: '#d6d3d1' },
-  { id: 'eclipse', name: 'Eclipse', description: 'A mysterious and powerful CV template, emphasizing key accomplishments and milestones.', defaultColor: '#1e293b' },
-  { id: 'astralis', name: 'Astralis', description: 'A modern and professional resume template with a clean and structured layout.', defaultColor: '#0f766e' },
-  { id: 'orbit', name: 'Orbit', description: 'A dynamic, well-structured resume template, highlighting a balanced journey through your career milestones.', defaultColor: '#64748b' },
-  { id: 'comet', name: 'Comet', description: 'Vibrant resume template with a dynamic color scheme and eye-catching accents.', defaultColor: '#eab308' },
-  { id: 'solstice', name: 'Solstice', description: 'A unique, well-crafted resume template that reflects your individuality and expertise.', defaultColor: '#b91c1c' },
-  { id: 'pulsar', name: 'Pulsar', description: 'A bold and radiant resume template, perfect for professionals who aim to leave a lasting impact.', defaultColor: '#9333ea' },
-  { id: 'quasar', name: 'Quasar', description: 'A cutting-edge resume template, ideal for tech-savvy professionals with a focus on innovation.', defaultColor: '#334155' },
-  { id: 'nebular', name: 'Nebular', description: 'A contemporary, visually appealing resume template that enhances your personal brand.', defaultColor: '#38bdf8' },
-  { id: 'nova', name: 'Nova', description: 'A bold and impactful CV template, designed to highlight transformative career moments.', defaultColor: '#f43f5e' },
-  { id: 'aurora', name: 'Aurora', description: 'An energetic and eye-catching design, ideal for showcasing fast-paced career growth.', defaultColor: '#f9a8d4' },
-  { id: 'hyperion', name: 'Hyperion', description: 'Strong typography and structured sections create a confident and authoritative resume.', defaultColor: '#475569' },
-  { id: 'lunar', name: 'Lunar', description: 'A minimalist and elegant resume template, reflecting clarity and focus.', defaultColor: '#000000' },
-  { id: 'stellar', name: 'Stellar', description: 'A sleek and polished CV template, emphasizing standout achievements and excellence.', defaultColor: '#374151' },
-  { id: 'zenith', name: 'Zenith', description: 'A bold and minimalistic resume template, emphasizing clarity and impact.', defaultColor: '#10b981' },
-  { id: 'aether', name: 'Aether', description: 'A sharp and structured resume template that presents your expertise with professionalism.', defaultColor: '#0f172a' },
-  { id: 'nebula', name: 'Nebula', description: 'A creative and expansive CV template, ideal for showcasing diverse skills and experiences.', defaultColor: '#60a5fa' },
-  { id: 'eon', name: 'Eon', description: 'A clean, easy-to-read resume template, making your qualifications the center of attention.', defaultColor: '#334155' },
-  { id: 'cosmos', name: 'Cosmos', description: 'A comprehensive CV template that provides a broad overview of your professional universe.', defaultColor: '#ec4899' },
-  { id: 'starburst', name: 'Starburst', description: 'Modern and professional resume template with a clean and structured layout.', defaultColor: '#64748b' },
-  { id: 'exoplanet', name: 'Exoplanet', description: 'A simple resume template with an organized structure and neat design.', defaultColor: '#8b5cf6' },
-  { id: 'axis', name: 'Axis', description: 'A commanding layout with high-contrast blocks to organize information for maximum readability and impact.', defaultColor: '#2563eb' },
-  { id: 'keystone', name: 'Keystone', description: 'Soft blue accents and a clean sidebar structure provide a calm, organized presentation of your career history.', defaultColor: '#0c4a6e' },
-  { id: 'helix', name: 'Helix', description: 'Sleek design utilizing a circular profile and refined whitespace for a streamlined, contemporary narrative.', defaultColor: '#1e3a8a' },
-  { id: 'horizon', name: 'Horizon', description: 'Elegant bordered layout with traditional formatting, ideal for formal industries requiring a distinguished look.', defaultColor: '#1e1b4b' },
-  { id: 'quantum', name: 'Quantum', description: 'Contemporary split-column format with right-aligned details to distinctively highlight skills alongside experience.', defaultColor: '#064e3b' },
   { id: 'classic', name: 'Classic Professional', description: 'Perfect for corporate roles and traditional industries.', defaultColor: '#2d3748' },
   { id: 'modern', name: 'Modern Elegant', description: 'A sleek, tech-forward design with clean typography.', defaultColor: '#10b981' },
   { id: 'minimal', name: 'Clean Minimalist', description: 'No clutter. Focused entirely on your content and achievements.', defaultColor: '#000000' },
@@ -166,13 +138,11 @@ const ChooseTemplate: FC = () => {
   const [activeFilter, setActiveFilter] = useState('All Templates');
 
   const filterMap: Record<string, string[]> = {
-    'All Templates': [],
-    'Simple': ['lunar','minimal','eon','celestial','hyperion','axis'],
-    'Modern': ['modern','zenith','galaxy','nova','nebular','orbit','comet'],
-    'One column': ['minimal','lunar','stellar','aether','eon'],
-    'With photo': ['classic','modern','executive','astral','helix'],
-    'Professional': ['classic','executive','keystone','horizon','quantum','aether'],
-    'ATS': ['minimal','lunar','eon','axis','quantum','stellar'],
+    'All Templates': ['classic', 'modern', 'minimal', 'executive'],
+    'Simple': ['classic'],
+    'Modern': ['modern'],
+    'One column': ['minimal'],
+    'Professional': ['executive'],
   };
 
   const filteredTemplates = activeFilter === 'All Templates'
@@ -239,7 +209,7 @@ const ChooseTemplate: FC = () => {
 
         {/* Filter Tabs */}
         <div className="flex overflow-x-auto pb-4 mb-8 gap-2 no-scrollbar justify-start md:justify-center">
-          {['All Templates', 'Simple', 'Modern', 'One column', 'With photo', 'Professional', 'ATS'].map((tab) => (
+          {['All Templates', 'Simple', 'Modern', 'One column', 'Professional'].map((tab) => (
             <button 
               key={tab}
               onClick={() => setActiveFilter(tab)}

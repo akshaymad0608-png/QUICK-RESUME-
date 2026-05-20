@@ -1,15 +1,59 @@
 const actionVerbs = ['Led','Built','Developed','Managed','Designed','Improved','Delivered','Implemented','Increased','Reduced','Launched','Streamlined','Optimized','Coordinated','Achieved','Drove','Spearheaded','Established','Executed','Oversaw'];
 
 export const enhanceBulletPoints = async (bullets: string[]): Promise<string[]> => {
-  return bullets.map(bullet => {
-    const clean = bullet.replace(/^[•\-*]\s*/, '').trim();
-    if (!clean) return clean;
-    const firstWord = clean.split(' ')[0];
-    const alreadyStrong = actionVerbs.some(v => firstWord.toLowerCase() === v.toLowerCase());
-    if (alreadyStrong) return clean;
-    const verb = actionVerbs[Math.floor(Math.random() * actionVerbs.length)];
-    return `${verb} ${clean.charAt(0).toLowerCase()}${clean.slice(1)}`;
-  });
+  const prompt = `You are an expert resume writer. I will provide a list of bullet points for a resume experience section. Rewrite each bullet point to be more impactful, using strong action verbs, removing fluff, and making them results-oriented. If possible, imagine plausible metrics where appropriate (e.g., instead of "improved performance", write "improved performance by 15%").
+Return ONLY the improved bullet points separated by newlines, do not include any prefixes or introductory text.
+
+Bullet points:
+${bullets.map(b => `- ${b}`).join('\n')}`;
+
+  try {
+    const res = await fetch('/api/gemini', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Failed to generate');
+    // split by newline and remote leading bullets/hyphens
+    return data.text.trim().split('\n').map((b: string) => b.replace(/^[•*\-]\s*/, '').trim()).filter(Boolean);
+  } catch (error) {
+    console.error(error);
+    throw new Error('Failed to enhance bullet points.');
+  }
+};
+
+export const calculateATS = async (resumeData: Record<string, unknown>): Promise<{ score: number, tips: string[] }> => {
+  const prompt = `You are an expert ATS (Applicant Tracking System) software simulator and technical recruiter. 
+Analyze the provided resume data and give it an ATS match score (from 0 to 100) based on overall structure, keyword richness, action verbs, and completeness.
+Also provide 3 specific tips to improve the score.
+Respond ONLY with a valid JSON block containing:
+- score (number)
+- tips (array of strings)
+Do not include \`\`\`json or any other formatting.
+
+Resume Data:
+${JSON.stringify(resumeData, null, 2)}`;
+
+  try {
+    const res = await fetch('/api/gemini', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Failed to generate');
+    
+    // Parse the JSON output carefully (sometimes gemini wraps it in ```json)
+    let text = data.text.trim();
+    if (text.startsWith('\`\`\`json')) text = text.replace('\`\`\`json', '').replace('\`\`\`', '').trim();
+    if (text.startsWith('\`\`\`')) text = text.replace('\`\`\`', '').replace('\`\`\`', '').trim();
+
+    return JSON.parse(text);
+  } catch (error) {
+    console.error(error);
+    throw new Error('Failed to calculate ATS score.');
+  }
 };
 
 export const suggestSkills = async (jobTitles: string[]): Promise<string[]> => {

@@ -134,8 +134,8 @@ const Experience: FC = () => {
                   disabled={isEnhancingId === exp.id}
                   className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-lg transition-colors disabled:opacity-50"
                 >
-                  {isEnhancingId === exp.id ? <Loader2 size={14} className="animate-spin" /> : <Sparkles size={14} />}
-                  Enhance with AI
+                  {isEnhancingId === exp.id ? <Loader2 size={14} className="animate-spin" /> : <span>✨</span>}
+                  Improve
                 </button>
               </div>
               <textarea 
