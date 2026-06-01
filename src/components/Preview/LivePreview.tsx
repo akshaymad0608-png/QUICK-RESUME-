@@ -12,13 +12,13 @@ const LivePreview: FC = () => {
   
   // Calculate if resume is completely empty
   const isEmpty = 
-    !data.personalInfo.firstName && 
-    !data.personalInfo.lastName &&
-    !data.personalInfo.email &&
+    !data.personalInfo?.firstName && 
+    !data.personalInfo?.lastName &&
+    !data.personalInfo?.email &&
     !data.summary && 
-    data.experience.length === 0 && 
-    data.education.length === 0 &&
-    data.skills.length === 0;
+    (!data.experience || data.experience.length === 0) && 
+    (!data.education || data.education.length === 0) &&
+    (!data.skills || data.skills.length === 0);
 
   return (
     <div className="w-full flex-1 flex flex-col bg-white overflow-hidden" id="resume-preview-container">

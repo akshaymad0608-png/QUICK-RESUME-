@@ -139,3 +139,29 @@ ${JSON.stringify(resumeData, null, 2)}
   }
 };
 
+export const chatWithAI = async (messages: { role: string, content: string }[], resumeData: Record<string, unknown>): Promise<string> => {
+  const formattedMessages = messages.map(m => `${m.role === 'user' ? 'User' : 'Assistant'}: ${m.content}`).join('\n');
+  const prompt = `You are a helpful and expert AI resume assistant. Help the user build and improve their resume. Be concise and practical. 
+Here is their current resume data (for context):
+${JSON.stringify(resumeData, null, 2)}
+
+Chat History:
+${formattedMessages}
+Assistant:`;
+
+  try {
+    const res = await fetch('/api/gemini', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Failed to generate');
+    return data.text.trim();
+  } catch (error) {
+    console.error(error);
+    throw new Error('Failed to chat with AI.');
+  }
+};
+
+

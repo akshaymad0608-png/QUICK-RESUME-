@@ -33,13 +33,38 @@ const Start: FC = () => {
 
         const extractedData = await res.json();
         
-        setData({
-          ...data,
-          ...extractedData,
-          design: data.design // Keep existing design settings
-        });
+        if (extractedData.experience && Array.isArray(extractedData.experience)) {
+          extractedData.experience = extractedData.experience.map((e: any) => ({ ...e, id: crypto.randomUUID() }));
+        }
+        if (extractedData.education && Array.isArray(extractedData.education)) {
+          extractedData.education = extractedData.education.map((e: any) => ({ ...e, id: crypto.randomUUID() }));
+        }
 
-        toast.success('Resume imported successfully!', { id: 'upload' });
+        setData((prevData) => ({
+          ...prevData,
+          ...extractedData,
+          personalInfo: {
+            ...prevData.personalInfo,
+            ...(extractedData.personalInfo || {}),
+          },
+          experience: extractedData.experience || prevData.experience,
+          education: extractedData.education || prevData.education,
+          skills: extractedData.skills || prevData.skills,
+          summary: extractedData.summary || prevData.summary,
+          design: prevData.design // Keep existing design settings
+        }));
+
+        const isActuallyEmpty = 
+          !extractedData.personalInfo?.firstName &&
+          !extractedData.summary &&
+          (!extractedData.experience || extractedData.experience.length === 0) &&
+          (!extractedData.education || extractedData.education.length === 0);
+
+        if (isActuallyEmpty) {
+          toast.error('Could not read text from your file (it might be an image or unsupported format).', { id: 'upload', duration: 5000 });
+        } else {
+          toast.success('Resume imported successfully!', { id: 'upload' });
+        }
         navigate('/build');
       } catch (error: unknown) {
         toast.error(error instanceof Error ? error.message : 'Error importing resume', { id: 'upload' });
@@ -103,7 +128,7 @@ const Start: FC = () => {
           </>
         ) : (
           <div 
-            className="w-full max-w-3xl bg-white rounded-3xl p-16 border-2 border-dashed border-gray-300 text-center relative group hover:border-blue-400 transition-colors cursor-pointer" 
+            className="w-full max-w-3xl bg-white rounded-3xl p-6 md:p-16 border-2 border-dashed border-gray-300 text-center relative group hover:border-blue-400 transition-colors cursor-pointer" 
             onClick={() => { if (!isUploading) fileInputRef.current?.click(); }}
             onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
             onDrop={(e) => {

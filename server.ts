@@ -4,10 +4,11 @@ import { createServer as createViteServer } from "vite";
 import { GoogleGenAI } from "@google/genai";
 import multer from 'multer';
 import pdfParse from 'pdf-parse/lib/pdf-parse.js';
+import mammoth from 'mammoth';
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
 
-dotenv.config({ override: true });
+dotenv.config();
 
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -28,13 +29,16 @@ async function startServer() {
       if (req.file.mimetype === 'application/pdf') {
         const data = await pdfParse(req.file.buffer);
         text = data.text;
+      } else if (req.file.originalname.endsWith('.docx') || req.file.mimetype.includes('wordprocessingml')) {
+        const result = await mammoth.extractRawText({ buffer: req.file.buffer });
+        text = result.value;
       } else {
         text = req.file.buffer.toString('utf-8');
       }
 
       const apiKey = process.env.GEMINI_API_KEY;
       if (!apiKey) {
-        return res.status(500).json({ error: "Server missing GEMINI_API_KEY" });
+        return res.status(500).json({ error: "Invalid or missing GEMINI_API_KEY. Please provide a real Google Gemini API key in the AI Studio Settings." });
       }
 
       const ai = new GoogleGenAI({
@@ -71,7 +75,7 @@ ${text}
       `;
 
       const response = await ai.models.generateContent({
-        model: 'gemini-3-flash-preview',
+        model: 'gemini-3.5-flash',
         contents: prompt,
         config: {
           responseMimeType: "application/json"
@@ -80,7 +84,11 @@ ${text}
 
       const resultText = response.text;
       if (!resultText) throw new Error("Empty response from AI");
-      const resultObj = JSON.parse(resultText);
+      
+      let textToParse = resultText.trim();
+      textToParse = textToParse.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim();
+
+      const resultObj = JSON.parse(textToParse);
 
       res.json(resultObj);
     } catch (err: unknown) {
@@ -97,7 +105,7 @@ ${text}
       const apiKey = process.env.GEMINI_API_KEY;
       
       if (!apiKey) {
-        return res.status(500).json({ error: "Server missing GEMINI_API_KEY" });
+        return res.status(500).json({ error: "Invalid or missing GEMINI_API_KEY. Please provide a real Google Gemini API key in the AI Studio Settings." });
       }
 
       const ai = new GoogleGenAI({
@@ -109,7 +117,7 @@ ${text}
         }
       });
       const response = await ai.models.generateContent({
-        model: 'gemini-3-flash-preview',
+        model: 'gemini-3.5-flash',
         contents: prompt,
       });
 

@@ -1,0 +1,6 @@
+{
+  "name": "QuickResume",
+  "description": "An AI-powered resume builder",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

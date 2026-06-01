@@ -2,7 +2,7 @@ import { FC, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 import { useResume } from '../context/ResumeContext';
-import { CheckCircle, FileText, Layout, Palette, Type, Edit2, GripVertical, Pencil, Trash2, ArrowLeft, Lock, Download, Loader2, Sparkles, Lightbulb, Eye } from 'lucide-react';
+import { CheckCircle, FileText, Layout, Palette, Type, Edit2, GripVertical, Pencil, Trash2, ArrowLeft, Lock, Download, Loader2, Sparkles, Lightbulb, Eye, Bot, Target, BarChart2, Mail, Share2 } from 'lucide-react';
 import html2pdf from 'html2pdf.js';
 import toast from 'react-hot-toast';
 import Contacts from '../components/steps/Contacts';
@@ -13,6 +13,11 @@ import Summary from '../components/steps/Summary';
 import LivePreview from '../components/Preview/LivePreview';
 import { analyzeResume } from '../services/geminiService';
 import Markdown from 'react-markdown';
+import { ChatAssistant } from '../components/ChatAssistant';
+import ATSMatcher from '../components/ATSMatcher';
+import ScoreDashboard from '../components/ScoreDashboard';
+import InlineCoverLetter from '../components/InlineCoverLetter';
+import ExportPanel from '../components/ExportPanel';
 
 const PURPLE = '#7c3aed';
 const BLUE = '#0ea5e9';
@@ -47,11 +52,11 @@ const Build: FC = () => {
   const NavItem = ({ id, icon: Icon, label }: { id: string; icon: React.ElementType; label: string }) => (
     <button
       onClick={() => { setActiveTab(id); setEditingSection(null); setIsMobilePreviewing(false); }}
-      className="flex flex-col items-center justify-center gap-1 md:gap-2 py-3 md:py-5 flex-1 md:w-full transition-colors md:border-b md:border-gray-100"
+      className="flex flex-col items-center justify-center gap-1 md:gap-2 py-3 md:py-5 w-[70px] shrink-0 md:w-full transition-colors md:border-b md:border-gray-100 relative"
       style={{ color: activeTab === id ? PURPLE : '#6b7280' }}
     >
       <Icon size={24} className="md:w-7 md:h-7" strokeWidth={activeTab === id ? 2 : 1.5} />
-      <span className="text-[10px] md:text-[12px] font-medium text-center hidden sm:block md:block">{label}</span>
+      <span className="text-[10px] md:text-[12px] font-medium text-center">{label}</span>
       {activeTab === id && <div className="hidden md:block w-1 h-8 rounded-full absolute left-0" style={{background: GRAD}}></div>}
     </button>
   );
@@ -72,12 +77,17 @@ const Build: FC = () => {
       </div>
 
       {/* Left Sidebar Nav */}
-      <div className="relative md:w-[110px] w-full bg-white md:border-r border-t md:border-t-0 border-gray-200 flex flex-row md:flex-col items-center justify-between md:justify-start shrink-0 z-40 shadow-sm fixed bottom-0 md:relative md:bottom-auto">
+      <div className="relative md:w-[110px] w-full bg-white md:border-r border-t md:border-t-0 border-gray-200 flex flex-row md:flex-col items-center justify-start shrink-0 z-40 shadow-sm fixed bottom-0 md:relative md:bottom-auto overflow-x-auto md:overflow-x-hidden md:overflow-y-auto md:h-full custom-scrollbar gap-2 md:gap-0 px-2 md:px-0">
         <NavItem id="templates" icon={FileText} label="Templates" />
         <NavItem id="section" icon={Layout} label="Section" />
         <NavItem id="design" icon={Palette} label="Design" />
         <NavItem id="spellcheck" icon={Type} label="Checks" />
         <NavItem id="analysis" icon={Sparkles} label="AI Review" />
+        <NavItem id="chat" icon={Bot} label="AI Chat" />
+        <NavItem id="score" icon={BarChart2} label="Score" />
+        <NavItem id="ats" icon={Target} label="ATS" />
+        <NavItem id="coverletter" icon={Mail} label="Cover" />
+        <NavItem id="export" icon={Share2} label="Export" />
       </div>
 
       {/* Left Panel */}
@@ -268,12 +278,30 @@ const Build: FC = () => {
                 )}
               </div>
             )}
+
+            {activeTab === 'chat' && (
+              <div className="h-full bg-gray-50 p-2">
+                <ChatAssistant />
+              </div>
+            )}
+            {activeTab === 'score' && (
+              <ScoreDashboard />
+            )}
+            {activeTab === 'ats' && (
+              <ATSMatcher />
+            )}
+            {activeTab === 'coverletter' && (
+              <InlineCoverLetter />
+            )}
+            {activeTab === 'export' && (
+              <ExportPanel />
+            )}
           </div>
         )}
       </div>
 
       {/* Resume Preview Area */}
-      <div className={`flex-1 relative overflow-y-auto flex-col p-4 md:p-8 items-center pt-8 custom-scrollbar pb-24 md:pb-8 ${!isMobilePreviewing ? 'hidden md:flex' : 'flex'}`} style={{background: '#eef2f6'}}>
+      <div className={`flex-1 relative overflow-auto flex-col p-4 md:p-8 items-center md:items-center pt-8 custom-scrollbar pb-24 md:pb-8 ${!isMobilePreviewing ? 'hidden md:flex' : 'flex'}`} style={{background: '#eef2f6'}}>
         <div className="w-full max-w-[794px] flex flex-col min-h-min pb-20 md:pb-0">
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between font-semibold text-sm mb-4 w-full gap-4 md:gap-0">
             <div className="flex items-center gap-2 pl-1 max-w-full overflow-hidden text-ellipsis whitespace-nowrap" style={{color: PURPLE}}>
