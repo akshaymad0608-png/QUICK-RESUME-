@@ -14,7 +14,7 @@ interface SectionScore {
 }
 
 const ProgressBar: FC<{ value: number; color: string }> = ({ value, color }) => (
-  <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
+  <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
     <div className="h-full rounded-full transition-all duration-700" style={{ width: `${value}%`, background: color }} />
   </div>
 );
@@ -25,7 +25,7 @@ const CircleScore: FC<{ score: number; max: number; size?: number; color: string
   const circ = 2 * Math.PI * r;
   return (
     <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="shrink-0">
-      <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="#f1f5f9" strokeWidth={5} />
+      <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth={5} />
       <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke={color} strokeWidth={5}
         strokeDasharray={`${(pct / 100) * circ} ${circ}`} strokeLinecap="round"
         transform={`rotate(-90 ${size / 2} ${size / 2})`} />
@@ -42,38 +42,38 @@ const SectionCard: FC<{ sec: SectionScore; pct: number }> = ({ sec, pct }) => {
   const allDone = sec.score === sec.maxScore;
 
   return (
-    <div className="rounded-xl border border-gray-100 bg-white shadow-sm overflow-hidden">
-      <button onClick={() => setOpen(o => !o)} className="w-full px-4 py-3 flex items-center gap-3 hover:bg-gray-50 transition-colors">
+    <div className="rounded-xl border border-white/5 bg-[#0F172A] shadow-sm overflow-hidden transition-all hover:border-white/10">
+      <button onClick={() => setOpen(o => !o)} className="w-full px-4 py-3 flex items-center gap-3 hover:bg-white/5 transition-colors">
         <CircleScore score={sec.score} max={sec.maxScore} color={sec.color} />
         <div className="flex-1 text-left">
           <div className="flex items-center gap-2 mb-1.5">
             <sec.Icon size={13} style={{ color: sec.color }} />
-            <span className="font-bold text-gray-800 text-sm">{sec.name}</span>
+            <span className="font-bold text-slate-200 text-sm">{sec.name}</span>
             {allDone && <CheckCircle2 size={12} className="text-emerald-500" />}
           </div>
           <ProgressBar value={pct} color={sec.color} />
         </div>
-        {open ? <ChevronUp size={14} className="text-gray-300" /> : <ChevronDown size={14} className="text-gray-300" />}
+        {open ? <ChevronUp size={14} className="text-slate-500" /> : <ChevronDown size={14} className="text-slate-500" />}
       </button>
 
       {open && (
-        <div className="px-4 pb-4 border-t border-gray-50">
+        <div className="px-4 pb-4 border-t border-white/5">
           <ul className="mt-3 flex flex-col gap-1.5">
             {sec.items.map((item, i) => (
               <li key={i} className="flex items-start gap-2">
                 {item.done
                   ? <CheckCircle2 size={13} className="text-emerald-500 mt-0.5 shrink-0" />
-                  : <Circle size={13} className="text-gray-300 mt-0.5 shrink-0" />}
-                <span className={`text-xs ${item.done ? 'text-gray-400 line-through' : 'text-gray-700 font-medium'}`}>
+                  : <Circle size={13} className="text-slate-600 mt-0.5 shrink-0" />}
+                <span className={`text-xs ${item.done ? 'text-slate-500 line-through' : 'text-slate-300 font-medium'}`}>
                   {item.label}
                 </span>
               </li>
             ))}
           </ul>
           {pendingTips.length > 0 && (
-            <div className="mt-3 rounded-lg p-2.5 bg-amber-50 border border-amber-100 flex gap-2">
-              <AlertTriangle size={12} className="text-amber-500 shrink-0 mt-0.5" />
-              <p className="text-xs text-amber-700">{pendingTips[0].tip}</p>
+            <div className="mt-3 rounded-lg p-2.5 bg-amber-500/10 border border-amber-500/20 flex gap-2">
+              <AlertTriangle size={12} className="text-amber-400 shrink-0 mt-0.5" />
+              <p className="text-xs text-amber-200/80">{pendingTips[0].tip}</p>
             </div>
           )}
         </div>
@@ -100,7 +100,7 @@ const ScoreDashboard: FC = () => {
       ],
     },
     {
-      name: 'Summary', Icon: FileText, color: '#0ea5e9',
+      name: 'Summary', Icon: FileText, color: '#38bdf8',
       score: [!!data.summary, data.summary.length >= 100, data.summary.length >= 200, data.summary.split(' ').filter(Boolean).length >= 30].filter(Boolean).length,
       maxScore: 4,
       items: [
@@ -119,7 +119,7 @@ const ScoreDashboard: FC = () => {
         { label: '2+ positions', done: data.experience.length >= 2 },
         { label: 'Job descriptions added', done: data.experience.some(e => !!e.description), tip: 'Har job mein responsibilities likho' },
         { label: 'Detailed descriptions (100+ chars)', done: data.experience.some(e => e.description.length >= 100) },
-        { label: 'Numbers / metrics used', done: data.experience.some(e => !!e.description.match(/\\d+/)), tip: 'Add numbers: "increased sales by 30%"' },
+        { label: 'Numbers / metrics used', done: data.experience.some(e => !!e.description.match(/\d+/)), tip: 'Add numbers: "increased sales by 30%"' },
         { label: 'All dates filled', done: data.experience.every(e => !!e.startDate) },
       ],
     },
@@ -135,7 +135,7 @@ const ScoreDashboard: FC = () => {
       ],
     },
     {
-      name: 'Skills', Icon: Star, color: '#ec4899',
+      name: 'Skills', Icon: Star, color: '#f43f5e',
       score: [data.skills.length > 0, data.skills.length >= 5, data.skills.length >= 8, data.skills.length >= 12].filter(Boolean).length,
       maxScore: 4,
       items: [
@@ -155,37 +155,37 @@ const ScoreDashboard: FC = () => {
 
   return (
     <div className="flex flex-col h-full overflow-y-auto custom-scrollbar">
-      <div className="p-6">
+      <div className="p-2">
         <div className="flex items-center gap-3 mb-5">
-          <div className="w-10 h-10 rounded-full flex items-center justify-center text-white shadow-sm" style={{ background: GRAD }}>
+          <div className="w-10 h-10 rounded-full flex items-center justify-center text-white shadow-[0_0_15px_rgba(124,58,237,0.4)]" style={{ background: GRAD }}>
             <BarChart2 size={20} />
           </div>
           <div>
-            <h2 className="text-[20px] font-bold text-gray-900 leading-tight">Score Dashboard</h2>
-            <p className="text-xs text-gray-400">Resume completeness tracker</p>
+            <h2 className="text-[20px] font-bold text-white leading-tight">Score Dashboard</h2>
+            <p className="text-xs text-slate-400">Resume completeness tracker</p>
           </div>
         </div>
 
-        <div className="rounded-2xl p-5 mb-5 flex items-center gap-4" style={{ background: 'linear-gradient(135deg, #f5f3ff, #eff6ff)', border: '1.5px solid #ddd6fe' }}>
+        <div className="rounded-2xl p-5 mb-5 flex items-center gap-4 bg-[#0F172A] border border-primary/20 shadow-lg">
           <div className="relative w-20 h-20 shrink-0">
             <svg viewBox="0 0 88 88" className="w-full h-full -rotate-90">
-              <circle cx="44" cy="44" r="36" fill="none" stroke="#e9d5ff" strokeWidth="10" />
+              <circle cx="44" cy="44" r="36" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="10" />
               <circle cx="44" cy="44" r="36" fill="none" stroke={overallColor} strokeWidth="10"
                 strokeDasharray={`${(overallPct / 100) * 226} 226`} strokeLinecap="round" />
             </svg>
             <div className="absolute inset-0 flex flex-col items-center justify-center">
               <span className="text-2xl font-black" style={{ color: overallColor }}>{overallPct}</span>
-              <span className="text-[9px] text-gray-400 font-bold">%</span>
+              <span className="text-[9px] text-slate-500 font-bold">%</span>
             </div>
           </div>
           <div>
-            <p className="text-xs font-semibold uppercase tracking-widest text-gray-400">Resume Score</p>
+            <p className="text-xs font-bold uppercase tracking-widest text-slate-500">Resume Score</p>
             <p className="text-2xl font-black mt-0.5" style={{ color: overallColor }}>{overallLabel}</p>
-            <p className="text-xs text-gray-500 mt-1">{totalScore} / {totalMax} points completed</p>
+            <p className="text-xs text-slate-400 mt-1">{totalScore} / {totalMax} points completed</p>
           </div>
         </div>
 
-        <p className="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-3">Section Breakdown</p>
+        <p className="text-xs font-bold uppercase tracking-wide text-slate-500 mb-3">Section Breakdown</p>
         <div className="flex flex-col gap-3">
           {sections.map((sec) => (
             <SectionCard key={sec.name} sec={sec} pct={Math.round((sec.score / sec.maxScore) * 100)} />

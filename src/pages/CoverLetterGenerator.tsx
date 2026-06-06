@@ -1,13 +1,14 @@
 import { FC, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Link } from 'react-router-dom';
-import { FileText, ArrowLeft, Wand2, Copy, Download, Loader2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { FileText, Wand2, Copy, Download, Loader2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useResume } from '../context/ResumeContext';
 import { generateCoverLetter } from '../services/geminiService';
 import html2pdf from 'html2pdf.js';
 
 const CoverLetterGenerator: FC = () => {
+  const navigate = useNavigate();
   const { data } = useResume();
   const [jobDescription, setJobDescription] = useState('');
   const [coverLetter, setCoverLetter] = useState('');
@@ -16,7 +17,7 @@ const CoverLetterGenerator: FC = () => {
 
   const handleGenerate = async () => {
     if (!jobDescription || jobDescription.trim().length < 10) {
-      toast.error('Please enter a longer job description.');
+      toast.error('Please enter a valid job description.');
       return;
     }
     try {
@@ -60,68 +61,70 @@ const CoverLetterGenerator: FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col font-sans">
+    <div className="min-h-screen bg-[var(--color-bg-surface)] text-body font-sans flex flex-col pt-[72px]">
       <Helmet>
-        <title>AI Cover Letter Generator | QuickResume</title>
-        <meta name="description" content="Generate a customized, professional cover letter in seconds. Paste the job description and let our AI match your resume skills to the role perfectly." />
-        <meta name="keywords" content="cover letter generator, ai cover letter builder, free cover letter maker, cover letter templates" />
-        <meta property="og:title" content="AI Cover Letter Generator | QuickResume" />
-        <meta property="og:description" content="Generate a customized, professional cover letter in seconds. Paste the job description and let our AI match your resume skills to the role perfectly." />
-        <meta property="og:type" content="website" />
-        <link rel="canonical" href="https://quickresume.business/cover-letter" />
+        <title>Cover Letter Builder | QuickResume</title>
+        <meta name="description" content="Generate a customized, professional cover letter in seconds matching your resume." />
       </Helmet>
 
-      <header className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between shadow-sm shrink-0">
-        <div className="flex items-center gap-4">
-          <Link to="/" className="text-gray-500 hover:text-gray-800 transition-colors">
-            <ArrowLeft size={24} />
-          </Link>
-          <Link to="/" className="text-xl font-bold flex items-center gap-2 text-gray-900 hover:opacity-80 transition-opacity">
-            <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center text-white">
-              <FileText size={18} />
-            </div>
-            QuickResume
-          </Link>
+      {/* Navbar Minimal */}
+      <nav className="fixed top-0 left-0 right-0 h-[72px] bg-white border-b border-[var(--color-border)] px-6 lg:px-10 flex items-center justify-between z-50">
+        <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')}>
+          <div className="w-8 h-8 bg-primary rounded flex items-center justify-center">
+            <i className="ti ti-file-description text-white text-xl"></i>
+          </div>
+          <span className="text-xl font-bold text-heading tracking-tight">QuickResume</span>
         </div>
-      </header>
+        <div className="flex items-center gap-4">
+          <button 
+            onClick={() => navigate('/build')}
+            className="text-sm font-semibold text-heading hover:text-primary transition-colors border border-gray-300 rounded-lg px-4 py-2 bg-white"
+          >
+            Back to Editor
+          </button>
+        </div>
+      </nav>
 
-      <main className="flex-1 max-w-7xl w-full mx-auto p-6 md:p-8 flex flex-col gap-6 md:flex-row">
+      <main className="flex-1 w-full max-w-7xl mx-auto px-6 py-12 flex flex-col gap-8 lg:flex-row">
+        
         {/* Left Column: Input */}
-        <div className="w-full md:w-1/2 flex flex-col gap-4">
-          <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col h-full">
-            <h2 className="text-xl font-bold text-gray-900 mb-2">Generate Cover Letter</h2>
-            <p className="text-sm text-gray-600 mb-6">
-              Paste the job description below. We'll use your currently saved resume data and our AI to generate a tailored cover letter.
-            </p>
+        <div className="w-full lg:w-1/2 flex flex-col gap-4 h-[calc(100vh-140px)]">
+          <div className="bg-white p-6 lg:p-8 rounded-2xl border border-[var(--color-border)] flex flex-col h-full shadow-sm">
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold text-heading mb-2">Create your cover letter</h2>
+              <p className="text-sm text-body">
+                Paste the job description below, and our AI will write a tailored cover letter based on your resume.
+              </p>
+            </div>
 
             <textarea
-              className="flex-1 w-full p-4 border border-gray-200 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none resize-none mb-6"
-              placeholder="Paste job description here..."
+              className="flex-1 w-full p-4 bg-surface border border-gray-300 rounded-xl focus:border-primary focus:ring-1 focus:ring-primary outline-none resize-none mb-6 text-heading placeholder:text-gray-400"
+              placeholder="E.g., We are looking for a software engineer with 5 years of React experience..."
               value={jobDescription}
               onChange={(e) => setJobDescription(e.target.value)}
             />
 
             <button
+              className="w-full bg-primary text-white font-semibold rounded-xl py-4 flex items-center justify-center gap-2 hover:bg-primary-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               onClick={handleGenerate}
               disabled={isGenerating || !jobDescription.trim()}
-              className="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all shadow-lg flex justify-center items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isGenerating ? <Loader2 size={20} className="animate-spin" /> : <Wand2 size={20} />}
-              {isGenerating ? 'Generating...' : 'Generate with AI'}
+              {isGenerating ? <Loader2 size={18} className="animate-spin" /> : <Wand2 size={18} />}
+              {isGenerating ? 'Generating...' : 'Generate Cover Letter'}
             </button>
           </div>
         </div>
 
         {/* Right Column: Output */}
-        <div className="w-full md:w-1/2 flex flex-col gap-4">
-          <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col h-full">
+        <div className="w-full lg:w-1/2 flex flex-col gap-4 h-[calc(100vh-140px)]">
+          <div className="bg-white p-6 lg:p-8 rounded-2xl border border-[var(--color-border)] flex flex-col h-full shadow-sm">
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-xl font-bold text-gray-900">Your Cover Letter</h2>
+              <h2 className="text-xl font-bold text-heading">Your Cover Letter</h2>
               <div className="flex gap-2">
                 <button
                   onClick={handleCopy}
                   disabled={!coverLetter}
-                  className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors disabled:opacity-30"
+                  className="p-2 text-gray-500 hover:text-heading hover:bg-gray-100 rounded-lg transition-colors disabled:opacity-30 border border-transparent"
                   title="Copy to clipboard"
                 >
                   <Copy size={20} />
@@ -129,7 +132,7 @@ const CoverLetterGenerator: FC = () => {
                 <button
                   onClick={handleDownloadPDF}
                   disabled={!coverLetter || isDownloading}
-                  className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors disabled:opacity-30"
+                  className="p-2 text-gray-500 hover:text-heading hover:bg-gray-100 rounded-lg transition-colors disabled:opacity-30 border border-transparent"
                   title="Download as PDF"
                 >
                   {isDownloading ? <Loader2 size={20} className="animate-spin" /> : <Download size={20} />}
@@ -139,13 +142,16 @@ const CoverLetterGenerator: FC = () => {
 
             {coverLetter ? (
               <textarea
-                className="flex-1 w-full bg-gray-50 p-6 border border-gray-200 rounded-xl focus:border-blue-500 outline-none resize-none text-[14px] leading-relaxed whitespace-pre-wrap font-sans"
+                className="flex-1 w-full bg-white p-6 border border-gray-200 rounded-xl focus:border-primary outline-none resize-none text-[15px] leading-relaxed whitespace-pre-wrap font-sans text-heading shadow-inner custom-scrollbar"
                 value={coverLetter}
                 onChange={(e) => setCoverLetter(e.target.value)}
               />
             ) : (
-              <div className="flex-1 w-full border-2 border-dashed border-gray-200 rounded-xl flex items-center justify-center p-8 text-center text-gray-400">
-                Generated cover letter will appear here.
+              <div className="flex-1 w-full border-2 border-dashed border-gray-200 rounded-xl flex flex-col items-center justify-center p-8 text-center text-gray-400 bg-gray-50">
+                <div className="w-16 h-16 rounded-full bg-white border border-gray-200 flex items-center justify-center mb-4 shadow-sm">
+                   <FileText className="w-6 h-6 text-gray-400" />
+                </div>
+                <p className="font-medium text-sm">Your generated document will appear here.</p>
               </div>
             )}
           </div>

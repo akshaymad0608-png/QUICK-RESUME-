@@ -16,7 +16,7 @@ const ResumeExamples: FC = () => {
   return (
     <div className="min-h-screen bg-gray-50 font-sans">
       <Helmet>
-        <title>Resume Examples by Industry | QuickResume</title>
+        <title>Professional Resume Examples & Samples | QuickResume</title>
         <meta name="description" content="Explore professional resume examples for Software Engineers, Product Managers, Sales Executives, and more. Learn what skills to highlight for your industry." />
         <meta name="keywords" content="resume examples, professional resume samples, software engineer resume, product manager resume, resume inspiration" />
         <meta property="og:title" content="Resume Examples by Industry | QuickResume" />

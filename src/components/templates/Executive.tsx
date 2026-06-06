@@ -11,8 +11,11 @@ const Executive: FC<TemplateProps> = ({ data }) => {
   const spacingMap: Record<string, string> = { compact: '0.5rem', normal: '1rem', relaxed: '1.75rem' };
   const sectionGap = spacingMap[design.spacing] || '1rem';
 
+  const hf = design.headingFont || design.fontFamily;
+  const bf = design.bodyFont || design.fontFamily;
+
   return (
-    <div className="w-full flex-1 flex bg-white" style={{ fontFamily: design.fontFamily, fontSize: design.fontSize || '14px' }}>
+    <div className="w-full flex-1 flex bg-white" style={{ fontFamily: bf, fontSize: design.fontSize || '14px' , lineHeight: design.lineHeight || '1.5' }}>
       
       {/* Sidebar */}
       <div className="w-[35%] flex flex-col p-8 border-r" style={{ backgroundColor: c, color: 'white' }}>
@@ -71,7 +74,7 @@ const Executive: FC<TemplateProps> = ({ data }) => {
           {/* Summary */}
           {summary && (
             <div style={{ marginBottom: sectionGap }}>
-              <h2 className="text-[16px] font-bold uppercase tracking-widest border-b-2 pb-2 mb-4" style={{ borderColor: c, color: c }}>Professional Profile</h2>
+              <h2 className="text-[16px] font-bold uppercase tracking-widest border-b-2 pb-2 mb-4" style={{ fontFamily: hf,  borderColor: c, color: c }}>Professional Profile</h2>
               <p className="text-[13px] leading-relaxed text-gray-700 whitespace-pre-wrap">{summary}</p>
             </div>
           )}
@@ -79,12 +82,12 @@ const Executive: FC<TemplateProps> = ({ data }) => {
           {/* Experience */}
           {experience.length > 0 && (
             <div style={{ marginBottom: sectionGap }}>
-              <h2 className="text-[16px] font-bold uppercase tracking-widest border-b-2 pb-2 mb-5" style={{ borderColor: c, color: c }}>Work Experience</h2>
+              <h2 className="text-[16px] font-bold uppercase tracking-widest border-b-2 pb-2 mb-5" style={{ fontFamily: hf,  borderColor: c, color: c }}>Work Experience</h2>
               <div className="space-y-6">
                 {experience.map(exp => (
                   <div key={exp.id}>
                     <div className="flex justify-between items-baseline mb-1">
-                      <div className="font-bold text-gray-900 text-[15px]">{exp.jobTitle}</div>
+                      <div className="font-bold text-gray-900 text-[15px]" style={{ fontFamily: hf }}>{exp.jobTitle}</div>
                       <div className="text-[12px] font-bold text-gray-500">
                         {exp.startDate} – {exp.isPresent ? 'Present' : exp.endDate}
                       </div>
@@ -104,12 +107,12 @@ const Executive: FC<TemplateProps> = ({ data }) => {
           {/* Education */}
           {education.length > 0 && (
             <div className="mt-auto" style={{ marginBottom: sectionGap }}>
-              <h2 className="text-[16px] font-bold uppercase tracking-widest border-b-2 pb-2 mb-5" style={{ borderColor: c, color: c }}>Education</h2>
+              <h2 className="text-[16px] font-bold uppercase tracking-widest border-b-2 pb-2 mb-5" style={{ fontFamily: hf,  borderColor: c, color: c }}>Education</h2>
               <div className="space-y-4">
                 {education.map(edu => (
                   <div key={edu.id}>
                     <div className="flex justify-between items-baseline mb-1">
-                      <div className="font-bold text-gray-900 text-[14px]">{edu.degree} in {edu.fieldOfStudy}</div>
+                      <div className="font-bold text-gray-900 text-[15px]" style={{ fontFamily: hf }}>{edu.degree} in {edu.fieldOfStudy}</div>
                       <div className="text-[12px] font-bold text-gray-500">
                         {edu.startYear} – {edu.endYear}
                       </div>

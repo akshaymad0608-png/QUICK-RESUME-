@@ -1,7 +1,11 @@
-const actionVerbs = ['Led','Built','Developed','Managed','Designed','Improved','Delivered','Implemented','Increased','Reduced','Launched','Streamlined','Optimized','Coordinated','Achieved','Drove','Spearheaded','Established','Executed','Oversaw'];
+export const enhanceBulletPoints = async (bullets: string[], action: 'improve' | 'numbers' | 'shorten' | 'expand' | 'grammar' = 'improve'): Promise<string[]> => {
+  let promptAction = "Rewrite each bullet point to be more impactful, using strong action verbs, removing fluff, and making them results-oriented.";
+  if (action === 'numbers') promptAction = "Add plausible placeholder numbers/metrics (e.g., 'by X%') to these bullets to make them results-oriented.";
+  if (action === 'shorten') promptAction = "Shorten each bullet point to be extremely concise and punchy without losing key meaning.";
+  if (action === 'expand') promptAction = "Expand each bullet point to add more detail, technologies used, and business value.";
+  if (action === 'grammar') promptAction = "Fix any grammar or spelling mistakes in these bullet points. Do not change the meaning.";
 
-export const enhanceBulletPoints = async (bullets: string[]): Promise<string[]> => {
-  const prompt = `You are an expert resume writer. I will provide a list of bullet points for a resume experience section. Rewrite each bullet point to be more impactful, using strong action verbs, removing fluff, and making them results-oriented. If possible, imagine plausible metrics where appropriate (e.g., instead of "improved performance", write "improved performance by 15%").
+  const prompt = `You are an expert resume writer. I will provide a list of bullet points for a resume experience section. ${promptAction}
 Return ONLY the improved bullet points separated by newlines, do not include any prefixes or introductory text.
 
 Bullet points:
@@ -15,8 +19,7 @@ ${bullets.map(b => `- ${b}`).join('\n')}`;
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || 'Failed to generate');
-    // split by newline and remote leading bullets/hyphens
-    return data.text.trim().split('\n').map((b: string) => b.replace(/^[•*\-]\s*/, '').trim()).filter(Boolean);
+    return data.text.trim().split('\n').map((b: string) => b.replace(/^[•*-]\s*/, '').trim()).filter(Boolean);
   } catch (error) {
     console.error(error);
     throw new Error('Failed to enhance bullet points.');
@@ -46,8 +49,8 @@ ${JSON.stringify(resumeData, null, 2)}`;
     
     // Parse the JSON output carefully (sometimes gemini wraps it in ```json)
     let text = data.text.trim();
-    if (text.startsWith('\`\`\`json')) text = text.replace('\`\`\`json', '').replace('\`\`\`', '').trim();
-    if (text.startsWith('\`\`\`')) text = text.replace('\`\`\`', '').replace('\`\`\`', '').trim();
+    if (text.startsWith('```json')) text = text.replace('```json', '').replace('```', '').trim();
+    if (text.startsWith('```')) text = text.replace('```', '').replace('```', '').trim();
 
     return JSON.parse(text);
   } catch (error) {
@@ -80,14 +83,26 @@ export const suggestSkills = async (jobTitles: string[]): Promise<string[]> => {
   return Array.from(allSkills).slice(0, 12);
 };
 
-export const generateSummary = async (resumeData: { personalInfo: Record<string, string>, experience: Record<string, string>[], skills: string[] }): Promise<string> => {
-  const { personalInfo, experience, skills } = resumeData;
-  const name = `${personalInfo.firstName} ${personalInfo.lastName}`.trim();
-  const title = personalInfo.jobTitle || 'professional';
-  const years = experience.length > 1 ? `${experience.length * 2}+ years of` : 'solid';
-  const topSkills = skills.slice(0, 3).join(', ') || 'delivering quality results';
-  const company = experience[0]?.company || '';
-  return `${name ? name + ' is a' : 'A'} results-driven ${title} with ${years} experience in ${topSkills}. ${company ? `Previously at ${company}, demonstrating` : 'Known for demonstrating'} strong analytical and problem-solving abilities. Skilled at collaborating with cross-functional teams to deliver impactful outcomes and drive continuous improvement.`;
+export const generateSummary = async (resumeData: Record<string, unknown>): Promise<string> => {
+  const prompt = `You are an expert resume writer. Write a professional, highly impactful resume summary based on the following resume data. 
+It should be concise (3-4 sentences), highlight top skills, and demonstrate value. Do not include introductory text, just the summary paragraph itself.
+
+Resume Data:
+${JSON.stringify(resumeData, null, 2)}`;
+
+  try {
+    const res = await fetch('/api/gemini', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Failed to generate');
+    return data.text.trim();
+  } catch (error) {
+    console.error(error);
+    throw new Error('Failed to generate summary.');
+  }
 };
 
 export const analyzeResume = async (resumeData: Record<string, unknown>): Promise<string> => {

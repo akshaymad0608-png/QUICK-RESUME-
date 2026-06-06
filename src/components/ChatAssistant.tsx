@@ -32,7 +32,7 @@ export const ChatAssistant: React.FC = () => {
     try {
       const response = await chatWithAI([...messages, userMessage], data);
       setMessages(prev => [...prev, { role: 'assistant', content: response }]);
-    } catch (error) {
+    } catch {
       setMessages(prev => [...prev, { role: 'assistant', content: 'Sorry, I encountered an error answering your request. Please try again.' }]);
     } finally {
       setIsLoading(false);

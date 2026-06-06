@@ -2,7 +2,12 @@ import { FC, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 import { useResume } from '../context/ResumeContext';
-import { CheckCircle, FileText, Layout, Palette, Type, Edit2, GripVertical, Pencil, Trash2, ArrowLeft, Lock, Download, Loader2, Sparkles, Lightbulb, Eye, Bot, Target, BarChart2, Mail, Share2 } from 'lucide-react';
+import { 
+  Type, Palette, Layout as LayoutIcon, FileText, Download, 
+  Sparkles, ShieldCheck, History, Settings, Home, Edit3, 
+  CheckCircle2, ChevronDown, 
+  User, Briefcase, GraduationCap, Wrench, Printer, Loader2
+} from 'lucide-react';
 import html2pdf from 'html2pdf.js';
 import toast from 'react-hot-toast';
 import Contacts from '../components/steps/Contacts';
@@ -11,344 +16,575 @@ import Education from '../components/steps/Education';
 import Skills from '../components/steps/Skills';
 import Summary from '../components/steps/Summary';
 import LivePreview from '../components/Preview/LivePreview';
-import { analyzeResume } from '../services/geminiService';
-import Markdown from 'react-markdown';
-import { ChatAssistant } from '../components/ChatAssistant';
-import ATSMatcher from '../components/ATSMatcher';
-import ScoreDashboard from '../components/ScoreDashboard';
-import InlineCoverLetter from '../components/InlineCoverLetter';
-import ExportPanel from '../components/ExportPanel';
 
-const PURPLE = '#7c3aed';
-const BLUE = '#0ea5e9';
-const GRAD = 'linear-gradient(135deg, #7c3aed, #0ea5e9)';
+type SidebarTab = 'dashboard' | 'builder' | 'text' | 'colors' | 'layout' | 'templates' | 'ai' | 'ats' | 'history' | 'settings' | 'preview';
+type BuilderSection = 'personal' | 'summary' | 'experience' | 'education' | 'skills' | 'add_more';
+
+import { TemplateCard } from '../components/TemplateCard';
+import { TEMPLATES } from '../data/templates';
 
 const Build: FC = () => {
-  const [activeTab, setActiveTab] = useState<'templates' | 'section' | 'design' | 'spellcheck' | 'analysis' | string>('section');
-  const [editingSection, setEditingSection] = useState<string | null>(null);
-  const [isDownloading, setIsDownloading] = useState(false);
-  const [isMobilePreviewing, setIsMobilePreviewing] = useState(false);
-  const [analysis, setAnalysis] = useState<string | null>(null);
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
-
   const navigate = useNavigate();
   const { data, updateSection } = useResume();
+  const [activeTab, setActiveTab] = useState<SidebarTab>('builder');
+  const [expandedSection, setExpandedSection] = useState<BuilderSection | null>('personal');
+  const [isDownloading, setIsDownloading] = useState(false);
+  const [resumeName, setResumeName] = useState('Untitled Resume');
+  const [previewZoom, setPreviewZoom] = useState(100);
 
   const handleDownloadPDF = () => {
     const element = document.getElementById('resume-preview-container');
     if (!element) return;
     setIsDownloading(true);
-    const name = data.personalInfo.firstName ? `${data.personalInfo.firstName}_${data.personalInfo.lastName}` : 'resume';
-    html2pdf().set({ margin: 0, filename: `${name}_Resume.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2, useCORS: true }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } }).from(element).save().then(() => { setIsDownloading(false); toast.success('PDF downloaded!'); });
+    const name = data.personalInfo.firstName ? `${data.personalInfo.firstName}_${data.personalInfo.lastName}` : resumeName;
+    html2pdf().set({ 
+      margin: 0, 
+      filename: `${name}_Resume.pdf`, 
+      image: { type: 'jpeg', quality: 0.98 }, 
+      html2canvas: { scale: 2, useCORS: true }, 
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } 
+    }).from(element).save().then(() => { 
+      setIsDownloading(false); 
+      toast.success('PDF downloaded successfully!'); 
+    });
   };
 
-  const handleAnalyze = async () => {
-    setIsAnalyzing(true);
-    try { const result = await analyzeResume(data); setAnalysis(result); }
-    catch { toast.error('Failed to analyze resume'); }
-    finally { setIsAnalyzing(false); }
+  const handlePrint = () => {
+    window.print();
   };
 
-  const NavItem = ({ id, icon: Icon, label }: { id: string; icon: React.ElementType; label: string }) => (
-    <button
-      onClick={() => { setActiveTab(id); setEditingSection(null); setIsMobilePreviewing(false); }}
-      className="flex flex-col items-center justify-center gap-1 md:gap-2 py-3 md:py-5 w-[70px] shrink-0 md:w-full transition-colors md:border-b md:border-gray-100 relative"
-      style={{ color: activeTab === id ? PURPLE : '#6b7280' }}
-    >
-      <Icon size={24} className="md:w-7 md:h-7" strokeWidth={activeTab === id ? 2 : 1.5} />
-      <span className="text-[10px] md:text-[12px] font-medium text-center">{label}</span>
-      {activeTab === id && <div className="hidden md:block w-1 h-8 rounded-full absolute left-0" style={{background: GRAD}}></div>}
-    </button>
-  );
+  const currentScore = 86; // Example score
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row h-screen overflow-hidden font-sans" style={{background: '#eef2f6'}}>
-      <Helmet><title>Build Resume | QuickResume.business</title></Helmet>
+    <div className="flex flex-col h-[100dvh] bg-[#F8FAFC] font-sans text-gray-900 overflow-hidden">
+      <Helmet>
+        <title>Resume Builder | QuickResume</title>
+        <meta name="description" content="Build your professional resume for free with QuickResume's easy-to-use editor. Choose from ATS-friendly templates, expert examples, and AI-powered text generation." />
+        <meta property="og:title" content="Free Online Resume Builder | QuickResume" />
+        <meta property="og:description" content="Create a job-winning resume in minutes with our drag-and-drop builder." />
+      </Helmet>
 
-      {/* Mobile Top Bar */}
-      <div className="md:hidden flex items-center justify-between bg-white px-4 py-3 border-b shrink-0 z-30" style={{borderColor: '#e9d5ff'}}>
-        <div className="font-bold text-lg flex items-center gap-2">
-          <div className="w-6 h-6 rounded flex items-center justify-center text-white" style={{background: GRAD}}>
-            <FileText size={12} />
+      <div className="flex flex-1 min-h-0 overflow-hidden relative">
+        {/* Extreme Left Sidebar (90px) - Desktop Only */}
+        <aside className="w-[90px] bg-[#222222] text-white flex-col items-center py-6 shrink-0 z-20 hidden md:flex">
+          <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center mb-8 cursor-pointer" onClick={() => navigate('/')}>
+            <i className="ti ti-file-description text-white text-2xl"></i>
           </div>
-          <span style={{background: GRAD, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent'}}>QuickResume</span>
-        </div>
-        <button onClick={() => navigate('/')} className="text-sm font-semibold text-gray-500">Exit</button>
-      </div>
 
-      {/* Left Sidebar Nav */}
-      <div className="relative md:w-[110px] w-full bg-white md:border-r border-t md:border-t-0 border-gray-200 flex flex-row md:flex-col items-center justify-start shrink-0 z-40 shadow-sm fixed bottom-0 md:relative md:bottom-auto overflow-x-auto md:overflow-x-hidden md:overflow-y-auto md:h-full custom-scrollbar gap-2 md:gap-0 px-2 md:px-0">
-        <NavItem id="templates" icon={FileText} label="Templates" />
-        <NavItem id="section" icon={Layout} label="Section" />
-        <NavItem id="design" icon={Palette} label="Design" />
-        <NavItem id="spellcheck" icon={Type} label="Checks" />
-        <NavItem id="analysis" icon={Sparkles} label="AI Review" />
-        <NavItem id="chat" icon={Bot} label="AI Chat" />
-        <NavItem id="score" icon={BarChart2} label="Score" />
-        <NavItem id="ats" icon={Target} label="ATS" />
-        <NavItem id="coverletter" icon={Mail} label="Cover" />
-        <NavItem id="export" icon={Share2} label="Export" />
-      </div>
-
-      {/* Left Panel */}
-      <div className={`w-full md:w-[360px] bg-white border-r border-gray-200 flex-col z-10 shrink-0 shadow-sm relative pb-16 md:pb-0 ${isMobilePreviewing ? 'hidden md:flex' : 'flex'}`}>
-        {editingSection ? (
-          <div className="flex flex-col h-full bg-white">
-            <div className="p-4 border-b border-gray-100 flex items-center gap-3 bg-white">
-              <button onClick={() => setEditingSection(null)} className="p-2 hover:bg-purple-50 rounded-full transition-colors">
-                <ArrowLeft size={18} style={{color: PURPLE}} />
+          <div className="flex flex-col gap-2 w-full px-2 mt-2">
+            {[
+              { id: 'dashboard', icon: Home, label: 'Dashboard' },
+              { id: 'builder', icon: Edit3, label: 'Builder' },
+              { id: 'text', icon: Type, label: 'Text' },
+              { id: 'colors', icon: Palette, label: 'Colors' },
+              { id: 'layout', icon: LayoutIcon, label: 'Layout' },
+              { id: 'templates', icon: FileText, label: 'Templates' },
+              { id: 'div1', divider: true },
+              { id: 'ai', icon: Sparkles, label: 'AI Tools' },
+              { id: 'ats', icon: ShieldCheck, label: 'ATS' },
+              { id: 'div2', divider: true },
+              { id: 'history', icon: History, label: 'History' },
+              { id: 'settings', icon: Settings, label: 'Settings' }
+            ].map((item) => item.divider ? (
+              <div key={item.id} className="w-8 h-px bg-white/10 mx-auto my-2" />
+            ) : (
+              <button
+                key={item.id}
+                onClick={() => setActiveTab(item.id as SidebarTab)}
+                className={`flex flex-col items-center justify-center py-3 rounded-xl transition-all w-full
+                  ${activeTab === item.id 
+                    ? 'bg-blue-600/20 text-blue-400' 
+                    : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
+              >
+                <item.icon className="w-5 h-5 mb-1.5" />
+                <span className="text-[10px] font-medium tracking-wide">{item.label}</span>
               </button>
-              <h2 className="text-lg font-bold text-gray-900 capitalize">{editingSection}</h2>
-            </div>
-            <div className="flex-1 overflow-y-auto p-6 custom-scrollbar bg-white">
-              {editingSection === 'summary' && <Summary />}
-              {editingSection === 'experience' && <Experience />}
-              {editingSection === 'education' && <Education />}
-              {editingSection === 'contacts' && <Contacts />}
-              {editingSection === 'skills' && <Skills />}
-            </div>
+            ))}
           </div>
-        ) : (
-          <div className="flex flex-col h-full bg-white">
+        </aside>
 
-            {activeTab === 'templates' && (
-              <div className="p-8">
-                <h2 className="text-[22px] font-bold text-gray-900 mb-6">Templates</h2>
-                <p className="text-sm text-gray-500 mb-6">Choose a template for your resume.</p>
-                <button onClick={() => navigate('/choose-template')} className="w-full py-3.5 text-white font-bold rounded-xl hover:opacity-90 transition-all shadow-md" style={{background: GRAD}}>
-                  Browse Templates
+        {/* Main Content Area */}
+        <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
+          
+          {/* Top Navbar */}
+          <header className="h-[64px] bg-white border-b border-[#E5E7EB] flex items-center justify-between px-4 md:px-6 shrink-0 z-10">
+            <div className="flex items-center gap-2 md:gap-4 flex-1">
+              <input 
+                type="text" 
+                value={resumeName}
+                onChange={(e) => setResumeName(e.target.value)}
+                className="text-base md:text-lg text-gray-900 font-semibold bg-transparent border-none outline-none focus:ring-2 focus:ring-blue-100 rounded px-1 md:px-2 w-[140px] md:w-[200px]"
+              />
+              <div className="hidden md:flex items-center gap-1.5 text-xs font-medium text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md border border-emerald-100">
+                <CheckCircle2 className="w-3.5 h-3.5" />
+                Saved
+              </div>
+            </div>
+
+          <div className="flex items-center justify-center flex-1">
+             <div className="hidden md:flex items-center w-64">
+               <div className="w-full bg-gray-100 rounded-full h-2">
+                 <div className="bg-blue-600 h-2 rounded-full" style={{ width: '75%' }}></div>
+               </div>
+               <span className="ml-3 text-xs font-bold text-gray-600 uppercase tracking-widest whitespace-nowrap">75% Complete</span>
+             </div>
+          </div>
+
+          <div className="flex items-center gap-3 flex-1 justify-end">
+             <div className="hidden lg:flex items-center gap-4 px-4 py-1.5 border border-gray-200 rounded-lg bg-gray-50 text-sm font-medium">
+               <span>Zoom</span>
+               <button onClick={() => setPreviewZoom(z => Math.max(z - 25, 50))} className="text-gray-500 hover:text-black">-</button>
+               <span className="w-10 text-center">{previewZoom}%</span>
+               <button onClick={() => setPreviewZoom(z => Math.min(z + 25, 150))} className="text-gray-500 hover:text-black">+</button>
+             </div>
+            
+             <button 
+                onClick={handlePrint}
+                className="text-sm font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 transition-colors rounded-lg px-4 py-2 flex items-center gap-2"
+              >
+                <Printer className="w-4 h-4" />
+                <span className="hidden xl:inline">Print</span>
+              </button>
+
+             <div className="relative group">
+                <button 
+                  onClick={handleDownloadPDF} 
+                  disabled={isDownloading}
+                  className="text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 transition-colors rounded-lg px-4 py-2 flex items-center gap-2 shadow-sm"
+                >
+                  {isDownloading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
+                  Download PDF
                 </button>
-              </div>
-            )}
+             </div>
+          </div>
+        </header>
 
-            {activeTab === 'section' && (
-              <div className="p-6 md:p-8 flex-1 overflow-y-auto custom-scrollbar">
-                <h2 className="text-[22px] font-bold text-gray-900 mb-2">Sections</h2>
-                <p className="text-sm text-gray-500 mb-8">Drag & drop to reorder sections.</p>
-                <div className="space-y-4 mb-10">
-                  {['Summary', 'Experience', 'Education'].map(sec => (
-                    <div key={sec} className="flex items-center justify-between py-4 px-4 bg-white border border-gray-200 rounded-xl shadow-sm group hover:border-purple-200 transition-colors">
-                      <div className="flex items-center gap-4 text-gray-700">
-                        <GripVertical size={18} className="text-gray-400 cursor-grab" />
-                        <span className="font-semibold text-[15px]">{sec}</span>
-                      </div>
-                      <div className="flex items-center gap-1 opacity-60 group-hover:opacity-100 transition-opacity">
-                        <button onClick={() => setEditingSection(sec.toLowerCase())} className="p-2 hover:bg-purple-50 rounded-md" style={{color: PURPLE}}><Pencil size={18} /></button>
-                        <button className="p-2 hover:bg-red-50 rounded-md text-gray-400 hover:text-red-500"><Trash2 size={18} /></button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <div className="bg-gray-50 rounded-2xl p-5 border border-gray-100">
-                  <div className="text-[13px] font-semibold text-gray-500 mb-4 tracking-wide">Right column:</div>
-                  <div className="space-y-4">
-                    {[
-                      { label: 'Contacts', locked: true },
-                      { label: 'Skills', locked: false },
-                      { label: 'Languages', locked: false },
-                    ].map(({ label, locked }) => (
-                      <div key={label} className="flex items-center justify-between py-4 px-4 bg-white border border-gray-200 rounded-xl shadow-sm group hover:border-purple-200 transition-colors">
-                        <div className="flex items-center gap-4 text-gray-700">
-                          {locked ? <Lock size={16} className="text-gray-300 w-[18px]" /> : <GripVertical size={18} className="text-gray-400 cursor-grab" />}
-                          <span className="font-semibold text-[15px]">{label}</span>
-                        </div>
-                        <div className="flex items-center gap-1 opacity-60 group-hover:opacity-100">
-                          {!locked && <button onClick={() => setEditingSection(label.toLowerCase())} className="p-2 hover:bg-purple-50 rounded-md" style={{color: PURPLE}}><Pencil size={18} /></button>}
-                          {locked && <button onClick={() => setEditingSection(label.toLowerCase())} className="p-2 hover:bg-purple-50 rounded-md" style={{color: PURPLE}}><Pencil size={18} /></button>}
-                          {!locked && <button className="p-2 hover:bg-red-50 rounded-md text-gray-400 hover:text-red-500"><Trash2 size={18} /></button>}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {activeTab === 'design' && (
-              <div className="p-6 md:p-8 flex-1 overflow-y-auto custom-scrollbar">
-                <h2 className="text-[22px] font-bold text-gray-900 mb-8">Design & Formatting</h2>
-                <div className="mb-8">
-                  <label className="block text-sm font-semibold text-gray-700 mb-4">Resume Color</label>
-                  <div className="flex flex-wrap gap-3">
-                    {['#7c3aed','#0ea5e9','#2196F3','#e11d48','#16a34a','#9333ea','#ea580c','#0891b2','#334155','#0f172a'].map(c => (
-                      <button key={c} onClick={() => updateSection('design', { ...data.design, color: c })}
-                        className="w-9 h-9 rounded-full transition-all hover:scale-110"
-                        style={{ backgroundColor: c, outline: data.design.color === c ? `3px solid ${c}` : 'none', outlineOffset: '2px', transform: data.design.color === c ? 'scale(1.15)' : '' }} />
-                    ))}
-                  </div>
-                  <div className="mt-3 flex items-center gap-3">
-                    <label className="text-sm text-gray-500 font-medium">Custom:</label>
-                    <input type="color" value={data.design.color} onChange={e => updateSection('design', { ...data.design, color: e.target.value })} className="w-10 h-10 rounded cursor-pointer border border-gray-200" />
-                    <span className="text-sm font-mono text-gray-500">{data.design.color}</span>
-                  </div>
-                </div>
-
-                <div className="mb-8">
-                  <label className="block text-sm font-semibold text-gray-700 mb-4">Font Size</label>
-                  <div className="flex gap-4">
-                    {[{label:'Small', size:'12px'},{label:'Normal', size:'14px'},{label:'Large', size:'16px'}].map(opt => (
-                      <button key={opt.label} onClick={() => updateSection('design', { ...data.design, fontSize: opt.size })}
-                        className="flex-1 py-5 rounded-2xl flex flex-col items-center justify-center gap-2 font-semibold transition-all border-2"
-                        style={{ borderColor: data.design.fontSize === opt.size ? PURPLE : '#e5e7eb', color: data.design.fontSize === opt.size ? PURPLE : '#4b5563', background: data.design.fontSize === opt.size ? '#f5f3ff' : 'white' }}>
-                        <span className="font-bold" style={{ fontSize: opt.size === '12px' ? '18px' : opt.size === '14px' ? '22px' : '26px' }}>A</span>
-                        <span className="text-xs">{opt.label}</span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="mb-8">
-                  <label className="block text-sm font-semibold text-gray-700 mb-4">Font Family</label>
-                  <select value={data.design.fontFamily} onChange={e => updateSection('design', { ...data.design, fontFamily: e.target.value })}
-                    className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3.5 text-gray-700 font-medium focus:outline-none shadow-sm"
-                    style={{}}>
-                    <option value="'Inter', sans-serif">Inter</option>
-                    <option value="'Montserrat', sans-serif">Montserrat</option>
-                    <option value="'Roboto', sans-serif">Roboto</option>
-                    <option value="'Lora', serif">Lora</option>
-                    <option value="'Merriweather', serif">Merriweather</option>
-                    <option value="'Georgia', serif">Georgia</option>
-                  </select>
-                </div>
-
-                <div className="mb-8">
-                  <div className="flex justify-between mb-2">
-                    <label className="block text-sm font-semibold text-gray-700">Section Spacing</label>
-                    <span className="text-xs text-gray-400">{data.design.spacing === 'compact' ? 'Compact' : data.design.spacing === 'relaxed' ? 'Relaxed' : 'Normal'}</span>
-                  </div>
-                  <input type="range" min={0} max={2} step={1}
-                    value={data.design.spacing === 'compact' ? 0 : data.design.spacing === 'relaxed' ? 2 : 1}
-                    onChange={e => { const v = Number(e.target.value); updateSection('design', { ...data.design, spacing: v === 0 ? 'compact' : v === 2 ? 'relaxed' : 'normal' }); }}
-                    className="w-full h-1.5 rounded-lg appearance-none cursor-pointer" style={{accentColor: PURPLE}} />
-                </div>
-
-                <div className="text-right">
-                  <button onClick={() => updateSection('design', { ...data.design, color: PURPLE, fontFamily: "'Inter', sans-serif", fontSize: '14px', spacing: 'normal' })}
-                    className="text-sm font-semibold hover:underline" style={{color: PURPLE}}>
-                    Reset to Default
-                  </button>
-                </div>
-              </div>
-            )}
-
-            {activeTab === 'spellcheck' && (
+        {/* Workspace */}
+        <div className="flex flex-1 overflow-hidden">
+          
+          {/* Middle Column: Editor Tools */}
+          <div className={`${activeTab === 'preview' ? 'hidden' : 'flex'} w-full lg:flex lg:w-[600px] xl:w-[750px] shrink-0 bg-white border-r border-[#E5E7EB] overflow-y-auto custom-scrollbar flex-col relative z-0`}>
+            {activeTab === 'builder' && (
               <div className="p-8">
-                <div className="flex items-center gap-3 mb-6">
-                  <h2 className="text-[22px] font-bold text-gray-900">Spell check</h2>
-                  <div className="w-6 h-6 rounded-full bg-green-500 text-white flex items-center justify-center shadow-sm"><CheckCircle size={14} strokeWidth={3} /></div>
+                <div className="mb-8">
+                  <h2 className="text-3xl font-black text-gray-900 mb-2">Resume Details</h2>
+                  <p className="text-gray-500">Fill in your information to build your professional resume.</p>
                 </div>
-                <p className="text-[15px] text-gray-600 leading-relaxed font-medium">No spelling errors detected. You can continue editing or finish your resume now.</p>
-              </div>
-            )}
-
-            {activeTab === 'analysis' && (
-              <div className="p-8 flex flex-col h-full overflow-y-auto custom-scrollbar">
-                <div className="flex items-center gap-3 mb-6 shrink-0">
-                  <div className="w-10 h-10 rounded-full flex items-center justify-center text-white shadow-sm" style={{background: GRAD}}>
-                    <Sparkles size={20} />
-                  </div>
-                  <h2 className="text-[22px] font-bold text-gray-900">AI Resume Review</h2>
-                </div>
-                {!analysis && !isAnalyzing && (
-                  <div className="flex-1 flex flex-col items-center justify-center text-center mt-10">
-                    <Lightbulb size={48} className="text-amber-400 mb-4" />
-                    <h3 className="text-xl font-bold text-gray-800 mb-2">Get Feedback Instantly</h3>
-                    <p className="text-gray-500 max-w-[280px] text-sm mb-8 leading-relaxed">Our AI will scan your resume for missing keywords, weak verbs, and give actionable improvements.</p>
-                    <button onClick={handleAnalyze} className="px-6 py-3 text-white font-bold rounded-xl shadow-md transition-all flex items-center gap-2 hover:opacity-90" style={{background: GRAD}}>
-                      <Sparkles size={18} /> Analyze My Resume
+                
+                <div className="space-y-4">
+                  {/* Personal Information Accordion */}
+                  <div className={`border rounded-xl bg-white transition-all overflow-hidden ${expandedSection === 'personal' ? 'border-blue-200 shadow-[0_4px_20px_-4px_rgba(37,99,235,0.1)]' : 'border-gray-200 hover:border-blue-200'}`}>
+                    <button 
+                      onClick={() => setExpandedSection(expandedSection === 'personal' ? null : 'personal')}
+                      className="w-full flex items-center justify-between p-5 text-left"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${expandedSection === 'personal' ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 text-gray-500'}`}>
+                          <User size={20} className={expandedSection === 'personal' ? 'fill-blue-100' : ''} />
+                        </div>
+                        <h3 className="font-bold text-lg text-gray-900">Personal Information</h3>
+                      </div>
+                      <ChevronDown className={`w-5 h-5 text-gray-400 transition-transform ${expandedSection === 'personal' ? 'rotate-180' : ''}`} />
                     </button>
+                    {expandedSection === 'personal' && (
+                      <div className="p-5 border-t border-gray-100 bg-gray-50/50">
+                        <Contacts />
+                      </div>
+                    )}
                   </div>
-                )}
-                {isAnalyzing && (
-                  <div className="flex-1 flex flex-col items-center justify-center text-center mt-10">
-                    <Loader2 size={40} className="animate-spin mb-4" style={{color: PURPLE}} />
-                    <p className="text-gray-600 font-medium animate-pulse">Scanning your resume...</p>
+
+                  {/* Summary Accordion */}
+                  <div className={`border rounded-xl bg-white transition-all overflow-hidden ${expandedSection === 'summary' ? 'border-blue-200 shadow-[0_4px_20px_-4px_rgba(37,99,235,0.1)]' : 'border-gray-200 hover:border-blue-200'}`}>
+                    <button 
+                      onClick={() => setExpandedSection(expandedSection === 'summary' ? null : 'summary')}
+                      className="w-full flex items-center justify-between p-5 text-left"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${expandedSection === 'summary' ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 text-gray-500'}`}>
+                          <FileText size={20} className={expandedSection === 'summary' ? 'fill-blue-100' : ''} />
+                        </div>
+                        <h3 className="font-bold text-lg text-gray-900">Professional Summary</h3>
+                      </div>
+                      <ChevronDown className={`w-5 h-5 text-gray-400 transition-transform ${expandedSection === 'summary' ? 'rotate-180' : ''}`} />
+                    </button>
+                    {expandedSection === 'summary' && (
+                      <div className="p-5 border-t border-gray-100 bg-gray-50/50">
+                        <Summary />
+                      </div>
+                    )}
                   </div>
-                )}
-                {analysis && !isAnalyzing && (
-                  <div className="flex-1 rounded-2xl p-6 border" style={{background: '#f5f3ff', borderColor: '#ddd6fe'}}>
-                    <h3 className="font-bold mb-4 flex items-center gap-2" style={{color: PURPLE}}><Sparkles size={16} /> Suggested Improvements</h3>
-                    <div className="prose prose-sm font-medium text-gray-700 leading-relaxed">
-                      <Markdown>{analysis}</Markdown>
+
+                  {/* Experience Accordion */}
+                  <div className={`border rounded-xl bg-white transition-all overflow-hidden ${expandedSection === 'experience' ? 'border-blue-200 shadow-[0_4px_20px_-4px_rgba(37,99,235,0.1)]' : 'border-gray-200 hover:border-blue-200'}`}>
+                    <button 
+                      onClick={() => setExpandedSection(expandedSection === 'experience' ? null : 'experience')}
+                      className="w-full flex items-center justify-between p-5 text-left"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${expandedSection === 'experience' ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 text-gray-500'}`}>
+                          <Briefcase size={20} className={expandedSection === 'experience' ? 'fill-blue-100' : ''} />
+                        </div>
+                        <h3 className="font-bold text-lg text-gray-900">Work Experience</h3>
+                      </div>
+                      <ChevronDown className={`w-5 h-5 text-gray-400 transition-transform ${expandedSection === 'experience' ? 'rotate-180' : ''}`} />
+                    </button>
+                    {expandedSection === 'experience' && (
+                      <div className="p-5 border-t border-gray-100 bg-gray-50/50">
+                        <Experience />
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Education Accordion */}
+                  <div className={`border rounded-xl bg-white transition-all overflow-hidden ${expandedSection === 'education' ? 'border-blue-200 shadow-[0_4px_20px_-4px_rgba(37,99,235,0.1)]' : 'border-gray-200 hover:border-blue-200'}`}>
+                    <button 
+                      onClick={() => setExpandedSection(expandedSection === 'education' ? null : 'education')}
+                      className="w-full flex items-center justify-between p-5 text-left"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${expandedSection === 'education' ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 text-gray-500'}`}>
+                          <GraduationCap size={20} className={expandedSection === 'education' ? 'fill-blue-100' : ''} />
+                        </div>
+                        <h3 className="font-bold text-lg text-gray-900">Education</h3>
+                      </div>
+                      <ChevronDown className={`w-5 h-5 text-gray-400 transition-transform ${expandedSection === 'education' ? 'rotate-180' : ''}`} />
+                    </button>
+                    {expandedSection === 'education' && (
+                      <div className="p-5 border-t border-gray-100 bg-gray-50/50">
+                        <Education />
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Skills Accordion */}
+                  <div className={`border rounded-xl bg-white transition-all overflow-hidden ${expandedSection === 'skills' ? 'border-blue-200 shadow-[0_4px_20px_-4px_rgba(37,99,235,0.1)]' : 'border-gray-200 hover:border-blue-200'}`}>
+                    <button 
+                      onClick={() => setExpandedSection(expandedSection === 'skills' ? null : 'skills')}
+                      className="w-full flex items-center justify-between p-5 text-left"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${expandedSection === 'skills' ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 text-gray-500'}`}>
+                          <Wrench size={20} className={expandedSection === 'skills' ? 'fill-blue-100' : ''} />
+                        </div>
+                        <h3 className="font-bold text-lg text-gray-900">Skills</h3>
+                      </div>
+                      <ChevronDown className={`w-5 h-5 text-gray-400 transition-transform ${expandedSection === 'skills' ? 'rotate-180' : ''}`} />
+                    </button>
+                    {expandedSection === 'skills' && (
+                      <div className="p-5 border-t border-gray-100 bg-gray-50/50">
+                        <Skills />
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Add More Section */}
+                  <div className="pt-6">
+                    <h3 className="text-xl font-bold text-gray-900 mb-4 px-2">Add More Sections</h3>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                       {[
+                         { icon: "ti-certificate", label: "Certifications" },
+                         { icon: "ti-medal", label: "Awards" },
+                         { icon: "ti-book", label: "Publications" },
+                         { icon: "ti-flask", label: "Research" },
+                         { icon: "ti-heart-handshake", label: "Volunteer" },
+                         { icon: "ti-link", label: "Portfolio" },
+                         { icon: "ti-code", label: "GitHub" },
+                         { icon: "ti-flag", label: "Languages" },
+                         { icon: "ti-users", label: "References" },
+                         { icon: "ti-bulb", label: "Projects" },
+                       ].map(sec => (
+                         <button key={sec.label} className="flex flex-col items-center justify-center gap-2 p-4 rounded-xl border border-gray-200 bg-white hover:bg-gray-50 hover:border-blue-200 hover:text-blue-600 transition-colors group">
+                           <i className={`ti ${sec.icon} text-2xl text-gray-400 group-hover:text-blue-500`}></i>
+                           <span className="text-xs font-semibold text-gray-600 group-hover:text-blue-600">{sec.label}</span>
+                         </button>
+                       ))}
                     </div>
-                    <button onClick={handleAnalyze} className="mt-8 px-5 py-2.5 bg-white border font-bold rounded-lg shadow-sm transition-all w-full text-center hover:bg-purple-50" style={{borderColor: '#ddd6fe', color: PURPLE}}>
-                      Analyze Again
-                    </button>
                   </div>
-                )}
+
+                </div>
               </div>
             )}
 
-            {activeTab === 'chat' && (
-              <div className="h-full bg-gray-50 p-2">
-                <ChatAssistant />
+            {/* Render Other Sidebar Customizers Here */}
+            {activeTab !== 'builder' && (
+              <div className="p-8">
+                 <h2 className="text-3xl font-black text-gray-900 mb-8 capitalize">{activeTab} Settings</h2>
+                 
+                 {activeTab === 'ats' && (
+                   <div className="space-y-6">
+                     <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-8 text-center flex flex-col items-center">
+                        <h3 className="text-lg font-bold text-emerald-900 mb-2">Resume ATS Score</h3>
+                        <div className="text-[64px] font-black text-emerald-600 leading-none mb-4">{currentScore}<span className="text-3xl text-emerald-400">/100</span></div>
+                        <p className="text-emerald-700 font-medium">Your resume is highly optimized for Applicant Tracking Systems.</p>
+                     </div>
+
+                     <div className="bg-white border text-sm border-gray-200 rounded-2xl p-6">
+                        <h4 className="font-bold text-gray-900 mb-4 text-base">Score Breakdown</h4>
+                        <ul className="space-y-4">
+                          <li className="flex items-start gap-3">
+                            <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0" />
+                            <div><strong className="text-gray-900">Contact Details:</strong> All required fields present.</div>
+                          </li>
+                          <li className="flex items-start gap-3">
+                            <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0" />
+                            <div><strong className="text-gray-900">Keywords:</strong> High match density for target roles.</div>
+                          </li>
+                          <li className="flex items-start gap-3">
+                            <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0" />
+                            <div><strong className="text-gray-900">Experience Length:</strong> Sufficient details and dates.</div>
+                          </li>
+                        </ul>
+                     </div>
+
+                     <div className="bg-orange-50 border border-orange-200 rounded-2xl p-6 text-sm">
+                       <h4 className="font-bold text-orange-900 mb-2 text-base">Suggestions for 100%</h4>
+                       <ul className="list-disc pl-5 text-orange-800 space-y-1">
+                         <li>Add more measurable achievements (metrics, numbers).</li>
+                         <li>Include links to live portfolio projects.</li>
+                       </ul>
+                     </div>
+                   </div>
+                 )}
+
+                 {activeTab === 'text' && (
+                    <div className="space-y-8">
+                      <div>
+                        <label className="block text-sm font-bold text-gray-900 mb-3">Font Family</label>
+                        <div className="grid grid-cols-2 gap-3">
+                           {['Inter', 'Roboto', 'Arial', 'Times New Roman', 'Georgia', 'Space Grotesk'].map(f => (
+                             <button 
+                               key={f}
+                               onClick={() => updateSection('design', { ...data.design, fontFamily: `"${f}", sans-serif` })}
+                               className={`py-3 px-4 rounded-xl border text-left font-medium outline-none ${data.design.fontFamily?.includes(f) ? 'border-blue-600 bg-blue-50 text-blue-700 ring-1 ring-blue-600' : 'border-gray-200 hover:border-gray-300'}`}
+                               style={{ fontFamily: `"${f}", sans-serif` }}
+                             >
+                               {f}
+                             </button>
+                           ))}
+                        </div>
+                      </div>
+                      
+                      <div>
+                        <label className="block text-sm font-bold text-gray-900 mb-3">Font Size</label>
+                        <input 
+                           type="range" min="11" max="18" value={parseInt(data.design.fontSize || '14')} 
+                           onChange={(e) => updateSection('design', { ...data.design, fontSize: `${e.target.value}px` })}
+                           className="w-full accent-blue-600"
+                        />
+                        <div className="flex justify-between text-xs font-bold text-gray-400 mt-2 uppercase">
+                          <span>Small (11px)</span>
+                          <span>{parseInt(data.design.fontSize || '14')}px</span>
+                          <span>Large (18px)</span>
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-bold text-gray-900 mb-3">Line Height</label>
+                        <div className="flex bg-gray-100 p-1 rounded-lg">
+                           <button className="flex-1 py-1.5 rounded-md font-medium text-sm bg-white shadow-sm text-gray-900">Normal</button>
+                           <button className="flex-1 py-1.5 rounded-md font-medium text-sm text-gray-500 hover:text-gray-900 hover:bg-gray-50">Relaxed</button>
+                           <button className="flex-1 py-1.5 rounded-md font-medium text-sm text-gray-500 hover:text-gray-900 hover:bg-gray-50">Loose</button>
+                        </div>
+                      </div>
+                    </div>
+                 )}
+
+                 {activeTab === 'colors' && (
+                   <div className="space-y-8">
+                     <div>
+                       <label className="block text-sm font-bold text-gray-900 mb-4">Professional Palettes</label>
+                       <div className="grid grid-cols-4 sm:grid-cols-6 gap-4">
+                         {[
+                           '#000000', '#1F2937', '#2563EB', '#1D4ED8', '#0284C7',
+                           '#0F766E', '#16A34A', '#65A30D', '#CA8A04', '#D97706',
+                           '#EA580C', '#DC2626', '#E11D48', '#C026D3', '#9333EA', '#7C3AED'
+                         ].map(color => (
+                           <button 
+                             key={color}
+                             onClick={() => updateSection('design', { ...data.design, color })}
+                             className={`w-14 h-14 rounded-full flex items-center justify-center transition-all ${data.design.color === color ? 'bg-white ring-4 ring-offset-2 ring-gray-900 shadow-md scale-110' : 'hover:scale-110 shadow-sm'}`}
+                             style={{ backgroundColor: color }}
+                           >
+                             {data.design.color === color && <CheckCircle2 className="text-white w-6 h-6" />}
+                           </button>
+                         ))}
+                       </div>
+                     </div>
+                     <div>
+                       <label className="block text-sm font-bold text-gray-900 mb-3">Custom Color</label>
+                       <div className="flex items-center gap-4">
+                         <input 
+                           type="color" 
+                           value={data.design.color || '#2563EB'} 
+                           onChange={(e) => updateSection('design', { ...data.design, color: e.target.value })}
+                           className="w-16 h-16 rounded cursor-pointer border-0 p-0"
+                         />
+                         <input 
+                           type="text" 
+                           value={data.design.color || '#2563EB'}
+                           onChange={(e) => updateSection('design', { ...data.design, color: e.target.value })}
+                           className="border border-gray-200 rounded-lg px-4 py-3 font-mono text-sm w-32"
+                         />
+                       </div>
+                     </div>
+                   </div>
+                 )}
+
+                 {activeTab === 'layout' && (
+                   <div className="space-y-8">
+                      <div>
+                        <label className="block text-sm font-bold text-gray-900 mb-3">Margins & Spacing</label>
+                        <div className="grid grid-cols-3 gap-3 mb-6">
+                           <button 
+                              onClick={() => updateSection('design', { ...data.design, spacing: 'compact' })}
+                              className={`py-3 px-2 rounded-xl border text-center font-bold text-sm ${data.design.spacing === 'compact' ? 'border-blue-600 bg-blue-50 text-blue-700' : 'border-gray-200 hover:bg-gray-50'}`}>
+                             Compact
+                           </button>
+                           <button 
+                              onClick={() => updateSection('design', { ...data.design, spacing: 'normal' })}
+                              className={`py-3 px-2 rounded-xl border text-center font-bold text-sm ${data.design.spacing === 'normal' || !data.design.spacing ? 'border-blue-600 bg-blue-50 text-blue-700' : 'border-gray-200 hover:bg-gray-50'}`}>
+                             Normal
+                           </button>
+                           <button 
+                              onClick={() => updateSection('design', { ...data.design, spacing: 'relaxed' })}
+                              className={`py-3 px-2 rounded-xl border text-center font-bold text-sm ${data.design.spacing === 'relaxed' ? 'border-blue-600 bg-blue-50 text-blue-700' : 'border-gray-200 hover:bg-gray-50'}`}>
+                             Relaxed
+                           </button>
+                        </div>
+                      </div>
+
+                      <div>
+                         <label className="block text-sm font-bold text-gray-900 mb-3">Arrangement Format</label>
+                         <div className="grid grid-cols-2 gap-4">
+                            <div className="aspect-[1/1.2] border-2 border-gray-900 rounded-xl bg-gray-50 flex overflow-hidden cursor-pointer relative">
+                               <div className="absolute top-2 left-2 bg-gray-900 text-white text-[10px] font-bold px-2 py-0.5 rounded">Selected</div>
+                               <div className="w-full p-4 flex flex-col gap-2">
+                                 <div className="w-2/3 h-4 bg-gray-300 rounded mb-2"></div>
+                                 <div className="w-full h-2 bg-gray-200 rounded"></div>
+                                 <div className="w-5/6 h-2 bg-gray-200 rounded"></div>
+                                 <div className="w-4/5 h-2 bg-gray-200 rounded"></div>
+                               </div>
+                            </div>
+                            <div className="aspect-[1/1.2] border-2 border-transparent hover:border-gray-300 rounded-xl bg-gray-100 flex overflow-hidden cursor-pointer">
+                               <div className="w-1/3 bg-gray-200 p-2 border-r border-gray-300"></div>
+                               <div className="w-2/3 p-4 flex flex-col gap-2">
+                                 <div className="w-2/3 h-4 bg-gray-300 rounded mb-2"></div>
+                                 <div className="w-full h-2 bg-gray-200 rounded"></div>
+                                 <div className="w-5/6 h-2 bg-gray-200 rounded"></div>
+                               </div>
+                            </div>
+                         </div>
+                      </div>
+                   </div>
+                 )}
+
+                 {activeTab === 'ai' && (
+                   <div className="space-y-6">
+                     <div className="bg-gradient-to-br from-purple-600 to-blue-600 rounded-2xl p-8 text-white">
+                        <Sparkles className="w-8 h-8 mb-4 text-purple-200" />
+                        <h3 className="text-2xl font-black mb-2">AI Resume Assistant</h3>
+                        <p className="text-purple-100 mb-6 leading-relaxed">Let artificial intelligence perfect your resume. Select a section to rewrite, generate bullet points, or correct grammar issues.</p>
+                        
+                        <div className="grid gap-3">
+                           <button className="flex items-center gap-3 bg-white/10 hover:bg-white/20 px-4 py-3 rounded-xl transition-colors font-medium text-sm text-left">
+                             <div className="p-2 bg-white/10 rounded-lg"><Edit3 size={16} /></div>
+                             Fix Grammar & Typos Across Resume
+                           </button>
+                           <button className="flex items-center gap-3 bg-white/10 hover:bg-white/20 px-4 py-3 rounded-xl transition-colors font-medium text-sm text-left">
+                             <div className="p-2 bg-white/10 rounded-lg"><Briefcase size={16} /></div>
+                             Generate Better Experience Bullets
+                           </button>
+                           <button className="flex items-center gap-3 bg-white/10 hover:bg-white/20 px-4 py-3 rounded-xl transition-colors font-medium text-sm text-left">
+                             <div className="p-2 bg-white/10 rounded-lg"><FileText size={16} /></div>
+                             Write Professional Summary
+                           </button>
+                           <button className="flex items-center gap-3 bg-white/10 hover:bg-white/20 px-4 py-3 rounded-xl transition-colors font-medium text-sm text-left">
+                             <div className="p-2 bg-white/10 rounded-lg"><Wrench size={16} /></div>
+                             Suggest Missing Industry Skills
+                           </button>
+                        </div>
+                     </div>
+                   </div>
+                 )}
+
+                 {activeTab === 'templates' && (
+                   <div className="space-y-6 pb-20">
+                     <p className="text-gray-500 mb-6">Switch your template on the fly without losing any data.</p>
+                     
+                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                       {TEMPLATES.map((tpl) => (
+                         <div key={tpl.id} className="relative group cursor-pointer" onClick={() => updateSection('design', { ...data.design, template: tpl.id })}>
+                           <div className={`border-2 rounded-xl overflow-hidden transition-all ${data.design.template === tpl.id ? 'border-blue-600 ring-2 ring-blue-100 shadow-md' : 'border-gray-200 hover:border-gray-400'}`}>
+                              <div className="pointer-events-none scale-[0.5] origin-top-left w-[200%] h-[450px]">
+                                <TemplateCard template={tpl} />
+                              </div>
+                           </div>
+                           {data.design.template === tpl.id && (
+                             <div className="absolute top-2 right-2 bg-blue-600 text-white rounded-full p-1 shadow-md">
+                               <CheckCircle2 size={16} />
+                             </div>
+                           )}
+                           <div className="mt-2 text-center text-xs font-bold text-gray-700">{tpl.name}</div>
+                         </div>
+                       ))}
+                     </div>
+                   </div>
+                 )}
+
               </div>
-            )}
-            {activeTab === 'score' && (
-              <ScoreDashboard />
-            )}
-            {activeTab === 'ats' && (
-              <ATSMatcher />
-            )}
-            {activeTab === 'coverletter' && (
-              <InlineCoverLetter />
-            )}
-            {activeTab === 'export' && (
-              <ExportPanel />
             )}
           </div>
-        )}
-      </div>
 
-      {/* Resume Preview Area */}
-      <div className={`flex-1 relative overflow-auto flex-col p-4 md:p-8 items-center md:items-center pt-8 custom-scrollbar pb-24 md:pb-8 ${!isMobilePreviewing ? 'hidden md:flex' : 'flex'}`} style={{background: '#eef2f6'}}>
-        <div className="w-full max-w-[794px] flex flex-col min-h-min pb-20 md:pb-0">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between font-semibold text-sm mb-4 w-full gap-4 md:gap-0">
-            <div className="flex items-center gap-2 pl-1 max-w-full overflow-hidden text-ellipsis whitespace-nowrap" style={{color: PURPLE}}>
-              {data.personalInfo.firstName || 'Untitled'}_{data.personalInfo.lastName || 'Resume'} <Edit2 size={13} className="shrink-0 cursor-pointer hover:opacity-70" />
+          {/* Right Column: Live Preview Area */}
+          <div className={`${activeTab === 'preview' ? 'flex' : 'hidden'} lg:flex flex-1 bg-gray-300 overflow-y-auto overflow-x-hidden p-4 lg:p-10 relative justify-center items-start custom-scrollbar`}>
+            <div 
+              className="bg-white shadow-[0_10px_30px_rgba(0,0,0,0.15)] origin-top mx-auto" 
+              id="resume-preview-container"
+              style={{ 
+                transform: `scale(${typeof window !== 'undefined' && window.innerWidth < 1024 ? (window.innerWidth / 850) : (previewZoom / 100)})`, 
+                width: '794px', 
+                height: '1123px', 
+                transition: 'transform 0.2s cubic-bezier(0.25,0.46,0.45,0.94)' 
+              }}
+            >
+               <LivePreview />
             </div>
-            <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
-              <button onClick={() => navigate('/cover-letter')}
-                className="flex justify-center items-center gap-2 px-5 py-2.5 bg-white text-gray-700 border border-gray-200 rounded-lg font-bold text-sm transition-colors shadow-sm w-full md:w-auto hover:border-purple-300 hover:text-purple-600">
-                <FileText size={16} /> Write Cover Letter
-              </button>
-              <button onClick={handleDownloadPDF} disabled={isDownloading}
-                className="flex justify-center items-center gap-2 px-5 py-2.5 text-white rounded-lg font-bold text-sm transition-all shadow-md disabled:opacity-50 w-full md:w-auto hover:opacity-90"
-                style={{background: GRAD}}>
-                {isDownloading ? <Loader2 size={16} className="animate-spin" /> : <Download size={16} />}
-                Download PDF
-              </button>
-            </div>
-          </div>
 
-          {/* Empty State */}
-          {!data.personalInfo.firstName && !data.personalInfo.lastName && (
-            <div className="w-full flex flex-col items-center justify-center py-16 text-center mb-4 bg-white rounded-2xl border-2 border-dashed" style={{borderColor: '#ddd6fe'}}>
-              <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-white mb-4 shadow-md" style={{background: GRAD}}>
-                <FileText size={30} />
-              </div>
-              <h3 className="text-xl font-bold text-gray-800 mb-2">Your resume preview will appear here</h3>
-              <p className="text-gray-500 text-sm max-w-xs">Start filling in your details from the left panel to see your resume come to life!</p>
-              <button onClick={() => setEditingSection('contacts')} className="mt-6 px-6 py-2.5 text-white font-bold rounded-xl shadow-md hover:opacity-90 transition-all" style={{background: GRAD}}>
-                Start Filling Details →
-              </button>
-            </div>
-          )}
-
-          <div className="w-full bg-white md:shadow-2xl rounded-sm overflow-hidden shrink-0 min-h-[1123px] flex flex-col scale-[0.85] md:scale-100 origin-top" id="resume-preview-container">
-            <LivePreview />
+            {/* Floating AI Button on Preview */}
+            <button className="fixed bottom-8 right-8 z-50 bg-gray-900 text-white rounded-full p-4 shadow-2xl hover:bg-gray-800 transition-colors flex items-center gap-2 group">
+              <Sparkles className="w-5 h-5 text-purple-400 group-hover:animate-pulse" />
+              <span className="font-bold text-sm pr-2">Ask AI Assistant</span>
+            </button>
           </div>
         </div>
       </div>
 
-      {/* Mobile FAB */}
-      <button onClick={() => setIsMobilePreviewing(!isMobilePreviewing)}
-        className="md:hidden fixed bottom-24 right-4 text-white p-4 rounded-full shadow-lg z-50 flex items-center justify-center transition-transform active:scale-95"
-        style={{background: GRAD}}>
-        {isMobilePreviewing ? <Edit2 size={24} /> : <Eye size={24} />}
-      </button>
+      {/* Mobile Bottom Navigation menu */}
+      <div className="md:hidden flex items-center justify-around bg-white border-t border-gray-200 h-[64px] shrink-0 px-2 space-x-1 z-50 overflow-x-auto">
+         {[
+           { id: 'builder', icon: Edit3, label: 'Builder' },
+           { id: 'templates', icon: FileText, label: 'Templates' },
+           { id: 'colors', icon: Palette, label: 'Design' },
+           { id: 'ai', icon: Sparkles, label: 'AI Tools' },
+           { id: 'preview', icon: CheckCircle2, label: 'Preview' },
+         ].map((item) => (
+           <button
+             key={item.id}
+             onClick={() => setActiveTab(item.id as SidebarTab)}
+             className={`flex flex-col items-center justify-center py-2 flex-1 min-w-[64px] rounded-lg transition-colors
+               ${activeTab === item.id 
+                 ? 'text-blue-600 font-bold' 
+                 : 'text-gray-500 font-medium'}`}
+           >
+             <item.icon className="w-5 h-5 mb-1" />
+             <span className="text-[10px] tracking-wide">{item.label}</span>
+           </button>
+         ))}
+      </div>
+      </div>
     </div>
   );
 };
 
 export default Build;
+

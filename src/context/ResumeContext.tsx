@@ -28,11 +28,14 @@ const defaultData: ResumeData = {
   skills: [],
   summary: "",
   design: {
-    template: "classic",
-    color: "#2196F3",
-    fontFamily: "'Inter', sans-serif",
+    template: "professional-blue",
+    color: "#2563EB",
+    headingFont: "Inter",
+    bodyFont: "Inter",
     fontSize: "14px",
+    lineHeight: "1.5",
     spacing: "normal",
+    pageStyle: "classic",
   }
 };
 

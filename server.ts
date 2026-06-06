@@ -172,7 +172,7 @@ ${text}
 
       if (!isPlaceholder) {
         try {
-          const pass = process.env.SMTP_PASS?.replace(/[\s\[\]"]/g, '');
+          const pass = process.env.SMTP_PASS?.replace(/[\][\s"]/g, '');
           console.log(`[SMTP] Attempting connect with user: ${process.env.SMTP_USER}, pass length: ${pass?.length}`);
           const transporter = nodemailer.createTransport({
             host: 'smtp.gmail.com',
@@ -195,11 +195,12 @@ ${text}
           });
 
           return res.json({ success: true, message: "OTP sent to your email" });
-        } catch (mailError: any) {
-          console.error("Failed to send real email, falling back to mock:", mailError);
-          if (mailError.message?.includes('Invalid login') || mailError.message?.includes('535-5.7.8')) {
-            console.error("HINT: Gmail requires an 'App Password'. A regular password won't work.");
-            console.error("Go to Google Account -> Security -> 2-Step Verification -> App Passwords to generate one.");
+        } catch (mailError: unknown) {
+          const errorMessage = mailError instanceof Error ? mailError.message : String(mailError);
+          console.log(`[SMTP INFO] Failed to send real email, falling back to mock. Reason: ${errorMessage}`);
+          if (errorMessage.includes('Invalid login') || errorMessage.includes('535-5.7.8')) {
+            console.log("[SMTP HINT] Gmail requires an 'App Password'. A regular password won't work.");
+            console.log("[SMTP HINT] Go to Google Account -> Security -> 2-Step Verification -> App Passwords to generate one.");
           }
           // proceed to fallback below
         }

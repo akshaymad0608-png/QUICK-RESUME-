@@ -1,9 +1,10 @@
 import { FC, useState } from 'react';
-import { Mail, Loader2, Wand2, Copy, Download, RefreshCw, CheckCircle2 } from 'lucide-react';
+import { Mail, Loader2, Wand2, Copy, Download, CheckCircle2 } from 'lucide-react';
 import { useResume } from '../context/ResumeContext';
 import { generateCoverLetter } from '../services/geminiService';
 import toast from 'react-hot-toast';
 import html2pdf from 'html2pdf.js';
+import { coverLetterExamples } from '../data/examples';
 
 const GRAD = 'linear-gradient(135deg, #7c3aed, #0ea5e9)';
 const PURPLE = '#7c3aed';
@@ -24,7 +25,7 @@ const InlineCoverLetter: FC = () => {
       const output = await generateCoverLetter(data as unknown as Record<string, unknown>, jobDesc);
       setLetter(output);
     } catch {
-      toast.error('Cover letter generate nahi hua, dobara try karo');
+      toast.error('Failed to generate cover letter, please try again.');
     } finally {
       setLoading(false);
     }
@@ -42,11 +43,20 @@ const InlineCoverLetter: FC = () => {
     if (!letter) return;
     setDownloading(true);
     const el = document.createElement('div');
-    el.innerHTML = `<div style="font-family: Arial, sans-serif; padding: 2rem; font-size: 14px; line-height: 1.8; white-space: pre-wrap; color: #1e293b;">\${letter}</div>`;
-    const name = data.personalInfo.firstName ? `\${data.personalInfo.firstName}_CoverLetter` : 'CoverLetter';
-    html2pdf().set({ margin: 10, filename: `\${name}.pdf`, html2canvas: { scale: 2 }, jsPDF: { unit: 'mm', format: 'a4' } })
+    const NameStr = data.personalInfo.firstName ? `${data.personalInfo.firstName} ${data.personalInfo.lastName}` : '[Your Name]';
+    el.innerHTML = `<div style="font-family: Arial, sans-serif; padding: 2rem; font-size: 14px; line-height: 1.8; white-space: pre-wrap; color: #1e293b;">${letter.replace(/\[Your Name\]/gi, NameStr)}</div>`;
+    const name = data.personalInfo.firstName ? `${data.personalInfo.firstName}_CoverLetter` : 'CoverLetter';
+    html2pdf().set({ margin: 10, filename: `${name}.pdf`, html2canvas: { scale: 2 }, jsPDF: { unit: 'mm', format: 'a4' } })
       .from(el).save()
       .then(() => { setDownloading(false); toast.success('PDF downloaded!'); });
+  };
+
+  const applyExample = (key: string) => {
+      let example = coverLetterExamples[key];
+      const NameStr = data.personalInfo.firstName ? `${data.personalInfo.firstName} ${data.personalInfo.lastName}` : '[Your Name]';
+      example = example.replace(/\[Your Name\]/g, NameStr);
+      setLetter(example);
+      toast.success('Example applied!');
   };
 
   return (
@@ -58,7 +68,7 @@ const InlineCoverLetter: FC = () => {
           </div>
           <div>
             <h2 className="text-[20px] font-bold text-gray-900 leading-tight">Cover Letter</h2>
-            <p className="text-xs text-gray-400">AI se tailored letter banao</p>
+            <p className="text-xs text-gray-400">Generate an AI tailored letter</p>
           </div>
         </div>
 
@@ -67,21 +77,36 @@ const InlineCoverLetter: FC = () => {
           <textarea
             value={jobDesc}
             onChange={e => setJobDesc(e.target.value)}
-            placeholder="Job description yahan paste karo..."
-            rows={5}
-            className="w-full p-3.5 text-sm border border-gray-200 rounded-xl resize-none outline-none focus:border-purple-400 focus:ring-1 focus:ring-purple-200 text-gray-700 placeholder-gray-300"
+            placeholder="Paste job description here..."
+            rows={4}
+            className="w-full p-3 text-sm border border-gray-200 rounded-xl resize-none outline-none focus:border-purple-400 focus:ring-1 focus:ring-purple-200 text-gray-700 placeholder-gray-300"
           />
         </div>
 
         <button
           onClick={handleGenerate}
           disabled={loading || !jobDesc.trim()}
-          className="w-full py-3 text-white font-bold rounded-xl shadow-md flex items-center justify-center gap-2 transition-all hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed text-sm"
+          className="w-full py-2.5 mb-4 text-white font-bold rounded-xl shadow-sm flex items-center justify-center gap-2 transition-all hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed text-[13.5px]"
           style={{ background: GRAD }}
         >
           {loading ? <Loader2 size={16} className="animate-spin" /> : <Wand2 size={16} />}
-          {loading ? 'Writing your letter...' : letter ? 'Regenerate' : 'Generate Cover Letter'}
+          {loading ? 'Writing your letter...' : letter ? 'Regenerate' : 'AI Generate'}
         </button>
+
+        <div className="mb-6 pt-4 border-t border-gray-100">
+           <label className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2 block">Quick Examples (Or pick pre-written)</label>
+           <div className="flex flex-wrap gap-2">
+             {Object.keys(coverLetterExamples).map(key => (
+               <button
+                 key={key}
+                 onClick={() => applyExample(key)}
+                 className="px-3 py-1.5 text-xs font-semibold rounded-lg border border-purple-200 text-purple-700 bg-purple-50 hover:bg-purple-100 transition-colors"
+               >
+                 {key.replace('_', ' ')}
+               </button>
+             ))}
+           </div>
+        </div>
 
         {letter && (
           <div className="mt-5">
@@ -107,14 +132,8 @@ const InlineCoverLetter: FC = () => {
               value={letter}
               onChange={e => setLetter(e.target.value)}
               rows={18}
-              className="w-full p-4 text-[13px] leading-relaxed text-gray-700 border border-gray-200 rounded-xl outline-none resize-none focus:border-purple-300 bg-gray-50 font-sans"
+              className="w-full p-4 text-[13px] leading-relaxed text-gray-700 border border-gray-200 rounded-xl outline-none resize-none focus:border-purple-300 bg-white font-sans shadow-sm"
             />
-
-            <button onClick={handleGenerate} disabled={loading}
-              className="mt-3 w-full py-2.5 flex items-center justify-center gap-2 text-xs font-bold rounded-xl border transition-all hover:bg-purple-50"
-              style={{ borderColor: '#ddd6fe', color: PURPLE }}>
-              <RefreshCw size={12} /> Regenerate
-            </button>
           </div>
         )}
       </div>

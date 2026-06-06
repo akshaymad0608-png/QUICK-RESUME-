@@ -11,13 +11,15 @@ const ChooseTemplate = lazy(() => import('./pages/ChooseTemplate'));
 const Build = lazy(() => import('./pages/Build'));
 const ResumeExamples = lazy(() => import('./pages/ResumeExamples'));
 const Resources = lazy(() => import('./pages/Resources'));
-const Login = lazy(() => import('./pages/Login'));
+const AITools = lazy(() => import('./pages/AITools'));
+
 const CoverLetterGenerator = lazy(() => import('./pages/CoverLetterGenerator'));
+const Pricing = lazy(() => import('./pages/Pricing'));
 
 function App() {
   return (
     <HelmetProvider>
-      <Suspense fallback={<div className="min-h-screen bg-gray-50 flex items-center justify-center">Loading...</div>}>
+      <Suspense fallback={<div className="min-h-screen bg-white flex items-center justify-center">Loading...</div>}>
         <ResumeProvider>
           <BrowserRouter>
             <Routes>
@@ -27,8 +29,9 @@ function App() {
               <Route path="/build" element={<Build />} />
               <Route path="/examples" element={<ResumeExamples />} />
               <Route path="/resources" element={<Resources />} />
-              <Route path="/login" element={<Login />} />
+              <Route path="/ai-tools" element={<AITools />} />
               <Route path="/cover-letter" element={<CoverLetterGenerator />} />
+              <Route path="/pricing" element={<Pricing />} />
             </Routes>
           </BrowserRouter>
           <Toaster position="bottom-right" />

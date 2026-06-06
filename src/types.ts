@@ -44,9 +44,12 @@ export interface Education {
 export interface DesignConfig {
   template: TemplateType;
   color: string;
-  fontFamily: string;
+  headingFont: string;
+  bodyFont: string;
   fontSize: string;
+  lineHeight: string;
   spacing: string;
+  pageStyle: string;
 }
 
 export interface ResumeData {

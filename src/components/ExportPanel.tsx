@@ -16,9 +16,9 @@ const ExportPanel: FC = () => {
     const blob = new Blob([json], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
-    const name = data.personalInfo.firstName ? `\${data.personalInfo.firstName}_resume` : 'resume';
+    const name = data.personalInfo.firstName ? `${data.personalInfo.firstName}_resume` : 'resume';
     a.href = url;
-    a.download = `\${name}.json`;
+    a.download = `${name}.json`;
     a.click();
     URL.revokeObjectURL(url);
     toast.success('JSON downloaded!');
@@ -38,11 +38,11 @@ const ExportPanel: FC = () => {
     if (data.experience.length > 0) {
       lines.push('💼 Experience');
       data.experience.slice(0, 3).forEach(e => {
-        const period = e.isPresent ? `\${e.startDate} – Present` : `\${e.startDate} – \${e.endDate}`;
-        lines.push(`• \${e.jobTitle} @ \${e.company} (\${period})`);
+        const period = e.isPresent ? `${e.startDate} – Present` : `${e.startDate} – ${e.endDate}`;
+        lines.push(`• ${e.jobTitle} @ ${e.company} (${period})`);
         if (e.description) {
           e.description.split('\n').filter(Boolean).slice(0, 2)
-            .forEach(b => lines.push(`  – \${b.replace(/^[-•]\\s*/, '')}`));
+            .forEach(b => lines.push(`  – ${b.replace(/^[-•]\s*/, '')}`));
         }
       });
       lines.push('');
@@ -55,14 +55,14 @@ const ExportPanel: FC = () => {
     if (data.education.length > 0) {
       lines.push('🎓 Education');
       data.education.forEach(e => {
-        lines.push(`• \${e.degree}\${e.fieldOfStudy ? ' in ' + e.fieldOfStudy : ''} — \${e.schoolName}`);
+        lines.push(`• ${e.degree}${e.fieldOfStudy ? ' in ' + e.fieldOfStudy : ''} — ${e.schoolName}`);
       });
       lines.push('');
     }
     const contacts = [p.email, p.linkedin, p.portfolio, p.website].filter(Boolean);
     if (contacts.length > 0) {
       lines.push('📬 Contact');
-      contacts.forEach(c => lines.push(`• \${c}`));
+      contacts.forEach(c => lines.push(`• ${c}`));
     }
     return lines.join('\n');
   };

@@ -10,8 +10,11 @@ const Minimal: FC<TemplateProps> = ({ data }) => {
   const spacingMap: Record<string, string> = { compact: '0.5rem', normal: '1rem', relaxed: '1.75rem' };
   const sectionGap = spacingMap[design.spacing] || '1rem';
 
+  const hf = design.headingFont || design.fontFamily;
+  const bf = design.bodyFont || design.fontFamily;
+
   return (
-    <div className="w-full flex-1 bg-white p-12 flex flex-col mx-auto" style={{ fontFamily: design.fontFamily, fontSize: design.fontSize || '14px' }}>
+    <div className="w-full flex-1 bg-white p-12 flex flex-col mx-auto" style={{ fontFamily: bf, fontSize: design.fontSize || '14px' , lineHeight: design.lineHeight || '1.5' }}>
       
       {/* Header */}
       <div className="flex gap-6 items-center" style={{ marginBottom: sectionGap }}>
@@ -48,7 +51,7 @@ const Minimal: FC<TemplateProps> = ({ data }) => {
       {/* Experience */}
       {experience.length > 0 && (
         <div style={{ marginBottom: sectionGap }}>
-          <h2 className="text-[14px] font-bold uppercase tracking-wider text-black mb-4">Experience</h2>
+          <h2 className="text-[14px] font-bold uppercase tracking-wider text-black mb-4" style={{ fontFamily: hf }}>Experience</h2>
           
           <div className="space-y-6">
             {experience.map(exp => (
@@ -74,7 +77,7 @@ const Minimal: FC<TemplateProps> = ({ data }) => {
       {/* Education */}
       {education.length > 0 && (
         <div style={{ marginBottom: sectionGap }}>
-          <h2 className="text-[14px] font-bold uppercase tracking-wider text-black mb-4">Education</h2>
+          <h2 className="text-[14px] font-bold uppercase tracking-wider text-black mb-4" style={{ fontFamily: hf }}>Education</h2>
           <div className="space-y-4">
             {education.map(edu => (
               <div key={edu.id} className="flex justify-between items-start">
@@ -94,7 +97,7 @@ const Minimal: FC<TemplateProps> = ({ data }) => {
       {/* Skills */}
       {skills.length > 0 && (
         <div style={{ marginBottom: sectionGap }}>
-          <h2 className="text-[14px] font-bold uppercase tracking-wider text-black mb-3">Skills</h2>
+          <h2 className="text-[14px] font-bold uppercase tracking-wider text-black mb-3" style={{ fontFamily: hf }}>Skills</h2>
           <p className="text-[13px] leading-relaxed text-gray-800">
             {skills.join(', ')}
           </p>
