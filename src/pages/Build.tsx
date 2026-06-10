@@ -22,6 +22,7 @@ type BuilderSection = 'personal' | 'summary' | 'experience' | 'education' | 'ski
 
 import { TemplateCard } from '../components/TemplateCard';
 import { TEMPLATES } from '../data/templates';
+import { optimizeWorkExperience } from '../services/geminiService';
 
 const Build: FC = () => {
   const navigate = useNavigate();
@@ -29,8 +30,27 @@ const Build: FC = () => {
   const [activeTab, setActiveTab] = useState<SidebarTab>('builder');
   const [expandedSection, setExpandedSection] = useState<BuilderSection | null>('personal');
   const [isDownloading, setIsDownloading] = useState(false);
+  const [isOptimizing, setIsOptimizing] = useState(false);
   const [resumeName, setResumeName] = useState('Untitled Resume');
   const [previewZoom, setPreviewZoom] = useState(100);
+
+  const handleOptimizeResume = async () => {
+    if (data.experience.length === 0) {
+      toast.error('Add some work experience first!');
+      return;
+    }
+    setIsOptimizing(true);
+    const toastId = toast.loading('Optimizing work experience with AI...');
+    try {
+      const optimizedExperience = await optimizeWorkExperience(data.experience);
+      updateSection('experience', optimizedExperience);
+      toast.success('Resume optimized successfully!', { id: toastId });
+    } catch (e: unknown) {
+      toast.error(e instanceof Error ? e.message : 'Failed to optimize resume.', { id: toastId });
+    } finally {
+      setIsOptimizing(false);
+    }
+  };
 
   const handleDownloadPDF = () => {
     const element = document.getElementById('resume-preview-container');
@@ -138,6 +158,15 @@ const Build: FC = () => {
                <button onClick={() => setPreviewZoom(z => Math.min(z + 25, 150))} className="text-gray-500 hover:text-black">+</button>
              </div>
             
+             <button 
+                onClick={handleOptimizeResume}
+                disabled={isOptimizing}
+                className="text-sm font-medium text-purple-700 bg-purple-50 border border-purple-200 hover:bg-purple-100 transition-colors rounded-lg px-4 py-2 flex items-center gap-2"
+              >
+                {isOptimizing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
+                <span className="hidden xl:inline">Optimize with AI</span>
+              </button>
+
              <button 
                 onClick={handlePrint}
                 className="text-sm font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 transition-colors rounded-lg px-4 py-2 flex items-center gap-2"

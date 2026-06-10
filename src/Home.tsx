@@ -66,54 +66,12 @@ export const Home: FC = () => {
             </div>
 
             <div className="flex-1 w-full max-w-lg lg:max-w-none flex justify-center lg:justify-end">
-              <div className="w-full max-w-[420px] bg-white rounded-md border border-[var(--color-border)] shadow-[0_10px_40px_-15px_rgba(0,0,0,0.1)] p-8">
-                <div className="flex items-center gap-4 border-b border-[var(--color-border)] pb-4 mb-5">
-                  <div className="w-12 h-12 bg-primary-light text-primary rounded-full flex items-center justify-center text-lg font-bold">AJ</div>
-                  <div>
-                    <div className="text-base font-bold text-heading">Arjun Joshi</div>
-                    <div className="text-sm text-body">Senior Product Designer</div>
-                  </div>
-                </div>
-
-                <div className="space-y-6">
-                  <div>
-                    <div className="text-xs font-bold text-heading uppercase tracking-wide mb-2">Professional Summary</div>
-                    <div className="h-2 bg-surface w-full mb-2 rounded"></div>
-                    <div className="h-2 bg-surface w-full mb-2 rounded"></div>
-                    <div className="h-2 bg-surface w-4/5 rounded"></div>
-                  </div>
-
-                  <div>
-                    <div className="text-xs font-bold text-heading uppercase tracking-wide mb-2">Experience</div>
-                    <div className="flex justify-between items-center mb-1">
-                      <div className="h-2.5 bg-gray-300 w-1/3 rounded"></div>
-                      <div className="h-2 bg-surface w-16 rounded"></div>
-                    </div>
-                    <div className="h-2 bg-surface w-1/4 mb-3 rounded"></div>
-                    <div className="h-1.5 bg-surface w-full mb-1.5 rounded"></div>
-                    <div className="h-1.5 bg-surface w-[90%] mb-1.5 rounded"></div>
-                    <div className="h-1.5 bg-surface w-[95%] mb-4 rounded"></div>
-
-                    <div className="flex justify-between items-center mb-1">
-                      <div className="h-2.5 bg-gray-300 w-1/4 rounded"></div>
-                      <div className="h-2 bg-surface w-16 rounded"></div>
-                    </div>
-                    <div className="h-2 bg-surface w-1/5 mb-3 rounded"></div>
-                    <div className="h-1.5 bg-surface w-full mb-1.5 rounded"></div>
-                    <div className="h-1.5 bg-surface w-[85%] rounded"></div>
-                  </div>
-
-                  <div>
-                    <div className="text-xs font-bold text-heading uppercase tracking-wide mb-2">Skills</div>
-                    <div className="flex gap-2 flex-wrap">
-                      <div className="h-4 w-16 bg-surface rounded"></div>
-                      <div className="h-4 w-20 bg-surface rounded"></div>
-                      <div className="h-4 w-12 bg-surface rounded"></div>
-                      <div className="h-4 w-24 bg-surface rounded"></div>
-                      <div className="h-4 w-16 bg-surface rounded"></div>
-                    </div>
-                  </div>
-                </div>
+              <div className="w-full max-w-[500px] rounded-2xl overflow-hidden shadow-[0_20px_50px_-12px_rgba(0,0,0,0.2)] transform hover:-translate-y-2 transition-transform duration-300 border border-[var(--color-border)]">
+                <img 
+                  src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&w=1000&q=80" 
+                  alt="Professional working on laptop" 
+                  className="w-full h-auto object-cover"
+                />
               </div>
             </div>
           </div>

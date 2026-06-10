@@ -179,4 +179,34 @@ Assistant:`;
   }
 };
 
+export const optimizeWorkExperience = async (experiences: Record<string, unknown>[]): Promise<Record<string, unknown>[]> => {
+  const prompt = `You are an expert resume writer. I will provide a JSON array of work experiences.
+Rewrite the description bullet points for each experience to be highly professional, impactful, and results-oriented.
+Use strong action verbs, remove fluff, and ensure they sound impressive. Keep the newline formatting. Add missing metrics where appropriate with placeholders like [Number]%.
+
+Respond ONLY with a valid JSON array of the same length and structure as the input, with the "description" fields updated.
+Do not include any \`\`\`json or other formatting.
+
+Input Work Experiences:
+${JSON.stringify(experiences, null, 2)}`;
+
+  try {
+    const res = await fetch('/api/gemini', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Failed to generate');
+    
+    let text = data.text.trim();
+    text = text.replace(/```json/g, '').replace(/```/g, '');
+
+    return JSON.parse(text);
+  } catch (error) {
+    console.error(error);
+    throw new Error('Failed to optimize work experience.');
+  }
+};
+
 
