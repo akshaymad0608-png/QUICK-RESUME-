@@ -1,14 +1,14 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { Helmet } from "react-helmet-async";
-import { useNavigate } from 'react-router-dom';
-
+import { useNavigate, Link } from 'react-router-dom';
+import { ArrowRight, Feather, LayoutTemplate, Bot, Briefcase } from 'lucide-react';
+import { Navbar } from './components/layout/Navbar';
 import { TemplateCard } from './components/TemplateCard';
 import { TEMPLATES } from './data/templates';
-import { Navbar } from './components/layout/Navbar';
+import { motion } from 'framer-motion';
 
 export const Home: FC = () => {
   const navigate = useNavigate();
-  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   const handleCtaClick = (e: React.MouseEvent, path: string) => {
     e.preventDefault();
@@ -16,302 +16,309 @@ export const Home: FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[var(--color-bg-page)] text-[var(--color-text-body)] font-sans">
+    <div className="min-h-screen bg-slate-950 text-slate-50 font-sans selection:bg-white selection:text-slate-900 overflow-x-hidden">
       <Helmet>
-        <title>QuickResume | Professional Resume Builder</title>
-        <meta name="description" content="Create a professional resume for free. Build a job-winning resume in minutes with easy templates and smart tools." />
+        <title>QuickResume | AI Resume Builder</title>
+        <meta name="description" content="Build a clean, professional resume in minutes." />
       </Helmet>
 
-      {/* Navbar */}
       <Navbar />
 
-      <main className="pt-[72px]">
-        {/* Hero Section */}
-        <section className="bg-white px-6 lg:px-10 py-16 lg:py-24 border-b border-[var(--color-border)]">
-          <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
-            <div className="flex-1 flex flex-col items-start lg:pr-10">
-              <h1 className="text-4xl lg:text-5xl font-bold leading-tight text-heading mb-6 tracking-tight">
-                Create a professional resume for free
-              </h1>
-              <p className="text-lg text-body leading-relaxed mb-8 max-w-lg">
-                Build a job-winning resume in minutes with easy templates and smart tools.
-              </p>
-              
-              <div className="flex flex-col sm:flex-row gap-4 mb-8 w-full sm:w-auto">
-                <button 
-                  onClick={(e) => handleCtaClick(e, '/build')}
-                  className="bg-primary text-white border-none rounded-lg px-8 py-3.5 text-base font-semibold hover:bg-primary-hover transition-colors shadow-sm w-full sm:w-auto text-center"
-                >
-                  Create My Resume
-                </button>
-                <button 
-                  onClick={() => navigate('/choose-template')}
-                  className="bg-white text-heading border border-[var(--color-border)] rounded-lg px-8 py-3.5 text-base font-semibold hover:bg-surface transition-colors shadow-sm w-full sm:w-auto text-center"
-                >
-                  Browse Templates
-                </button>
-              </div>
-
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8 text-sm font-medium text-muted">
-                <div className="flex items-center gap-2">
-                  <i className="ti ti-check text-green-600 text-lg"></i> Free resume builder
-                </div>
-                <div className="flex items-center gap-2">
-                  <i className="ti ti-check text-green-600 text-lg"></i> ATS friendly templates
-                </div>
-                <div className="flex items-center gap-2">
-                  <i className="ti ti-check text-green-600 text-lg"></i> Download instantly
-                </div>
-              </div>
+      {/* Navbar will handle its own space if we add padding to main */}
+      <main className="pt-20 bg-grid-pattern relative">\n        <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-950/90 to-slate-900 pointer-events-none"></div>\n        <div className="relative z-10">
+        
+        {/* 1. Hero Section */}
+        <section className="px-6 lg:px-10 pt-24 pb-32 max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-16">
+          <motion.div 
+            className="flex-1 text-left"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <div className="inline-flex items-center gap-2 px-3 py-1 border border-slate-800 text-slate-400 text-xs font-semibold uppercase tracking-widest mb-6">
+              <Bot className="w-3 h-3" /> AI-Powered
             </div>
-
-            <div className="flex-1 w-full max-w-lg lg:max-w-none flex justify-center lg:justify-end">
-              <div className="w-full max-w-[420px] bg-white rounded-md border border-[var(--color-border)] shadow-[0_10px_40px_-15px_rgba(0,0,0,0.1)] p-8 hover:-translate-y-2 transition-transform duration-300">
-                <div className="flex items-center gap-4 border-b border-[var(--color-border)] pb-4 mb-5">
-                  <div className="w-12 h-12 bg-primary-light text-primary rounded-full flex items-center justify-center text-lg font-bold">JD</div>
-                  <div>
-                    <div className="text-base font-bold text-heading">John Doe</div>
-                    <div className="text-sm text-body">Software Engineer</div>
-                  </div>
-                </div>
-
-                <div className="space-y-6">
-                  <div>
-                    <div className="text-xs font-bold text-heading uppercase tracking-wide mb-2">Summary</div>
-                    <div className="h-2 bg-surface w-full mb-2 rounded"></div>
-                    <div className="h-2 bg-surface w-full mb-2 rounded"></div>
-                    <div className="h-2 bg-surface w-4/5 rounded"></div>
-                  </div>
-
-                  <div>
-                    <div className="text-xs font-bold text-heading uppercase tracking-wide mb-2">Experience</div>
-                    <div className="flex justify-between items-center mb-1">
-                      <div className="h-2.5 bg-gray-300 w-1/3 rounded"></div>
-                      <div className="h-2 bg-surface w-16 rounded"></div>
-                    </div>
-                    <div className="h-2 bg-surface w-1/4 mb-3 rounded"></div>
-                    <div className="h-1.5 bg-surface w-full mb-1.5 rounded"></div>
-                    <div className="h-1.5 bg-surface w-[90%] mb-1.5 rounded"></div>
-                    <div className="h-1.5 bg-surface w-[95%] mb-4 rounded"></div>
-
-                    <div className="flex justify-between items-center mb-1">
-                      <div className="h-2.5 bg-gray-300 w-1/4 rounded"></div>
-                      <div className="h-2 bg-surface w-16 rounded"></div>
-                    </div>
-                    <div className="h-2 bg-surface w-1/5 mb-3 rounded"></div>
-                    <div className="h-1.5 bg-surface w-full mb-1.5 rounded"></div>
-                    <div className="h-1.5 bg-surface w-[85%] rounded"></div>
-                  </div>
-                </div>
-              </div>
+            
+            <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight text-white mb-6 leading-none">
+              A better resume.<br />
+              <span className="text-slate-400">Zero friction.</span>
+            </h1>
+            
+            <p className="text-lg md:text-xl text-slate-500 mb-10 max-w-xl leading-relaxed">
+              Design a clean, ATS-optimized resume. Let our AI handle the writing, while you focus on landing the interview.
+            </p>
+            
+            <div className="flex flex-col sm:flex-row gap-4">
+              <button 
+                onClick={(e) => handleCtaClick(e, '/build')}
+                className="bg-indigo-600 text-white px-8 py-4 text-sm font-bold hover:bg-indigo-700 transition-colors flex items-center justify-center gap-2"
+              >
+                Create your resume <ArrowRight className="w-4 h-4" />
+              </button>
+              <button 
+                onClick={() => navigate('/choose-template')}
+                className="bg-slate-900 text-white border border-slate-800 px-8 py-4 text-sm font-bold hover:bg-indigo-700 transition-colors flex items-center justify-center"
+              >
+                View templates
+              </button>
             </div>
+          </motion.div>
+          
+          <motion.div 
+            className="flex-1 w-full lg:w-auto relative"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-tr from-blue-100/40 via-purple-100/40 to-rose-100/40 blur-3xl -z-10 rounded-full"></div>
+             <div className="w-full max-w-[500px] mx-auto relative rounded-2xl overflow-hidden shadow-2xl border border-slate-800 group">
+                <img 
+                  src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2000&auto=format&fit=crop" 
+                  alt="Team collaboration" 
+                  className="w-full h-[400px] md:h-[500px] object-cover group-hover:scale-105 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent flex items-end p-8">
+                  <div className="text-left">
+                    <p className="text-2xl md:text-3xl font-bold text-white mb-3 italic leading-tight">
+                      "Success is not final; failure is not fatal: It is the courage to continue that counts."
+                    </p>
+                    <p className="text-slate-300 font-medium">— Winston Churchill</p>
+                  </div>
+                </div>
+             </div>
+          </motion.div>
+        </section>
+
+        {/* 2. Stats Section Minimal */}
+        <section className="border-y border-slate-800 bg-slate-900 py-12">
+          <motion.div 
+            className="max-w-7xl mx-auto px-6 lg:px-10 grid grid-cols-2 md:grid-cols-4 gap-8 md:divide-x divide-slate-800 gap-y-12"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.6 }}
+          >
+             <div className="px-6 text-center">
+               <div className="text-3xl font-bold mb-1">100k+</div>
+               <div className="text-xs text-slate-500 uppercase tracking-widest font-semibold">Resumes Created</div>
+             </div>
+             <div className="px-6 text-center">
+               <div className="text-3xl font-bold mb-1">99%</div>
+               <div className="text-xs text-slate-500 uppercase tracking-widest font-semibold">ATS Success Rate</div>
+             </div>
+             <div className="px-6 text-center">
+               <div className="text-3xl font-bold mb-1">25+</div>
+               <div className="text-xs text-slate-500 uppercase tracking-widest font-semibold">Pro Templates</div>
+             </div>
+             <div className="px-6 text-center">
+               <div className="text-3xl font-bold mb-1">Free</div>
+               <div className="text-xs text-slate-500 uppercase tracking-widest font-semibold">PDF Export</div>
+             </div>
+          </motion.div>
+        </section>
+
+        {/* 3. Features Overview */}
+        <section className="py-32 px-6 lg:px-10 max-w-7xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-16">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.5 }}
+            >
+               <div className="w-12 h-12 bg-indigo-950 text-blue-600 flex items-center justify-center mb-6 rounded-xl">
+                 <LayoutTemplate className="w-5 h-5 text-white" />
+               </div>
+               <h3 className="text-xl font-bold mb-3">Clean Templates</h3>
+               <p className="text-slate-500 leading-relaxed">No clutter, no distractions. Our templates prioritize readability and ATS compatibility above all else.</p>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+            >
+               <div className="w-12 h-12 bg-purple-50 text-purple-600 flex items-center justify-center mb-6 rounded-xl">
+                 <Bot className="w-5 h-5 text-white" />
+               </div>
+               <h3 className="text-xl font-bold mb-3">AI Writer</h3>
+               <p className="text-slate-500 leading-relaxed">Struggling to describe your impact? Let our AI rewrite your bullet points into powerful achievements.</p>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+               <div className="w-12 h-12 bg-green-50 text-green-600 flex items-center justify-center mb-6 rounded-xl">
+                 <Briefcase className="w-5 h-5 text-white" />
+               </div>
+               <h3 className="text-xl font-bold mb-3">Interview Prep</h3>
+               <p className="text-slate-500 leading-relaxed">Prepare for behavioral interviews with AI-generated questions tailored to your exact experience.</p>
+            </motion.div>
           </div>
         </section>
 
-        {/* Trust Section */}
-        <section className="bg-surface px-6 lg:px-10 py-12 border-b border-[var(--color-border)]">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-8">
-              <h2 className="text-xl font-semibold text-heading">Trusted by job seekers</h2>
-            </div>
-            <div className="flex flex-col sm:flex-row flex-wrap justify-center items-center gap-10 sm:gap-20">
-              <div className="flex items-center gap-3">
-                <i className="ti ti-users text-primary text-3xl"></i>
-                <div className="text-left">
-                  <div className="text-2xl font-bold text-heading">1M+</div>
-                  <div className="text-sm text-body font-medium">Resumes Created</div>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <i className="ti ti-layout-grid text-primary text-3xl"></i>
-                <div className="text-left">
-                  <div className="text-2xl font-bold text-heading">50+</div>
-                  <div className="text-sm text-body font-medium">Templates</div>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <i className="ti ti-scan text-primary text-3xl"></i>
-                <div className="text-left">
-                  <div className="text-2xl font-bold text-heading">100%</div>
-                  <div className="text-sm text-body font-medium">ATS Friendly</div>
-                </div>
-              </div>
-            </div>
-          </div>
+        {/* ATS Friendly Resume Creator Feature */}
+        <section className="py-24 bg-indigo-950 border-y border-slate-800">
+          <motion.div 
+            className="max-w-4xl mx-auto px-6 lg:px-10 text-center"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.6 }}
+          >
+             <div className="w-16 h-16 bg-slate-900 shadow-sm border border-slate-800 rounded-2xl flex items-center justify-center mx-auto mb-8">
+                <Feather className="w-8 h-8 text-blue-600" />
+             </div>
+             <h2 className="text-4xl font-extrabold mb-6 text-white">ATS-Friendly Resume Creator</h2>
+             <p className="text-xl text-slate-600 mb-10 leading-relaxed max-w-2xl mx-auto">
+               Beat the resume bots with our specialized ATS templates. Built specifically to parse perfectly into Workday, Greenhouse, Lever, and other major tracking systems.
+             </p>
+             <motion.button 
+               whileHover={{ scale: 1.05 }}
+               whileTap={{ scale: 0.95 }}
+               onClick={(e) => handleCtaClick(e, '/build')} 
+               className="bg-blue-600 text-white px-10 py-5 text-sm font-bold hover:bg-blue-700 transition-colors shadow-lg hover:shadow-xl inline-flex items-center gap-2"
+             >
+               Create ATS Resume Now <ArrowRight className="w-4 h-4" />
+             </motion.button>
+          </motion.div>
         </section>
 
-        {/* How It Works Section */}
-        <section className="bg-white px-6 py-20 border-b border-[var(--color-border)]">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl font-bold text-heading mb-4">Build your resume in 3 simple steps</h2>
-              <p className="text-lg text-body max-w-2xl mx-auto">A quick and easy way to create your professional resume.</p>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-8">
-              {[
-                { n: '1', i: 'ti-layout', t: 'Choose a template', d: 'Select a professional resume design.' },
-                { n: '2', i: 'ti-pencil', t: 'Add your information', d: 'Fill your details with guided sections.' },
-                { n: '3', i: 'ti-download', t: 'Download your resume', d: 'Export and apply for jobs.' }
-              ].map((step, idx) => (
-                <div key={idx} className="bg-white border border-[var(--color-border)] rounded-2xl p-8 relative shadow-sm hover:shadow-md transition-shadow">
-                  <div className="w-12 h-12 rounded-full bg-primary-light text-primary flex items-center justify-center mb-6">
-                    <i className={`${step.i} text-2xl`}></i>
-                  </div>
-                  <h3 className="text-xl font-bold text-heading mb-3">{step.n}. {step.t}</h3>
-                  <p className="text-body leading-relaxed">{step.d}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Templates Section */}
-        <section className="bg-surface px-6 py-20 border-b border-[var(--color-border)]">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-heading mb-4">Choose from professional resume templates</h2>
-              <p className="text-lg text-body">Stand out with templates designed to get you hired.</p>
-            </div>
-
-            <div className="flex flex-wrap justify-center gap-3 mb-10">
-              {['All', 'Professional', 'Modern', 'Creative', 'Simple'].map((filter, i) => (
-                <button key={i} className={`px-5 py-2 rounded-full text-sm font-medium transition-colors ${i === 0 ? 'bg-primary text-white' : 'bg-white text-muted border border-[var(--color-border)] hover:text-heading hover:border-gray-300'}`}>
-                  {filter}
-                </button>
-              ))}
-            </div>
-
+        {/* 4. Template Showcase */}
+        <section className="py-24 bg-slate-900 border-t border-slate-800">
+          <div className="max-w-7xl mx-auto px-6 lg:px-10">
+            <motion.div 
+              className="flex justify-between items-end mb-12"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.5 }}
+            >
+              <div>
+                <h2 className="text-3xl font-bold text-white mb-2">Templates</h2>
+                <p className="text-slate-500">Minimalist designs for modern professionals.</p>
+              </div>
+              <Link to="/templates" className="hidden md:flex items-center gap-2 text-sm font-bold hover:text-slate-300 transition-colors">
+                View all <ArrowRight className="w-4 h-4" />
+              </Link>
+            </motion.div>
+            
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {TEMPLATES.map((template) => (
-                <TemplateCard key={template.id} template={template} />
+              {TEMPLATES.slice(0, 3).map((tpl, idx) => (
+                <motion.div
+                  key={tpl.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.5, delay: idx * 0.1 }}
+                >
+                  <TemplateCard template={tpl} onSelect={() => navigate('/templates')} />
+                </motion.div>
               ))}
             </div>
             
-            <div className="text-center mt-12">
-              <button 
-                onClick={() => navigate('/choose-template')}
-                className="bg-white text-heading border border-[var(--color-border)] rounded-lg px-8 py-3 text-base font-semibold hover:bg-surface transition-colors shadow-sm"
-              >
-                View all templates
-              </button>
+            <div className="mt-8 text-center md:hidden">
+              <Link to="/templates" className="inline-flex items-center gap-2 text-sm font-bold hover:text-slate-300 transition-colors">
+                View all templates <ArrowRight className="w-4 h-4" />
+              </Link>
             </div>
           </div>
         </section>
 
-        {/* Testimonial Section */}
-        <section className="bg-white px-6 py-20 border-b border-[var(--color-border)]">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl font-bold text-heading">Trusted by professionals everywhere</h2>
-            </div>
-            <div className="grid md:grid-cols-3 gap-6">
-              {[
-                { name: 'Sarah Jenkins', job: 'Marketing Manager', msg: 'The easiest resume builder I have ever used. Got an interview the next day after applying.' },
-                { name: 'Michael Chen', job: 'Software Engineer', msg: 'Clean templates that pass ATS seamlessly. The interface is simple and straightforward to use.' },
-                { name: 'Amanda Roth', job: 'Sales Director', msg: 'Built my resume in 15 minutes. It looks extremely professional and formatting was a breeze.' }
-              ].map((review, idx) => (
-                <div key={idx} className="bg-white border border-[var(--color-border)] rounded-2xl p-8 shadow-sm">
-                  <div className="flex text-yellow-400 gap-1 mb-4 text-lg">
-                    {[...Array(5)].map((_, i) => <i key={i} className="ti ti-star-filled"></i>)}
-                  </div>
-                  <p className="text-body leading-relaxed mb-6 font-medium">"{review.msg}"</p>
+        {/* 5. Final CTA */}
+        <section className="py-32 px-6 lg:px-10 max-w-5xl mx-auto text-center border-t border-slate-800">
+           <motion.div
+             initial={{ opacity: 0, scale: 0.95 }}
+             whileInView={{ opacity: 1, scale: 1 }}
+             viewport={{ once: true, margin: "-50px" }}
+             transition={{ duration: 0.5 }}
+             className="grid md:grid-cols-2 gap-12 items-center text-left"
+           >
+             <div>
+               <h2 className="text-4xl font-extrabold mb-6">Ready to start?</h2>
+               <p className="text-xl text-slate-500 mb-10">Create a professional resume in under 10 minutes.</p>
+               <motion.button 
+                 whileHover={{ scale: 1.05 }}
+                 whileTap={{ scale: 0.95 }}
+                 onClick={(e) => handleCtaClick(e, '/build')}
+                 className="bg-indigo-600 text-white px-10 py-5 text-sm font-bold hover:bg-indigo-700 transition-colors inline-block"
+               >
+                 Start Building For Free
+               </motion.button>
+             </div>
+             <div className="w-full relative rounded-2xl overflow-hidden shadow-2xl border border-slate-800 group">
+                <img 
+                  src="https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2000&auto=format&fit=crop" 
+                  alt="Career success" 
+                  className="w-full h-[300px] object-cover group-hover:scale-105 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent flex items-end p-6">
                   <div>
-                    <h4 className="font-bold text-heading">{review.name}</h4>
-                    <p className="text-sm text-muted">{review.job}</p>
+                    <p className="text-xl font-bold text-white mb-2 italic leading-tight">
+                      "The only way to do great work is to love what you do."
+                    </p>
+                    <p className="text-slate-300 font-medium text-sm">— Steve Jobs</p>
                   </div>
                 </div>
-              ))}
-            </div>
-          </div>
+             </div>
+           </motion.div>
         </section>
 
-        {/* FAQ Section */}
-        <section className="bg-surface px-6 py-20 border-b border-[var(--color-border)]">
-          <div className="max-w-3xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-heading">Frequently Asked Questions</h2>
-            </div>
-            <div className="space-y-4">
-              {[
-                { q: 'Is QuickResume free?', a: 'Yes, our basic resume builder is completely free to use. You can build, customize, and download your resume without paying.' },
-                { q: 'Can I download a PDF?', a: 'Yes, you can download your final resume as a high-quality PDF, ready to be sent to employers.' },
-                { q: 'Are templates ATS friendly?', a: 'Absolutely. All our templates are designed with best practices to ensure Applicant Tracking Systems can easily read your data.' },
-                { q: 'Can I edit my resume later?', a: 'Yes. Simply create an account to save your progress and come back to edit your resume at any time.' },
-                { q: 'Does it work on mobile?', a: 'Yes, our resume builder is fully responsive and works perfectly on your phone, tablet, or desktop.' }
-              ].map((faq, i) => (
-                <div key={i} className="bg-white border border-[var(--color-border)] rounded-xl overflow-hidden">
-                  <button 
-                    className="w-full text-left px-6 py-5 flex items-center justify-between font-semibold text-heading focus:outline-none"
-                    onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                  >
-                    {faq.q}
-                    <i className={`ti ti-chevron-down shrink-0 transition-transform ${openFaq === i ? 'rotate-180' : ''}`}></i>
-                  </button>
-                  {openFaq === i && (
-                    <div className="px-6 pb-5 text-body">
-                      {faq.a}
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-      </main>
+        </div>\n      </main>
 
       {/* Footer */}
-      <footer className="bg-white border-t border-[var(--color-border)] pt-16 pb-8 px-6">
+      <footer className="border-t border-slate-800 pt-16 pb-8 px-6 lg:px-10 bg-slate-950">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 mb-12">
-            <div className="col-span-2 lg:col-span-2">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-10 mb-16">
+            <div className="col-span-2">
               <div className="flex items-center gap-2 mb-4">
-                <div className="w-8 h-8 bg-primary rounded flex items-center justify-center">
-                  <i className="ti ti-file-description text-white text-xl"></i>
-                </div>
-                <span className="text-xl font-bold text-heading tracking-tight">QuickResume</span>
+                <motion.div 
+                  className="w-9 h-9 bg-gradient-to-tr from-slate-900 to-slate-700 rounded-lg shadow-md border border-slate-800 flex items-center justify-center"
+                  whileHover={{ rotate: 5, scale: 1.05 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                >
+                  <Feather className="text-white w-5 h-5" />
+                </motion.div>
+                <span className="text-xl font-bold text-white tracking-tight">QuickResume</span>
               </div>
-              <p className="text-body text-sm max-w-sm mb-6">
-                Build a professional, job-winning resume in minutes. Easy to use, ATS-friendly, and beautifully designed.
+              <p className="text-slate-500 text-sm max-w-xs leading-relaxed mb-6">
+                The minimalist resume builder for modern professionals. Focus on your career, not formatting.
               </p>
             </div>
 
             <div>
-              <h4 className="font-bold text-heading mb-4">Resume</h4>
-              <ul className="space-y-3">
-                {['Resume Builder', 'Templates', 'Examples'].map(link => (
-                  <li key={link}><a href="#" className="text-sm text-body hover:text-primary transition-colors">{link}</a></li>
+              <h4 className="font-bold text-white mb-6 text-sm uppercase tracking-widest">Product</h4>
+              <ul className="space-y-4">
+                {['Builder', 'Templates', 'AI Assistant', 'Cover Letters'].map(link => (
+                  <li key={link}><Link to="#" className="text-sm text-slate-500 hover:text-white transition-colors">{link}</Link></li>
                 ))}
               </ul>
             </div>
 
             <div>
-              <h4 className="font-bold text-heading mb-4">Career</h4>
-              <ul className="space-y-3">
-                {['Cover Letters', 'Career Advice', 'Job Tips'].map(link => (
-                  <li key={link}><a href="#" className="text-sm text-body hover:text-primary transition-colors">{link}</a></li>
+              <h4 className="font-bold text-white mb-6 text-sm uppercase tracking-widest">Resources</h4>
+              <ul className="space-y-4">
+                {['Examples', 'Guides', 'Interview Tips'].map(link => (
+                  <li key={link}><Link to="#" className="text-sm text-slate-500 hover:text-white transition-colors">{link}</Link></li>
                 ))}
               </ul>
             </div>
 
             <div>
-              <h4 className="font-bold text-heading mb-4">Company</h4>
-              <ul className="space-y-3">
-                {['About', 'Contact', 'Privacy', 'Terms'].map(link => (
-                  <li key={link}><a href="#" className="text-sm text-body hover:text-primary transition-colors">{link}</a></li>
+              <h4 className="font-bold text-white mb-6 text-sm uppercase tracking-widest">Legal</h4>
+              <ul className="space-y-4">
+                {['Privacy Policy', 'Terms of Service', 'Contact'].map(link => (
+                  <li key={link}><Link to="#" className="text-sm text-slate-500 hover:text-white transition-colors">{link}</Link></li>
                 ))}
               </ul>
             </div>
           </div>
 
-          <div className="pt-8 border-t border-[var(--color-border)] flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-sm text-muted">© {new Date().getFullYear()} QuickResume. All rights reserved.</p>
-            <div className="flex gap-4">
-              <a href="#" className="text-muted hover:text-heading"><i className="ti ti-brand-twitter text-xl"></i></a>
-              <a href="#" className="text-muted hover:text-heading"><i className="ti ti-brand-linkedin text-xl"></i></a>
-              <a href="#" className="text-muted hover:text-heading"><i className="ti ti-brand-facebook text-xl"></i></a>
-            </div>
+          <div className="pt-8 border-t border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4">
+            <p className="text-xs text-slate-400">© 2026 quickresume.business. All rights reserved.</p>
+            <p className="text-xs text-slate-400">Built for the modern web.</p>
           </div>
         </div>
       </footer>

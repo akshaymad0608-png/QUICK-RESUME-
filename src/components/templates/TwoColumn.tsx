@@ -6,7 +6,7 @@ interface TemplateProps {
 }
 
 const TwoColumn: FC<TemplateProps> = ({ data }) => {
-  const { personalInfo, summary, experience, education, skills, design } = data;
+  const { personalInfo, summary, experience, education, skills, projects = [], certifications = [], languages = [], design } = data;
   const c = design.color;
   const hf = design.headingFont || design.fontFamily;
   const bf = design.bodyFont || design.fontFamily;
@@ -14,14 +14,19 @@ const TwoColumn: FC<TemplateProps> = ({ data }) => {
   return (
     <div className="flex w-full flex-col h-full bg-white text-gray-900 overflow-hidden" style={{ fontSize: design.fontSize, lineHeight: design.lineHeight }}>
       {/* Header */}
-      <header className="p-8 pb-6 flex justify-between items-end border-b-[6px]" style={{ borderColor: c }}>
-        <div>
-          <h1 className="text-4xl font-extrabold uppercase tracking-tight" style={{ fontFamily: hf, color: c }}>
-            {personalInfo.firstName} {personalInfo.lastName}
-          </h1>
-          <h2 className="text-xl mt-2 font-medium bg-gray-100 inline-block px-3 py-1 rounded" style={{ fontFamily: hf, color: c }}>
-            {personalInfo.jobTitle}
-          </h2>
+      <header className="p-8 pb-6 flex justify-between items-center border-b-[6px]" style={{ borderColor: c }}>
+        <div className="flex items-center gap-6">
+          {personalInfo.photoUrl && data.design.showPhoto !== false && (
+            <img src={personalInfo.photoUrl} alt="Profile" className="w-24 h-24 rounded-full object-cover border-4" style={{ borderColor: c }} />
+          )}
+          <div>
+            <h1 className="text-4xl font-extrabold uppercase tracking-tight" style={{ fontFamily: hf, color: c }}>
+              {personalInfo.firstName} {personalInfo.lastName}
+            </h1>
+            <h2 className="text-xl mt-2 font-medium bg-gray-100 inline-block px-3 py-1 rounded" style={{ fontFamily: hf, color: c }}>
+              {personalInfo.jobTitle}
+            </h2>
+          </div>
         </div>
         <div className="text-right text-sm space-y-1 font-medium text-gray-600" style={{ fontFamily: bf }}>
           {personalInfo.phone && <div>{personalInfo.phoneCode} {personalInfo.phone}</div>}
@@ -62,6 +67,35 @@ const TwoColumn: FC<TemplateProps> = ({ data }) => {
               </div>
             </section>
           )}
+          
+          {certifications.length > 0 && (
+            <section>
+              <h3 className="text-lg font-bold uppercase tracking-widest mb-4 pb-2 border-b-2" style={{ fontFamily: hf, borderColor: c, color: c }}>Certifications</h3>
+              <div className="space-y-4">
+                {certifications.map(cert => (
+                  <div key={cert.id}>
+                    <div className="font-bold text-[14px] text-gray-900">{cert.name}</div>
+                    {cert.issuer && <div className="text-[13px] text-gray-700 font-medium mb-1">{cert.issuer}</div>}
+                    <div className="text-[12px] font-bold" style={{ color: c }}>{cert.date}</div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {languages.length > 0 && (
+            <section>
+              <h3 className="text-lg font-bold uppercase tracking-widest mb-4 pb-2 border-b-2" style={{ fontFamily: hf, borderColor: c, color: c }}>Languages</h3>
+              <ul className="space-y-3">
+                {languages.map((lang, i) => (
+                  <li key={i} className="flex justify-between items-center text-[14px]">
+                    <span style={{ fontFamily: bf }} className="font-semibold text-gray-700">{lang.name}</span>
+                    <span className="text-[12px] text-gray-500 font-medium">{lang.proficiency}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
         </div>
 
         {/* Right Col */}
@@ -72,7 +106,6 @@ const TwoColumn: FC<TemplateProps> = ({ data }) => {
               <p className="text-[14px] text-gray-700 leading-relaxed font-medium" style={{ fontFamily: bf }}>{summary}</p>
             </section>
           )}
-
           {experience.length > 0 && (
              <section>
                <h3 className="text-xl font-bold uppercase tracking-widest mb-6" style={{ fontFamily: hf, color: c }}>Experience</h3>
@@ -93,6 +126,39 @@ const TwoColumn: FC<TemplateProps> = ({ data }) => {
                      <p className="text-[14px] leading-relaxed text-gray-600 whitespace-pre-wrap" style={{ fontFamily: bf }}>
                        {exp.description}
                      </p>
+                   </div>
+                 ))}
+               </div>
+             </section>
+          )}
+          
+          {projects.length > 0 && (
+             <section>
+               <h3 className="text-xl font-bold uppercase tracking-widest mb-6" style={{ fontFamily: hf, color: c }}>Projects</h3>
+               <div className="space-y-6">
+                 {projects.map((proj, i) => (
+                   <div key={proj.id} className="relative">
+                     {/* Timeline Decor */}
+                     <div className="absolute left-[-32px] top-[6px] w-3 h-3 rounded-full border-2 border-white shadow-sm" style={{ backgroundColor: c }}></div>
+                     {i !== projects.length - 1 && <div className="absolute left-[-27px] top-[18px] w-0.5 h-[calc(100%+12px)] bg-gray-200"></div>}
+                     
+                     <div className="flex justify-between items-baseline mb-1">
+                       <h4 className="font-bold text-[16px] text-gray-900" style={{ fontFamily: hf }}>
+                         {proj.title}
+                         {proj.link && <span className="text-[13px] font-medium text-gray-500 ml-2">({proj.link.replace('https://', '')})</span>}
+                       </h4>
+                       <span className="text-[13px] font-bold bg-gray-100 px-2 py-0.5 rounded" style={{ color: c }}>
+                         {proj.startDate} - {proj.endDate}
+                       </span>
+                     </div>
+                     {proj.subtitle && (
+                       <div className="text-[14px] font-semibold text-gray-700 mb-2">{proj.subtitle}</div>
+                     )}
+                     {proj.description && (
+                       <p className="text-[14px] leading-relaxed text-gray-600 whitespace-pre-wrap" style={{ fontFamily: bf }}>
+                         {proj.description}
+                       </p>
+                     )}
                    </div>
                  ))}
                </div>

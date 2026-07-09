@@ -38,103 +38,103 @@ const Education: FC = () => {
   return (
     <div className="space-y-6">
       <div className="mb-6">
-        <h2 className="text-3xl font-bold text-gray-900 mb-2">Education</h2>
-        <p className="text-gray-600">A varied education on your resume sums up the value that your learnings and background will bring to job.</p>
+        <h2 className="text-xl font-bold text-slate-900 mb-2 tracking-tight">Education</h2>
+        <p className="text-slate-500 text-sm">A varied education on your resume sums up the value that your learnings and background will bring to job.</p>
       </div>
 
       <div className="space-y-6">
         {data.education.map((edu) => (
-          <div key={edu.id} className={`relative bg-white border p-6 rounded-2xl shadow-sm transition-colors group ${activeEduIdForExamples === edu.id ? 'border-primary ring-1 ring-primary' : 'border-gray-200 hover:border-primary/50'}`}>
+          <div key={edu.id} className={`relative bg-white border p-6 rounded-2xl shadow-sm transition-colors group ${activeEduIdForExamples === edu.id ? 'border-slate-400 ring-1 ring-slate-400/20' : 'border-slate-200 hover:border-slate-300'}`}>
             <button 
               onClick={() => removeEdu(edu.id)}
-              className="absolute top-6 right-6 text-slate-500 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100"
+              className="absolute top-6 right-6 text-slate-500 hover:text-red-400 hover:bg-red-500/10 transition-colors opacity-0 group-hover:opacity-100 bg-white/5 p-1.5 rounded-lg shadow-sm"
             >
-              <Trash2 size={20} />
+              <Trash2 size={16} />
             </button>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-bold text-gray-600 mb-1">School</label>
+                <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1.5">School</label>
                 <input 
                   type="text" value={edu.schoolName} onChange={(e) => updateEdu(edu.id, 'schoolName', e.target.value)} 
-                  className="w-full bg-gray-50 text-gray-900 border border-gray-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors placeholder:text-gray-400"
+                  className="w-full bg-slate-50 text-slate-900 border border-slate-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-1 focus:ring-slate-400 focus:border-slate-400 transition-colors placeholder:text-slate-600 shadow-sm"
                 />
               </div>
               <div>
-                <label className="block text-sm font-bold text-gray-600 mb-1">Degree</label>
+                <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1.5">Degree</label>
                 <input 
                   type="text" value={edu.degree} onChange={(e) => updateEdu(edu.id, 'degree', e.target.value)} 
-                  className="w-full bg-gray-50 text-gray-900 border border-gray-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors placeholder:text-gray-400"
+                  className="w-full bg-slate-50 text-slate-900 border border-slate-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-1 focus:ring-slate-400 focus:border-slate-400 transition-colors placeholder:text-slate-600 shadow-sm"
                 />
               </div>
               <div className="md:col-span-2">
-                <label className="block text-sm font-bold text-gray-600 mb-1">Field of Study</label>
+                <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1.5">Field of Study</label>
                 <input 
                   type="text" value={edu.fieldOfStudy} onChange={(e) => updateEdu(edu.id, 'fieldOfStudy', e.target.value)} 
-                  className="w-full bg-gray-50 text-gray-900 border border-gray-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors placeholder:text-gray-400"
+                  className="w-full bg-slate-50 text-slate-900 border border-slate-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-1 focus:ring-slate-400 focus:border-slate-400 transition-colors placeholder:text-slate-600 shadow-sm"
                 />
               </div>
               <div className="grid grid-cols-2 gap-4 md:col-span-2">
                 <div>
-                  <label className="block text-sm font-bold text-gray-600 mb-1">City</label>
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1.5">City</label>
                   <input 
                     type="text" value={edu.city} onChange={(e) => updateEdu(edu.id, 'city', e.target.value)} 
-                    className="w-full bg-gray-50 text-gray-900 border border-gray-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors placeholder:text-gray-400"
+                    className="w-full bg-slate-50 text-slate-900 border border-slate-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-1 focus:ring-slate-400 focus:border-slate-400 transition-colors placeholder:text-slate-600 shadow-sm"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-gray-600 mb-1">Country</label>
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1.5">Country</label>
                   <input 
                     type="text" value={edu.country} onChange={(e) => updateEdu(edu.id, 'country', e.target.value)} 
-                    className="w-full bg-gray-50 text-gray-900 border border-gray-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors placeholder:text-gray-400"
+                    className="w-full bg-slate-50 text-slate-900 border border-slate-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-1 focus:ring-slate-400 focus:border-slate-400 transition-colors placeholder:text-slate-600 shadow-sm"
                   />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-4 md:col-span-2">
                 <div>
-                  <label className="block text-sm font-bold text-gray-600 mb-1">Start Date</label>
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1.5">Start Date</label>
                   <input 
                     type="text" value={edu.startYear} onChange={(e) => updateEdu(edu.id, 'startYear', e.target.value)} 
-                    className="w-full bg-gray-50 text-gray-900 border border-gray-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors placeholder:text-gray-400"
+                    className="w-full bg-slate-50 text-slate-900 border border-slate-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-1 focus:ring-slate-400 focus:border-slate-400 transition-colors placeholder:text-slate-600 shadow-sm"
                     placeholder="YYYY"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-gray-600 mb-1">End Date</label>
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1.5">End Date</label>
                   <input 
                     type="text" value={edu.endYear} onChange={(e) => updateEdu(edu.id, 'endYear', e.target.value)} 
-                    className="w-full bg-gray-50 text-gray-900 border border-gray-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors placeholder:text-gray-400"
+                    className="w-full bg-slate-50 text-slate-900 border border-slate-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-1 focus:ring-slate-400 focus:border-slate-400 transition-colors placeholder:text-slate-600 shadow-sm"
                     placeholder="YYYY"
                   />
                 </div>
               </div>
               <div className="md:col-span-2">
-                <div className="flex justify-between items-center mb-1">
-                   <label className="block text-sm font-bold text-gray-600">Description</label>
+                <div className="flex justify-between items-center mb-1.5">
+                   <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest">Description</label>
                    <button 
                      onClick={() => setActiveEduIdForExamples(activeEduIdForExamples === edu.id ? null : edu.id)}
-                     className="flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 bg-gray-100 text-gray-600 hover:bg-gray-200 rounded-lg transition-colors border border-gray-200"
+                     className="flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 bg-slate-100 text-slate-800 hover:bg-slate-900/20 rounded-lg transition-colors"
                    >
                      <Search size={14} /> Examples
                    </button>
                 </div>
                 <textarea 
                   value={edu.description} onChange={(e) => updateEdu(edu.id, 'description', e.target.value)} 
-                  className="w-full bg-gray-50 text-gray-900 border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors min-h-[100px] custom-scrollbar placeholder:text-gray-400"
+                  className="w-full bg-slate-50 text-slate-900 border border-slate-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-1 focus:ring-slate-400 focus:border-slate-400 transition-colors min-h-[100px] custom-scrollbar placeholder:text-slate-600 shadow-sm"
                 />
               </div>
             </div>
 
             {/* Examples Panel */}
             {activeEduIdForExamples === edu.id && (
-              <div className="mt-4 p-5 bg-gray-50 border border-gray-200 rounded-xl space-y-5">
+              <div className="mt-4 p-5 bg-slate-50 border border-slate-200 rounded-xl space-y-5">
                  <div>
-                    <h3 className="text-[13px] font-bold text-gray-900 mb-3 uppercase tracking-wider">Course Suggestions</h3>
+                    <h3 className="text-xs font-bold text-slate-500 mb-3 uppercase tracking-wider">Course Suggestions</h3>
                     <div className="flex flex-wrap gap-2">
                       {educationExamples.courses.map(course => (
                         <button
                           key={course}
                           onClick={() => setFieldOfStudy(edu.id, course)}
-                          className="px-3 py-1.5 text-[12px] font-bold rounded-lg border border-gray-200 bg-white text-gray-600 hover:border-primary hover:text-primary transition-colors"
+                          className="px-3 py-1.5 text-xs font-bold rounded-lg border border-slate-200 bg-white text-slate-600 hover:border-slate-400 hover:text-slate-800 hover:bg-slate-100 transition-colors"
                         >
                           + {course}
                         </button>
@@ -143,13 +143,13 @@ const Education: FC = () => {
                  </div>
                  
                  <div>
-                    <h3 className="text-[13px] font-bold text-gray-900 mb-3 uppercase tracking-wider">Achievements</h3>
+                    <h3 className="text-xs font-bold text-slate-500 mb-3 uppercase tracking-wider">Achievements</h3>
                     <div className="flex flex-wrap gap-2">
                       {educationExamples.achievements.map(achievement => (
                         <button
                           key={achievement}
                           onClick={() => appendDescription(edu.id, achievement)}
-                          className="px-3 py-1.5 text-[12px] font-bold rounded-lg border border-gray-200 bg-white text-gray-600 hover:border-primary hover:text-primary transition-colors"
+                          className="px-3 py-1.5 text-xs font-bold rounded-lg border border-slate-200 bg-white text-slate-600 hover:border-slate-400 hover:text-slate-800 hover:bg-slate-100 transition-colors"
                         >
                           + {achievement}
                         </button>
@@ -164,7 +164,7 @@ const Education: FC = () => {
 
       <button 
         onClick={addEdu}
-        className="w-full flex items-center justify-center gap-2 py-4 border-2 border-dashed border-gray-200 hover:border-primary hover:text-primary hover:bg-primary/5 rounded-xl text-gray-600 transition-colors font-bold"
+        className="w-full flex items-center justify-center gap-2 py-4 border-2 border-dashed border-slate-200 hover:border-slate-400 hover:text-slate-900 hover:bg-slate-100 rounded-xl text-slate-500 transition-colors font-bold text-sm"
       >
         <Plus size={18} /> Add more education
       </button>

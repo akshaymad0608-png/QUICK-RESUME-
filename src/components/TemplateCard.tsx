@@ -25,6 +25,7 @@ const mockData = (color: string): ResumeData => ({
     portfolio: "",
     website: "alexmorgan.com",
     address: "",
+    photoUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&h=200&auto=format&fit=crop",
   },
   summary: "A highly motivated and results-driven Senior Marketing Manager with over 8 years of experience in leading comprehensive marketing strategies, driving brand awareness, and optimizing customer acquisition pipelines. Demonstrated success in scaling digital campaigns.",
   experience: [
@@ -77,7 +78,7 @@ const mockData = (color: string): ResumeData => ({
   }
 });
 
-const ActualResume: FC<{ layout: string; color: string }> = ({ layout, color }) => {
+export const ActualResume: FC<{ layout: string; color: string }> = ({ layout, color }) => {
   const data = mockData(color);
   
   return (
@@ -98,30 +99,41 @@ export const ResumeTemplateCard: FC<{
   template: TemplateData;
   onSelect?: (id: string, color?: string) => void;
 }> = ({ template, onSelect }) => {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(0.4);
-  const [activeColor, setActiveColor] = useState('#2563EB');
+  const [activeColor, setActiveColor] = useState('#000000');
   
-  const colors = ['#2563EB', '#9333EA', '#DC2626', '#D97706', '#111827'];
+  const colors = ['#000000', '#2563EB', '#16A34A', '#DC2626', '#9333EA'];
 
   useEffect(() => {
-    if (template.variant === 'Simple' || template.variant === 'Executive' || template.variant === 'Elegant' || template.variant === 'Standard') setActiveColor('#111827');
-    if (template.variant === 'Creative') setActiveColor('#0F172A');
-    if (template.variant === 'Developer') setActiveColor('#16A34A');
-    if (template.variant === 'AI') setActiveColor('#8B5CF6'); // Purple default for AI
+    if (template.variant === 'Simple' || template.variant === 'Executive' || template.variant === 'Elegant' || template.variant === 'Standard') setActiveColor('#000000');
+    if (template.variant === 'Creative') setActiveColor('#0284C7');
+    if (template.variant === 'Developer') setActiveColor('#0F766E');
+    if (template.variant === 'AI') setActiveColor('#7C3AED'); 
+    if (template.category === 'Colorful') setActiveColor('#0284C7');
+    if (template.category === 'Creative') setActiveColor('#D97706');
+    if (template.category === 'Developer') setActiveColor('#16A34A');
+    if (template.category === 'Designer') setActiveColor('#C026D3');
+    if (template.category === 'Healthcare') setActiveColor('#0284C7');
+    if (template.variant === 'Marketing') setActiveColor('#EA580C');
     
     // Explicit color assignments based on specific IDs
     if (template.id.includes('blue')) setActiveColor('#2563EB');
-    if (template.id.includes('black')) setActiveColor('#111827');
+    if (template.id.includes('red')) setActiveColor('#DC2626');
+    if (template.id.includes('green')) setActiveColor('#16A34A');
+    if (template.id.includes('black')) setActiveColor('#000000');
   }, [template.variant, template.id]);
 
   useEffect(() => {
     const obs = new ResizeObserver((entries) => {
       for (const e of entries) {
-        setScale(e.contentRect.height / 1123);
+        const { width, height } = e.contentRect;
+        const scaleW = width / 794;
+        const scaleH = height / 1123;
+        setScale(Math.min(scaleW, scaleH));
       }
     });
-    if (containerRef.current) obs.observe(containerRef.current);
+    if (wrapperRef.current) obs.observe(wrapperRef.current);
     return () => obs.disconnect();
   }, []);
 
@@ -132,10 +144,14 @@ export const ResumeTemplateCard: FC<{
 
   return (
     <div className="flex flex-col group h-full">
-      <div className="w-full bg-[#f1f5f9] border border-gray-200 rounded-t-2xl p-6 md:p-8 flex justify-center items-center h-[520px] md:h-[640px] relative transition-all duration-300 overflow-hidden cursor-pointer" onClick={handleSelect}>
+      <div 
+        ref={wrapperRef}
+        className="w-full bg-[#f1f5f9] border border-gray-200 rounded-t-2xl p-6 md:p-8 flex justify-center items-center h-[520px] md:h-[640px] relative transition-all duration-300 overflow-hidden cursor-pointer" 
+        onClick={handleSelect}
+      >
         <div 
-          ref={containerRef}
-          className="h-full aspect-[1/1.414] bg-white shadow-xl flex-shrink-0 relative group-hover:shadow-[0_20px_50px_rgba(0,0,0,0.15)] group-hover:scale-[1.03] transition-all duration-500 origin-center"
+          style={{ width: `${794 * scale}px`, height: `${1123 * scale}px` }}
+          className="bg-white shadow-xl flex-shrink-0 relative group-hover:shadow-[0_20px_50px_rgba(0,0,0,0.15)] group-hover:scale-[1.03] transition-all duration-500 origin-center"
         >
           <div className="w-[794px] h-[1123px] origin-top-left absolute top-0 left-0" style={{ transform: `scale(${scale})` }}>
             <ActualResume layout={template.layout} color={activeColor} />
@@ -145,7 +161,7 @@ export const ResumeTemplateCard: FC<{
         {/* Hover overlay */}
         <div className="absolute inset-0 bg-transparent group-hover:bg-gray-900/5 transition-colors duration-300 flex items-center justify-center z-10 pointer-events-none">
           <button 
-            className="opacity-0 group-hover:opacity-100 bg-[#2563EB] text-white rounded-[100px] px-8 py-3.5 font-bold shadow-xl transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 pointer-events-auto hover:bg-[#1D4ED8]"
+            className="opacity-0 group-hover:opacity-100 bg-indigo-600 text-white rounded-[100px] px-8 py-3.5 font-bold shadow-xl transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 pointer-events-auto hover:bg-indigo-700"
             onClick={handleSelect}
           >
             Use this template
@@ -159,13 +175,13 @@ export const ResumeTemplateCard: FC<{
           <div className="flex justify-between items-start mb-2 gap-2 flex-wrap">
             <h3 className="text-[20px] font-bold text-gray-900">{template.name}</h3>
             <div className="flex items-center gap-1.5 flex-wrap justify-end">
-              <span className="text-[10px] font-extrabold bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-[6px] uppercase tracking-wider border border-emerald-200 whitespace-nowrap">
+              <span className="text-[10px] font-extrabold bg-slate-100 text-slate-900 px-2.5 py-1 rounded-[6px] uppercase tracking-wider border border-slate-300 whitespace-nowrap">
                 ✓ ATS Approved
               </span>
               {template.badge === 'Free' ? (
                 <span className="text-[10px] font-extrabold bg-[#f1f5f9] text-gray-700 px-2.5 py-1 rounded-[6px] uppercase tracking-wider border border-gray-200">Free</span>
               ) : (
-                <span className="text-[10px] font-extrabold bg-blue-50 text-blue-700 px-2.5 py-1 rounded-[6px] uppercase tracking-wider border border-blue-200">Premium</span>
+                <span className="text-[10px] font-extrabold bg-slate-100 text-slate-900 px-2.5 py-1 rounded-[6px] uppercase tracking-wider border border-slate-300">Premium</span>
               )}
             </div>
           </div>

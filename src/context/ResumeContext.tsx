@@ -25,6 +25,9 @@ const defaultData: ResumeData = {
   },
   experience: [],
   education: [],
+  projects: [],
+  certifications: [],
+  languages: [],
   skills: [],
   summary: "",
   design: {
@@ -44,7 +47,17 @@ const ResumeContext = createContext<ResumeContextType | undefined>(undefined);
 export const ResumeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [data, setData] = useState<ResumeData>(() => {
     const saved = localStorage.getItem("resume_data");
-    return saved ? JSON.parse(saved) : defaultData;
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      return {
+        ...defaultData,
+        ...parsed,
+        projects: parsed.projects || [],
+        certifications: parsed.certifications || [],
+        languages: parsed.languages || [],
+      };
+    }
+    return defaultData;
   });
 
   useEffect(() => {

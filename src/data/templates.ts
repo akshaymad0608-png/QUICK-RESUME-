@@ -12,7 +12,7 @@ export interface TemplateData {
 
 export const TEMPLATES: TemplateData[] = [
   { id: 'pro-classic', name: 'Classic Professional', description: 'Timeless layout for all industries.', badge: 'Free', variant: 'Professional', category: 'Professional' , layout: 'executive' },
-  { id: 'pro-blue', name: 'Professional Blue', description: 'Classic resume with blue accents.', badge: 'Free', variant: 'Professional', category: 'Professional' , layout: 'classic' },
+  { id: 'pro-blue', name: 'Professional Accent', description: 'Classic resume with color accents.', badge: 'Free', variant: 'Professional', category: 'Professional' , layout: 'classic' },
   { id: 'pro-corporate', name: 'Corporate Standard', description: 'Clean and structured.', badge: 'Premium', variant: 'Corporate', category: 'Corporate' , layout: 'classic' },
   { id: 'pro-executive', name: 'Executive Leader', description: 'Impactful layout for leaders.', badge: 'Premium', variant: 'Executive', category: 'Executive' , layout: 'executive' },
   { id: 'pro-finance', name: 'Finance Pro', description: 'Tailored for banking & finance.', badge: 'Free', variant: 'Finance', category: 'Finance' , layout: 'executive' },
@@ -25,7 +25,7 @@ export const TEMPLATES: TemplateData[] = [
   { id: 'minimal-black', name: 'Simple Black', description: 'Minimalist black and white.', badge: 'Free', variant: 'Minimal', category: 'Minimal' , layout: 'minimal' },
   { id: 'minimal-elegant', name: 'Elegant Clean', description: 'Elegant simplicity.', badge: 'Free', variant: 'Minimal', category: 'Minimal' , layout: 'minimal' },
   { id: 'minimal-lite', name: 'Extremely Lite', description: 'Extremely lightweight format.', badge: 'Free', variant: 'Minimal', category: 'Minimal' , layout: 'minimal' },
-  { id: 'sky-blue-minimal', name: 'Sky Blue Minimal', description: 'Soft subtle blue layout.', badge: 'Free', variant: 'Colorful', category: 'Colorful' , layout: 'minimal' },
+  { id: 'sky-blue-minimal', name: 'Sky Minimal', description: 'Soft subtle minimal layout.', badge: 'Free', variant: 'Colorful', category: 'Colorful' , layout: 'minimal' },
   
   { id: 'creative-sidebar', name: 'Color Sidebar', description: 'Left sidebar with accent color.', badge: 'Premium', variant: 'Two Column', category: 'Creative' , layout: 'creative' },
   { id: 'creative-red', name: 'Creative Red', description: 'Bold red accents for creative roles.', badge: 'Free', variant: 'Colorful', category: 'Colorful' , layout: 'creative' },
@@ -33,8 +33,8 @@ export const TEMPLATES: TemplateData[] = [
   { id: 'creative-portfolio', name: 'Portfolio Display', description: 'Highlight visual projects.', badge: 'Premium', variant: 'Creative', category: 'Creative' , layout: 'creative' },
   
   { id: 'colorful-teal', name: 'Teal Corporate', description: 'Modern teal coloring.', badge: 'Premium', variant: 'Corporate', category: 'Colorful' , layout: 'classic' },
-  { id: 'colorful-emerald', name: 'Emerald Green', description: 'Fresh green elegant layout.', badge: 'Free', variant: 'Modern', category: 'Colorful' , layout: 'classic' },
-  { id: 'colorful-purple', name: 'Royal Purple', description: 'Luxury purple executive template.', badge: 'Premium', variant: 'Executive', category: 'Colorful' , layout: 'classic' },
+  { id: 'colorful-emerald', name: 'Classic Modern', description: 'Fresh minimal elegant layout.', badge: 'Free', variant: 'Modern', category: 'Colorful' , layout: 'classic' },
+  { id: 'colorful-purple', name: 'Classic Executive', description: 'Luxury executive template.', badge: 'Premium', variant: 'Executive', category: 'Colorful' , layout: 'classic' },
   { id: 'colorful-navy', name: 'Navy Executive', description: 'Dark navy professional layout.', badge: 'Premium', variant: 'Executive', category: 'Colorful' , layout: 'classic' },
   { id: 'colorful-gold', name: 'Gold Executive', description: 'Premium gold accents.', badge: 'Premium', variant: 'Executive', category: 'Colorful' , layout: 'classic' },
   

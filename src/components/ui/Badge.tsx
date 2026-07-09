@@ -21,7 +21,7 @@ export const Badge = React.forwardRef<HTMLDivElement, BadgeProps>(
         variantStyles = "text-main border-border";
         break;
       case 'gradient':
-        variantStyles = "gradient-bg text-white border-transparent";
+        variantStyles = "gradient-bg text-slate-900 border-transparent";
         break;
     }
     

@@ -17,10 +17,10 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     let variantStyles = "";
     switch (variant) {
       case 'primary':
-        variantStyles = "bg-primary text-white shadow-sm hover:opacity-90";
+        variantStyles = "bg-primary text-slate-900 shadow-sm hover:opacity-90";
         break;
       case 'secondary':
-        variantStyles = "bg-secondary text-white shadow-sm hover:opacity-90";
+        variantStyles = "bg-secondary text-slate-900 shadow-sm hover:opacity-90";
         break;
       case 'outline':
         variantStyles = "border border-border bg-transparent hover:bg-gray-50 text-main dark:hover:bg-gray-800";
@@ -29,7 +29,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         variantStyles = "hover:bg-gray-100 text-main dark:hover:bg-gray-800";
         break;
       case 'gradient':
-        variantStyles = "gradient-bg text-white shadow-md hover:opacity-90";
+        variantStyles = "gradient-bg text-slate-900 shadow-md hover:opacity-90";
         break;
     }
 

@@ -42,14 +42,14 @@ const SectionCard: FC<{ sec: SectionScore; pct: number }> = ({ sec, pct }) => {
   const allDone = sec.score === sec.maxScore;
 
   return (
-    <div className="rounded-xl border border-white/5 bg-[#0F172A] shadow-sm overflow-hidden transition-all hover:border-white/10">
-      <button onClick={() => setOpen(o => !o)} className="w-full px-4 py-3 flex items-center gap-3 hover:bg-white/5 transition-colors">
+    <div className="rounded-xl border border-slate-200 bg-[#0F172A] shadow-sm overflow-hidden transition-all hover:border-slate-200">
+      <button onClick={() => setOpen(o => !o)} className="w-full px-4 py-3 flex items-center gap-3 hover:bg-slate-50 transition-colors">
         <CircleScore score={sec.score} max={sec.maxScore} color={sec.color} />
         <div className="flex-1 text-left">
           <div className="flex items-center gap-2 mb-1.5">
             <sec.Icon size={13} style={{ color: sec.color }} />
             <span className="font-bold text-slate-200 text-sm">{sec.name}</span>
-            {allDone && <CheckCircle2 size={12} className="text-emerald-500" />}
+            {allDone && <CheckCircle2 size={12} className="text-slate-800" />}
           </div>
           <ProgressBar value={pct} color={sec.color} />
         </div>
@@ -57,22 +57,22 @@ const SectionCard: FC<{ sec: SectionScore; pct: number }> = ({ sec, pct }) => {
       </button>
 
       {open && (
-        <div className="px-4 pb-4 border-t border-white/5">
+        <div className="px-4 pb-4 border-t border-slate-200">
           <ul className="mt-3 flex flex-col gap-1.5">
             {sec.items.map((item, i) => (
               <li key={i} className="flex items-start gap-2">
                 {item.done
-                  ? <CheckCircle2 size={13} className="text-emerald-500 mt-0.5 shrink-0" />
+                  ? <CheckCircle2 size={13} className="text-slate-800 mt-0.5 shrink-0" />
                   : <Circle size={13} className="text-slate-600 mt-0.5 shrink-0" />}
-                <span className={`text-xs ${item.done ? 'text-slate-500 line-through' : 'text-slate-300 font-medium'}`}>
+                <span className={`text-xs ${item.done ? 'text-slate-500 line-through' : 'text-slate-600 font-medium'}`}>
                   {item.label}
                 </span>
               </li>
             ))}
           </ul>
           {pendingTips.length > 0 && (
-            <div className="mt-3 rounded-lg p-2.5 bg-amber-500/10 border border-amber-500/20 flex gap-2">
-              <AlertTriangle size={12} className="text-amber-400 shrink-0 mt-0.5" />
+            <div className="mt-3 rounded-lg p-2.5 bg-slate-100 border border-slate-200 flex gap-2">
+              <AlertTriangle size={12} className="text-slate-700 shrink-0 mt-0.5" />
               <p className="text-xs text-amber-200/80">{pendingTips[0].tip}</p>
             </div>
           )}
@@ -157,12 +157,12 @@ const ScoreDashboard: FC = () => {
     <div className="flex flex-col h-full overflow-y-auto custom-scrollbar">
       <div className="p-2">
         <div className="flex items-center gap-3 mb-5">
-          <div className="w-10 h-10 rounded-full flex items-center justify-center text-white shadow-[0_0_15px_rgba(124,58,237,0.4)]" style={{ background: GRAD }}>
+          <div className="w-10 h-10 rounded-full flex items-center justify-center text-slate-900 shadow-[0_0_15px_rgba(124,58,237,0.4)]" style={{ background: GRAD }}>
             <BarChart2 size={20} />
           </div>
           <div>
-            <h2 className="text-[20px] font-bold text-white leading-tight">Score Dashboard</h2>
-            <p className="text-xs text-slate-400">Resume completeness tracker</p>
+            <h2 className="text-[20px] font-bold text-slate-900 leading-tight">Score Dashboard</h2>
+            <p className="text-xs text-slate-500">Resume completeness tracker</p>
           </div>
         </div>
 
@@ -181,7 +181,7 @@ const ScoreDashboard: FC = () => {
           <div>
             <p className="text-xs font-bold uppercase tracking-widest text-slate-500">Resume Score</p>
             <p className="text-2xl font-black mt-0.5" style={{ color: overallColor }}>{overallLabel}</p>
-            <p className="text-xs text-slate-400 mt-1">{totalScore} / {totalMax} points completed</p>
+            <p className="text-xs text-slate-500 mt-1">{totalScore} / {totalMax} points completed</p>
           </div>
         </div>
 

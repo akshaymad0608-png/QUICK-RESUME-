@@ -35,7 +35,7 @@ const ScoreArc: FC<{ score: number }> = ({ score }) => {
 
 const KeywordPill: FC<{ word: string; matched: boolean }> = ({ word, matched }) => (
   <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold ${
-    matched ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-red-500/10 text-red-400 border border-red-500/20'
+    matched ? 'bg-slate-900/10 text-slate-700 border border-slate-200' : 'bg-red-500/10 text-red-400 border border-red-500/20'
   }`}>
     {matched ? <CheckCircle2 size={10} /> : <XCircle size={10} />}
     {word}
@@ -94,12 +94,12 @@ ${JSON.stringify({
     <div className="flex flex-col h-full overflow-y-auto custom-scrollbar">
       <div className="p-2 pb-0">
         <div className="flex items-center gap-3 mb-5">
-          <div className="w-10 h-10 rounded-full flex items-center justify-center text-white shadow-[0_0_15px_rgba(124,58,237,0.4)]" style={{ background: GRAD }}>
+          <div className="w-10 h-10 rounded-full flex items-center justify-center text-slate-900 shadow-[0_0_15px_rgba(124,58,237,0.4)]" style={{ background: GRAD }}>
             <Target size={20} />
           </div>
           <div>
-            <h2 className="text-[20px] font-bold text-white leading-tight">ATS Matcher</h2>
-            <p className="text-xs text-slate-400">Match against job description</p>
+            <h2 className="text-[20px] font-bold text-slate-900 leading-tight">ATS Matcher</h2>
+            <p className="text-xs text-slate-500">Match against job description</p>
           </div>
         </div>
 
@@ -108,13 +108,13 @@ ${JSON.stringify({
           onChange={e => setJobDesc(e.target.value)}
           placeholder="Paste Job Description here..."
           rows={5}
-          className="w-full p-3.5 text-sm bg-[#0F172A] border border-white/10 rounded-xl resize-none outline-none focus:border-primary focus:ring-1 focus:ring-primary text-slate-300 placeholder:text-slate-600 custom-scrollbar shadow-inner"
+          className="w-full p-3.5 text-sm bg-[#0F172A] border border-slate-200 rounded-xl resize-none outline-none focus:border-primary focus:ring-1 focus:ring-primary text-slate-600 placeholder:text-slate-600 custom-scrollbar shadow-inner"
         />
 
         <button
           onClick={handleMatch}
           disabled={loading || !jobDesc.trim()}
-          className="mt-3 w-full py-3 text-white font-bold rounded-xl flex items-center justify-center gap-2 transition-all hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed text-sm mb-5 shadow-[0_0_20px_rgba(124,58,237,0.3)]"
+          className="mt-3 w-full py-3 text-slate-900 font-bold rounded-xl flex items-center justify-center gap-2 transition-all hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed text-sm mb-5 shadow-[0_0_20px_rgba(124,58,237,0.3)]"
           style={{ background: GRAD }}
         >
           {loading ? <Loader2 size={16} className="animate-spin" /> : <Zap size={16} />}
@@ -125,9 +125,9 @@ ${JSON.stringify({
       {result && (
         <div className="px-2 pb-6 flex flex-col gap-4">
           <ScoreArc score={result.score} />
-          <p className="text-sm text-slate-400 text-center -mt-2 italic font-medium">"{result.verdict}"</p>
+          <p className="text-sm text-slate-500 text-center -mt-2 italic font-medium">"{result.verdict}"</p>
 
-          <div className="rounded-xl border border-white/10 bg-[#0F172A] p-4 shadow-sm">
+          <div className="rounded-xl border border-slate-200 bg-[#0F172A] p-4 shadow-sm">
             <p className="text-xs font-bold text-slate-500 uppercase tracking-wide mb-3">Keyword Match</p>
             <div className="flex flex-wrap gap-1.5">
               {result.matchedKeywords.map(k => <KeywordPill key={k} word={k} matched={true} />)}
@@ -138,7 +138,7 @@ ${JSON.stringify({
           <div className="rounded-xl border border-primary/20 bg-[#0F172A] shadow-lg overflow-hidden">
             <button
               onClick={() => setShowSuggestions(s => !s)}
-              className="w-full flex items-center justify-between p-4 hover:bg-white/5 transition-colors"
+              className="w-full flex items-center justify-between p-4 hover:bg-slate-50 transition-colors"
             >
               <span className="text-xs font-bold uppercase tracking-wide text-primary">
                 <AlertCircle size={12} className="inline mr-1.5 mb-0.5" />
@@ -149,7 +149,7 @@ ${JSON.stringify({
             {showSuggestions && (
               <ul className="px-4 pb-4 flex flex-col gap-2">
                 {result.suggestions.map((s, i) => (
-                  <li key={i} className="text-xs text-slate-300 flex gap-2 bg-primary/10 rounded-lg p-2.5 border border-primary/10">
+                  <li key={i} className="text-xs text-slate-600 flex gap-2 bg-primary/10 rounded-lg p-2.5 border border-primary/10">
                     <span className="text-primary font-black shrink-0">{i + 1}.</span>
                     {s}
                   </li>

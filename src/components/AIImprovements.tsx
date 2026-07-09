@@ -81,7 +81,7 @@ const SectionCard: FC<{ result: SectionResult; onApplyFix: (fix: string, target:
                     {s.quickFix && s.fixTarget && (
                       <button
                         onClick={() => onApplyFix(s.quickFix!, s.fixTarget!)}
-                        className="mt-2 flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-lg text-white transition-all hover:opacity-90"
+                        className="mt-2 flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-lg text-slate-900 transition-all hover:opacity-90"
                         style={{ background: GRAD }}
                       >
                         <Wand2 size={12} /> Apply Fix
@@ -96,7 +96,7 @@ const SectionCard: FC<{ result: SectionResult; onApplyFix: (fix: string, target:
       )}
 
       {open && !hasSuggestions && (
-        <div className="px-4 pb-4 pt-2 border-t border-gray-50 flex items-center gap-2 text-emerald-600">
+        <div className="px-4 pb-4 pt-2 border-t border-gray-50 flex items-center gap-2 text-slate-900">
           <CheckCircle2 size={14} />
           <span className="text-xs font-medium">This section looks solid!</span>
         </div>
@@ -149,7 +149,7 @@ const AIImprovements: FC = () => {
   return (
     <div className="p-6 flex flex-col h-full overflow-y-auto custom-scrollbar">
       <div className="flex items-center gap-3 mb-5 shrink-0">
-        <div className="w-10 h-10 rounded-full flex items-center justify-center text-white shadow-sm" style={{ background: GRAD }}>
+        <div className="w-10 h-10 rounded-full flex items-center justify-center text-slate-900 shadow-sm" style={{ background: GRAD }}>
           <Sparkles size={20} />
         </div>
         <div>
@@ -161,7 +161,7 @@ const AIImprovements: FC = () => {
       {!results && !loading && (
         <div className="flex-1 flex flex-col items-center justify-center text-center py-8">
           <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-4 shadow-inner" style={{ background: '#f5f3ff' }}>
-            <Lightbulb size={32} className="text-amber-400" />
+            <Lightbulb size={32} className="text-slate-700" />
           </div>
           <h3 className="text-lg font-bold text-gray-800 mb-2">Get Smart Suggestions</h3>
           <p className="text-gray-500 text-sm max-w-[260px] leading-relaxed mb-8">
@@ -169,7 +169,7 @@ const AIImprovements: FC = () => {
           </p>
           <button
             onClick={handleAnalyze}
-            className="px-7 py-3 text-white font-bold rounded-xl shadow-md transition-all flex items-center gap-2 hover:opacity-90 text-sm"
+            className="px-7 py-3 text-slate-900 font-bold rounded-xl shadow-md transition-all flex items-center gap-2 hover:opacity-90 text-sm"
             style={{ background: GRAD }}
           >
             <Sparkles size={16} /> Analyze My Resume
@@ -193,14 +193,14 @@ const AIImprovements: FC = () => {
             <SectionCard key={i} result={s} onApplyFix={handleApplyFix} />
           ))}
           {appliedFixes.length > 0 && (
-            <div className="flex items-center gap-2 mt-2 mb-3 text-emerald-600 text-xs font-medium">
+            <div className="flex items-center gap-2 mt-2 mb-3 text-slate-900 text-xs font-medium">
               <CheckCircle2 size={14} />
               {appliedFixes.length} fix{appliedFixes.length > 1 ? 'es' : ''} applied to your resume
             </div>
           )}
           <button
             onClick={handleAnalyze}
-            className="mt-2 w-full py-2.5 flex items-center justify-center gap-2 text-sm font-bold rounded-xl border transition-all hover:bg-purple-50"
+            className="mt-2 w-full py-2.5 flex items-center justify-center gap-2 text-sm font-bold rounded-xl border transition-all hover:bg-slate-100"
             style={{ borderColor: '#ddd6fe', color: PURPLE }}
           >
             <RefreshCw size={14} /> Re-analyze

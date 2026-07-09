@@ -283,7 +283,6 @@ Sitemap: https://quickresume.business/sitemap.xml`;
     res.header('Content-Type', 'text/plain');
     res.send(robots);
   });
-
   // Vite middleware for development
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({

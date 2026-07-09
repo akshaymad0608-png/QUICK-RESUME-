@@ -3,7 +3,8 @@ import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 import { useResume } from '../context/ResumeContext';
 import { ArrowLeft, Download, Loader2 } from 'lucide-react';
-import html2pdf from 'html2pdf.js';
+import html2canvas from 'html2canvas';
+import { jsPDF } from 'jspdf';
 
 const Preview: FC = () => {
   const { data } = useResume();
@@ -11,46 +12,49 @@ const Preview: FC = () => {
   const resumeRef = useRef<HTMLDivElement>(null);
   const [isDownloading, setIsDownloading] = useState(false);
 
-  const handleDownload = () => {
+  const handleDownload = async () => {
     if (!resumeRef.current) return;
     setIsDownloading(true);
-
+    
     const name = data.personalInfo.fullName.replace(/\s+/g, '-').toLowerCase() || 'resume';
     const filename = `${name}-resume.pdf`;
-
-    const opt = {
-      margin: [10, 10, 10, 10], // mm
-      filename: filename,
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true, logging: false },
-      jsPDF: { unit: 'mm', format: 'letter', orientation: 'portrait' }
-    };
-
-    html2pdf().set(opt).from(resumeRef.current).save().then(() => {
+    
+    try {
+      const canvas = await html2canvas(resumeRef.current, { scale: 2, useCORS: true, logging: false });
+      const imgData = canvas.toDataURL('image/jpeg', 0.98);
+      const pdf = new jsPDF('p', 'mm', 'letter');
+      const pdfWidth = pdf.internal.pageSize.getWidth() - 20; // 10mm margin each side
+      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+      
+      pdf.addImage(imgData, 'JPEG', 10, 10, pdfWidth, pdfHeight);
+      pdf.save(filename);
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+    } finally {
       setIsDownloading(false);
-    });
+    }
   };
 
   const { personalInfo, summary, experience, education, skills } = data;
 
   return (
-    <div className="min-h-screen bg-[var(--color-bg)] flex flex-col font-sans">
+    <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
       <Helmet>
         <title>Preview Resume | QuickResume</title>
       </Helmet>
 
       {/* Toolbar */}
-      <header className="border-b border-[var(--color-border)] bg-[var(--color-bg-2)] p-4 flex justify-between items-center sticky top-0 z-50">
+      <header className="border-b border-slate-200 bg-white p-4 flex justify-between items-center sticky top-0 z-50">
         <button 
           onClick={() => navigate('/build')}
-          className="flex items-center gap-2 text-sm font-medium px-4 py-2 bg-[var(--color-bg-3)] hover:bg-[var(--color-border)] transition-colors rounded-md"
+          className="flex items-center gap-2 text-sm font-medium px-4 py-2 bg-white text-slate-600 hover:text-slate-900 border border-slate-200 hover:bg-slate-50 transition-colors rounded-md"
         >
           <ArrowLeft size={16} /> Edit Resume
         </button>
         <button 
           onClick={handleDownload}
           disabled={isDownloading}
-          className="flex items-center gap-2 text-sm font-medium px-5 py-2.5 bg-[var(--color-primary)] text-white hover:bg-[var(--color-primary-hover)] transition-colors rounded-md shadow-md disabled:opacity-50"
+          className="flex items-center gap-2 text-sm font-medium px-5 py-2.5 bg-indigo-600 text-white hover:bg-indigo-700 transition-colors rounded-md shadow-md disabled:opacity-50"
         >
           {isDownloading ? <Loader2 size={16} className="animate-spin" /> : <Download size={16} />}
           Download PDF
@@ -58,13 +62,13 @@ const Preview: FC = () => {
       </header>
 
       {/* Resume Container */}
-      <main className="flex-1 flex justify-center p-4 sm:p-8 bg-[#525659] overflow-auto">
-        <div className="w-full max-w-[850px] shadow-2xl relative">
+      <main className="flex-1 flex justify-center p-4 sm:p-8 bg-white overflow-auto">
+        <div className="w-full max-w-[850px] shadow-2xl relative border border-slate-200">
           
           {/* Printable Area */}
           <div 
             ref={resumeRef} 
-            className="bg-white text-black bg-white"
+            className="bg-white text-indigo-600"
             style={{ 
               width: '100%', 
               minHeight: '1100px', // Letter Size approx 8.5x11 aspect

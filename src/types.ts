@@ -41,6 +41,30 @@ export interface Education {
   description: string;
 }
 
+export interface Project {
+  id: string;
+  title: string;
+  subtitle: string;
+  link: string;
+  startDate: string;
+  endDate: string;
+  description: string;
+}
+
+export interface Certification {
+  id: string;
+  name: string;
+  issuer: string;
+  date: string;
+  link: string;
+}
+
+export interface Language {
+  id: string;
+  name: string;
+  proficiency: string;
+}
+
 export interface DesignConfig {
   template: TemplateType;
   color: string;
@@ -50,14 +74,17 @@ export interface DesignConfig {
   lineHeight: string;
   spacing: string;
   pageStyle: string;
+  showPhoto?: boolean;
 }
 
 export interface ResumeData {
   personalInfo: PersonalInfo;
   experience: WorkExperience[];
   education: Education[];
+  projects: Project[];
+  certifications: Certification[];
+  languages: Language[];
   skills: string[];
   summary: string;
   design: DesignConfig;
 }
-

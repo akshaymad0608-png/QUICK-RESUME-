@@ -1,11 +1,12 @@
 import { FC, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
-import { FileText, Wand2, Copy, Download, Loader2 } from 'lucide-react';
+import { FileText, Feather, Wand2, Copy, Download, Loader2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useResume } from '../context/ResumeContext';
 import { generateCoverLetter } from '../services/geminiService';
-import html2pdf from 'html2pdf.js';
+import html2canvas from 'html2canvas';
+import { jsPDF } from 'jspdf';
 
 const CoverLetterGenerator: FC = () => {
   const navigate = useNavigate();
@@ -38,93 +39,109 @@ const CoverLetterGenerator: FC = () => {
     toast.success('Copied to clipboard');
   };
 
-  const handleDownloadPDF = () => {
+  const handleDownloadPDF = async () => {
     if (!coverLetter) return;
     setIsDownloading(true);
     const element = document.createElement('div');
-    element.innerHTML = `<div style="font-family: Arial, sans-serif; padding: 2rem; font-size: 14px; line-height: 1.6; white-space: pre-wrap;">${coverLetter}</div>`;
+    element.innerHTML = `<div style="font-family: Arial, sans-serif; padding: 2rem; font-size: 14px; line-height: 1.6; white-space: pre-wrap; color: black; background: white; width: 794px;">${coverLetter}</div>`;
     
+    // Position off-screen but in DOM for html2canvas
+    element.style.position = 'absolute';
+    element.style.top = '-9999px';
+    element.style.left = '-9999px';
+    document.body.appendChild(element);
+
     const name = data.personalInfo.firstName ? `${data.personalInfo.firstName}_CoverLetter` : 'CoverLetter';
-
-    const opt = {
-      margin: 10,
-      filename: `${name}.pdf`,
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-    };
-
-    html2pdf().set(opt).from(element).save().then(() => {
-      setIsDownloading(false);
+    
+    try {
+      const canvas = await html2canvas(element, { scale: 2 });
+      const imgData = canvas.toDataURL('image/jpeg', 0.98);
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+      
+      pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+      pdf.save(`${name}.pdf`);
+      
       toast.success('Downloaded PDF');
-    });
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+      toast.error('Failed to generate PDF.');
+    } finally {
+      document.body.removeChild(element);
+      setIsDownloading(false);
+    }
   };
 
   return (
-    <div className="min-h-screen bg-[var(--color-bg-surface)] text-body font-sans flex flex-col pt-[72px]">
+    <div className="min-h-screen bg-slate-50 text-slate-600 flex flex-col font-sans pt-[72px] bg-grid-pattern relative">\n      <div className="absolute inset-0 bg-gradient-to-b from-slate-50/80 to-slate-50 pointer-events-none z-0"></div>
       <Helmet>
-        <title>Cover Letter Builder | QuickResume</title>
-        <meta name="description" content="Generate a customized, professional cover letter in seconds matching your resume." />
+        <title>AI Cover Letter Builder | QuickResume</title>
+        <meta name="description" content="Generate a customized, professional cover letter in seconds matching your resume using AI." />
       </Helmet>
 
       {/* Navbar Minimal */}
-      <nav className="fixed top-0 left-0 right-0 h-[72px] bg-white border-b border-[var(--color-border)] px-6 lg:px-10 flex items-center justify-between z-50">
+      <nav className="fixed top-0 left-0 right-0 h-[72px] bg-white/80 backdrop-blur-md border-b border-slate-200 px-6 lg:px-10 flex items-center justify-between z-50">
         <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')}>
-          <div className="w-8 h-8 bg-primary rounded flex items-center justify-center">
-            <i className="ti ti-file-description text-white text-xl"></i>
+          <div className="w-10 h-10 bg-gradient-to-tr from-slate-900 to-slate-700 rounded-lg flex items-center justify-center shadow-lg shadow-slate-300/50">
+            <Feather className="text-white w-6 h-6" />
           </div>
-          <span className="text-xl font-bold text-heading tracking-tight">QuickResume</span>
+          <span className="text-2xl font-bold text-slate-900 tracking-tight">QuickResume</span>
         </div>
         <div className="flex items-center gap-4">
           <button 
             onClick={() => navigate('/build')}
-            className="text-sm font-semibold text-heading hover:text-primary transition-colors border border-gray-300 rounded-lg px-4 py-2 bg-white"
+            className="text-sm font-semibold text-slate-600 hover:text-slate-900 transition-colors border border-slate-200 rounded-lg px-4 py-2 bg-white hover:bg-slate-50 shadow-sm"
           >
             Back to Editor
           </button>
         </div>
       </nav>
 
-      <main className="flex-1 w-full max-w-7xl mx-auto px-6 py-12 flex flex-col gap-8 lg:flex-row">
-        
+      <main className="flex-1 w-full max-w-7xl mx-auto px-6 py-12 flex flex-col gap-8 lg:flex-row relative">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-gradient-to-b from-slate-100/50 to-transparent pointer-events-none"></div>\n        <div className="absolute top-20 left-10 w-96 h-96 bg-blue-400/10 rounded-full blur-3xl pointer-events-none"></div>\n        <div className="absolute top-40 right-10 w-96 h-96 bg-purple-400/10 rounded-full blur-3xl pointer-events-none"></div>
+
         {/* Left Column: Input */}
-        <div className="w-full lg:w-1/2 flex flex-col gap-4 h-[calc(100vh-140px)]">
-          <div className="bg-white p-6 lg:p-8 rounded-2xl border border-[var(--color-border)] flex flex-col h-full shadow-sm">
+        <div className="w-full lg:w-1/2 flex flex-col gap-4 lg:h-[calc(100vh-140px)] relative z-10">
+          <div className="bg-white p-6 lg:p-8 rounded-3xl border border-slate-200 flex flex-col h-full shadow-sm">
             <div className="mb-6">
-              <h2 className="text-2xl font-bold text-heading mb-2">Create your cover letter</h2>
-              <p className="text-sm text-body">
-                Paste the job description below, and our AI will write a tailored cover letter based on your resume.
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 text-slate-900 text-xs font-bold mb-4 uppercase tracking-widest border border-slate-200">
+                <Wand2 className="w-3.5 h-3.5" /> AI Generator
+              </div>
+              <h2 className="text-3xl font-extrabold text-slate-900 mb-3 tracking-tight">Create your cover letter</h2>
+              <p className="text-slate-500 leading-relaxed">
+                Paste the job description below, and our AI will write a tailored cover letter based on your current resume data.
               </p>
             </div>
 
             <textarea
-              className="flex-1 w-full p-4 bg-surface border border-gray-300 rounded-xl focus:border-primary focus:ring-1 focus:ring-primary outline-none resize-none mb-6 text-heading placeholder:text-gray-400"
-              placeholder="E.g., We are looking for a software engineer with 5 years of React experience..."
+              className="flex-1 w-full p-5 bg-slate-50 border border-slate-200 rounded-2xl focus:border-slate-400 focus:ring-1 focus:ring-slate-400 outline-none resize-none mb-6 text-slate-900 placeholder:text-slate-600 transition-all custom-scrollbar"
+              placeholder="Paste the job description here... (e.g., We are looking for a software engineer with 5 years of React experience)"
               value={jobDescription}
               onChange={(e) => setJobDescription(e.target.value)}
             />
 
             <button
-              className="w-full bg-primary text-white font-semibold rounded-xl py-4 flex items-center justify-center gap-2 hover:bg-primary-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-indigo-600 text-white font-bold rounded-2xl py-4 flex items-center justify-center gap-2 hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-md shadow-slate-300/50"
               onClick={handleGenerate}
               disabled={isGenerating || !jobDescription.trim()}
             >
-              {isGenerating ? <Loader2 size={18} className="animate-spin" /> : <Wand2 size={18} />}
+              {isGenerating ? <Loader2 size={20} className="animate-spin" /> : <Wand2 size={20} />}
               {isGenerating ? 'Generating...' : 'Generate Cover Letter'}
             </button>
           </div>
         </div>
 
         {/* Right Column: Output */}
-        <div className="w-full lg:w-1/2 flex flex-col gap-4 h-[calc(100vh-140px)]">
-          <div className="bg-white p-6 lg:p-8 rounded-2xl border border-[var(--color-border)] flex flex-col h-full shadow-sm">
+        <div className="w-full lg:w-1/2 flex flex-col gap-4 lg:h-[calc(100vh-140px)] relative z-10">
+          <div className="bg-white p-6 lg:p-8 rounded-3xl border border-slate-200 flex flex-col h-full shadow-sm">
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-xl font-bold text-heading">Your Cover Letter</h2>
+              <h2 className="text-xl font-bold text-slate-900">Your Document</h2>
               <div className="flex gap-2">
                 <button
                   onClick={handleCopy}
                   disabled={!coverLetter}
-                  className="p-2 text-gray-500 hover:text-heading hover:bg-gray-100 rounded-lg transition-colors disabled:opacity-30 border border-transparent"
+                  className="p-2.5 text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition-colors disabled:opacity-30 border border-transparent"
                   title="Copy to clipboard"
                 >
                   <Copy size={20} />
@@ -132,7 +149,7 @@ const CoverLetterGenerator: FC = () => {
                 <button
                   onClick={handleDownloadPDF}
                   disabled={!coverLetter || isDownloading}
-                  className="p-2 text-gray-500 hover:text-heading hover:bg-gray-100 rounded-lg transition-colors disabled:opacity-30 border border-transparent"
+                  className="p-2.5 text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition-colors disabled:opacity-30 border border-transparent"
                   title="Download as PDF"
                 >
                   {isDownloading ? <Loader2 size={20} className="animate-spin" /> : <Download size={20} />}
@@ -142,14 +159,14 @@ const CoverLetterGenerator: FC = () => {
 
             {coverLetter ? (
               <textarea
-                className="flex-1 w-full bg-white p-6 border border-gray-200 rounded-xl focus:border-primary outline-none resize-none text-[15px] leading-relaxed whitespace-pre-wrap font-sans text-heading shadow-inner custom-scrollbar"
+                className="flex-1 w-full bg-white p-6 border border-slate-200 rounded-2xl focus:border-slate-400 focus:ring-1 focus:ring-slate-400 outline-none resize-none text-[15px] leading-relaxed whitespace-pre-wrap font-sans text-slate-600 shadow-inner custom-scrollbar"
                 value={coverLetter}
                 onChange={(e) => setCoverLetter(e.target.value)}
               />
             ) : (
-              <div className="flex-1 w-full border-2 border-dashed border-gray-200 rounded-xl flex flex-col items-center justify-center p-8 text-center text-gray-400 bg-gray-50">
-                <div className="w-16 h-16 rounded-full bg-white border border-gray-200 flex items-center justify-center mb-4 shadow-sm">
-                   <FileText className="w-6 h-6 text-gray-400" />
+              <div className="flex-1 w-full border-2 border-dashed border-slate-200 rounded-2xl flex flex-col items-center justify-center p-8 text-center text-slate-500 bg-slate-50">
+                <div className="w-16 h-16 rounded-2xl bg-white border border-slate-200 flex items-center justify-center mb-4 shadow-sm">
+                   <FileText className="w-6 h-6 text-slate-600" />
                 </div>
                 <p className="font-medium text-sm">Your generated document will appear here.</p>
               </div>

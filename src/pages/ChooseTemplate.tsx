@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useResume } from '../context/ResumeContext';
 import { TemplateCard } from '../components/TemplateCard';
 import { TEMPLATES } from '../data/templates';
+import { Feather, Search, LayoutTemplate } from 'lucide-react';
 
 const CATEGORIES = [
   'All',
@@ -37,7 +38,7 @@ export default function ChooseTemplate() {
   const [sortBy, setSortBy] = useState('Popular');
 
   const handleSelect = (templateId: string, selectedColor?: string) => {
-    const color = selectedColor || '#2563EB';
+    const color = selectedColor || '#000000';
     
     updateSection('design', { 
       ...data.design, 
@@ -68,64 +69,62 @@ export default function ChooseTemplate() {
   }, [activeCategory, searchTerm, sortBy]);
 
   return (
-    <div className="min-h-screen bg-white flex flex-col font-sans text-body">
+    <div className="min-h-screen bg-white flex flex-col font-sans text-slate-900 selection:bg-slate-900 selection:text-white bg-grid-pattern-light relative">\n      <div className="absolute inset-0 bg-gradient-to-b from-slate-50/80 to-slate-50 pointer-events-none z-0"></div>
       <Helmet>
-        <title>Professional Resume Templates | QuickResume</title>
-        <meta name="description" content="Browse our library of 50+ professional, modern, and creative resume templates. All templates are customizable, ATS-friendly, and free to download." />
-        <meta property="og:title" content="50+ Free Resume Templates for 2024 | QuickResume" />
-        <meta property="og:description" content="Find the perfect resume template for your next job application. Easily download as PDF or DOCX." />
+        <title>Templates | QuickResume</title>
+        <meta name="description" content="Browse our library of professional, modern, and minimal resume templates." />
       </Helmet>
 
       {/* Navbar Minimal */}
-      <nav className="fixed top-0 left-0 right-0 h-[72px] bg-white border-b border-[var(--color-border)] px-6 lg:px-10 flex items-center justify-between z-50">
+      <nav className="fixed top-0 left-0 right-0 h-20 bg-white border-b border-slate-100 px-6 lg:px-10 flex items-center justify-between z-50">
         <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')}>
-          <div className="w-8 h-8 bg-primary rounded flex items-center justify-center">
-            <i className="ti ti-file-description text-white text-xl"></i>
+          <div className="w-8 h-8 bg-gradient-to-tr from-slate-900 to-slate-700 rounded-lg flex items-center justify-center">
+            <Feather className="text-white w-5 h-5" />
           </div>
-          <span className="text-xl font-bold text-heading tracking-tight">QuickResume</span>
+          <span className="text-xl font-bold text-slate-900 tracking-tight">QuickResume</span>
         </div>
-        <div className="hidden md:flex items-center gap-6 text-sm font-medium">
-          <div className="flex items-center gap-2 text-primary">
-            <div className="w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center text-xs font-bold">1</div>
-            <span>Choose Template</span>
+        <div className="hidden md:flex items-center gap-6 text-sm font-bold uppercase tracking-widest text-slate-400">
+          <div className="flex items-center gap-2 text-slate-900">
+            <span>01</span>
+            <span>Template</span>
           </div>
-          <div className="w-8 h-px bg-gray-200"></div>
-          <div className="flex items-center gap-2 text-gray-400">
-            <div className="w-6 h-6 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center text-xs font-bold">2</div>
-            <span>Enter Details</span>
+          <div className="w-4 h-px bg-slate-200"></div>
+          <div className="flex items-center gap-2">
+            <span>02</span>
+            <span>Details</span>
           </div>
         </div>
-        <div className="w-24"></div>
+        <div className="hidden md:block w-24"></div>
       </nav>
 
-      <main className="flex-1 max-w-[1400px] mx-auto w-full px-6 pt-32 pb-24">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-heading mb-4 text-gray-900">Choose from professional resume templates</h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">Build your resume with our recruiter-approved templates. Free to customize, download, and apply to your dream job.</p>
+      <main className="flex-1 max-w-[1400px] mx-auto w-full px-6 pt-32 pb-24 relative z-10">\n        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] pointer-events-none -z-10 overflow-hidden">\n          <div className="absolute top-20 left-[10%] w-96 h-96 bg-blue-300/10 rounded-full blur-3xl"></div>\n          <div className="absolute top-40 right-[10%] w-96 h-96 bg-purple-300/10 rounded-full blur-3xl"></div>\n        </div>
+        <div className="text-center mb-16">
+          <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight">Select a template</h1>
+          <p className="text-lg text-slate-500 max-w-2xl mx-auto">All templates are free to use and export.</p>
         </div>
 
         {/* Filters & Search */}
-        <div className="flex flex-col items-center mb-14 gap-8">
+        <div className="flex flex-col items-center mb-16 gap-8">
           <div className="relative w-full max-w-lg">
-            <i className="ti ti-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg"></i>
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
             <input 
               type="text" 
-              placeholder="Search templates by name (e.g., modern, executive)..." 
+              placeholder="Search templates..." 
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-primary focus:border-primary transition-all shadow-sm font-medium outline-none text-sm"
+              className="w-full pl-12 pr-4 py-4 bg-white border border-slate-200 focus:border-indigo-600 transition-all outline-none text-sm text-slate-900 placeholder:text-slate-400 font-medium"
             />
           </div>
 
-          <div className="flex flex-wrap justify-center gap-2.5 max-w-5xl">
+          <div className="flex flex-wrap justify-center gap-2 max-w-5xl">
             {CATEGORIES.map((category) => (
               <button 
                 key={category}
                 onClick={() => setActiveCategory(category)}
-                className={`px-5 py-2.5 rounded-[100px] text-sm font-semibold transition-all ${
+                className={`px-4 py-2 text-sm font-semibold transition-colors border ${
                   activeCategory === category 
-                    ? 'bg-white text-primary border-2 border-primary shadow-sm' 
-                    : 'bg-gray-100 text-gray-600 border-2 border-transparent hover:bg-gray-200 hover:text-gray-900'
+                    ? 'bg-indigo-600 text-white border-indigo-600' 
+                    : 'bg-white text-slate-500 border-transparent hover:text-slate-900 hover:border-slate-200'
                 }`}
               >
                 {category}
@@ -135,25 +134,25 @@ export default function ChooseTemplate() {
         </div>
 
         {/* Results Info */}
-        <div className="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-end border-b border-gray-200 pb-4 gap-4">
+        <div className="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-end border-b border-slate-100 pb-4 gap-4">
           <div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-1">
+            <h2 className="text-2xl font-bold text-slate-900 mb-1">
               {activeCategory === 'All' ? 'All Templates' : `${activeCategory} Templates`}
             </h2>
-            <span className="text-gray-500 font-medium">{filteredTemplates.length} templates</span>
+            <span className="text-slate-500 text-sm font-medium">{filteredTemplates.length} results</span>
           </div>
 
           <div className="flex items-center gap-3">
-            <span className="text-sm font-medium text-gray-500">Sort by:</span>
-            <div className="bg-gray-50 border border-gray-200 rounded-lg p-1 flex">
+            <span className="text-xs font-bold uppercase tracking-widest text-slate-400">Sort by:</span>
+            <div className="bg-white border border-slate-200 flex p-0.5">
               {['Popular', 'Newest', 'Professional'].map(sortOption => (
                 <button
                   key={sortOption}
                   onClick={() => setSortBy(sortOption)}
-                  className={`px-3 py-1.5 text-sm font-medium rounded-md transition-colors ${
+                  className={`px-3 py-1.5 text-xs font-bold uppercase tracking-wider transition-colors ${
                     sortBy === sortOption 
-                      ? 'bg-white text-gray-900 shadow-[0_1px_3px_rgba(0,0,0,0.1)]' 
-                      : 'text-gray-500 hover:text-gray-700'
+                      ? 'bg-indigo-600 text-white' 
+                      : 'text-slate-500 hover:text-slate-900'
                   }`}
                 >
                   {sortOption}
@@ -165,21 +164,21 @@ export default function ChooseTemplate() {
 
         {/* Grid */}
         {filteredTemplates.length > 0 ? (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8 md:gap-10">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 md:gap-10">
             {filteredTemplates.map((tpl) => (
               <TemplateCard key={tpl.id} template={tpl} onSelect={(id, color) => handleSelect(id, color)} />
             ))}
           </div>
         ) : (
-          <div className="text-center py-20 bg-gray-50 rounded-2xl border border-gray-200">
-            <div className="text-gray-400 mb-4 text-5xl">
-              <i className="ti ti-receipt-off"></i>
+          <div className="text-center py-32 bg-slate-50 border border-slate-100">
+            <div className="flex justify-center mb-4">
+              <LayoutTemplate className="w-12 h-12 text-slate-300" />
             </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-2">No templates found</h3>
-            <p className="text-gray-500">Try adjusting your search or category filter.</p>
+            <h3 className="text-xl font-bold text-slate-900 mb-2">No templates found</h3>
+            <p className="text-slate-500 mb-6 text-sm">Try adjusting your search or category filter.</p>
             <button 
               onClick={() => { setSearchTerm(''); setActiveCategory('All'); }}
-              className="mt-6 px-6 py-2.5 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium transition-colors shadow-sm"
+              className="px-6 py-3 bg-indigo-600 text-white text-sm font-bold hover:bg-indigo-700 transition-colors"
             >
               Clear filters
             </button>

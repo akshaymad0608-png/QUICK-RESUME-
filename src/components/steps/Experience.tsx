@@ -91,82 +91,82 @@ const Experience: FC = () => {
       {/* LEFT SIDE: Experience Forms */}
       <div className="flex-1 flex flex-col min-w-0 overflow-y-auto pr-2 custom-scrollbar space-y-8">
         <div>
-          <h2 className="text-2xl font-black text-gray-900 mb-2">Work Experience</h2>
-          <p className="text-gray-600">Show your relevant experience. Focus on your accomplishments.</p>
+          <h2 className="text-xl font-bold text-slate-900 mb-2 tracking-tight">Work Experience</h2>
+          <p className="text-slate-500 text-sm">Show your relevant experience. Focus on your accomplishments.</p>
         </div>
 
         {data.experience.map((exp) => (
           <div 
             key={exp.id} 
             onClick={() => setFocusedExpId(exp.id)}
-            className={`relative bg-white border p-5 rounded-2xl transition-all group ${focusedExpId === exp.id ? 'border-primary ring-2 ring-primary/20 shadow-md' : 'border-gray-200 hover:border-primary/50'}`}
+            className={`relative bg-white border p-5 rounded-2xl transition-all group ${focusedExpId === exp.id ? 'border-slate-400 ring-1 ring-slate-400/20 shadow-md' : 'border-slate-200 hover:border-slate-300'}`}
           >
             <button 
               onClick={(e) => { e.stopPropagation(); removeExperience(exp.id); }}
-              className="absolute top-4 right-4 text-gray-400 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100 bg-white p-1 rounded-full shadow-sm"
+              className="absolute top-4 right-4 text-slate-500 hover:text-red-400 hover:bg-red-500/10 transition-colors opacity-0 group-hover:opacity-100 bg-white/5 p-1.5 rounded-lg shadow-sm"
             >
-              <Trash2 size={18} />
+              <Trash2 size={16} />
             </button>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 mt-2">
               <div>
-                <label className="block text-[13px] font-bold text-gray-700 mb-1">Job Title</label>
+                <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1.5">Job Title</label>
                 <input 
                   type="text" value={exp.jobTitle} onChange={(e) => updateExp(exp.id, 'jobTitle', e.target.value)} 
-                  className="w-full bg-white text-gray-900 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors shadow-sm"
+                  className="w-full bg-slate-50 text-slate-900 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-slate-400 focus:border-slate-400 transition-colors shadow-sm placeholder:text-slate-600"
                   placeholder="Software Engineer"
                 />
               </div>
               <div>
-                <label className="block text-[13px] font-bold text-gray-700 mb-1">Employer / Company</label>
+                <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1.5">Employer / Company</label>
                 <input 
                   type="text" value={exp.company} onChange={(e) => updateExp(exp.id, 'company', e.target.value)} 
-                  className="w-full bg-white text-gray-900 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors shadow-sm"
+                  className="w-full bg-slate-50 text-slate-900 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-slate-400 focus:border-slate-400 transition-colors shadow-sm placeholder:text-slate-600"
                   placeholder="Google"
                 />
               </div>
               <div>
-                <label className="block text-[13px] font-bold text-gray-700 mb-1">Start Date</label>
+                <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1.5">Start Date</label>
                 <input 
                   type="text" value={exp.startDate} onChange={(e) => updateExp(exp.id, 'startDate', e.target.value)} 
-                  className="w-full bg-white text-gray-900 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors shadow-sm"
+                  className="w-full bg-slate-50 text-slate-900 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-slate-400 focus:border-slate-400 transition-colors shadow-sm placeholder:text-slate-600"
                   placeholder="Jan 2020"
                 />
               </div>
               <div>
-                <div className="flex justify-between items-center mb-1">
-                   <label className="block text-[13px] font-bold text-gray-700">End Date</label>
-                   <label className="flex items-center gap-1.5 text-xs text-gray-600 cursor-pointer hover:text-gray-900">
-                      <input type="checkbox" checked={exp.isPresent} onChange={(e) => updateExp(exp.id, 'isPresent', e.target.checked)} className="rounded text-primary focus:ring-primary" />
-                      Currently work here
+                <div className="flex justify-between items-center mb-1.5">
+                   <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest">End Date</label>
+                   <label className="flex items-center gap-1.5 text-[10px] uppercase tracking-widest font-bold text-slate-500 cursor-pointer hover:text-slate-900 transition-colors">
+                      <input type="checkbox" checked={exp.isPresent} onChange={(e) => updateExp(exp.id, 'isPresent', e.target.checked)} className="rounded text-slate-900 focus:ring-slate-400 border-slate-300 bg-slate-50" />
+                      Present
                     </label>
                 </div>
                 <input 
                   type="text" value={exp.endDate} onChange={(e) => updateExp(exp.id, 'endDate', e.target.value)} disabled={exp.isPresent}
-                  className="w-full bg-white text-gray-900 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors disabled:opacity-50 disabled:bg-gray-100 shadow-sm"
+                  className="w-full bg-slate-50 text-slate-900 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-slate-400 focus:border-slate-400 transition-colors disabled:opacity-50 disabled:bg-white/5 shadow-sm placeholder:text-slate-600"
                   placeholder="Present"
                 />
               </div>
             </div>
 
             <div className="mt-4">
-              <label className="block text-[13px] font-bold text-gray-700 mb-2">Description</label>
+              <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Description</label>
               
               {/* Toolbar */}
-              <div className="border border-gray-300 rounded-t-xl bg-gray-50 px-2.5 py-1.5 flex items-center justify-between shadow-sm">
+              <div className="border border-slate-200 rounded-t-xl bg-white px-2.5 py-1.5 flex items-center justify-between shadow-sm">
                 <div className="flex items-center gap-0.5">
-                  <button className="p-1 text-gray-600 hover:bg-gray-200 rounded"><Bold size={14} /></button>
-                  <button className="p-1 text-gray-600 hover:bg-gray-200 rounded"><Italic size={14} /></button>
-                  <button className="p-1 text-gray-600 hover:bg-gray-200 rounded"><Underline size={14} /></button>
-                  <div className="w-px h-4 bg-gray-300 mx-1"></div>
-                  <button className="p-1 text-gray-600 hover:bg-gray-200 rounded"><List size={14} /></button>
-                  <button className="p-1 text-gray-600 hover:bg-gray-200 rounded"><ListOrdered size={14} /></button>
+                  <button className="p-1 text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded"><Bold size={14} /></button>
+                  <button className="p-1 text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded"><Italic size={14} /></button>
+                  <button className="p-1 text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded"><Underline size={14} /></button>
+                  <div className="w-px h-4 bg-white/10 mx-1"></div>
+                  <button className="p-1 text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded"><List size={14} /></button>
+                  <button className="p-1 text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded"><ListOrdered size={14} /></button>
                 </div>
                 <div className="flex items-center gap-1">
                   <button 
                     onClick={(e) => { e.stopPropagation(); handleEnhance(exp.id); }}
                     disabled={isEnhancingId === exp.id}
-                    className="flex items-center gap-1 text-[12px] font-bold text-primary bg-primary/10 px-2 py-1 rounded hover:bg-primary/20 transition-colors disabled:opacity-50"
+                    className="flex items-center gap-1 text-[12px] font-bold text-slate-800 bg-slate-100 px-2 py-1 rounded hover:bg-slate-900/20 transition-colors disabled:opacity-50"
                   >
                     {isEnhancingId === exp.id ? <Loader2 size={12} className="animate-spin" /> : <Sparkles size={12} />}
                     AI Improve
@@ -177,7 +177,7 @@ const Experience: FC = () => {
                 value={exp.description}
                 onChange={(e) => updateExp(exp.id, 'description', e.target.value)}
                 placeholder="Write about your experience, achievements and skills. Use examples from the right side."
-                className="w-full h-[150px] bg-white border-b border-l border-r border-gray-300 rounded-b-xl px-4 py-3 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-gray-700 text-sm leading-relaxed resize-none custom-scrollbar shadow-sm"
+                className="w-full h-[150px] bg-slate-50 border-b border-l border-r border-slate-200 rounded-b-xl px-4 py-3 focus:outline-none focus:ring-1 focus:ring-slate-400 focus:border-slate-400 text-slate-900 text-sm leading-relaxed resize-none custom-scrollbar shadow-sm placeholder:text-slate-600"
               />
             </div>
           </div>
@@ -185,25 +185,25 @@ const Experience: FC = () => {
 
         <button 
           onClick={addExperience}
-          className="w-full flex items-center justify-center gap-2 py-4 border-2 border-dashed border-gray-300 hover:border-primary hover:text-primary hover:bg-primary/5 rounded-xl text-gray-600 transition-colors font-bold"
+          className="w-full flex items-center justify-center gap-2 py-4 border-2 border-dashed border-slate-200 hover:border-slate-400 hover:text-slate-900 hover:bg-slate-100 rounded-xl text-slate-500 transition-colors font-bold text-sm"
         >
           <Plus size={18} /> Add Employment
         </button>
       </div>
 
       {/* RIGHT SIDE: Examples Panel */}
-      <div className="w-full xl:w-[380px] h-[500px] xl:h-auto bg-[#F8FAFC] border border-[#D1D5DB] rounded-xl flex flex-col shrink-0 overflow-hidden shadow-sm">
+      <div className="w-full xl:w-[380px] h-[500px] xl:h-auto bg-slate-50 border border-slate-200 rounded-xl flex flex-col shrink-0 overflow-hidden shadow-sm">
          
-         <div className="flex border-b border-gray-200 bg-white">
+         <div className="flex border-b border-slate-200 bg-white">
            <button 
              onClick={() => setActiveTab('examples')} 
-             className={`flex-1 py-3 text-sm font-bold border-b-2 text-center transition-colors ${activeTab === 'examples' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
+             className={`flex-1 py-3 text-xs uppercase tracking-widest font-bold border-b-2 text-center transition-colors ${activeTab === 'examples' ? 'border-slate-400 text-slate-900' : 'border-transparent text-slate-500 hover:text-slate-600'}`}
            >
-             Pre-written Examples
+             Examples
            </button>
            <button 
              onClick={() => setActiveTab('ai')} 
-             className={`flex-1 py-3 text-sm font-bold border-b-2 text-center transition-colors ${activeTab === 'ai' ? 'border-purple-600 text-purple-600' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
+             className={`flex-1 py-3 text-xs uppercase tracking-widest font-bold border-b-2 text-center transition-colors ${activeTab === 'ai' ? 'border-slate-400 text-slate-700' : 'border-transparent text-slate-500 hover:text-slate-600'}`}
            >
              AI Suggestions
            </button>
@@ -214,55 +214,55 @@ const Experience: FC = () => {
             {activeTab === 'examples' ? (
               <>
                 <div className="mb-4 space-y-3">
-                  <h3 className="text-[13px] font-bold text-gray-800 uppercase tracking-wide">Job based bullet suggestions</h3>
+                  <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest">Job based bullet suggestions</h3>
                   
                   <div className="relative">
                     <select 
                       value={careerField} 
                       onChange={(e) => setCareerField(e.target.value)}
-                      className="w-full appearance-none bg-white border border-gray-300 text-gray-700 text-sm rounded-lg pl-3 pr-8 py-2 outline-none focus:border-primary shadow-sm font-medium cursor-pointer"
+                      className="w-full appearance-none bg-slate-50 border border-slate-200 text-slate-900 text-sm rounded-lg pl-3 pr-8 py-2 outline-none focus:border-slate-400 shadow-sm font-medium cursor-pointer"
                     >
                       <option value="All">All Career Fields</option>
                       {categories.map(c => <option key={c} value={c}>{c}</option>)}
                     </select>
-                    <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" />
+                    <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none" />
                   </div>
 
                   <div className="relative">
-                    <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                    <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
                     <input 
                       type="text" 
                       placeholder="Search roles..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full pl-8 pr-3 py-2 bg-white border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-primary shadow-sm"
+                      className="w-full pl-8 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-900 focus:outline-none focus:border-slate-400 shadow-sm placeholder:text-slate-600"
                     />
                   </div>
                 </div>
 
                 <div className="space-y-3">
                   {displayedExamples.length > 0 ? displayedExamples.map((ex, i) => (
-                    <div key={i} className="flex bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow overflow-hidden group">
+                    <div key={i} className="flex bg-white border border-slate-200 rounded-lg shadow-sm hover:border-slate-300 transition-colors overflow-hidden group">
                       <button 
                          onClick={() => appendBullet(ex.content)}
-                         className="bg-[#22C55E] hover:bg-green-600 transition-colors w-12 flex flex-col items-center justify-center text-white shrink-0 font-bold text-xs gap-1 opacity-90 group-hover:opacity-100"
+                         className="bg-slate-900/20 hover:bg-slate-900/40 transition-colors w-12 flex flex-col items-center justify-center text-slate-700 shrink-0 font-bold text-xs gap-1 opacity-90 group-hover:opacity-100"
                       >
                          <Plus size={16} />
                          <span>ADD</span>
                       </button>
-                      <div className="p-3 text-[13px] leading-relaxed text-gray-700 font-medium">
-                         <div className="text-[10px] uppercase font-bold text-gray-400 mb-1">{ex.role}</div>
+                      <div className="p-3 text-[13px] leading-relaxed text-slate-600 font-medium">
+                         <div className="text-[10px] uppercase font-bold text-slate-500 mb-1 tracking-widest">{ex.role}</div>
                          {ex.content}
                       </div>
                     </div>
                   )) : (
-                    <div className="text-center py-10 text-gray-500 text-sm font-medium">No examples found.</div>
+                    <div className="text-center py-10 text-slate-500 text-sm font-medium">No examples found.</div>
                   )}
                 </div>
               </>
             ) : (
               <div className="flex flex-col items-center justify-center h-full text-center px-2">
-                <h3 className="text-lg font-bold text-gray-900 mb-6">AI Enhancements</h3>
+                <h3 className="text-lg font-bold text-slate-900 mb-6">AI Enhancements</h3>
                 
                 <div className="w-full space-y-3">
                    {aiActions.map(action => (
@@ -270,9 +270,9 @@ const Experience: FC = () => {
                         key={action}
                         onClick={() => focusedExpId ? handleEnhance(focusedExpId, action.toLowerCase().replace(' ', '_')) : toast.error('Select an experience first')}
                         disabled={isEnhancingId === focusedExpId}
-                        className="w-full py-3 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-bold text-sm rounded-xl shadow-sm transition-all flex items-center justify-center gap-2"
+                        className="w-full py-3 bg-white border border-slate-200 hover:bg-slate-50 text-slate-600 font-bold text-sm rounded-xl shadow-sm transition-all flex items-center justify-center gap-2"
                      >
-                        <Sparkles size={16} className="text-purple-500" />
+                        <Sparkles size={16} className="text-slate-700" />
                         {action}
                      </button>
                    ))}
@@ -287,4 +287,3 @@ const Experience: FC = () => {
 };
 
 export default Experience;
-
