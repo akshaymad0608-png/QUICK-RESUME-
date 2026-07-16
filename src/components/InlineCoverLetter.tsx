@@ -5,6 +5,7 @@ import { generateCoverLetter } from '../services/geminiService';
 import toast from 'react-hot-toast';
 import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
+
 import { coverLetterExamples } from '../data/examples';
 
 const GRAD = 'linear-gradient(135deg, #7c3aed, #0ea5e9)';
@@ -17,6 +18,7 @@ const InlineCoverLetter: FC = () => {
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
   const [downloading, setDownloading] = useState(false);
+  
 
   const handleGenerate = async () => {
     if (!jobDesc.trim()) return;
@@ -47,22 +49,36 @@ const InlineCoverLetter: FC = () => {
     const NameStr = data.personalInfo.firstName ? `${data.personalInfo.firstName} ${data.personalInfo.lastName}` : '[Your Name]';
     el.innerHTML = `<div style="font-family: Arial, sans-serif; padding: 2rem; font-size: 14px; line-height: 1.8; white-space: pre-wrap; color: #1e293b; width: 794px;">${letter.replace(/\[Your Name\]/gi, NameStr)}</div>`;
     
-    // Position off-screen but in DOM for html2canvas to work
+    // Put at top left with z-index to avoid scroll issues causing empty canvases
     el.style.position = 'absolute';
-    el.style.top = '-9999px';
-    el.style.left = '-9999px';
+    el.style.top = '0';
+    el.style.left = '0';
+    el.style.zIndex = '-9999';
     document.body.appendChild(el);
 
     const name = data.personalInfo.firstName ? `${data.personalInfo.firstName}_CoverLetter` : 'CoverLetter';
     
     try {
       const canvas = await html2canvas(el, { scale: 2, useCORS: true });
-      const imgData = canvas.toDataURL('image/jpeg', 0.98);
+      const imgData = canvas.toDataURL('image/jpeg', 1.0);
       const pdf = new jsPDF('p', 'mm', 'a4');
       const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const contentHeight = (canvas.height * pdfWidth) / canvas.width;
       
-      pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+      let heightLeft = contentHeight;
+      let position = 0;
+      
+      pdf.addImage(imgData, 'JPEG', 0, position, pdfWidth, contentHeight);
+      heightLeft -= pdfHeight;
+      
+      while (heightLeft > 0) {
+        position = position - pdfHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, 'JPEG', 0, position, pdfWidth, contentHeight);
+        heightLeft -= pdfHeight;
+      }
+      
       pdf.save(`${name}.pdf`);
       
       toast.success('PDF downloaded!');
@@ -98,7 +114,10 @@ const InlineCoverLetter: FC = () => {
 
         <div className="mb-4">
           <label className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-1.5 block">Job Description</label>
-          <textarea
+          
+            
+            <textarea
+  
             value={jobDesc}
             onChange={e => setJobDesc(e.target.value)}
             placeholder="Paste job description here..."

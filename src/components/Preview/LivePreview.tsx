@@ -27,8 +27,9 @@ const LivePreview: FC = () => {
     (!data.education || data.education.length === 0) &&
     (!data.skills || data.skills.length === 0);
 
-  return (
-    <div className="w-full flex-1 flex flex-col bg-gray-100 overflow-hidden relative" id="resume-preview-container">
+    return (
+    <div className="w-full min-h-full relative print:overflow-visible" style={{ minWidth: "794px", minHeight: "1123px" }}>
+
       {isEmpty ? (
         <div className="h-full w-full flex flex-col items-center justify-center p-12 text-center bg-gray-50/50">
           <div className="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center mb-6 shadow-sm">
@@ -40,7 +41,7 @@ const LivePreview: FC = () => {
           </p>
         </div>
       ) : (
-        <div className="origin-top flex justify-center border border-gray-200/60 lg:border-transparent m-4 lg:m-0 rounded-xl lg:rounded-none overflow-hidden shadow-xl lg:shadow-none min-h-[1123px] bg-white transition-all duration-300">
+        <div className="w-full min-h-full h-max bg-white transition-all duration-300" style={{ minWidth: "794px", minHeight: "1123px" }}>
           {layout === 'modern' && <Modern data={data} />}
           {layout === 'minimal' && <Minimal data={data} />}
           {layout === 'executive' && <Executive data={data} />}
@@ -51,6 +52,7 @@ const LivePreview: FC = () => {
           {(layout === 'classic' || !['modern','minimal','executive','two-column','sidebar','timeline','creative'].includes(layout)) && <Classic data={data} />}
         </div>
       )}
+    
     </div>
   );
 };

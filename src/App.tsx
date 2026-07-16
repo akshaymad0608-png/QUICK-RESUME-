@@ -25,7 +25,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/start" element={<Start />} />
-              <Route path="/choose-template" element={<ChooseTemplate />} />
+              <Route path="/templates" element={<ChooseTemplate />} />
               <Route path="/build" element={<Build />} />
               <Route path="/examples" element={<ResumeExamples />} />
               <Route path="/resources" element={<Resources />} />

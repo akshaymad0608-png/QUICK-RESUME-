@@ -1,8 +1,9 @@
-import { FC, useState } from 'react';
+import { FC, useState, useRef } from 'react';
 import { useResume } from '../../context/ResumeContext';
-import { Download, FileText, CheckCircle, LayoutTemplate, Loader2 } from 'lucide-react';
-import html2canvas from 'html2canvas';
-import { jsPDF } from 'jspdf';
+import { Download, FileText, FileSpreadsheet, CheckCircle, LayoutTemplate, Loader2 } from 'lucide-react';
+import { exportElementToPdf } from '../../utils/exportPdf';
+import { exportResumeToExcel } from '../../utils/exportExcel';
+
 import LivePreview from '../Preview/LivePreview';
 import toast from 'react-hot-toast';
 
@@ -15,6 +16,7 @@ interface FinalizeProps {
 const Finalize: FC<FinalizeProps> = () => {
   const { data, updateSection } = useResume();
   const [isDownloading, setIsDownloading] = useState(false);
+  const finalizeRef = useRef<HTMLDivElement>(null);
 
   const getFileName = (ext: string) => {
     const name = data.personalInfo.firstName ? `${data.personalInfo.firstName}_${data.personalInfo.lastName}` : 'resume';
@@ -22,29 +24,31 @@ const Finalize: FC<FinalizeProps> = () => {
   };
 
   const handleDownloadPDF = async () => {
-    const element = document.getElementById('resume-preview-container');
+    const element = finalizeRef.current;
     if (!element) return;
-    setIsDownloading(true);
 
+    setIsDownloading(true);
     try {
-      const canvas = await html2canvas(element, { scale: 2, useCORS: true, logging: false });
-      const imgData = canvas.toDataURL('image/jpeg', 0.98);
-      const pdf = new jsPDF('p', 'mm', 'a4');
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-      
-      pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
-      pdf.save(getFileName('pdf'));
-      
-      toast.success("PDF Downloaded successfully!");
+      await exportElementToPdf(element, getFileName('pdf'));
+      toast.success('PDF downloaded successfully!');
     } catch (error) {
-      console.error("Error generating PDF:", error);
+      console.error('Error generating PDF:', error);
       toast.error('Failed to generate PDF.');
     } finally {
       setIsDownloading(false);
     }
   };
 
+  const handleDownloadExcel = () => {
+    try {
+      exportResumeToExcel(data);
+      toast.success('Excel (.xlsx) downloaded!');
+    } catch (error) {
+      console.error('Error generating Excel:', error);
+      toast.error('Failed to generate Excel.');
+    }
+  };
+  
   const handleDownloadDOCX = () => {
     try {
       // Basic fallback DOCX download using HTML export
@@ -155,18 +159,25 @@ const Finalize: FC<FinalizeProps> = () => {
              <CheckCircle size={16} /> RESUME READY
            </div>
            
-           <div className="flex gap-3">
-              <button 
+           <div className="flex flex-wrap gap-2 sm:gap-3 justify-center">
+              <button
+                onClick={handleDownloadExcel}
+                className="flex items-center justify-center gap-2 bg-white text-slate-600 border border-slate-200 px-4 py-2.5 rounded-lg font-bold hover:bg-slate-50 hover:text-emerald-700 transition-colors shadow-sm"
+              >
+                <FileSpreadsheet size={18} />
+                <span className="hidden sm:inline">Excel</span>
+              </button>
+              <button
                 onClick={handleDownloadDOCX}
                 className="flex items-center justify-center gap-2 bg-white text-slate-600 border border-slate-200 px-4 py-2.5 rounded-lg font-bold hover:bg-slate-50 hover:text-slate-900 transition-colors shadow-sm"
               >
                 <FileText size={18} />
-                Download DOCX
+                <span className="hidden sm:inline">DOCX</span>
               </button>
-              <button 
+              <button
                 onClick={handleDownloadPDF}
                 disabled={isDownloading}
-                className="flex items-center justify-center gap-2 bg-gradient-to-r from-black to-slate-900 text-slate-900 px-6 py-2.5 rounded-lg font-bold hover:shadow-[0_0_20px_rgba(0,0,0,0.4)] transition-all disabled:opacity-50 border border-slate-200"
+                className="flex items-center justify-center gap-2 bg-teal-600 text-white px-6 py-2.5 rounded-lg font-bold hover:bg-teal-700 hover:shadow-lg transition-all disabled:opacity-50"
               >
                 {isDownloading ? <Loader2 size={18} className="animate-spin" /> : <Download size={18} />}
                 Download PDF
@@ -175,7 +186,7 @@ const Finalize: FC<FinalizeProps> = () => {
          </div>
 
          {/* Render LivePreview directly */}
-         <div className="shadow-[0_20px_60px_-15px_rgba(0,0,0,0.7)] hover:shadow-[0_30px_70px_-15px_rgba(0,0,0,0.1)] transition-shadow duration-500 rounded-lg overflow-hidden ring-1 ring-white/10">
+         <div ref={finalizeRef} className="shadow-[0_20px_60px_-15px_rgba(0,0,0,0.7)] hover:shadow-[0_30px_70px_-15px_rgba(0,0,0,0.1)] transition-shadow duration-500 rounded-lg overflow-hidden ring-1 ring-white/10">
              <LivePreview />
          </div>
       </div>

@@ -219,7 +219,7 @@ const Skills: FC = () => {
                 <button 
                   onClick={handleSuggest}
                   disabled={isLoading}
-                   className="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-md transition-all flex justify-center items-center gap-2 border border-slate-300"
+                   className="w-full py-3 bg-teal-600 hover:bg-teal-700 text-white font-bold rounded-xl shadow-md transition-all flex justify-center items-center gap-2 border border-slate-300"
                 >
                   {isLoading ? <Loader2 size={18} className="animate-spin" /> : <Sparkles size={18} />} Generate Suggestions
                 </button>

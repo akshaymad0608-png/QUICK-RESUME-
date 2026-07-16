@@ -74,13 +74,30 @@ Text to extract from:
 ${text}
       `;
 
-      const response = await ai.models.generateContent({
-        model: 'gemini-3.5-flash',
-        contents: prompt,
-        config: {
-          responseMimeType: "application/json"
+      let response;
+      let lastError;
+      for (let i = 0; i < 3; i++) {
+        try {
+          response = await ai.models.generateContent({
+            model: 'gemini-2.5-flash',
+            contents: prompt,
+            config: {
+              responseMimeType: "application/json"
+            }
+          });
+          break;
+        } catch (err: unknown) {
+          const e = err as { status?: string | number };
+          lastError = e;
+          if (e?.status === 'UNAVAILABLE' || e?.status === 503 || String(e).includes('503')) {
+            console.log(`[Gemini API] 503 error, retrying... (attempt ${i + 1}/3)`);
+            await new Promise(r => setTimeout(r, 1000 * Math.pow(2, i)));
+            continue;
+          }
+          throw e;
         }
-      });
+      }
+      if (!response) throw lastError;
 
       const resultText = response.text;
       if (!resultText) throw new Error("Empty response from AI");
@@ -116,10 +133,27 @@ ${text}
           }
         }
       });
-      const response = await ai.models.generateContent({
-        model: 'gemini-3.5-flash',
-        contents: prompt,
-      });
+      let response;
+      let lastError;
+      for (let i = 0; i < 3; i++) {
+        try {
+          response = await ai.models.generateContent({
+            model: 'gemini-2.5-flash',
+            contents: prompt,
+          });
+          break;
+        } catch (err: unknown) {
+          const e = err as { status?: string | number };
+          lastError = e;
+          if (e?.status === 'UNAVAILABLE' || e?.status === 503 || String(e).includes('503')) {
+            console.log(`[Gemini API] 503 error, retrying... (attempt ${i + 1}/3)`);
+            await new Promise(r => setTimeout(r, 1000 * Math.pow(2, i)));
+            continue;
+          }
+          throw e;
+        }
+      }
+      if (!response) throw lastError;
 
       res.json({ text: response.text });
     } catch (err: unknown) {

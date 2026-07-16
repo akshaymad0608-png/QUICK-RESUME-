@@ -16,7 +16,7 @@ const Classic: FC<TemplateProps> = ({ data }) => {
   const bf = design.bodyFont || design.fontFamily || 'Inter, sans-serif';
 
   return (
-    <div className="w-full flex-1 flex flex-col h-full bg-white p-10 lg:p-14" style={{ fontFamily: bf, color: '#1E293B', fontSize: design.fontSize || '14px', lineHeight: design.lineHeight || '1.6' }}>      
+    <div className="w-full flex-1 flex flex-col h-full bg-white p-12" style={{ fontFamily: bf, color: '#1E293B', fontSize: design.fontSize || '14px', lineHeight: design.lineHeight || '1.6' }}>      
       
       {/* Header (Centered) */}
       <div className="text-center flex flex-col items-center" style={{ marginBottom: sectionGap }}>

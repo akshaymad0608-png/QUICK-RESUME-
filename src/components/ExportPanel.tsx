@@ -1,6 +1,7 @@
 import { FC, useState } from 'react';
-import { Share2, Download, Copy, CheckCircle2, FileJson, Linkedin, FileText, Lock } from 'lucide-react';
+import { Share2, Download, Copy, CheckCircle2, FileJson, Linkedin, FileText, FileSpreadsheet } from 'lucide-react';
 import { useResume } from '../context/ResumeContext';
+import { exportResumeToExcel } from '../utils/exportExcel';
 import toast from 'react-hot-toast';
 
 const ExportPanel: FC = () => {
@@ -8,14 +9,17 @@ const ExportPanel: FC = () => {
   const [copiedJSON, setCopiedJSON] = useState(false);
   const [copiedLinkedIn, setCopiedLinkedIn] = useState(false);
 
+  const baseName = () => {
+    const n = `${data.personalInfo.firstName || ''}_${data.personalInfo.lastName || ''}`.trim().replace(/^_|_$/g, '');
+    return n || 'resume';
+  };
+
   const handleDownloadJSON = () => {
-    const json = JSON.stringify(data, null, 2);
-    const blob = new Blob([json], { type: 'application/json' });
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
-    const name = data.personalInfo.firstName ? `${data.personalInfo.firstName}_resume` : 'resume';
     a.href = url;
-    a.download = `${name}.json`;
+    a.download = `${baseName()}.json`;
     a.click();
     URL.revokeObjectURL(url);
     toast.success('JSON downloaded!');
@@ -26,6 +30,54 @@ const ExportPanel: FC = () => {
     setCopiedJSON(true);
     setTimeout(() => setCopiedJSON(false), 2000);
     toast.success('JSON copied!');
+  };
+
+  const handleDownloadExcel = () => {
+    try {
+      exportResumeToExcel(data);
+      toast.success('Excel (.xlsx) downloaded!');
+    } catch (e) {
+      console.error(e);
+      toast.error('Failed to build Excel file.');
+    }
+  };
+
+  const handleDownloadDOCX = () => {
+    try {
+      const p = data.personalInfo;
+      const esc = (s = '') => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      const section = (title: string, body: string) =>
+        body ? `<h2 style="color:#0d9488;border-bottom:1px solid #ccc;padding-bottom:4px;">${title}</h2>${body}` : '';
+
+      const exp = data.experience.map(e =>
+        `<p><b>${esc(e.jobTitle)}</b> — ${esc(e.company)} <i>(${esc(e.startDate)} – ${e.isPresent ? 'Present' : esc(e.endDate)})</i><br/>${esc(e.description).replace(/\n/g, '<br/>')}</p>`
+      ).join('');
+      const edu = data.education.map(e =>
+        `<p><b>${esc(e.degree)}${e.fieldOfStudy ? ', ' + esc(e.fieldOfStudy) : ''}</b> — ${esc(e.schoolName)} <i>(${esc(e.startYear)} – ${esc(e.endYear)})</i></p>`
+      ).join('');
+      const skills = data.skills.length ? `<p>${data.skills.map(esc).join(' • ')}</p>` : '';
+
+      const html =
+        `<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'></head><body style="font-family:Calibri,Arial,sans-serif;">` +
+        `<h1 style="margin-bottom:0;">${esc(p.firstName)} ${esc(p.lastName)}</h1>` +
+        `<p style="margin-top:2px;color:#0d9488;font-weight:bold;">${esc(p.jobTitle)}</p>` +
+        `<p>${[p.email, [p.phoneCode, p.phone].filter(Boolean).join(' '), p.location, p.linkedin].filter(Boolean).map(esc).join(' | ')}</p>` +
+        section('Summary', data.summary ? `<p>${esc(data.summary)}</p>` : '') +
+        section('Experience', exp) +
+        section('Education', edu) +
+        section('Skills', skills) +
+        `</body></html>`;
+
+      const source = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(html);
+      const a = document.createElement('a');
+      a.href = source;
+      a.download = `${baseName()}_Resume.doc`;
+      a.click();
+      toast.success('Word document downloaded!');
+    } catch (e) {
+      console.error(e);
+      toast.error('Failed to build Word document.');
+    }
   };
 
   const buildLinkedInAbout = () => {
@@ -73,10 +125,6 @@ const ExportPanel: FC = () => {
     toast.success('LinkedIn text copied!');
   };
 
-  const handlePremiumAction = () => {
-    toast.error('This is a Premium feature. Upgrade to Pro to unlock DOCX Export.');
-  };
-
   const ExportCard: FC<{
     icon: React.ReactNode;
     title: string;
@@ -99,25 +147,37 @@ const ExportPanel: FC = () => {
 
   return (
     <div className="flex flex-col h-full overflow-y-auto custom-scrollbar bg-slate-50">
-      <div className="p-6">
+      <div className="p-4 sm:p-6">
         <div className="flex items-center gap-3 mb-6">
-          <div className="w-10 h-10 rounded-full flex items-center justify-center bg-indigo-600 text-white shadow-sm">
+          <div className="w-10 h-10 rounded-full flex items-center justify-center bg-teal-600 text-white shadow-sm">
             <Share2 size={20} />
           </div>
           <div>
             <h2 className="text-[20px] font-bold text-slate-900 leading-tight">Export & Share</h2>
-            <p className="text-xs text-slate-500">Download or share your resume</p>
+            <p className="text-xs text-slate-500">Download your resume in any format</p>
           </div>
         </div>
 
         <ExportCard
+          icon={<FileSpreadsheet size={20} />}
+          title="Excel Spreadsheet (XLSX)"
+          description="Every section as a clean, ATS-readable sheet"
+          actions={
+            <button onClick={handleDownloadExcel}
+              className="w-full py-3 flex items-center justify-center gap-2 bg-emerald-600 text-white text-sm font-bold rounded-xl transition-all hover:bg-emerald-700 shadow-sm">
+              <Download size={14} /> Download as Excel
+            </button>
+          }
+        />
+
+        <ExportCard
           icon={<FileText size={20} />}
           title="Word Document (DOCX)"
-          description="Export to editable Microsoft Word format"
+          description="Editable Microsoft Word format"
           actions={
-            <button onClick={handlePremiumAction}
-              className="w-full py-3 flex items-center justify-center gap-2 text-slate-900 bg-amber-300 text-sm font-bold rounded-xl transition-all hover:bg-amber-400 shadow-sm border border-amber-400">
-              <Lock size={14} /> Download as DOCX (Premium)
+            <button onClick={handleDownloadDOCX}
+              className="w-full py-3 flex items-center justify-center gap-2 bg-blue-600 text-white text-sm font-bold rounded-xl transition-all hover:bg-blue-700 shadow-sm">
+              <Download size={14} /> Download as Word
             </button>
           }
         />
@@ -125,11 +185,11 @@ const ExportPanel: FC = () => {
         <ExportCard
           icon={<FileJson size={20} />}
           title="JSON Source"
-          description="Full resume data source code backup"
+          description="Full resume data backup"
           actions={
             <>
               <button onClick={handleDownloadJSON}
-                className="w-full py-2.5 flex items-center justify-center gap-2 bg-indigo-600 text-white text-xs font-bold rounded-xl transition-all hover:bg-indigo-700 shadow-sm">
+                className="w-full py-2.5 flex items-center justify-center gap-2 bg-teal-600 text-white text-xs font-bold rounded-xl transition-all hover:bg-teal-700 shadow-sm">
                 <Download size={13} /> Download resume.json
               </button>
               <button onClick={handleCopyJSON}
@@ -144,7 +204,7 @@ const ExportPanel: FC = () => {
         <ExportCard
           icon={<Linkedin size={20} />}
           title="LinkedIn About"
-          description="Formatted text for LinkedIn About section"
+          description="Formatted text for your LinkedIn profile"
           actions={
             <>
               <button onClick={handleCopyLinkedIn}
@@ -161,7 +221,6 @@ const ExportPanel: FC = () => {
             </>
           }
         />
-
       </div>
     </div>
   );

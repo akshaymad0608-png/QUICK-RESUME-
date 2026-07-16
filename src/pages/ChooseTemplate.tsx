@@ -69,7 +69,7 @@ export default function ChooseTemplate() {
   }, [activeCategory, searchTerm, sortBy]);
 
   return (
-    <div className="min-h-screen bg-white flex flex-col font-sans text-slate-900 selection:bg-slate-900 selection:text-white bg-grid-pattern-light relative">\n      <div className="absolute inset-0 bg-gradient-to-b from-slate-50/80 to-slate-50 pointer-events-none z-0"></div>
+    <div className="min-h-screen bg-white flex flex-col font-sans overflow-x-hidden text-slate-900 selection:bg-slate-900 selection:text-white bg-grid-pattern-light relative">\n      <div className="absolute inset-0 bg-gradient-to-b from-slate-50/80 to-slate-50 pointer-events-none z-0"></div>
       <Helmet>
         <title>Templates | QuickResume</title>
         <meta name="description" content="Browse our library of professional, modern, and minimal resume templates." />
@@ -112,7 +112,7 @@ export default function ChooseTemplate() {
               placeholder="Search templates..." 
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-12 pr-4 py-4 bg-white border border-slate-200 focus:border-indigo-600 transition-all outline-none text-sm text-slate-900 placeholder:text-slate-400 font-medium"
+              className="w-full pl-12 pr-4 py-4 bg-white border border-slate-200 focus:border-teal-600 transition-all outline-none text-sm text-slate-900 placeholder:text-slate-400 font-medium"
             />
           </div>
 
@@ -123,7 +123,7 @@ export default function ChooseTemplate() {
                 onClick={() => setActiveCategory(category)}
                 className={`px-4 py-2 text-sm font-semibold transition-colors border ${
                   activeCategory === category 
-                    ? 'bg-indigo-600 text-white border-indigo-600' 
+                    ? 'bg-teal-600 text-white border-teal-600' 
                     : 'bg-white text-slate-500 border-transparent hover:text-slate-900 hover:border-slate-200'
                 }`}
               >
@@ -151,7 +151,7 @@ export default function ChooseTemplate() {
                   onClick={() => setSortBy(sortOption)}
                   className={`px-3 py-1.5 text-xs font-bold uppercase tracking-wider transition-colors ${
                     sortBy === sortOption 
-                      ? 'bg-indigo-600 text-white' 
+                      ? 'bg-teal-600 text-white' 
                       : 'text-slate-500 hover:text-slate-900'
                   }`}
                 >
@@ -178,7 +178,7 @@ export default function ChooseTemplate() {
             <p className="text-slate-500 mb-6 text-sm">Try adjusting your search or category filter.</p>
             <button 
               onClick={() => { setSearchTerm(''); setActiveCategory('All'); }}
-              className="px-6 py-3 bg-indigo-600 text-white text-sm font-bold hover:bg-indigo-700 transition-colors"
+              className="px-6 py-3 bg-teal-600 text-white text-sm font-bold hover:bg-teal-700 transition-colors"
             >
               Clear filters
             </button>

@@ -98,7 +98,7 @@ const Start: FC = () => {
               </div>
               <button 
                 onClick={() => setShowUpload(true)}
-                className="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-lg font-semibold flex items-center gap-2 transition-colors shadow-sm"
+                className="bg-teal-600 hover:bg-teal-700 text-white px-5 py-2.5 rounded-lg font-semibold flex items-center gap-2 transition-colors shadow-sm"
               >
                 <FileText size={18} />
                 Create New Resume
@@ -107,7 +107,7 @@ const Start: FC = () => {
 
             <div className="grid md:grid-cols-3 gap-6 mb-8">
               <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4 cursor-pointer hover:border-slate-300 transition-colors" onClick={() => navigate('/build')}>
-                <div className="w-12 h-12 bg-indigo-50 text-indigo-600 border border-indigo-100 rounded-xl flex items-center justify-center">
+                <div className="w-12 h-12 bg-teal-50 text-teal-600 border border-teal-100 rounded-xl flex items-center justify-center">
                   <FileText size={20} />
                 </div>
                 <div>
@@ -160,7 +160,7 @@ const Start: FC = () => {
                    </p>
                    <div className="flex gap-2">
                      <button className="flex-1 py-1.5 px-3 bg-slate-50 text-slate-600 rounded font-bold text-[12px] text-center border-none hover:bg-slate-100 transition-colors">Duplicate</button>
-                     <button className="flex-1 py-1.5 px-3 bg-indigo-600 text-white rounded font-bold text-[12px] text-center border-none hover:bg-indigo-700 transition-colors">Edit</button>
+                     <button className="flex-1 py-1.5 px-3 bg-teal-600 text-white rounded font-bold text-[12px] text-center border-none hover:bg-teal-700 transition-colors">Edit</button>
                    </div>
                  </div>
 
@@ -183,7 +183,7 @@ const Start: FC = () => {
                    </p>
                    <div className="flex gap-2">
                      <button className="flex-1 py-1.5 px-3 bg-slate-50 text-slate-600 rounded font-bold text-[12px] text-center border-none hover:bg-slate-100 transition-colors">Duplicate</button>
-                     <button className="flex-1 py-1.5 px-3 bg-indigo-600 text-white rounded font-bold text-[12px] text-center border-none hover:bg-indigo-700 transition-colors">Edit</button>
+                     <button className="flex-1 py-1.5 px-3 bg-teal-600 text-white rounded font-bold text-[12px] text-center border-none hover:bg-teal-700 transition-colors">Edit</button>
                    </div>
                  </div>
 
@@ -216,7 +216,7 @@ const Start: FC = () => {
                 className="bg-white p-8 rounded-2xl border border-slate-200 hover:border-slate-400 hover:shadow-[0_0_30px_-5px_rgba(0,0,0,0.1)] transition-all cursor-pointer shadow-sm group text-center"
                 onClick={() => { if (!isUploading) fileInputRef.current?.click(); }}
               >
-                <div className="w-16 h-16 rounded-2xl bg-indigo-50 text-indigo-600 border border-indigo-100 flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
+                <div className="w-16 h-16 rounded-2xl bg-teal-50 text-teal-600 border border-teal-100 flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
                   {isUploading ? <Loader2 size={32} className="animate-spin" /> : <UploadCloud size={32} />}
                 </div>
                 <h2 className="text-2xl font-bold text-slate-900 mb-3">Upload your resume</h2>
@@ -236,7 +236,7 @@ const Start: FC = () => {
               {/* Start from scratch Card */}
               <div 
                 className="bg-white p-8 rounded-2xl border border-slate-200 hover:border-slate-400 hover:shadow-[0_0_30px_-5px_rgba(0,0,0,0.1)] transition-all cursor-pointer shadow-sm group text-center"
-                onClick={() => navigate('/choose-template')}
+                onClick={() => navigate('/templates')}
               >
                 <div className="w-16 h-16 rounded-2xl bg-blue-50 text-blue-600 border-blue-100 flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
                   <PenLine size={32} />

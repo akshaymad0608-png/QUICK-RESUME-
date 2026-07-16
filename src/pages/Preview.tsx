@@ -6,6 +6,7 @@ import { ArrowLeft, Download, Loader2 } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
 
+
 const Preview: FC = () => {
   const { data } = useResume();
   const navigate = useNavigate();
@@ -14,19 +15,32 @@ const Preview: FC = () => {
 
   const handleDownload = async () => {
     if (!resumeRef.current) return;
-    setIsDownloading(true);
     
-    const name = data.personalInfo.fullName.replace(/\s+/g, '-').toLowerCase() || 'resume';
+    setIsDownloading(true);
+    const name = data.personalInfo?.fullName?.replace(/\s+/g, '-').toLowerCase() || 'resume';
     const filename = `${name}-resume.pdf`;
     
     try {
       const canvas = await html2canvas(resumeRef.current, { scale: 2, useCORS: true, logging: false });
-      const imgData = canvas.toDataURL('image/jpeg', 0.98);
+      const imgData = canvas.toDataURL('image/jpeg', 1.0);
       const pdf = new jsPDF('p', 'mm', 'letter');
-      const pdfWidth = pdf.internal.pageSize.getWidth() - 20; // 10mm margin each side
-      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+      const pdfWidth = pdf.internal.pageSize.getWidth() - 20;
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const contentHeight = (canvas.height * pdfWidth) / canvas.width;
       
-      pdf.addImage(imgData, 'JPEG', 10, 10, pdfWidth, pdfHeight);
+      let heightLeft = contentHeight;
+      let position = 10;
+      
+      pdf.addImage(imgData, 'JPEG', 10, position, pdfWidth, contentHeight);
+      heightLeft -= pdfHeight;
+      
+      while (heightLeft > 0) {
+        position = position - pdfHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, 'JPEG', 10, position, pdfWidth, contentHeight);
+        heightLeft -= pdfHeight;
+      }
+      
       pdf.save(filename);
     } catch (error) {
       console.error("Error generating PDF:", error);
@@ -54,7 +68,7 @@ const Preview: FC = () => {
         <button 
           onClick={handleDownload}
           disabled={isDownloading}
-          className="flex items-center gap-2 text-sm font-medium px-5 py-2.5 bg-indigo-600 text-white hover:bg-indigo-700 transition-colors rounded-md shadow-md disabled:opacity-50"
+          className="flex items-center gap-2 text-sm font-medium px-5 py-2.5 bg-teal-600 text-white hover:bg-teal-700 transition-colors rounded-md shadow-md disabled:opacity-50"
         >
           {isDownloading ? <Loader2 size={16} className="animate-spin" /> : <Download size={16} />}
           Download PDF
@@ -68,7 +82,7 @@ const Preview: FC = () => {
           {/* Printable Area */}
           <div 
             ref={resumeRef} 
-            className="bg-white text-indigo-600"
+            className="bg-white text-teal-600"
             style={{ 
               width: '100%', 
               minHeight: '1100px', // Letter Size approx 8.5x11 aspect

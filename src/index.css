@@ -1,45 +1,83 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Merriweather:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,600;1,400&family=Roboto:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
-@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Merriweather:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,600;1,400&family=Roboto:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
 
-@theme {
-  --color-primary: #2563EB;
-  --color-primary-hover: #1D4ED8;
-  --color-primary-light: #EFF6FF;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-  --color-bg-page: #F8FAFC;
-  --color-page: #F8FAFC;
-  
-  --color-bg-surface: #FFFFFF;
-  --color-surface: #FFFFFF;
+@layer base {
+  :root {
+    /* ---- QuickResume "Paper & Ink" system ---- */
+    --paper:      #FAFAF7;  /* warm canvas */
+    --surface:    #FFFFFF;  /* cards / document */
+    --ink:        #16170F;  /* near-black heading */
+    --body-text:  #55584E;  /* warm gray body */
+    --line:       #E8E6DD;  /* hairline */
+    --brand:      #0D9488;  /* signature teal */
+    --brand-deep: #0B5B54;  /* teal for large fills */
+    --brand-soft: #EAF6F4;  /* teal tint */
+    --spark:      #E4572E;  /* warm clay — used sparingly */
 
-  --color-text-heading: #0F172A;
-  --color-heading: #0F172A;
-  
-  --color-text-body: #64748B;
-  --color-body: #64748B;
-  
-  --color-text-muted: #94a3b8;
-  --color-muted: #94a3b8;
+    /* Legacy token aliases kept so existing components don't break */
+    --color-primary: #0D9488;
+    --color-primary-hover: #0F766E;
+    --color-primary-light: #EAF6F4;
+    --color-accent: #E4572E;
+    --color-bg-page: #FAFAF7;
+    --color-page: #FAFAF7;
+    --color-bg-surface: #FFFFFF;
+    --color-surface: #FFFFFF;
+    --color-text-heading: #16170F;
+    --color-heading: #16170F;
+    --color-text-body: #55584E;
+    --color-body: #55584E;
+    --color-text-muted: #9a9c90;
+    --color-muted: #9a9c90;
+    --color-border: #E8E6DD;
+    --color-success: #10B981;
+    --color-success-light: #D1FAE5;
 
-  --color-border: #E2E8F0;
-
-  --color-success: #10B981;
-  --color-success-light: #D1FAE5;
-
-  --font-sans: 'Inter', sans-serif;
-  --font-display: 'Inter', sans-serif;
+    --font-sans: 'Inter', sans-serif;
+    --font-display: 'Bricolage Grotesque', 'Inter', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
 }
 
 html {
   scroll-behavior: smooth;
-  background-color: #F8FAFC;
+  background-color: var(--paper);
 }
 
 body {
-  background-color: var(--color-bg-page);
-  color: var(--color-text-body);
+  background-color: var(--paper);
+  color: var(--body-text);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Display type carries the personality */
+.font-display { font-family: var(--font-display); }
+.font-mono-ui { font-family: var(--font-mono); }
+
+/* Eyebrow label — a small structural device reused across the site */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--brand-deep);
+}
+
+/* The signature: a marker highlight behind key words */
+.mark {
+  background: linear-gradient(transparent 62%, rgba(228,87,46,0.22) 62%);
+  padding: 0 0.05em;
+}
+
+.pdf-capturing {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
 }
 
 .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -47,15 +85,74 @@ body {
 .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
 .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
+@media (max-width: 768px) {
+  button, a { -webkit-tap-highlight-color: transparent; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
 .bg-grid-pattern {
   background-size: 40px 40px;
-  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
-                    linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+  background-image: linear-gradient(to right, rgba(0,0,0,0.04) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(0,0,0,0.04) 1px, transparent 1px);
 }
 .bg-grid-pattern-light {
   background-size: 40px 40px;
-  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-                    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-image: linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px);
 }
 
+@media print {
+  @page {
+    size: A4;
+    margin: 0;
+  }
+  
+  body, html, #root {
+    background-color: #fff !important;
+    background-image: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    width: 100% !important;
+    height: auto !important;
+  }
 
+  /* Hide common UI elements */
+  header, nav, footer, button, .no-print {
+    display: none !important;
+  }
+  
+  /* Reset layout constraints for main content area to allow full A4 print */
+  main, .flex-1, .min-h-screen, .h-screen, .flex-col {
+    height: auto !important;
+    min-height: 0 !important;
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    display: block !important;
+  }
+
+  /* Target the resume container specifically to remove shadows and borders */
+  .shadow-2xl, .shadow-md, .shadow-sm, .shadow-lg, .shadow {
+    box-shadow: none !important;
+  }
+  
+  .border, .border-slate-200 {
+    border: none !important;
+  }
+  
+  /* Ensure the resume takes up the full width of A4 */
+  .max-w-\[850px\], .max-w-4xl, .max-w-3xl, .w-full {
+    max-width: none !important;
+    width: 100% !important;
+  }
+}

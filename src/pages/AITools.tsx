@@ -79,7 +79,7 @@ export default function AITools() {
         <div className="flex items-center gap-4">
           <button 
             onClick={() => navigate('/build')}
-            className="text-sm font-bold text-white bg-indigo-600 px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors shadow-sm"
+            className="text-sm font-bold text-white bg-teal-600 px-4 py-2 rounded-lg hover:bg-teal-700 transition-colors shadow-sm"
           >
             Create Resume
           </button>

@@ -37,7 +37,7 @@ const ResumeExamples: FC = () => {
         <div className="flex items-center gap-4">
           <button 
             onClick={() => navigate('/build')}
-            className="text-sm font-bold text-slate-900 bg-indigo-600 px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors shadow-sm"
+            className="text-sm font-bold text-slate-900 bg-teal-600 px-4 py-2 rounded-lg hover:bg-teal-700 transition-colors shadow-sm"
           >
             Create Resume
           </button>
@@ -66,7 +66,7 @@ const ResumeExamples: FC = () => {
               <div className="h-48 w-full bg-slate-50 relative overflow-hidden">
                 <img src={example.image} alt={example.role} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-80 group-hover:opacity-100" />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0B]/90 via-[#0A0A0B]/40 to-transparent flex items-end p-6">
-                   <span className="bg-indigo-600/90 backdrop-blur text-slate-900 text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider border border-slate-400">{example.industry}</span>
+                   <span className="bg-teal-600/90 backdrop-blur text-slate-900 text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider border border-slate-400">{example.industry}</span>
                 </div>
               </div>
               <div className="p-8">

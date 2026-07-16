@@ -8,6 +8,7 @@ import { generateCoverLetter } from '../services/geminiService';
 import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
 
+
 const CoverLetterGenerator: FC = () => {
   const navigate = useNavigate();
   const { data } = useResume();
@@ -42,37 +43,56 @@ const CoverLetterGenerator: FC = () => {
   const handleDownloadPDF = async () => {
     if (!coverLetter) return;
     setIsDownloading(true);
-    const element = document.createElement('div');
-    element.innerHTML = `<div style="font-family: Arial, sans-serif; padding: 2rem; font-size: 14px; line-height: 1.6; white-space: pre-wrap; color: black; background: white; width: 794px;">${coverLetter}</div>`;
     
-    // Position off-screen but in DOM for html2canvas
-    element.style.position = 'absolute';
-    element.style.top = '-9999px';
-    element.style.left = '-9999px';
-    document.body.appendChild(element);
+    const el = document.createElement('div');
+    el.style.position = 'absolute';
+    el.style.left = '0';
+    el.style.top = '0';
+    el.style.zIndex = '-9999';
+    el.style.width = '800px';
+    el.style.padding = '40px';
+    el.style.backgroundColor = 'white';
+    el.style.color = 'black';
+    el.style.fontFamily = 'Arial, sans-serif';
+    el.style.fontSize = '14px';
+    el.style.lineHeight = '1.6';
+    el.style.whiteSpace = 'pre-wrap';
+    el.innerText = coverLetter;
+    
+    document.body.appendChild(el);
 
-    const name = data.personalInfo.firstName ? `${data.personalInfo.firstName}_CoverLetter` : 'CoverLetter';
-    
     try {
-      const canvas = await html2canvas(element, { scale: 2 });
-      const imgData = canvas.toDataURL('image/jpeg', 0.98);
+      const canvas = await html2canvas(el, { scale: 2, useCORS: true });
+      const imgData = canvas.toDataURL('image/jpeg', 1.0);
       const pdf = new jsPDF('p', 'mm', 'a4');
       const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const contentHeight = (canvas.height * pdfWidth) / canvas.width;
       
-      pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
-      pdf.save(`${name}.pdf`);
+      let heightLeft = contentHeight;
+      let position = 0;
       
-      toast.success('Downloaded PDF');
+      pdf.addImage(imgData, 'JPEG', 0, position, pdfWidth, contentHeight);
+      heightLeft -= pdfHeight;
+      
+      while (heightLeft > 0) {
+        position = position - pdfHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, 'JPEG', 0, position, pdfWidth, contentHeight);
+        heightLeft -= pdfHeight;
+      }
+      
+      pdf.save('Cover_Letter.pdf');
+      toast.success('PDF downloaded!');
     } catch (error) {
       console.error("Error generating PDF:", error);
-      toast.error('Failed to generate PDF.');
+      toast.error("Failed to generate PDF");
     } finally {
-      document.body.removeChild(element);
+      document.body.removeChild(el);
       setIsDownloading(false);
     }
   };
-
+  
   return (
     <div className="min-h-screen bg-slate-50 text-slate-600 flex flex-col font-sans pt-[72px] bg-grid-pattern relative">\n      <div className="absolute inset-0 bg-gradient-to-b from-slate-50/80 to-slate-50 pointer-events-none z-0"></div>
       <Helmet>
@@ -114,7 +134,10 @@ const CoverLetterGenerator: FC = () => {
               </p>
             </div>
 
+            
+            
             <textarea
+  
               className="flex-1 w-full p-5 bg-slate-50 border border-slate-200 rounded-2xl focus:border-slate-400 focus:ring-1 focus:ring-slate-400 outline-none resize-none mb-6 text-slate-900 placeholder:text-slate-600 transition-all custom-scrollbar"
               placeholder="Paste the job description here... (e.g., We are looking for a software engineer with 5 years of React experience)"
               value={jobDescription}
@@ -122,7 +145,7 @@ const CoverLetterGenerator: FC = () => {
             />
 
             <button
-              className="w-full bg-indigo-600 text-white font-bold rounded-2xl py-4 flex items-center justify-center gap-2 hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-md shadow-slate-300/50"
+              className="w-full bg-teal-600 text-white font-bold rounded-2xl py-4 flex items-center justify-center gap-2 hover:bg-teal-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-md shadow-slate-300/50"
               onClick={handleGenerate}
               disabled={isGenerating || !jobDescription.trim()}
             >

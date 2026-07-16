@@ -1,16 +1,16 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC, useState, useEffect, useRef } from 'react';
+import { exportElementToPdf } from '../utils/exportPdf';
+import { exportResumeToExcel } from '../utils/exportExcel';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 import { useResume } from '../context/ResumeContext';
 import { 
-  Type, Palette, Layout as LayoutIcon, FileText, Feather, Download, 
+  Type, Palette, Layout as LayoutIcon, FileText, FileSpreadsheet, Feather, Download, 
   Sparkles, ShieldCheck, History, Settings, Home, Edit3, 
   CheckCircle2, ChevronDown, 
   User, Briefcase, GraduationCap, Wrench, Loader2,
   Award, Medal, BookOpen, FlaskConical, HeartHandshake, Link as LinkIcon, Code, Flag, Users, Lightbulb
 } from 'lucide-react';
-import html2canvas from 'html2canvas';
-import { jsPDF } from 'jspdf';
 import toast from 'react-hot-toast';
 import Contacts from '../components/steps/Contacts';
 import Experience from '../components/steps/Experience';
@@ -25,7 +25,8 @@ import LivePreview from '../components/Preview/LivePreview';
 type SidebarTab = 'dashboard' | 'builder' | 'text' | 'colors' | 'layout' | 'templates' | 'ai' | 'ats' | 'history' | 'settings' | 'preview';
 type BuilderSection = 'personal' | 'summary' | 'experience' | 'education' | 'skills' | 'projects' | 'certifications' | 'languages' | 'add_more';
 
-import { TemplateCard } from '../components/TemplateCard';
+import { ActualResume } from '../components/TemplateCard';
+import { ScaledPreview } from '../components/Preview/ScaledPreview';
 import { TEMPLATES } from '../data/templates';
 import { optimizeWorkExperience } from '../services/geminiService';
 
@@ -35,6 +36,7 @@ const Build: FC = () => {
   const [activeTab, setActiveTab] = useState<SidebarTab>('builder');
   const [expandedSection, setExpandedSection] = useState<BuilderSection | null>('personal');
   const [isDownloading, setIsDownloading] = useState(false);
+  const printRef = useRef<HTMLDivElement>(null);
   const [isOptimizing, setIsOptimizing] = useState(false);
   const [resumeName, setResumeName] = useState('Untitled Resume');
   const [previewZoom, setPreviewZoom] = useState(100);
@@ -67,34 +69,53 @@ const Build: FC = () => {
   };
 
   const handleDownloadPDF = async () => {
-    const element = document.getElementById('resume-preview-container');
+    const wasNotPreview = activeTab !== 'preview' && window.innerWidth < 1024;
+    if (wasNotPreview) {
+      setActiveTab('preview');
+      await new Promise(resolve => setTimeout(resolve, 500));
+    }
+
+    const element = printRef.current;
     if (!element) return;
+
     setIsDownloading(true);
     const name = data.personalInfo.firstName ? `${data.personalInfo.firstName}_${data.personalInfo.lastName}` : resumeName;
-    
+
+    const parent = element.parentElement;
+    const originalTransform = parent ? parent.style.transform : '';
     try {
-      const canvas = await html2canvas(element, { scale: 2, useCORS: true });
-      const imgData = canvas.toDataURL('image/jpeg', 0.98);
-      const pdf = new jsPDF('p', 'mm', 'a4');
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-      
-      pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
-      pdf.save(`${name}_Resume.pdf`);
-      
+      if (parent) parent.style.transform = 'scale(1)';
+      await new Promise(resolve => setTimeout(resolve, 100));
+
+      await exportElementToPdf(element, `${name}_Resume.pdf`);
+
       toast.success('PDF downloaded successfully!');
     } catch (error) {
       console.error("Error generating PDF:", error);
       toast.error('Failed to generate PDF.');
     } finally {
+      if (parent) parent.style.transform = originalTransform;
       setIsDownloading(false);
+      if (wasNotPreview) {
+        setActiveTab('builder');
+      }
+    }
+  };
+
+  const handleDownloadExcel = () => {
+    try {
+      exportResumeToExcel(data);
+      toast.success('Excel (.xlsx) downloaded!');
+    } catch (error) {
+      console.error("Error generating Excel:", error);
+      toast.error('Failed to generate Excel.');
     }
   };
 
   const currentScore = 86; // Example score
 
   return (
-    <div className="flex flex-col h-[100dvh] bg-slate-50 font-sans text-slate-600 overflow-hidden selection:bg-slate-900 selection:text-white">
+    <div className="flex flex-col h-screen h-[100dvh] bg-slate-50 font-sans text-slate-600 overflow-hidden selection:bg-slate-900 selection:text-white">
       <Helmet>
         <title>Resume Builder | QuickResume</title>
         <meta name="description" content="Build your professional resume for free with QuickResume's easy-to-use editor. Choose from ATS-friendly templates, expert examples, and AI-powered text generation." />
@@ -103,7 +124,7 @@ const Build: FC = () => {
       <div className="flex flex-1 min-h-0 overflow-hidden relative">
         {/* Extreme Left Sidebar (90px) - Desktop Only */}
         <aside className="w-[90px] bg-white border-r border-slate-200 flex-col items-center py-6 shrink-0 z-20 hidden md:flex">
-          <div className="w-10 h-10 bg-indigo-600 text-white rounded-xl flex items-center justify-center mb-8 cursor-pointer shadow-lg" onClick={() => navigate('/')}>
+          <div className="w-10 h-10 bg-teal-600 text-white rounded-xl flex items-center justify-center mb-8 cursor-pointer shadow-lg" onClick={() => navigate('/')}>
             <FileText className="w-5 h-5" />
           </div>
 
@@ -129,7 +150,7 @@ const Build: FC = () => {
                 onClick={() => setActiveTab(item.id as SidebarTab)}
                 className={`flex flex-col items-center justify-center py-3 rounded-xl transition-all w-full
                   ${activeTab === item.id 
-                    ? 'bg-slate-100 text-indigo-600 border border-slate-200 font-bold' 
+                    ? 'bg-slate-100 text-teal-600 border border-slate-200 font-bold' 
                     : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900 border border-transparent font-medium'}`}
               >
                 {item.icon && React.createElement(item.icon, { className: "w-5 h-5 mb-1.5" })}
@@ -144,12 +165,12 @@ const Build: FC = () => {
           
           {/* Top Navbar */}
           <header className="h-[64px] bg-white border-b border-slate-200 flex items-center justify-between px-4 md:px-6 shrink-0 z-10">
-            <div className="flex items-center gap-2 md:gap-4 flex-1">
+            <div className="flex items-center gap-2 md:gap-4">
               <input 
                 type="text" 
                 value={resumeName}
                 onChange={(e) => setResumeName(e.target.value)}
-                className="text-base md:text-lg text-slate-900 font-bold bg-transparent border-none outline-none focus:ring-1 focus:ring-indigo-600 rounded px-2 w-[140px] md:w-[200px]"
+                className="text-base md:text-lg text-slate-900 font-bold bg-transparent border-none outline-none focus:ring-1 focus:ring-teal-600 rounded px-2 w-[140px] md:w-[200px]"
               />
               <div className="hidden md:flex items-center gap-1.5 text-xs font-bold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-md border border-slate-200">
                 <CheckCircle2 className="w-3.5 h-3.5" />
@@ -157,16 +178,16 @@ const Build: FC = () => {
               </div>
             </div>
 
-          <div className="flex items-center justify-center flex-1">
+          <div className="flex items-center justify-center">
              <div className="hidden md:flex items-center w-64">
                <div className="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
-                 <div className="bg-indigo-600 h-full rounded-full" style={{ width: '75%' }}></div>
+                 <div className="bg-teal-600 h-full rounded-full" style={{ width: '75%' }}></div>
                </div>
                <span className="ml-3 text-[10px] font-black text-slate-500 uppercase tracking-widest whitespace-nowrap">75% Complete</span>
              </div>
           </div>
 
-          <div className="flex items-center gap-3 flex-1 justify-end">
+          <div className="flex items-center gap-2 md:gap-3 justify-end">
              <div className="hidden lg:flex items-center gap-4 px-4 py-1.5 border border-slate-200 rounded-lg bg-white/5 text-sm font-medium text-slate-600">
                <span>Zoom</span>
                <button onClick={() => setPreviewZoom(z => Math.max(z - 25, 50))} className="text-slate-500 hover:text-slate-900">-</button>
@@ -177,7 +198,7 @@ const Build: FC = () => {
              <button 
                 onClick={handleOptimizeResume}
                 disabled={isOptimizing}
-                className="text-sm font-bold text-indigo-600 bg-white border border-slate-200 hover:bg-slate-50 transition-colors rounded-lg px-4 py-2 flex items-center gap-2"
+                className="text-sm font-bold text-teal-600 bg-white border border-slate-200 hover:bg-slate-50 transition-colors rounded-lg px-4 py-2 flex items-center gap-2"
               >
                 {isOptimizing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
                 <span className="hidden xl:inline">AI Optimize</span>
@@ -187,17 +208,30 @@ const Build: FC = () => {
                 <button 
                   onClick={handleDownloadPDF} 
                   disabled={isDownloading}
-                  className="text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 transition-colors rounded-lg px-5 py-2 flex items-center gap-2 shadow-lg shadow-black/10"
+                  className="text-sm font-bold text-white bg-teal-600 hover:bg-teal-700 transition-colors rounded-lg px-5 py-2 flex items-center gap-2 shadow-lg shadow-black/10"
                 >
                   {isDownloading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
                   <span className="hidden sm:inline">Export PDF</span><span className="sm:hidden">Export</span>
+                  <ChevronDown className="w-3.5 h-3.5 opacity-80" />
                 </button>
+                <div className="absolute right-0 top-full pt-2 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-30">
+                  <div className="bg-white border border-slate-200 rounded-xl shadow-xl overflow-hidden">
+                    <button onClick={handleDownloadPDF} disabled={isDownloading}
+                      className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-teal-50 hover:text-teal-700 transition-colors">
+                      <Download className="w-4 h-4" /> Download PDF
+                    </button>
+                    <button onClick={handleDownloadExcel}
+                      className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 transition-colors border-t border-slate-100">
+                      <FileSpreadsheet className="w-4 h-4" /> Download Excel
+                    </button>
+                  </div>
+                </div>
              </div>
           </div>
         </header>
 
         {/* Workspace */}
-        <div className="flex flex-1 overflow-hidden bg-slate-50">
+        <div className="flex flex-1 overflow-hidden min-h-0 bg-slate-50">
           
           {/* Middle Column: Editor Tools */}
           <div className={`${activeTab === 'preview' ? 'hidden' : 'flex'} w-full lg:flex lg:w-[500px] xl:w-[650px] shrink-0 bg-white border-r border-slate-200 overflow-y-auto custom-scrollbar flex-col relative z-0`}>
@@ -216,12 +250,12 @@ const Build: FC = () => {
                       className="w-full flex items-center justify-between p-5 text-left"
                     >
                       <div className="flex items-center gap-4">
-                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${expandedSection === 'personal' ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-500'}`}>
+                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${expandedSection === 'personal' ? 'bg-teal-600 text-white' : 'bg-slate-100 text-slate-500'}`}>
                           <User size={18} />
                         </div>
                         <h3 className="font-bold text-base text-slate-900">Personal Information</h3>
                       </div>
-                      <ChevronDown className={`w-5 h-5 text-slate-500 transition-transform ${expandedSection === 'personal' ? 'rotate-180 text-indigo-600' : ''}`} />
+                      <ChevronDown className={`w-5 h-5 text-slate-500 transition-transform ${expandedSection === 'personal' ? 'rotate-180 text-teal-600' : ''}`} />
                     </button>
                     {expandedSection === 'personal' && (
                       <div className="p-5 border-t border-slate-200 bg-white editor-dark-theme">
@@ -237,12 +271,12 @@ const Build: FC = () => {
                       className="w-full flex items-center justify-between p-5 text-left"
                     >
                       <div className="flex items-center gap-4">
-                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${expandedSection === 'summary' ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-500'}`}>
+                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${expandedSection === 'summary' ? 'bg-teal-600 text-white' : 'bg-slate-100 text-slate-500'}`}>
                           <FileText size={18} />
                         </div>
                         <h3 className="font-bold text-base text-slate-900">Professional Summary</h3>
                       </div>
-                      <ChevronDown className={`w-5 h-5 text-slate-500 transition-transform ${expandedSection === 'summary' ? 'rotate-180 text-indigo-600' : ''}`} />
+                      <ChevronDown className={`w-5 h-5 text-slate-500 transition-transform ${expandedSection === 'summary' ? 'rotate-180 text-teal-600' : ''}`} />
                     </button>
                     {expandedSection === 'summary' && (
                       <div className="p-5 border-t border-slate-200 bg-white editor-dark-theme">
@@ -258,12 +292,12 @@ const Build: FC = () => {
                       className="w-full flex items-center justify-between p-5 text-left"
                     >
                       <div className="flex items-center gap-4">
-                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${expandedSection === 'experience' ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-500'}`}>
+                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${expandedSection === 'experience' ? 'bg-teal-600 text-white' : 'bg-slate-100 text-slate-500'}`}>
                           <Briefcase size={18} />
                         </div>
                         <h3 className="font-bold text-base text-slate-900">Work Experience</h3>
                       </div>
-                      <ChevronDown className={`w-5 h-5 text-slate-500 transition-transform ${expandedSection === 'experience' ? 'rotate-180 text-indigo-600' : ''}`} />
+                      <ChevronDown className={`w-5 h-5 text-slate-500 transition-transform ${expandedSection === 'experience' ? 'rotate-180 text-teal-600' : ''}`} />
                     </button>
                     {expandedSection === 'experience' && (
                       <div className="p-5 border-t border-slate-200 bg-white editor-dark-theme">
@@ -279,12 +313,12 @@ const Build: FC = () => {
                       className="w-full flex items-center justify-between p-5 text-left"
                     >
                       <div className="flex items-center gap-4">
-                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${expandedSection === 'education' ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-500'}`}>
+                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${expandedSection === 'education' ? 'bg-teal-600 text-white' : 'bg-slate-100 text-slate-500'}`}>
                           <GraduationCap size={18} />
                         </div>
                         <h3 className="font-bold text-base text-slate-900">Education</h3>
                       </div>
-                      <ChevronDown className={`w-5 h-5 text-slate-500 transition-transform ${expandedSection === 'education' ? 'rotate-180 text-indigo-600' : ''}`} />
+                      <ChevronDown className={`w-5 h-5 text-slate-500 transition-transform ${expandedSection === 'education' ? 'rotate-180 text-teal-600' : ''}`} />
                     </button>
                     {expandedSection === 'education' && (
                       <div className="p-5 border-t border-slate-200 bg-white editor-dark-theme">
@@ -300,12 +334,12 @@ const Build: FC = () => {
                       className="w-full flex items-center justify-between p-5 text-left"
                     >
                       <div className="flex items-center gap-4">
-                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${expandedSection === 'skills' ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-500'}`}>
+                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${expandedSection === 'skills' ? 'bg-teal-600 text-white' : 'bg-slate-100 text-slate-500'}`}>
                           <Wrench size={18} />
                         </div>
                         <h3 className="font-bold text-base text-slate-900">Skills</h3>
                       </div>
-                      <ChevronDown className={`w-5 h-5 text-slate-500 transition-transform ${expandedSection === 'skills' ? 'rotate-180 text-indigo-600' : ''}`} />
+                      <ChevronDown className={`w-5 h-5 text-slate-500 transition-transform ${expandedSection === 'skills' ? 'rotate-180 text-teal-600' : ''}`} />
                     </button>
                     {expandedSection === 'skills' && (
                       <div className="p-5 border-t border-slate-200 bg-white editor-dark-theme">
@@ -321,12 +355,12 @@ const Build: FC = () => {
                         className="w-full flex items-center justify-between p-5 text-left"
                       >
                         <div className="flex items-center gap-4">
-                          <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${expandedSection === 'projects' ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-500'}`}>
+                          <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${expandedSection === 'projects' ? 'bg-teal-600 text-white' : 'bg-slate-100 text-slate-500'}`}>
                             <Lightbulb size={18} />
                           </div>
                           <h3 className="font-bold text-base text-slate-900">Projects</h3>
                         </div>
-                        <ChevronDown className={`w-5 h-5 text-slate-500 transition-transform ${expandedSection === 'projects' ? 'rotate-180 text-indigo-600' : ''}`} />
+                        <ChevronDown className={`w-5 h-5 text-slate-500 transition-transform ${expandedSection === 'projects' ? 'rotate-180 text-teal-600' : ''}`} />
                       </button>
                       {expandedSection === 'projects' && (
                         <div className="p-5 border-t border-slate-200 bg-white editor-dark-theme">
@@ -343,12 +377,12 @@ const Build: FC = () => {
                         className="w-full flex items-center justify-between p-5 text-left"
                       >
                         <div className="flex items-center gap-4">
-                          <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${expandedSection === 'certifications' ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-500'}`}>
+                          <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${expandedSection === 'certifications' ? 'bg-teal-600 text-white' : 'bg-slate-100 text-slate-500'}`}>
                             <Award size={18} />
                           </div>
                           <h3 className="font-bold text-base text-slate-900">Certifications</h3>
                         </div>
-                        <ChevronDown className={`w-5 h-5 text-slate-500 transition-transform ${expandedSection === 'certifications' ? 'rotate-180 text-indigo-600' : ''}`} />
+                        <ChevronDown className={`w-5 h-5 text-slate-500 transition-transform ${expandedSection === 'certifications' ? 'rotate-180 text-teal-600' : ''}`} />
                       </button>
                       {expandedSection === 'certifications' && (
                         <div className="p-5 border-t border-slate-200 bg-white editor-dark-theme">
@@ -365,12 +399,12 @@ const Build: FC = () => {
                         className="w-full flex items-center justify-between p-5 text-left"
                       >
                         <div className="flex items-center gap-4">
-                          <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${expandedSection === 'languages' ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-500'}`}>
+                          <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${expandedSection === 'languages' ? 'bg-teal-600 text-white' : 'bg-slate-100 text-slate-500'}`}>
                             <Flag size={18} />
                           </div>
                           <h3 className="font-bold text-base text-slate-900">Languages</h3>
                         </div>
-                        <ChevronDown className={`w-5 h-5 text-slate-500 transition-transform ${expandedSection === 'languages' ? 'rotate-180 text-indigo-600' : ''}`} />
+                        <ChevronDown className={`w-5 h-5 text-slate-500 transition-transform ${expandedSection === 'languages' ? 'rotate-180 text-teal-600' : ''}`} />
                       </button>
                       {expandedSection === 'languages' && (
                         <div className="p-5 border-t border-slate-200 bg-white editor-dark-theme">
@@ -407,10 +441,10 @@ const Build: FC = () => {
                                toast.error(`${sec.label} section coming soon!`);
                              }
                            }}
-                           className="flex flex-col items-center justify-center gap-2 p-4 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 hover:border-indigo-600 transition-colors group"
+                           className="flex flex-col items-center justify-center gap-2 p-4 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 hover:border-teal-600 transition-colors group"
                          >
-                           <sec.icon className="w-5 h-5 text-slate-500 group-hover:text-indigo-600" />
-                           <span className="text-xs font-semibold text-slate-500 group-hover:text-indigo-600">{sec.label}</span>
+                           <sec.icon className="w-5 h-5 text-slate-500 group-hover:text-teal-600" />
+                           <span className="text-xs font-semibold text-slate-500 group-hover:text-teal-600">{sec.label}</span>
                          </button>
                        ))}
                     </div>
@@ -429,7 +463,7 @@ const Build: FC = () => {
                    <div className="space-y-6">
                      <div className="bg-slate-50 border border-slate-200 rounded-2xl p-8 text-center flex flex-col items-center">
                         <h3 className="text-lg font-bold text-slate-900 mb-2">Resume ATS Score</h3>
-                        <div className="text-[64px] font-black text-indigo-600 leading-none mb-4">{currentScore}<span className="text-3xl text-slate-400">/100</span></div>
+                        <div className="text-[64px] font-black text-teal-600 leading-none mb-4">{currentScore}<span className="text-3xl text-slate-400">/100</span></div>
                         <p className="text-slate-600 font-medium">Your resume is highly optimized for Applicant Tracking Systems.</p>
                      </div>
 
@@ -437,15 +471,15 @@ const Build: FC = () => {
                         <h4 className="font-bold text-slate-900 mb-4 text-base">Score Breakdown</h4>
                         <ul className="space-y-4">
                           <li className="flex items-start gap-3 text-slate-600">
-                            <CheckCircle2 className="w-5 h-5 text-indigo-600 shrink-0" />
+                            <CheckCircle2 className="w-5 h-5 text-teal-600 shrink-0" />
                             <div><strong className="text-slate-900">Contact Details:</strong> All required fields present.</div>
                           </li>
                           <li className="flex items-start gap-3 text-slate-600">
-                            <CheckCircle2 className="w-5 h-5 text-indigo-600 shrink-0" />
+                            <CheckCircle2 className="w-5 h-5 text-teal-600 shrink-0" />
                             <div><strong className="text-slate-900">Keywords:</strong> High match density for target roles.</div>
                           </li>
                           <li className="flex items-start gap-3 text-slate-600">
-                            <CheckCircle2 className="w-5 h-5 text-indigo-600 shrink-0" />
+                            <CheckCircle2 className="w-5 h-5 text-teal-600 shrink-0" />
                             <div><strong className="text-slate-900">Experience Length:</strong> Sufficient details and dates.</div>
                           </li>
                         </ul>
@@ -462,7 +496,7 @@ const Build: FC = () => {
                              <button 
                                key={f}
                                onClick={() => updateSection('design', { ...data.design, fontFamily: `"${f}", sans-serif` })}
-                               className={`py-3 px-4 rounded-xl border text-left font-medium outline-none ${data.design.fontFamily?.includes(f) ? 'border-indigo-600 bg-slate-50 text-indigo-600' : 'border-slate-200 bg-white hover:border-slate-300 text-slate-600'}`}
+                               className={`py-3 px-4 rounded-xl border text-left font-medium outline-none ${data.design.fontFamily?.includes(f) ? 'border-teal-600 bg-slate-50 text-teal-600' : 'border-slate-200 bg-white hover:border-slate-300 text-slate-600'}`}
                                style={{ fontFamily: `"${f}", sans-serif` }}
                              >
                                {f}
@@ -476,7 +510,7 @@ const Build: FC = () => {
                         <input 
                            type="range" min="11" max="18" value={parseInt(data.design.fontSize || '14')} 
                            onChange={(e) => updateSection('design', { ...data.design, fontSize: `${e.target.value}px` })}
-                           className="w-full accent-indigo-600"
+                           className="w-full accent-teal-600"
                         />
                         <div className="flex justify-between text-xs font-bold text-slate-500 mt-2 uppercase tracking-widest">
                           <span>Small (11px)</span>
@@ -544,17 +578,17 @@ const Build: FC = () => {
                          <div className="grid grid-cols-3 gap-3 mb-6">
                            <button 
                               onClick={() => updateSection('design', { ...data.design, spacing: 'compact' })}
-                              className={`py-3 px-2 rounded-xl border text-center font-bold text-sm ${data.design.spacing === 'compact' ? 'border-indigo-600 bg-slate-50 text-indigo-600' : 'border-slate-200 bg-white text-slate-500 hover:bg-slate-50 hover:text-slate-900'}`}>
+                              className={`py-3 px-2 rounded-xl border text-center font-bold text-sm ${data.design.spacing === 'compact' ? 'border-teal-600 bg-slate-50 text-teal-600' : 'border-slate-200 bg-white text-slate-500 hover:bg-slate-50 hover:text-slate-900'}`}>
                              Compact
                            </button>
                            <button 
                               onClick={() => updateSection('design', { ...data.design, spacing: 'normal' })}
-                              className={`py-3 px-2 rounded-xl border text-center font-bold text-sm ${data.design.spacing === 'normal' || !data.design.spacing ? 'border-indigo-600 bg-slate-50 text-indigo-600' : 'border-slate-200 bg-white text-slate-500 hover:bg-slate-50 hover:text-slate-900'}`}>
+                              className={`py-3 px-2 rounded-xl border text-center font-bold text-sm ${data.design.spacing === 'normal' || !data.design.spacing ? 'border-teal-600 bg-slate-50 text-teal-600' : 'border-slate-200 bg-white text-slate-500 hover:bg-slate-50 hover:text-slate-900'}`}>
                              Normal
                            </button>
                            <button 
                               onClick={() => updateSection('design', { ...data.design, spacing: 'relaxed' })}
-                              className={`py-3 px-2 rounded-xl border text-center font-bold text-sm ${data.design.spacing === 'relaxed' ? 'border-indigo-600 bg-slate-50 text-indigo-600' : 'border-slate-200 bg-white text-slate-500 hover:bg-slate-50 hover:text-slate-900'}`}>
+                              className={`py-3 px-2 rounded-xl border text-center font-bold text-sm ${data.design.spacing === 'relaxed' ? 'border-teal-600 bg-slate-50 text-teal-600' : 'border-slate-200 bg-white text-slate-500 hover:bg-slate-50 hover:text-slate-900'}`}>
                              Relaxed
                            </button>
                         </div>
@@ -564,22 +598,22 @@ const Build: FC = () => {
 
                  {activeTab === 'ai' && (
                    <div className="space-y-6">
-                     <div className="bg-indigo-600 border border-slate-800 rounded-3xl p-8 text-white relative overflow-hidden">
+                     <div className="bg-teal-600 border border-slate-800 rounded-3xl p-8 text-white relative overflow-hidden">
                         <Sparkles className="w-8 h-8 mb-4 text-white relative z-10" />
                         <h3 className="text-2xl font-black mb-2 relative z-10">AI Superpowers</h3>
                         <p className="text-slate-400 mb-8 leading-relaxed relative z-10 text-sm">Deploy advanced AI models to write, format, and perfect your professional narrative.</p>
                         
                         <div className="grid gap-3 relative z-10">
-                           <button className="flex items-center gap-4 bg-slate-900 hover:bg-indigo-700 border border-slate-800 px-4 py-4 rounded-xl transition-all font-medium text-sm text-left">
-                             <div className="p-2 bg-white text-indigo-600 rounded-lg"><Edit3 size={18} /></div>
+                           <button className="flex items-center gap-4 bg-slate-900 hover:bg-teal-700 border border-slate-800 px-4 py-4 rounded-xl transition-all font-medium text-sm text-left">
+                             <div className="p-2 bg-white text-teal-600 rounded-lg"><Edit3 size={18} /></div>
                              Fix Grammar & Typos Across Resume
                            </button>
-                           <button className="flex items-center gap-4 bg-slate-900 hover:bg-indigo-700 border border-slate-800 px-4 py-4 rounded-xl transition-all font-medium text-sm text-left">
-                             <div className="p-2 bg-white text-indigo-600 rounded-lg"><Briefcase size={18} /></div>
+                           <button className="flex items-center gap-4 bg-slate-900 hover:bg-teal-700 border border-slate-800 px-4 py-4 rounded-xl transition-all font-medium text-sm text-left">
+                             <div className="p-2 bg-white text-teal-600 rounded-lg"><Briefcase size={18} /></div>
                              Generate Better Experience Bullets
                            </button>
-                           <button className="flex items-center gap-4 bg-slate-900 hover:bg-indigo-700 border border-slate-800 px-4 py-4 rounded-xl transition-all font-medium text-sm text-left">
-                             <div className="p-2 bg-white text-indigo-600 rounded-lg"><FileText size={18} /></div>
+                           <button className="flex items-center gap-4 bg-slate-900 hover:bg-teal-700 border border-slate-800 px-4 py-4 rounded-xl transition-all font-medium text-sm text-left">
+                             <div className="p-2 bg-white text-teal-600 rounded-lg"><FileText size={18} /></div>
                              Write Professional Summary
                            </button>
                         </div>
@@ -594,13 +628,13 @@ const Build: FC = () => {
                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                        {TEMPLATES.map((tpl) => (
                          <div key={tpl.id} className="relative group cursor-pointer" onClick={() => updateSection('design', { ...data.design, template: tpl.id })}>
-                           <div className={`border-2 rounded-xl overflow-hidden transition-all bg-white ${data.design.template === tpl.id ? 'border-indigo-600 shadow-[0_0_15px_-3px_rgba(0,0,0,0.2)]' : 'border-transparent hover:border-slate-300 opacity-70 hover:opacity-100'}`}>
-                              <div className="pointer-events-none scale-[0.5] origin-top-left w-[200%] h-[450px]">
-                                <TemplateCard template={tpl} />
-                              </div>
+                                                      <div className={`border-2 rounded-xl overflow-hidden transition-all bg-white ${data.design.template === tpl.id ? 'border-teal-600 shadow-[0_0_15px_-3px_rgba(0,0,0,0.2)]' : 'border-transparent hover:border-slate-300 opacity-70 hover:opacity-100'}`}>
+                              <ScaledPreview>
+                                <ActualResume layout={tpl.layout} color={data.design.color || '#000000'} />
+                              </ScaledPreview>
                            </div>
                            {data.design.template === tpl.id && (
-                             <div className="absolute top-2 right-2 bg-indigo-600 text-white rounded-full p-1 shadow-md">
+                             <div className="absolute top-2 right-2 bg-teal-600 text-white rounded-full p-1 shadow-md">
                                <CheckCircle2 size={16} />
                              </div>
                            )}
@@ -618,23 +652,16 @@ const Build: FC = () => {
           {/* Right Column: Live Preview Area (Keep this light mode for real paper look) */}
           <div className={`${activeTab === 'preview' ? 'flex' : 'hidden'} lg:flex flex-1 bg-slate-50 overflow-y-auto overflow-x-hidden p-4 lg:p-10 relative justify-center items-start custom-scrollbar`}>
             {/* Dark background for workspace, but the resume paper stays white */}
-            <div style={{ width: 794 * currentScale, height: 1123 * currentScale }} className="mx-auto shrink-0 relative">
-              <div 
-                className="bg-white shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)] origin-top-left absolute top-0 left-0" 
-                id="resume-preview-container"
-                style={{ 
-                  transform: `scale(${currentScale})`, 
-                  width: '794px', 
-                  height: '1123px', 
-                  transition: 'transform 0.2s cubic-bezier(0.25,0.46,0.45,0.94)' 
-                }}
-              >
-                 <LivePreview />
-              </div>
+                        <div className="w-full h-full flex justify-center items-start">
+               <ScaledPreview scale={currentScale}>
+                  <div ref={printRef} id="resume-preview-container" className="w-full h-full bg-white" style={{ minWidth: "794px", minHeight: "1123px" }}>
+                     <LivePreview />
+                  </div>
+               </ScaledPreview>
             </div>
 
             {/* Floating AI Button on Preview */}
-            <button className="fixed bottom-8 right-8 z-50 bg-indigo-600 text-white rounded-full p-4 shadow-xl hover:bg-indigo-700 hover:scale-105 transition-all flex items-center gap-2 group border border-slate-700">
+            <button className="fixed bottom-24 md:bottom-8 right-8 md:right-8 z-50 bg-teal-600 text-white rounded-full p-4 shadow-xl hover:bg-teal-700 hover:scale-105 transition-all flex items-center gap-2 group border border-slate-700">
               <Sparkles className="w-5 h-5 text-white group-hover:animate-pulse" />
               <span className="font-bold text-sm pr-2">Ask AI Assistant</span>
             </button>
@@ -642,8 +669,9 @@ const Build: FC = () => {
         </div>
       </div>
 
-      {/* Mobile Bottom Navigation menu */}
-      <div className="md:hidden flex items-center justify-around bg-white border-t border-slate-200 h-[64px] shrink-0 px-2 space-x-1 z-50 overflow-x-auto">
+      </div>
+{/* Mobile Bottom Navigation menu */}
+      <div className="md:hidden w-full flex items-center justify-between bg-white border-t border-slate-200 h-[64px] shrink-0 px-2 z-50">
          {[
            { id: 'builder', icon: Edit3, label: 'Builder' },
            { id: 'templates', icon: Feather, label: 'Templates' },
@@ -654,9 +682,9 @@ const Build: FC = () => {
            <button
              key={item.id}
              onClick={() => setActiveTab(item.id as SidebarTab)}
-             className={`flex flex-col items-center justify-center py-2 flex-1 min-w-[64px] rounded-lg transition-colors
+             className={`flex flex-col items-center justify-center py-2 flex-1 min-w-[50px] rounded-lg transition-colors
                ${activeTab === item.id 
-                 ? 'text-indigo-600 font-bold' 
+                 ? 'text-teal-600 font-bold' 
                  : 'text-slate-500 font-medium'}`}
            >
              {item.icon && React.createElement(item.icon, { className: "w-5 h-5 mb-1" })}
@@ -665,7 +693,6 @@ const Build: FC = () => {
          ))}
       </div>
       </div>
-    </div>
   );
 };
 

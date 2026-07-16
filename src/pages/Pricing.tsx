@@ -71,7 +71,7 @@ const Pricing: FC = () => {
             </button>
             <button 
               onClick={() => setBillingCycle('annual')}
-              className={`px-6 py-2.5 rounded-full text-sm font-semibold transition-colors flex items-center gap-2 ${billingCycle === 'annual' ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-500 hover:text-slate-900'}`}
+              className={`px-6 py-2.5 rounded-full text-sm font-semibold transition-colors flex items-center gap-2 ${billingCycle === 'annual' ? 'bg-teal-600 text-white shadow-sm' : 'text-slate-500 hover:text-slate-900'}`}
             >
               Annually <span className="text-[10px] bg-slate-200 text-slate-700 px-2 py-0.5 rounded-md uppercase tracking-wider hidden sm:inline-block border border-slate-300">Save 20%</span>
             </button>
@@ -119,7 +119,7 @@ const Pricing: FC = () => {
               
               <button 
                 className={`w-full py-3.5 rounded-xl font-bold text-center transition-colors ${
-                  plan.popular ? 'bg-indigo-600 text-white hover:bg-indigo-700 shadow-sm' : 'bg-white text-slate-900 border border-slate-200 hover:bg-slate-50'
+                  plan.popular ? 'bg-teal-600 text-white hover:bg-teal-700 shadow-sm' : 'bg-white text-slate-900 border border-slate-200 hover:bg-slate-50'
                 }`}
                 onClick={() => navigate('/start')}
               >

@@ -82,7 +82,7 @@ export const ActualResume: FC<{ layout: string; color: string }> = ({ layout, co
   const data = mockData(color);
   
   return (
-    <div className="w-[794px] h-[1123px] bg-white overflow-hidden text-left relative pointer-events-none">
+    <div style={{ width: "794px", minWidth: "794px", height: "1123px", minHeight: "1123px" }} className="bg-white overflow-hidden text-left relative pointer-events-none">
        {layout === 'modern' && <Modern data={data} />}
        {layout === 'minimal' && <Minimal data={data} />}
        {layout === 'executive' && <Executive data={data} />}
@@ -100,7 +100,7 @@ export const ResumeTemplateCard: FC<{
   onSelect?: (id: string, color?: string) => void;
 }> = ({ template, onSelect }) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const [scale, setScale] = useState(0.4);
+  const [scale, setScale] = useState(0.1);
   const [activeColor, setActiveColor] = useState('#000000');
   
   const colors = ['#000000', '#2563EB', '#16A34A', '#DC2626', '#9333EA'];
@@ -122,7 +122,7 @@ export const ResumeTemplateCard: FC<{
     if (template.id.includes('red')) setActiveColor('#DC2626');
     if (template.id.includes('green')) setActiveColor('#16A34A');
     if (template.id.includes('black')) setActiveColor('#000000');
-  }, [template.variant, template.id]);
+  }, [template.variant, template.id, template.category]);
 
   useEffect(() => {
     const obs = new ResizeObserver((entries) => {
@@ -135,7 +135,7 @@ export const ResumeTemplateCard: FC<{
     });
     if (wrapperRef.current) obs.observe(wrapperRef.current);
     return () => obs.disconnect();
-  }, []);
+  }, [template.category]);
 
   const handleSelect = (e?: React.MouseEvent) => {
     e?.stopPropagation();
@@ -151,9 +151,9 @@ export const ResumeTemplateCard: FC<{
       >
         <div 
           style={{ width: `${794 * scale}px`, height: `${1123 * scale}px` }}
-          className="bg-white shadow-xl flex-shrink-0 relative group-hover:shadow-[0_20px_50px_rgba(0,0,0,0.15)] group-hover:scale-[1.03] transition-all duration-500 origin-center"
+          className="bg-white shadow-xl flex-shrink-0 relative group-hover:shadow-[0_20px_50px_rgba(0,0,0,0.15)] group-hover:scale-[1.03] transition-all duration-500 origin-center overflow-hidden"
         >
-          <div className="w-[794px] h-[1123px] origin-top-left absolute top-0 left-0" style={{ transform: `scale(${scale})` }}>
+          <div className="origin-top-left absolute top-0 left-0" style={{ transform: `scale(${scale})`, width: "794px", height: "1123px" }}>
             <ActualResume layout={template.layout} color={activeColor} />
           </div>
         </div>
@@ -161,7 +161,7 @@ export const ResumeTemplateCard: FC<{
         {/* Hover overlay */}
         <div className="absolute inset-0 bg-transparent group-hover:bg-gray-900/5 transition-colors duration-300 flex items-center justify-center z-10 pointer-events-none">
           <button 
-            className="opacity-0 group-hover:opacity-100 bg-indigo-600 text-white rounded-[100px] px-8 py-3.5 font-bold shadow-xl transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 pointer-events-auto hover:bg-indigo-700"
+            className="opacity-0 group-hover:opacity-100 bg-teal-600 text-white rounded-[100px] px-8 py-3.5 font-bold shadow-xl transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 pointer-events-auto hover:bg-teal-700"
             onClick={handleSelect}
           >
             Use this template
