@@ -42,25 +42,6 @@
     --font-display: 'Fraunces', 'Georgia', serif;
     --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
   }
-
-  .dark {
-    --color-paper: #0F1117;
-    --color-card: #171A23;
-    --color-ink: #F1F3F9;
-    --color-ink-soft: #9BA1B6;
-    --color-pine: #5568E8;
-    --color-pine-deep: #7785F2;
-    --color-pine-tint: #1F2338;
-    --color-seal: #F97350;
-    --color-seal-tint: #2A1D1A;
-    --color-mist: #757D97;
-    --color-line: #2A2E3D;
-    
-    --color-text-body: #9BA1B6;
-    --color-body: #9BA1B6;
-    --color-success: #5568E8;
-    --color-success-light: #1F2338;
-  }
 }
 
 html {
@@ -135,6 +116,14 @@ h1, h2, .font-display {
 /* Better tap targets on mobile */
 @media (max-width: 768px) {
   button, a { -webkit-tap-highlight-color: transparent; }
+
+  /* iOS Safari zooms the page when a focused field's font is < 16px.
+     Force 16px on all form controls on phones to stop that jump. */
+  input:not([type="checkbox"]):not([type="radio"]),
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
 }
 
 /* Faint ruled-paper texture for hero surfaces */

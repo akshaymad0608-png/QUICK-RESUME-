@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { Helmet } from 'react-helmet-async';
+import { Seo } from '../components/Seo';
 import { useNavigate } from 'react-router-dom';
 import { Check, X } from 'lucide-react';
 import { Navbar } from '../components/layout/Navbar';
@@ -45,10 +45,11 @@ const Pricing: FC = () => {
 
   return (
     <div className="min-h-screen bg-paper text-body flex flex-col font-sans pt-16 md:pt-[72px] relative selection:bg-pine selection:text-white">
-      <Helmet>
-        <title>Pricing | QuickResume</title>
-        <meta name="description" content="Simple pricing for our professional resume builder." />
-      </Helmet>
+      <Seo
+        path="/pricing"
+        title="Pricing — Free & Pro Plans | QuickResume"
+        description="Build a resume, check your ATS score and export a PDF for free. Upgrade to Pro for unlimited resumes, premium templates and all AI tools."
+      />
 
       <Navbar />
 

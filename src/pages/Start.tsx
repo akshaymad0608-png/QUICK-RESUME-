@@ -1,10 +1,11 @@
 import { FC, useState, useRef } from 'react';
-import { Helmet } from 'react-helmet-async';
+import { Seo } from '../components/Seo';
 import { Navbar } from '../components/layout/Navbar';
 import { useNavigate } from 'react-router-dom';
 import { UploadCloud, FileText, PenLine, Loader2, ArrowLeft} from 'lucide-react';
 import { ActualResume } from '../components/TemplateCard';
 import { useResume } from '../context/ResumeContext';
+import { uploadResumeFile } from '../utils/uploadResume';
 import toast from 'react-hot-toast';
 
 const Start: FC = () => {
@@ -24,24 +25,17 @@ const Start: FC = () => {
         toast.error('Please upload a PDF or Word (.docx) file.');
         return;
       }
-      if (file.size > 15 * 1024 * 1024) {
-        toast.error('That file is over 15 MB — please upload a smaller resume.');
+      if (file.size > 4 * 1024 * 1024) {
+        toast.error('That file is over 4 MB — resume PDFs are usually under 2 MB. Please compress it and try again.');
         return;
       }
-
-      const formData = new FormData();
-      formData.append('resume', file);
 
       const controller = new AbortController();
       const timer = setTimeout(() => controller.abort(), 120000);
       try {
         setIsUploading(true);
         toast.loading('Analyzing resume... this can take up to a minute for scanned PDFs.', { id: 'upload' });
-        const res = await fetch('/api/extract-resume', {
-          method: 'POST',
-          body: formData,
-          signal: controller.signal,
-        });
+        const res = await uploadResumeFile(file, controller.signal);
 
         if (!res.ok) {
           const err = await res.json();
@@ -90,9 +84,12 @@ const Start: FC = () => {
 
   return (
     <div className="min-h-screen bg-paper text-body flex flex-col font-sans pt-16 md:pt-[72px] relative selection:bg-pine selection:text-white">
-      <Helmet>
-        <title>Dashboard | QuickResume</title>
-      </Helmet>
+      <Seo
+        path="/start"
+        title="Start Your Resume | QuickResume"
+        description="Create a new resume from scratch or import your existing CV to get started."
+        noindex
+      />
 
       {/* Navbar Minimal */}
       <Navbar />

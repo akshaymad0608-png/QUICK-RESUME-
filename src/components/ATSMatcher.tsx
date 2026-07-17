@@ -80,7 +80,10 @@ ${JSON.stringify({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt }),
       });
-      const raw = await res.json();
+      const raw = await res.json().catch(() => ({}));
+      if (!res.ok || typeof raw.text !== 'string') {
+        throw new Error(raw.error || 'AI request failed. Please try again.');
+      }
       const text = raw.text.trim().replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim();
       setResult(JSON.parse(text));
     } catch {

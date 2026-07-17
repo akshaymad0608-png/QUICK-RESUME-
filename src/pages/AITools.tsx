@@ -1,4 +1,4 @@
-import { Helmet } from 'react-helmet-async';
+import { Seo } from '../components/Seo';
 import { FileText, MessageSquare, ArrowRight, Wand2, Search, Edit3, ShieldCheck, Upload } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Navbar } from '../components/layout/Navbar';
@@ -63,11 +63,23 @@ export default function AITools() {
 
   return (
     <div className="min-h-screen bg-paper text-body font-sans flex flex-col selection:bg-pine selection:text-white">
-      <Helmet>
-        <title>Free AI Resume Tools — Summary, ATS Check, Cover Letters | QuickResume</title>
-        <meta name="description" content="Seven free AI career tools: resume summary generator, ATS score checker, bullet point rewriter, skill suggestions, job description matcher and cover letter generator." />
-        <link rel="canonical" href="https://quickresume.business/ai-tools" />
-      </Helmet>
+      <Seo
+        path="/ai-tools"
+        title="Free AI Resume Tools — Summary, ATS Check, Cover Letters | QuickResume"
+        description="Free AI career tools: resume summary generator, ATS score checker, bullet point rewriter, skill suggestions, job description matcher and cover letter generator."
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          "name": "AI Resume Tools",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "AI Summary Generator" },
+            { "@type": "ListItem", "position": 2, "name": "ATS Score Checker" },
+            { "@type": "ListItem", "position": 3, "name": "Bullet Point Rewriter" },
+            { "@type": "ListItem", "position": 4, "name": "Skill Suggestions" },
+            { "@type": "ListItem", "position": 5, "name": "Cover Letter Generator" }
+          ]
+        }}
+      />
 
       <Navbar />
 

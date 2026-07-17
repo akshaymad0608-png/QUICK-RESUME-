@@ -1,8 +1,8 @@
 import express from "express";
 import path from "path";
+import fs from "fs";
 import { createServer as createViteServer } from "vite";
 import { GoogleGenAI } from "@google/genai";
-import multer from 'multer';
 import pdfParse from 'pdf-parse/lib/pdf-parse.js';
 import mammoth from 'mammoth';
 import nodemailer from 'nodemailer';
@@ -10,30 +10,20 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 15 * 1024 * 1024 } });
-
 async function startServer() {
   const app = express();
   const PORT = 3000;
 
-  app.use(express.json());
+  app.use(express.json({ limit: '25mb' }));
 
   // API Route for Extracting Resume Data
-  app.post("/api/extract-resume", (req, res, next) => {
-    upload.single('resume')(req, res, (err: unknown) => {
-      if (err) {
-        const msg = err instanceof Error && err.message.includes('File too large')
-          ? 'That file is too large — please upload a resume under 15 MB.'
-          : 'Could not receive that file. Please try again.';
-        return res.status(400).json({ error: msg });
-      }
-      next();
-    });
-  }, async (req, res) => {
+  app.post("/api/extract-resume", async (req, res) => {
     try {
-      if (!req.file) {
+      const { filename = '', mimeType = '', data = '' } = (req.body || {}) as { filename?: string; mimeType?: string; data?: string };
+      if (!data) {
         return res.status(400).json({ error: "No file uploaded" });
       }
+      const fileBuffer = Buffer.from(data, 'base64');
 
       const apiKey = process.env.GEMINI_API_KEY;
       if (!apiKey) {
@@ -45,8 +35,8 @@ async function startServer() {
         httpOptions: { headers: { 'User-Agent': 'aistudio-build' } }
       });
 
-      const isPdf = req.file.mimetype === 'application/pdf' || req.file.originalname.toLowerCase().endsWith('.pdf');
-      const isDocx = req.file.originalname.toLowerCase().endsWith('.docx') || req.file.mimetype.includes('wordprocessingml');
+      const isPdf = mimeType === 'application/pdf' || filename.toLowerCase().endsWith('.pdf');
+      const isDocx = filename.toLowerCase().endsWith('.docx') || mimeType.includes('wordprocessingml');
 
       // 1. Get resume content. For PDFs we FIRST try fast local text
       //    extraction, but if pdf-parse fails or the PDF has no text layer
@@ -57,21 +47,21 @@ async function startServer() {
 
       if (isPdf) {
         try {
-          const parsed = await pdfParse(req.file.buffer);
+          const parsed = await pdfParse(fileBuffer);
           text = (parsed.text || '').trim();
         } catch {
           text = '';
         }
-        if (text.length < 100) pdfForAI = req.file.buffer; // no/low text layer → let Gemini read the PDF itself
+        if (text.length < 100) pdfForAI = fileBuffer; // no/low text layer → let Gemini read the PDF itself
       } else if (isDocx) {
         try {
-          const result = await mammoth.extractRawText({ buffer: req.file.buffer });
+          const result = await mammoth.extractRawText({ buffer: fileBuffer });
           text = (result.value || '').trim();
         } catch {
           return res.status(422).json({ error: "We couldn't open that Word file. Please re-save it as .docx or export it as a PDF and try again." });
         }
       } else {
-        text = req.file.buffer.toString('utf-8').trim();
+        text = fileBuffer.toString('utf-8').trim();
       }
 
       if (!pdfForAI && text.length < 40) {
@@ -354,7 +344,6 @@ Use the following format. Ensure it follows this exact JSON structure. Respond w
       ['/', 'weekly', '1.0'],
       ['/templates', 'weekly', '0.9'],
       ['/improve', 'monthly', '0.8'],
-      ['/start', 'monthly', '0.8'],
       ['/examples', 'monthly', '0.7'],
       ['/ai-tools', 'monthly', '0.7'],
       ['/cover-letter', 'monthly', '0.6'],
@@ -386,9 +375,18 @@ Sitemap: https://quickresume.business/sitemap.xml`;
     app.use(vite.middlewares);
   } else {
     const distPath = path.join(process.cwd(), 'dist');
-    app.use(express.static(distPath));
+    // Serve hashed assets and files, but disable directory index + redirect so
+    // requests like /templates reach our prerender-aware router below.
+    app.use(express.static(distPath, { index: false, redirect: false }));
     // Important: Express 5 requires named wildcard parameters like '*all'
-    app.get('*all', (_req, res) => {
+    app.get('*all', (req, res) => {
+      const cleanPath = req.path.replace(/^\/+|\/+$/g, '');
+      if (cleanPath) {
+        const prerendered = path.join(distPath, cleanPath, 'index.html');
+        if (fs.existsSync(prerendered)) {
+          return res.sendFile(prerendered);
+        }
+      }
       res.sendFile(path.join(distPath, 'index.html'));
     });
   }

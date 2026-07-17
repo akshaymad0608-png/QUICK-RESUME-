@@ -1,5 +1,5 @@
 import { FC, useMemo, useRef, useState } from 'react';
-import { Helmet } from 'react-helmet-async';
+import { Seo } from '../components/Seo';
 import { useNavigate } from 'react-router-dom';
 import {
   UploadCloud, FileText, Loader2, Trash2, CheckCircle2, ShieldCheck,
@@ -13,6 +13,7 @@ import { ResumeData } from '../types';
 import LivePreview from '../components/Preview/LivePreview';
 import { ScaledPreview } from '../components/Preview/ScaledPreview';
 import { exportElementToPdf } from '../utils/exportPdf';
+import { uploadResumeFile } from '../utils/uploadResume';
 import {
   calculateATS, suggestSkills, generateSummary, optimizeWorkExperience, enhanceBulletPoints,
 } from '../services/geminiService';
@@ -56,19 +57,17 @@ const ImproveResume: FC = () => {
       toast.error('Please upload a PDF or Word (.docx) file.');
       return;
     }
-    if (file.size > 15 * 1024 * 1024) {
-      toast.error('That file is over 15 MB — please upload a smaller resume.');
+    if (file.size > 4 * 1024 * 1024) {
+      toast.error('That file is over 4 MB — resume PDFs are usually under 2 MB. Please compress it and try again.');
       return;
     }
 
-    const formData = new FormData();
-    formData.append('resume', file);
     setIsUploading(true);
     toast.loading('Reading your resume… this can take up to a minute for scanned PDFs.', { id: 'improve-upload' });
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 120000);
     try {
-      const res = await fetch('/api/extract-resume', { method: 'POST', body: formData, signal: controller.signal });
+      const res = await uploadResumeFile(file, controller.signal);
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));
         throw new Error(err.error || 'Could not read that file. Try a PDF or DOCX.');
@@ -263,11 +262,21 @@ const ImproveResume: FC = () => {
 
   return (
     <div className="min-h-screen bg-paper text-body font-sans flex flex-col pt-16 md:pt-[72px] selection:bg-pine selection:text-white">
-      <Helmet>
-        <title>Improve My Resume — Free AI Resume Checker & Fixer | QuickResume</title>
-        <meta name="description" content="Already have a resume? Upload your PDF or DOCX, remove weak sections, get an instant ATS score, and let AI rewrite bullets, fix grammar, and suggest missing skills — free." />
-        <link rel="canonical" href="https://quickresume.business/improve" />
-      </Helmet>
+      <Seo
+        path="/improve"
+        title="Improve My Resume — Free AI Resume Checker & Fixer | QuickResume"
+        description="Already have a resume? Upload your PDF or DOCX, remove weak sections, get an instant ATS score, and let AI rewrite bullets, fix grammar and suggest missing skills — free."
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "HowTo",
+          "name": "How to improve your resume with AI",
+          "step": [
+            { "@type": "HowToStep", "name": "Upload", "text": "Upload your current resume as a PDF or DOCX." },
+            { "@type": "HowToStep", "name": "Review & clean", "text": "Remove weak or outdated sections." },
+            { "@type": "HowToStep", "name": "AI improve", "text": "Run an ATS check and let AI rewrite bullets, fix grammar and suggest skills." }
+          ]
+        }}
+      />
 
       <Navbar />
 
@@ -370,6 +379,12 @@ const ImproveResume: FC = () => {
             <button onClick={() => setStep(1)} className="bg-pine text-white rounded-full px-7 py-3 text-sm font-bold hover:bg-pine-deep transition-colors inline-flex items-center gap-2">
               <ArrowLeft className="w-4 h-4" /> Back to upload
             </button>
+          </div>
+        )}
+        {step === 2 && hasSavedResume && (
+          <div className="lg:hidden mb-5 flex items-start gap-3 bg-pine-tint border border-pine/20 rounded-xl p-3.5 text-sm text-ink-soft">
+            <PenLine className="w-4 h-4 text-pine shrink-0 mt-0.5" />
+            <p>Remove anything you don't need below. Your changes save automatically — you'll see the full formatted preview after export or in the builder.</p>
           </div>
         )}
         {step === 2 && hasSavedResume && (

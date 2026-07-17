@@ -1,5 +1,5 @@
 import { FC, useEffect, useRef, useState } from 'react';
-import { Helmet } from 'react-helmet-async';
+import { Seo } from './components/Seo';
 import { useNavigate, Link } from 'react-router-dom';
 import {
   ArrowRight, Sparkles, ShieldCheck, FileText, Wand2, Search,
@@ -140,11 +140,18 @@ export const Home: FC = () => {
 
   return (
     <div className="min-h-screen bg-paper text-body font-sans selection:bg-pine selection:text-white overflow-x-hidden">
-      <Helmet>
-        <title>QuickResume — Free AI Resume Builder | ATS-Friendly Templates</title>
-        <meta name="description" content="Build an ATS-friendly, job-winning resume in minutes. 60+ free templates for freshers, developers, designers and executives — with AI writing, ATS score checker and cover letters." />
-        <link rel="canonical" href="https://quickresume.business/" />
-      </Helmet>
+      <Seo
+        path="/"
+        title="QuickResume — Free AI Resume Builder | ATS-Friendly Templates"
+        description="Build an ATS-friendly, job-winning resume in minutes. 60+ free templates for freshers, developers, designers and executives — with AI writing, ATS score checker and cover letters."
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://quickresume.business/" }
+          ]
+        }}
+      />
 
       <Navbar />
 

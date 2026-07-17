@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { Helmet } from 'react-helmet-async';
+import { Seo } from '../components/Seo';
 import { useNavigate } from 'react-router-dom';
 import { useResume } from '../context/ResumeContext';
 import { TemplateCard } from '../components/TemplateCard';
@@ -45,11 +45,18 @@ export default function ChooseTemplate() {
 
   return (
     <div className="min-h-screen bg-paper text-body font-sans flex flex-col selection:bg-pine selection:text-white">
-      <Helmet>
-        <title>60+ Free Resume Templates by Role & Industry | QuickResume</title>
-        <meta name="description" content="Browse ATS-friendly resume templates for freshers, developers, designers, executives, healthcare, finance and more. Every template is free to try and exports to PDF." />
-        <link rel="canonical" href="https://quickresume.business/templates" />
-      </Helmet>
+      <Seo
+        path="/templates"
+        title="60+ Free Resume Templates by Role & Industry | QuickResume"
+        description="Browse ATS-friendly resume templates for freshers, developers, designers, executives, healthcare, finance and more. Every template is free to try and exports to PDF."
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          "name": "Resume Templates",
+          "description": "ATS-friendly resume templates by role and industry.",
+          "url": "https://quickresume.business/templates"
+        }}
+      />
 
       <Navbar />
 

@@ -1,11 +1,10 @@
 import { FC, useState, useEffect } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { Menu, X, LogOut, ArrowRight, Moon, Sun } from 'lucide-react';
+import { Menu, X, LogOut, ArrowRight } from 'lucide-react';
 import { LoginModal } from '../LoginModal';
 import { auth } from '../../firebase';
 import { onAuthStateChanged, signOut, User } from 'firebase/auth';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useDarkMode } from '../../hooks/useDarkMode';
 
 /* QuickResume mark — a resume sheet with a rising career arrow */
 export const LogoMark: FC<{ className?: string }> = ({ className = 'w-9 h-9' }) => (
@@ -50,7 +49,6 @@ export const Navbar: FC = () => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [scrolled, setScrolled] = useState(false);
-  const { isDarkMode, toggleDarkMode } = useDarkMode();
 
   useEffect(() => onAuthStateChanged(auth, setUser), []);
 
@@ -67,7 +65,6 @@ export const Navbar: FC = () => {
   }, [mobileMenuOpen]);
 
   return (
-    <>
     <header className={`fixed top-0 left-0 right-0 z-50 h-16 md:h-[72px] bg-paper/90 backdrop-blur-md transition-shadow ${scrolled ? 'border-b border-line shadow-[0_1px_0_rgba(26,36,32,0.02)]' : 'border-b border-transparent'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-full flex justify-between items-center">
         <Link to="/" aria-label="QuickResume home" className="shrink-0">
@@ -89,13 +86,6 @@ export const Navbar: FC = () => {
         </nav>
 
         <div className="hidden lg:flex items-center gap-4">
-          <button
-            onClick={toggleDarkMode}
-            className="text-mist hover:text-ink transition-colors p-2 rounded-full hover:bg-pine-tint"
-            aria-label="Toggle dark mode"
-          >
-            {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-          </button>
           {user ? (
             <div className="flex items-center gap-2">
               <span className="text-ink-soft text-sm font-semibold max-w-[140px] truncate">{user.displayName || 'My account'}</span>
@@ -133,7 +123,6 @@ export const Navbar: FC = () => {
         </button>
       </div>
 
-    </header>
       {/* Mobile menu */}
       <AnimatePresence>
         {mobileMenuOpen && (
@@ -146,14 +135,9 @@ export const Navbar: FC = () => {
           >
             <div className="h-16 px-4 sm:px-6 flex justify-between items-center border-b border-line">
               <Link to="/" onClick={() => setMobileMenuOpen(false)}><Logo /></Link>
-              <div className="flex items-center gap-2">
-                <button onClick={toggleDarkMode} className="p-2 text-ink" aria-label="Toggle dark mode">
-                  {isDarkMode ? <Sun className="w-6 h-6" /> : <Moon className="w-6 h-6" />}
-                </button>
-                <button className="p-2 -mr-2 text-ink" onClick={() => setMobileMenuOpen(false)} aria-label="Close menu">
-                  <X className="w-6 h-6" />
-                </button>
-              </div>
+              <button className="p-2 -mr-2 text-ink" onClick={() => setMobileMenuOpen(false)} aria-label="Close menu">
+                <X className="w-6 h-6" />
+              </button>
             </div>
 
             <nav className="flex-1 overflow-y-auto px-6 py-8 flex flex-col gap-1" aria-label="Mobile">
@@ -191,6 +175,6 @@ export const Navbar: FC = () => {
       </AnimatePresence>
 
       <LoginModal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} onSuccess={() => {}} />
-    </>
+    </header>
   );
 };

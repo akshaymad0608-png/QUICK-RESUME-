@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /build
 
 Sitemap: https://quickresume.business/sitemap.xml

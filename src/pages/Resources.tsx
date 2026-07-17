@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { Helmet } from 'react-helmet-async';
+import { Seo } from '../components/Seo';
 import { Navbar } from '../components/layout/Navbar';
 
 import { FileText, BookOpen, Compass, Search, ChevronDown, ChevronUp, Sparkles } from 'lucide-react';
@@ -48,15 +48,11 @@ const Resources: FC = () => {
 
   return (
     <div className="min-h-screen bg-paper text-body flex flex-col font-sans pt-16 md:pt-[72px] relative selection:bg-pine selection:text-white">
-      <Helmet>
-        <title>Career Resources & Guides | QuickResume</title>
-        <meta name="description" content="Expert advice, resume templates, and formatting tips to help you build the perfect resume and land your dream job faster." />
-        <meta name="keywords" content="career resources, resume outline, action verbs, ATS resume, resume formatting best practices" />
-        <meta property="og:title" content="Career Resources & Guides | QuickResume" />
-        <meta property="og:description" content="Expert advice, resume templates, and formatting tips to help you build the perfect resume and land your dream job faster." />
-        <meta property="og:type" content="website" />
-        <link rel="canonical" href="https://quickresume.business/resources" />
-      </Helmet>
+      <Seo
+        path="/resources"
+        title="Career Resources & Resume Guides | QuickResume"
+        description="Expert advice, resume outlines, action verbs and ATS formatting tips to help you build the perfect resume and land your dream job faster."
+      />
 
       {/* Navbar Minimal */}
       <Navbar />

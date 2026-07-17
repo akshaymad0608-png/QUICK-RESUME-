@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { Helmet } from 'react-helmet-async';
+import { Seo } from '../components/Seo';
 import { Navbar } from '../components/layout/Navbar';
 
 import { FileText, Wand2, Copy, Download, Loader2 } from 'lucide-react';
@@ -54,10 +54,11 @@ const CoverLetterGenerator: FC = () => {
   
   return (
     <div className="min-h-screen bg-paper text-body flex flex-col font-sans pt-16 md:pt-[72px] relative selection:bg-pine selection:text-white">
-      <Helmet>
-        <title>AI Cover Letter Builder | QuickResume</title>
-        <meta name="description" content="Generate a customized, professional cover letter in seconds matching your resume using AI." />
-      </Helmet>
+      <Seo
+        path="/cover-letter"
+        title="Free AI Cover Letter Generator | QuickResume"
+        description="Generate a tailored, professional cover letter in seconds. Our AI matches your resume to the job description — free to write and download."
+      />
 
       {/* Navbar Minimal */}
       <Navbar />
@@ -72,7 +73,7 @@ const CoverLetterGenerator: FC = () => {
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 text-slate-900 text-xs font-bold mb-4 uppercase tracking-widest border border-slate-200">
                 <Wand2 className="w-3.5 h-3.5" /> AI Generator
               </div>
-              <h2 className="text-3xl font-extrabold text-slate-900 mb-3 tracking-tight">Create your cover letter</h2>
+              <h1 className="text-3xl font-extrabold text-slate-900 mb-3 tracking-tight">Create your cover letter</h1>
               <p className="text-slate-500 leading-relaxed">
                 Paste the job description below, and our AI will write a tailored cover letter based on your current resume data.
               </p>

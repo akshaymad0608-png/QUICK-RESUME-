@@ -131,7 +131,7 @@ export type PdfExportResult = 'downloaded' | 'print-dialog';
  * Returns 'downloaded' when the PDF was saved directly, or 'print-dialog'
  * when the browser print dialog was used as a fallback.
  */
-export async function exportElementToPdf(element: HTMLElement, fileName: string): Promise<PdfExportResult> {
+export async function exportElementToPdf(element: HTMLElement, fileName: string, returnBlobUrl?: boolean): Promise<PdfExportResult | string> {
   // 1. Make sure fonts and images are fully ready before painting.
   if (document.fonts?.ready) {
     try { await document.fonts.ready; } catch { /* non-fatal */ }
@@ -159,6 +159,7 @@ export async function exportElementToPdf(element: HTMLElement, fileName: string)
   }
 
   if (!canvas) {
+    if (returnBlobUrl) throw new Error('PDF Generation failed');
     await printFallback(element);
     return 'print-dialog';
   }
@@ -167,26 +168,29 @@ export async function exportElementToPdf(element: HTMLElement, fileName: string)
   const pdf = new jsPDF('p', 'mm', 'a4');
   const pageW = pdf.internal.pageSize.getWidth();
   const pageH = pdf.internal.pageSize.getHeight();
-  const pxPerPage = Math.floor((canvas.width * pageH) / pageW);
+  const pxPerPage = (canvas.width * pageH) / pageW;
   const totalPages = Math.max(1, Math.ceil(canvas.height / pxPerPage));
 
   for (let page = 0; page < totalPages; page++) {
-    const sy = page * pxPerPage;
-    const sliceHeight = Math.min(pxPerPage, canvas.height - sy);
+    const sliceHeight = Math.min(pxPerPage, canvas.height - page * pxPerPage);
     if (page > 0 && sliceHeight <= pxPerPage * 0.01) break; // skip sliver page
 
     const pageCanvas = document.createElement('canvas');
     pageCanvas.width = canvas.width;
-    pageCanvas.height = pxPerPage;
+    pageCanvas.height = Math.ceil(pxPerPage);
     const ctx = pageCanvas.getContext('2d');
     if (ctx) {
       ctx.fillStyle = '#ffffff';
       ctx.fillRect(0, 0, pageCanvas.width, pageCanvas.height);
-      ctx.drawImage(canvas, 0, sy, canvas.width, sliceHeight, 0, 0, canvas.width, sliceHeight);
+      ctx.drawImage(canvas, 0, page * pxPerPage, canvas.width, sliceHeight, 0, 0, canvas.width, sliceHeight);
     }
 
     if (page > 0) pdf.addPage();
     pdf.addImage(pageCanvas.toDataURL('image/jpeg', 0.95), 'JPEG', 0, 0, pageW, pageH);
+  }
+
+  if (returnBlobUrl) {
+    return String(pdf.output('bloburl'));
   }
 
   pdf.save(fileName);

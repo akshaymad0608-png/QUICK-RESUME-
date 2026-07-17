@@ -1,7 +1,7 @@
 import React, { FC, useState, useEffect, useRef } from 'react';
 import { exportElementToPdf } from '../utils/exportPdf';
 import { exportResumeToExcel } from '../utils/exportExcel';
-import { Helmet } from 'react-helmet-async';
+import { Seo } from '../components/Seo';
 import { useNavigate } from 'react-router-dom';
 import { useResume } from '../context/ResumeContext';
 import { 
@@ -9,7 +9,7 @@ import {
   Sparkles, ShieldCheck, History, Settings, Home, Edit3, 
   CheckCircle2, ChevronDown, Trash2, 
   User, Briefcase, GraduationCap, Wrench, Loader2,
-  Search, Award, Medal, BookOpen, FlaskConical, HeartHandshake, Link as LinkIcon, Code, Flag, Users, Lightbulb
+  Search, Award, Medal, BookOpen, FlaskConical, HeartHandshake, Link as LinkIcon, Code, Flag, Users, Lightbulb, Eye
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import Contacts from '../components/steps/Contacts';
@@ -50,6 +50,8 @@ const Build: FC = () => {
   const [templateCategory, setTemplateCategory] = useState('All');
   const [expandedSection, setExpandedSection] = useState<BuilderSection | null>('personal');
   const [isDownloading, setIsDownloading] = useState(false);
+  const [showPdfPreview, setShowPdfPreview] = useState(false);
+  const [pdfPreviewUrl, setPdfPreviewUrl] = useState<string | null>(null);
   const printRef = useRef<HTMLDivElement>(null);
   const [isOptimizing, setIsOptimizing] = useState(false);
   const [resumeName, setResumeName] = useState('Untitled Resume');
@@ -165,6 +167,27 @@ const Build: FC = () => {
     }
   };
 
+  const handlePreviewPdf = async () => {
+    const element = printRef.current;
+    if (!element) {
+      toast.error('Preview not ready yet — please try again in a second.');
+      return;
+    }
+    const toastId = toast.loading('Generating PDF preview…');
+    try {
+      const url = await exportElementToPdf(element, 'preview.pdf', true);
+      if (typeof url === 'string') {
+        if (pdfPreviewUrl) URL.revokeObjectURL(pdfPreviewUrl);
+        setPdfPreviewUrl(url);
+        setShowPdfPreview(true);
+      }
+      toast.dismiss(toastId);
+    } catch (error) {
+      console.error('Error generating PDF preview:', error);
+      toast.error('Failed to generate PDF preview.', { id: toastId });
+    }
+  };
+
   const handleDownloadPDF = async () => {
     const element = printRef.current;
     if (!element) {
@@ -207,10 +230,12 @@ const Build: FC = () => {
 
   return (
     <div className="flex flex-col h-screen h-[100dvh] bg-slate-50 font-sans text-slate-600 overflow-hidden selection:bg-slate-900 selection:text-white">
-      <Helmet>
-        <title>Resume Builder | QuickResume</title>
-        <meta name="description" content="Build your professional resume for free with QuickResume's easy-to-use editor. Choose from ATS-friendly templates, expert examples, and AI-powered text generation." />
-      </Helmet>
+      <Seo
+        path="/build"
+        title="Resume Builder | QuickResume"
+        description="Build your professional resume with QuickResume's editor — ATS-friendly templates, examples and AI text generation."
+        noindex
+      />
 
       <div className="flex flex-1 min-h-0 overflow-hidden relative">
         {/* Extreme Left Sidebar (90px) - Desktop Only */}
@@ -285,6 +310,14 @@ const Build: FC = () => {
                <span className="w-10 text-center text-slate-900">{previewZoom}%</span>
                <button onClick={() => setPreviewZoom(z => Math.min(z + 25, 150))} className="text-slate-500 hover:text-slate-900">+</button>
              </div>
+
+             <button
+                onClick={handlePreviewPdf}
+                className="text-sm font-bold text-slate-700 bg-white border border-slate-200 hover:bg-slate-50 transition-colors rounded-lg px-4 py-2 flex items-center gap-2"
+              >
+                <Eye className="w-4 h-4" />
+                <span className="hidden xl:inline">Preview PDF</span>
+              </button>
             
              <button 
                 onClick={handleOptimizeResume}
@@ -875,10 +908,11 @@ const Build: FC = () => {
             {/* Floating AI Button on Preview */}
             <button
               onClick={() => setShowChat(true)}
-              className="fixed bottom-24 md:bottom-8 right-8 md:right-8 z-50 bg-pine text-white rounded-full p-4 shadow-xl hover:bg-pine-deep hover:scale-105 transition-all flex items-center gap-2 group border border-slate-700"
+              aria-label="Ask AI Assistant"
+              className="fixed bottom-20 right-4 md:bottom-8 md:right-8 z-50 bg-pine text-white rounded-full p-4 shadow-xl hover:bg-pine-deep hover:scale-105 transition-all flex items-center gap-2 group border border-slate-700"
             >
               <Sparkles className="w-5 h-5 text-white group-hover:animate-pulse" />
-              <span className="font-bold text-sm pr-2">Ask AI Assistant</span>
+              <span className="font-bold text-sm pr-2 hidden md:inline">Ask AI Assistant</span>
             </button>
 
             {/* Slide-in AI chat panel */}
@@ -923,6 +957,49 @@ const Build: FC = () => {
            </button>
          ))}
       </div>
+
+      {showPdfPreview && pdfPreviewUrl && (
+        <div className="fixed inset-0 z-[100] bg-black/80 flex flex-col backdrop-blur-sm">
+          <div className="flex items-center justify-between p-4 bg-white border-b border-slate-200">
+            <h3 className="font-bold text-slate-900 flex items-center gap-2">
+              <FileText className="w-5 h-5 text-pine" />
+              PDF Preview
+            </h3>
+            <div className="flex items-center gap-2">
+              <a 
+                href={pdfPreviewUrl} 
+                download={`${resumeName || 'Resume'}.pdf`}
+                className="flex items-center gap-2 px-4 py-2 bg-pine text-white font-bold text-sm rounded-lg hover:bg-pine-deep transition-colors"
+              >
+                <Download className="w-4 h-4" /> Download
+              </a>
+              <button 
+                onClick={() => { 
+                  setShowPdfPreview(false); 
+                  if (pdfPreviewUrl) URL.revokeObjectURL(pdfPreviewUrl);
+                  setPdfPreviewUrl(null); 
+                }} 
+                className="p-2 bg-slate-100 hover:bg-slate-200 rounded-lg text-slate-600 transition-colors"
+                aria-label="Close Preview"
+              >
+                ✕
+              </button>
+            </div>
+          </div>
+          <div className="flex-1 min-h-0 w-full bg-slate-200 p-4 sm:p-8 flex justify-center overflow-auto custom-scrollbar">
+            <object 
+              data={`${pdfPreviewUrl}#view=FitH`} 
+              type="application/pdf" 
+              className="w-full max-w-5xl h-[calc(100vh-100px)] rounded shadow-2xl bg-white"
+            >
+              <div className="flex items-center justify-center h-full bg-slate-50 text-slate-500 text-sm">
+                Your browser does not support embedded PDFs. 
+                <a href={pdfPreviewUrl} target="_blank" rel="noreferrer" className="text-pine ml-1 hover:underline">Click here to view it</a>
+              </div>
+            </object>
+          </div>
+        </div>
+      )}
       </div>
   );
 };

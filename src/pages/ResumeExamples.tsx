@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Helmet } from 'react-helmet-async';
+import { Seo } from '../components/Seo';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { Navbar } from '../components/layout/Navbar';
@@ -18,11 +18,11 @@ const examples = [
 
 const ResumeExamples: FC = () => (
   <div className="min-h-screen bg-paper text-body font-sans flex flex-col selection:bg-pine selection:text-white">
-    <Helmet>
-      <title>Resume Examples by Role & Industry (2026) | QuickResume</title>
-      <meta name="description" content="What a winning resume looks like for software engineers, product managers, freshers, nurses, sales and more — with the exact points recruiters scan for in each role." />
-      <link rel="canonical" href="https://quickresume.business/examples" />
-    </Helmet>
+      <Seo
+      path="/examples"
+      title="Resume Examples by Role & Industry (2026) | QuickResume"
+      description="See what a winning resume looks like for software engineers, product managers, freshers, nurses, sales and more — with the exact points recruiters scan for in each role."
+    />
 
     <Navbar />
 

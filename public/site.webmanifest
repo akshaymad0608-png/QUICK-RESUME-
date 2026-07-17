@@ -1,0 +1,13 @@
+{
+  "name": "QuickResume — AI Resume Builder",
+  "short_name": "QuickResume",
+  "description": "Build an ATS-friendly resume in minutes with AI writing and 60+ free templates.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FAFAFC",
+  "theme_color": "#171D2F",
+  "icons": [
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "/og-image.png", "sizes": "1200x630", "type": "image/png", "purpose": "any" }
+  ]
+}
