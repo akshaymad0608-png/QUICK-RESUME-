@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { ResumeProvider } from './context/ResumeContext';
 import { HelmetProvider } from 'react-helmet-async';
+import { Analytics } from '@vercel/analytics/react';
 
 const Home = lazy(() => import('./Home'));
 const Start = lazy(() => import('./pages/Start'));
@@ -39,6 +40,7 @@ function App() {
           <Toaster position="bottom-right" />
         </ResumeProvider>
       </Suspense>
+      <Analytics />
     </HelmetProvider>
   )
 }
