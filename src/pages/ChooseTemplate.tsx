@@ -4,30 +4,16 @@ import { useNavigate } from 'react-router-dom';
 import { useResume } from '../context/ResumeContext';
 import { TemplateCard } from '../components/TemplateCard';
 import { TEMPLATES } from '../data/templates';
-import { Feather, Search, LayoutTemplate } from 'lucide-react';
+import { Navbar } from '../components/layout/Navbar';
+import { Footer } from '../components/layout/Footer';
+import { Search, LayoutTemplate } from 'lucide-react';
 
-const CATEGORIES = [
-  'All',
-  'Professional',
-  'Modern',
-  'Minimal',
-  'Creative',
-  'Colorful',
-  'Executive',
-  'Corporate',
-  'Fresher',
-  'Student',
-  'Developer',
-  'Designer',
-  'Marketing',
-  'Healthcare',
-  'Finance',
-  'Teacher',
-  'Engineering',
-  'ATS Friendly',
-  'Two Column',
-  'Infographic',
-  'Google Docs Style'
+/* Categories grouped so 21 chips don't overwhelm — especially on mobile */
+const CATEGORY_GROUPS: { label: string; items: string[] }[] = [
+  { label: 'Popular', items: ['All', 'ATS Friendly', 'Professional', 'Modern', 'Minimal'] },
+  { label: 'Career stage', items: ['Fresher', 'Student', 'Executive', 'Corporate'] },
+  { label: 'By role', items: ['Developer', 'Designer', 'Engineering', 'Marketing', 'Healthcare', 'Finance', 'Teacher'] },
+  { label: 'By style', items: ['Creative', 'Colorful', 'Two Column', 'Infographic', 'Google Docs Style'] },
 ];
 
 export default function ChooseTemplate() {
@@ -35,156 +21,118 @@ export default function ChooseTemplate() {
   const { data, updateSection } = useResume();
   const [activeCategory, setActiveCategory] = useState('All');
   const [searchTerm, setSearchTerm] = useState('');
-  const [sortBy, setSortBy] = useState('Popular');
 
   const handleSelect = (templateId: string, selectedColor?: string) => {
-    const color = selectedColor || '#000000';
-    
-    updateSection('design', { 
-      ...data.design, 
-      template: templateId, 
-      color 
+    updateSection('design', {
+      ...data.design,
+      template: templateId,
+      color: selectedColor || '#171D2F',
     });
     navigate('/build');
   };
 
   const filteredTemplates = useMemo(() => {
-    let result = TEMPLATES.filter(tpl => {
+    const q = searchTerm.trim().toLowerCase();
+    return TEMPLATES.filter(tpl => {
       const matchesCategory = activeCategory === 'All' || tpl.category === activeCategory;
-      const matchesSearch = searchTerm.trim() === '' || 
-        tpl.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-        tpl.description.toLowerCase().includes(searchTerm.toLowerCase());
-      
+      const matchesSearch = !q ||
+        tpl.name.toLowerCase().includes(q) ||
+        tpl.description.toLowerCase().includes(q) ||
+        tpl.category.toLowerCase().includes(q);
       return matchesCategory && matchesSearch;
     });
-
-    if (sortBy === 'Newest') {
-      result = [...result].reverse(); // Mock newest by reversing
-    } else if (sortBy === 'Professional') {
-      result = [...result].sort((a, b) => a.category === 'Professional' ? -1 : (b.category === 'Professional' ? 1 : 0));
-    }
-    // 'Popular' leaves as default order
-
-    return result;
-  }, [activeCategory, searchTerm, sortBy]);
+  }, [activeCategory, searchTerm]);
 
   return (
-    <div className="min-h-screen bg-white flex flex-col font-sans overflow-x-hidden text-slate-900 selection:bg-slate-900 selection:text-white bg-grid-pattern-light relative">\n      <div className="absolute inset-0 bg-gradient-to-b from-slate-50/80 to-slate-50 pointer-events-none z-0"></div>
+    <div className="min-h-screen bg-paper text-body font-sans flex flex-col selection:bg-pine selection:text-white">
       <Helmet>
-        <title>Templates | QuickResume</title>
-        <meta name="description" content="Browse our library of professional, modern, and minimal resume templates." />
+        <title>60+ Free Resume Templates by Role & Industry | QuickResume</title>
+        <meta name="description" content="Browse ATS-friendly resume templates for freshers, developers, designers, executives, healthcare, finance and more. Every template is free to try and exports to PDF." />
+        <link rel="canonical" href="https://quickresume.business/templates" />
       </Helmet>
 
-      {/* Navbar Minimal */}
-      <nav className="fixed top-0 left-0 right-0 h-20 bg-white border-b border-slate-100 px-6 lg:px-10 flex items-center justify-between z-50">
-        <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')}>
-          <div className="w-8 h-8 bg-gradient-to-tr from-slate-900 to-slate-700 rounded-lg flex items-center justify-center">
-            <Feather className="text-white w-5 h-5" />
-          </div>
-          <span className="text-xl font-bold text-slate-900 tracking-tight">QuickResume</span>
-        </div>
-        <div className="hidden md:flex items-center gap-6 text-sm font-bold uppercase tracking-widest text-slate-400">
-          <div className="flex items-center gap-2 text-slate-900">
-            <span>01</span>
-            <span>Template</span>
-          </div>
-          <div className="w-4 h-px bg-slate-200"></div>
-          <div className="flex items-center gap-2">
-            <span>02</span>
-            <span>Details</span>
-          </div>
-        </div>
-        <div className="hidden md:block w-24"></div>
-      </nav>
+      <Navbar />
 
-      <main className="flex-1 max-w-[1400px] mx-auto w-full px-6 pt-32 pb-24 relative z-10">\n        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] pointer-events-none -z-10 overflow-hidden">\n          <div className="absolute top-20 left-[10%] w-96 h-96 bg-blue-300/10 rounded-full blur-3xl"></div>\n          <div className="absolute top-40 right-[10%] w-96 h-96 bg-purple-300/10 rounded-full blur-3xl"></div>\n        </div>
-        <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight">Select a template</h1>
-          <p className="text-lg text-slate-500 max-w-2xl mx-auto">All templates are free to use and export.</p>
-        </div>
-
-        {/* Filters & Search */}
-        <div className="flex flex-col items-center mb-16 gap-8">
-          <div className="relative w-full max-w-lg">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
-            <input 
-              type="text" 
-              placeholder="Search templates..." 
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-12 pr-4 py-4 bg-white border border-slate-200 focus:border-teal-600 transition-all outline-none text-sm text-slate-900 placeholder:text-slate-400 font-medium"
-            />
+      <main className="flex-1 pt-16 md:pt-[72px]">
+        {/* Page head */}
+        <section className="bg-ruled border-b border-line">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-12 pb-10 lg:pt-16 lg:pb-14">
+            <p className="eyebrow mb-4">Template library</p>
+            <h1 className="font-display text-4xl sm:text-5xl text-ink font-semibold mb-4 max-w-2xl leading-tight">
+              Pick the template your industry expects
+            </h1>
+            <p className="text-lg max-w-xl">
+              {TEMPLATES.length} ATS-tested layouts, organised by role, career stage and style. Change template anytime — your content adapts instantly.
+            </p>
           </div>
+        </section>
 
-          <div className="flex flex-wrap justify-center gap-2 max-w-5xl">
-            {CATEGORIES.map((category) => (
-              <button 
-                key={category}
-                onClick={() => setActiveCategory(category)}
-                className={`px-4 py-2 text-sm font-semibold transition-colors border ${
-                  activeCategory === category 
-                    ? 'bg-teal-600 text-white border-teal-600' 
-                    : 'bg-white text-slate-500 border-transparent hover:text-slate-900 hover:border-slate-200'
-                }`}
-              >
-                {category}
-              </button>
-            ))}
-          </div>
-        </div>
+        {/* Sticky filter bar */}
+        <div className="sticky top-16 md:top-[72px] z-30 bg-paper/95 backdrop-blur border-b border-line">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex flex-col lg:flex-row lg:items-center gap-3">
+            <div className="relative w-full lg:w-72 shrink-0">
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-mist w-4 h-4" />
+              <input
+                type="search"
+                placeholder="Search templates…"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                aria-label="Search templates"
+                className="w-full pl-10 pr-4 py-2.5 bg-card border border-line rounded-full focus:border-pine outline-none text-sm text-ink placeholder:text-mist"
+              />
+            </div>
 
-        {/* Results Info */}
-        <div className="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-end border-b border-slate-100 pb-4 gap-4">
-          <div>
-            <h2 className="text-2xl font-bold text-slate-900 mb-1">
-              {activeCategory === 'All' ? 'All Templates' : `${activeCategory} Templates`}
-            </h2>
-            <span className="text-slate-500 text-sm font-medium">{filteredTemplates.length} results</span>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <span className="text-xs font-bold uppercase tracking-widest text-slate-400">Sort by:</span>
-            <div className="bg-white border border-slate-200 flex p-0.5">
-              {['Popular', 'Newest', 'Professional'].map(sortOption => (
+            <div className="flex gap-2 overflow-x-auto no-scrollbar -mx-4 px-4 lg:mx-0 lg:px-0">
+              {CATEGORY_GROUPS.flatMap(g => g.items).map(category => (
                 <button
-                  key={sortOption}
-                  onClick={() => setSortBy(sortOption)}
-                  className={`px-3 py-1.5 text-xs font-bold uppercase tracking-wider transition-colors ${
-                    sortBy === sortOption 
-                      ? 'bg-teal-600 text-white' 
-                      : 'text-slate-500 hover:text-slate-900'
+                  key={category}
+                  onClick={() => setActiveCategory(category)}
+                  aria-pressed={activeCategory === category}
+                  className={`whitespace-nowrap px-4 py-2 rounded-full text-[13px] font-semibold border transition-colors ${
+                    activeCategory === category
+                      ? 'bg-ink text-paper border-ink'
+                      : 'bg-card text-ink-soft border-line hover:border-ink/40'
                   }`}
                 >
-                  {sortOption}
+                  {category}
                 </button>
               ))}
             </div>
           </div>
         </div>
 
-        {/* Grid */}
-        {filteredTemplates.length > 0 ? (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 md:gap-10">
-            {filteredTemplates.map((tpl) => (
-              <TemplateCard key={tpl.id} template={tpl} onSelect={(id, color) => handleSelect(id, color)} />
-            ))}
+        {/* Results */}
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 py-10 lg:py-14">
+          <div className="flex items-baseline justify-between mb-8">
+            <h2 className="text-xl sm:text-2xl font-bold text-ink">
+              {activeCategory === 'All' ? 'All templates' : `${activeCategory} templates`}
+            </h2>
+            <span className="font-mono text-xs tracking-[0.14em] uppercase text-mist">{filteredTemplates.length} results</span>
           </div>
-        ) : (
-          <div className="text-center py-32 bg-slate-50 border border-slate-100">
-            <div className="flex justify-center mb-4">
-              <LayoutTemplate className="w-12 h-12 text-slate-300" />
+
+          {filteredTemplates.length > 0 ? (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
+              {filteredTemplates.map(tpl => (
+                <TemplateCard key={tpl.id} template={tpl} onSelect={handleSelect} />
+              ))}
             </div>
-            <h3 className="text-xl font-bold text-slate-900 mb-2">No templates found</h3>
-            <p className="text-slate-500 mb-6 text-sm">Try adjusting your search or category filter.</p>
-            <button 
-              onClick={() => { setSearchTerm(''); setActiveCategory('All'); }}
-              className="px-6 py-3 bg-teal-600 text-white text-sm font-bold hover:bg-teal-700 transition-colors"
-            >
-              Clear filters
-            </button>
-          </div>
-        )}
+          ) : (
+            <div className="text-center py-24 bg-card border border-line rounded-2xl">
+              <LayoutTemplate className="w-10 h-10 text-mist mx-auto mb-4" />
+              <h3 className="text-lg font-bold text-ink mb-1">No templates match "{searchTerm}"</h3>
+              <p className="text-sm mb-6">Try a shorter search, or browse a category instead.</p>
+              <button
+                onClick={() => { setSearchTerm(''); setActiveCategory('All'); }}
+                className="px-6 py-3 bg-pine text-white rounded-full text-sm font-bold hover:bg-pine-deep transition-colors"
+              >
+                Show all templates
+              </button>
+            </div>
+          )}
+        </section>
       </main>
+
+      <Footer />
     </div>
   );
 }

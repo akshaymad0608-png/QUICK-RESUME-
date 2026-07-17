@@ -44,7 +44,7 @@ const Pricing: FC = () => {
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'annual'>('annual');
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-600 flex flex-col font-sans pt-[72px] bg-grid-pattern relative">\n      <div className="absolute inset-0 bg-gradient-to-b from-slate-50/80 to-slate-50 pointer-events-none z-0"></div>
+    <div className="min-h-screen bg-paper text-body flex flex-col font-sans pt-16 md:pt-[72px] relative selection:bg-pine selection:text-white">
       <Helmet>
         <title>Pricing | QuickResume</title>
         <meta name="description" content="Simple pricing for our professional resume builder." />
@@ -52,7 +52,7 @@ const Pricing: FC = () => {
 
       <Navbar />
 
-      <main className="flex-1 w-full max-w-5xl mx-auto px-6 py-20 relative z-10">\n        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] pointer-events-none -z-10 overflow-hidden">\n          <div className="absolute top-20 left-[10%] w-96 h-96 bg-blue-300/20 rounded-full blur-3xl"></div>\n          <div className="absolute top-40 right-[10%] w-96 h-96 bg-purple-300/20 rounded-full blur-3xl"></div>\n        </div>
+      <main className="flex-1 w-full max-w-5xl mx-auto px-6 py-20 relative z-10">        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] pointer-events-none -z-10 overflow-hidden">          <div className="absolute top-20 left-[10%] w-96 h-96 bg-blue-300/20 rounded-full blur-3xl"></div>          <div className="absolute top-40 right-[10%] w-96 h-96 bg-purple-300/20 rounded-full blur-3xl"></div>        </div>
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">Simple, transparent pricing.</h1>
           <p className="text-lg text-slate-500 max-w-2xl mx-auto">
@@ -71,7 +71,7 @@ const Pricing: FC = () => {
             </button>
             <button 
               onClick={() => setBillingCycle('annual')}
-              className={`px-6 py-2.5 rounded-full text-sm font-semibold transition-colors flex items-center gap-2 ${billingCycle === 'annual' ? 'bg-teal-600 text-white shadow-sm' : 'text-slate-500 hover:text-slate-900'}`}
+              className={`px-6 py-2.5 rounded-full text-sm font-semibold transition-colors flex items-center gap-2 ${billingCycle === 'annual' ? 'bg-pine text-white shadow-sm' : 'text-slate-500 hover:text-slate-900'}`}
             >
               Annually <span className="text-[10px] bg-slate-200 text-slate-700 px-2 py-0.5 rounded-md uppercase tracking-wider hidden sm:inline-block border border-slate-300">Save 20%</span>
             </button>
@@ -119,7 +119,7 @@ const Pricing: FC = () => {
               
               <button 
                 className={`w-full py-3.5 rounded-xl font-bold text-center transition-colors ${
-                  plan.popular ? 'bg-teal-600 text-white hover:bg-teal-700 shadow-sm' : 'bg-white text-slate-900 border border-slate-200 hover:bg-slate-50'
+                  plan.popular ? 'bg-pine text-white hover:bg-pine-deep shadow-sm' : 'bg-white text-slate-900 border border-slate-200 hover:bg-slate-50'
                 }`}
                 onClick={() => navigate('/start')}
               >

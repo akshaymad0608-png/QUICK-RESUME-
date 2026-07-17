@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { ResumeData } from '../../types';
+import CustomSectionsBlock from './CustomSectionsBlock';
 
 interface TemplateProps {
   data: ResumeData;
@@ -157,6 +158,7 @@ const Sidebar: FC<TemplateProps> = ({ data }) => {
               </div>
             </section>
           )}
+      <CustomSectionsBlock data={data} />
       </div>
     </div>
   );

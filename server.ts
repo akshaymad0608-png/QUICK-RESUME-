@@ -10,7 +10,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const upload = multer({ storage: multer.memoryStorage() });
+const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 15 * 1024 * 1024 } });
 
 async function startServer() {
   const app = express();
@@ -19,26 +19,25 @@ async function startServer() {
   app.use(express.json());
 
   // API Route for Extracting Resume Data
-  app.post("/api/extract-resume", upload.single('resume'), async (req, res) => {
+  app.post("/api/extract-resume", (req, res, next) => {
+    upload.single('resume')(req, res, (err: unknown) => {
+      if (err) {
+        const msg = err instanceof Error && err.message.includes('File too large')
+          ? 'That file is too large — please upload a resume under 15 MB.'
+          : 'Could not receive that file. Please try again.';
+        return res.status(400).json({ error: msg });
+      }
+      next();
+    });
+  }, async (req, res) => {
     try {
       if (!req.file) {
         return res.status(400).json({ error: "No file uploaded" });
       }
 
-      let text = "";
-      if (req.file.mimetype === 'application/pdf') {
-        const data = await pdfParse(req.file.buffer);
-        text = data.text;
-      } else if (req.file.originalname.endsWith('.docx') || req.file.mimetype.includes('wordprocessingml')) {
-        const result = await mammoth.extractRawText({ buffer: req.file.buffer });
-        text = result.value;
-      } else {
-        text = req.file.buffer.toString('utf-8');
-      }
-
       const apiKey = process.env.GEMINI_API_KEY;
       if (!apiKey) {
-        return res.status(500).json({ error: "Invalid or missing GEMINI_API_KEY. Please provide a real Google Gemini API key in the AI Studio Settings." });
+        return res.status(500).json({ error: "The AI reader isn't configured yet (missing GEMINI_API_KEY on the server)." });
       }
 
       const ai = new GoogleGenAI({
@@ -46,8 +45,41 @@ async function startServer() {
         httpOptions: { headers: { 'User-Agent': 'aistudio-build' } }
       });
 
-      const prompt = `Extract all relevant resume information from the following text into a structured JSON object.
-Use the following format. Ensure it follows this exact JSON structure:
+      const isPdf = req.file.mimetype === 'application/pdf' || req.file.originalname.toLowerCase().endsWith('.pdf');
+      const isDocx = req.file.originalname.toLowerCase().endsWith('.docx') || req.file.mimetype.includes('wordprocessingml');
+
+      // 1. Get resume content. For PDFs we FIRST try fast local text
+      //    extraction, but if pdf-parse fails or the PDF has no text layer
+      //    (scanned/image PDFs, exotic encodings), we hand the raw PDF to
+      //    Gemini, which reads PDFs natively — so uploads can't dead-end here.
+      let text = "";
+      let pdfForAI: Buffer | null = null;
+
+      if (isPdf) {
+        try {
+          const parsed = await pdfParse(req.file.buffer);
+          text = (parsed.text || '').trim();
+        } catch {
+          text = '';
+        }
+        if (text.length < 100) pdfForAI = req.file.buffer; // no/low text layer → let Gemini read the PDF itself
+      } else if (isDocx) {
+        try {
+          const result = await mammoth.extractRawText({ buffer: req.file.buffer });
+          text = (result.value || '').trim();
+        } catch {
+          return res.status(422).json({ error: "We couldn't open that Word file. Please re-save it as .docx or export it as a PDF and try again." });
+        }
+      } else {
+        text = req.file.buffer.toString('utf-8').trim();
+      }
+
+      if (!pdfForAI && text.length < 40) {
+        return res.status(422).json({ error: "That file doesn't seem to contain any readable resume text. Please upload your resume as a PDF or DOCX." });
+      }
+
+      const schemaPrompt = `Extract all relevant resume information into a structured JSON object.
+Use the following format. Ensure it follows this exact JSON structure. Respond with ONLY the JSON — no markdown, no commentary:
 {
   "personalInfo": {
     "firstName": "", "lastName": "", "jobTitle": "", "email": "", "phone": "",
@@ -68,50 +100,104 @@ Use the following format. Ensure it follows this exact JSON structure:
     }
   ],
   "skills": ["skill1", "skill2"]
-}
+}`;
 
-Text to extract from:
-${text}
-      `;
+      // 2. Build the request: either extracted text, or the PDF itself.
+      const contents = pdfForAI
+        ? [
+            { inlineData: { mimeType: 'application/pdf', data: pdfForAI.toString('base64') } },
+            { text: `${schemaPrompt}\n\nThe resume is in the attached PDF.` },
+          ]
+        : `${schemaPrompt}\n\nText to extract from:\n${text.slice(0, 16000)}`;
 
-      let response;
-      let lastError;
-      for (let i = 0; i < 3; i++) {
+      // 3. Known-good model first, then fallbacks.
+      const models = [process.env.GEMINI_MODEL, 'gemini-2.5-flash', 'gemini-3.5-flash', 'gemini-2.0-flash'].filter(Boolean) as string[];
+      let resultText = '';
+      let lastErr: unknown = null;
+      for (const model of models) {
         try {
-          response = await ai.models.generateContent({
-            model: 'gemini-2.5-flash',
-            contents: prompt,
-            config: {
-              responseMimeType: "application/json"
-            }
+          const response = await ai.models.generateContent({
+            model,
+            contents,
+            config: { responseMimeType: "application/json", maxOutputTokens: 8192 }
           });
-          break;
-        } catch (err: unknown) {
-          const e = err as { status?: string | number };
-          lastError = e;
-          if (e?.status === 'UNAVAILABLE' || e?.status === 503 || String(e).includes('503')) {
-            console.log(`[Gemini API] 503 error, retrying... (attempt ${i + 1}/3)`);
-            await new Promise(r => setTimeout(r, 1000 * Math.pow(2, i)));
-            continue;
-          }
-          throw e;
-        }
+          resultText = response.text || '';
+          if (resultText) break;
+        } catch (e) { lastErr = e; }
       }
-      if (!response) throw lastError;
+      if (!resultText) {
+        console.error('All models failed:', lastErr);
+        return res.status(502).json({ error: "The AI reader is temporarily unavailable. Please try again in a minute." });
+      }
 
-      const resultText = response.text;
-      if (!resultText) throw new Error("Empty response from AI");
-      
-      let textToParse = resultText.trim();
-      textToParse = textToParse.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim();
+      // 4. Bulletproof JSON extraction: strip fences, isolate the outermost
+      //    object, drop trailing commas, and repair a truncated tail.
+      const parseLoose = (raw: string): Record<string, unknown> | null => {
+        let t = raw.trim().replace(/^```(?:json)?\s*/i, '').replace(/```\s*$/i, '').trim();
+        const first = t.indexOf('{');
+        if (first === -1) return null;
+        const last = t.lastIndexOf('}');
+        t = last > first ? t.slice(first, last + 1) : t.slice(first);
+        const attempts = [t, t.replace(/,\s*([}\]])/g, '$1')];
+        {
+          let fixed = attempts[1];
+          const quoteCount = (fixed.match(/(?<!\\)"/g) || []).length;
+          if (quoteCount % 2 === 1) fixed += '"';
+          let opens = 0, closes = 0, oB = 0, cB = 0;
+          for (const ch of fixed) {
+            if (ch === '{') opens++; else if (ch === '}') closes++;
+            else if (ch === '[') oB++; else if (ch === ']') cB++;
+          }
+          fixed += ']'.repeat(Math.max(0, oB - cB)) + '}'.repeat(Math.max(0, opens - closes));
+          attempts.push(fixed);
+        }
+        for (const a of attempts) {
+          try { return JSON.parse(a); } catch { /* try next */ }
+        }
+        return null;
+      };
 
-      const resultObj = JSON.parse(textToParse);
+      const parsed = parseLoose(resultText);
+      if (!parsed) {
+        console.error('Unparseable AI output:', resultText.slice(0, 500));
+        return res.status(502).json({ error: "We couldn't read the details from that file. Please try uploading it once more." });
+      }
+
+      // 5. Normalize so the client always gets a complete, predictable shape.
+      const p = (parsed.personalInfo || {}) as Record<string, unknown>;
+      const str = (v: unknown) => (typeof v === 'string' ? v : '');
+      const arr = (v: unknown) => (Array.isArray(v) ? v : []);
+      const resultObj = {
+        personalInfo: {
+          firstName: str(p.firstName), lastName: str(p.lastName), jobTitle: str(p.jobTitle),
+          email: str(p.email), phone: str(p.phone), location: str(p.location),
+          city: str(p.city), country: str(p.country), linkedin: str(p.linkedin),
+          portfolio: str(p.portfolio), website: str(p.website), address: str(p.address),
+        },
+        summary: str(parsed.summary),
+        experience: arr(parsed.experience).map((e: Record<string, unknown>) => ({
+          company: str(e.company), jobTitle: str(e.jobTitle), city: str(e.city), country: str(e.country),
+          startDate: str(e.startDate), endDate: str(e.endDate), description: str(e.description),
+          isPresent: Boolean(e.isPresent),
+        })),
+        education: arr(parsed.education).map((e: Record<string, unknown>) => ({
+          schoolName: str(e.schoolName), degree: str(e.degree), fieldOfStudy: str(e.fieldOfStudy),
+          city: str(e.city), country: str(e.country), startYear: str(e.startYear),
+          endYear: str(e.endYear), description: str(e.description),
+        })),
+        skills: arr(parsed.skills).filter((x: unknown) => typeof x === 'string'),
+      };
+
+      const foundSomething = resultObj.personalInfo.firstName || resultObj.summary ||
+        resultObj.experience.length || resultObj.education.length || resultObj.skills.length;
+      if (!foundSomething) {
+        return res.status(422).json({ error: "No resume details were found in that file. Please check it opens correctly and try again." });
+      }
 
       res.json(resultObj);
     } catch (err: unknown) {
       console.error(err);
-      const error = err instanceof Error ? err : new Error(String(err));
-      res.status(500).json({ error: error.message || "Failed to extract resume" });
+      res.status(500).json({ error: "Something went wrong while reading your resume. Please try again." });
     }
   });
 
@@ -133,27 +219,10 @@ ${text}
           }
         }
       });
-      let response;
-      let lastError;
-      for (let i = 0; i < 3; i++) {
-        try {
-          response = await ai.models.generateContent({
-            model: 'gemini-2.5-flash',
-            contents: prompt,
-          });
-          break;
-        } catch (err: unknown) {
-          const e = err as { status?: string | number };
-          lastError = e;
-          if (e?.status === 'UNAVAILABLE' || e?.status === 503 || String(e).includes('503')) {
-            console.log(`[Gemini API] 503 error, retrying... (attempt ${i + 1}/3)`);
-            await new Promise(r => setTimeout(r, 1000 * Math.pow(2, i)));
-            continue;
-          }
-          throw e;
-        }
-      }
-      if (!response) throw lastError;
+      const response = await ai.models.generateContent({
+        model: 'gemini-3.5-flash',
+        contents: prompt,
+      });
 
       res.json({ text: response.text });
     } catch (err: unknown) {
@@ -280,36 +349,27 @@ ${text}
 
 
   // Sitemap
-  app.get('/sitemap.xml', (req, res) => {
-    const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://quickresume.business/</loc>
-    <changefreq>weekly</changefreq>
-  </url>
-  <url>
-    <loc>https://quickresume.business/resources</loc>
-    <changefreq>weekly</changefreq>
-  </url>
-  <url>
-    <loc>https://quickresume.business/examples</loc>
-    <changefreq>weekly</changefreq>
-  </url>
-  <url>
-    <loc>https://quickresume.business/cover-letter</loc>
-    <changefreq>weekly</changefreq>
-  </url>
-  <url>
-    <loc>https://quickresume.business/choose-template</loc>
-    <changefreq>weekly</changefreq>
-  </url>
-</urlset>`;
+  app.get('/sitemap.xml', (_req, res) => {
+    const urls = [
+      ['/', 'weekly', '1.0'],
+      ['/templates', 'weekly', '0.9'],
+      ['/improve', 'monthly', '0.8'],
+      ['/start', 'monthly', '0.8'],
+      ['/examples', 'monthly', '0.7'],
+      ['/ai-tools', 'monthly', '0.7'],
+      ['/cover-letter', 'monthly', '0.6'],
+      ['/resources', 'monthly', '0.5'],
+      ['/pricing', 'monthly', '0.5'],
+    ];
+    const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
+      urls.map(([path, freq, pri]) => `  <url><loc>https://quickresume.business${path}</loc><changefreq>${freq}</changefreq><priority>${pri}</priority></url>`).join('\n') +
+      `\n</urlset>`;
     res.header('Content-Type', 'application/xml');
     res.send(sitemap);
   });
 
   // Robots.txt
-  app.get('/robots.txt', (req, res) => {
+  app.get('/robots.txt', (_req, res) => {
     const robots = `User-agent: *
 Allow: /
 
@@ -328,7 +388,7 @@ Sitemap: https://quickresume.business/sitemap.xml`;
     const distPath = path.join(process.cwd(), 'dist');
     app.use(express.static(distPath));
     // Important: Express 5 requires named wildcard parameters like '*all'
-    app.get('*all', (req, res) => {
+    app.get('*all', (_req, res) => {
       res.sendFile(path.join(distPath, 'index.html'));
     });
   }

@@ -84,7 +84,7 @@ const Contacts: FC = () => {
                 type="checkbox" 
                 checked={data.design.showPhoto !== false}
                 onChange={(e) => updateSection('design', { ...data.design, showPhoto: e.target.checked })}
-                className="w-3.5 h-3.5 text-teal-600 border-slate-300 rounded focus:ring-teal-600 accent-teal-600 cursor-pointer"
+                className="w-3.5 h-3.5 text-pine border-slate-300 rounded focus:ring-pine accent-teal-600 cursor-pointer"
               />
               <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">Show on Resume</span>
             </label>

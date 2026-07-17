@@ -1,4 +1,3 @@
-/* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { ResumeData } from "../types";
 
@@ -29,10 +28,11 @@ const defaultData: ResumeData = {
   projects: [],
   certifications: [],
   languages: [],
+  customSections: [],
   skills: [],
   summary: "",
   design: {
-    template: "professional-blue",
+    template: "pro-classic",
     color: "#2563EB",
     headingFont: "Inter",
     bodyFont: "Inter",
@@ -47,22 +47,35 @@ const ResumeContext = createContext<ResumeContextType | undefined>(undefined);
 
 export const ResumeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [data, setData] = useState<ResumeData>(() => {
-    const saved = localStorage.getItem("resume_data");
-    if (saved) {
-      const parsed = JSON.parse(saved);
-      return {
-        ...defaultData,
-        ...parsed,
-        projects: parsed.projects || [],
-        certifications: parsed.certifications || [],
-        languages: parsed.languages || [],
-      };
+    try {
+      const saved = localStorage.getItem("resume_data");
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        return {
+          ...defaultData,
+          ...parsed,
+          personalInfo: { ...defaultData.personalInfo, ...(parsed.personalInfo || {}) },
+          design: { ...defaultData.design, ...(parsed.design || {}) },
+          experience: Array.isArray(parsed.experience) ? parsed.experience : [],
+          education: Array.isArray(parsed.education) ? parsed.education : [],
+          skills: Array.isArray(parsed.skills) ? parsed.skills : [],
+          projects: Array.isArray(parsed.projects) ? parsed.projects : [],
+          certifications: Array.isArray(parsed.certifications) ? parsed.certifications : [],
+          languages: Array.isArray(parsed.languages) ? parsed.languages : [],
+          customSections: Array.isArray(parsed.customSections) ? parsed.customSections : [],
+        };
+      }
+    } catch {
+      // Corrupt saved data must never crash the app — start fresh instead.
+      localStorage.removeItem("resume_data");
     }
     return defaultData;
   });
 
   useEffect(() => {
-    localStorage.setItem("resume_data", JSON.stringify(data));
+    try {
+      localStorage.setItem("resume_data", JSON.stringify(data));
+    } catch { /* storage full/unavailable — keep the app running */ }
   }, [data]);
 
   const updateSection = <K extends keyof ResumeData>(section: K, payload: ResumeData[K]) => {

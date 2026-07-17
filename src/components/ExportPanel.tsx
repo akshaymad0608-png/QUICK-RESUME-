@@ -149,7 +149,7 @@ const ExportPanel: FC = () => {
     <div className="flex flex-col h-full overflow-y-auto custom-scrollbar bg-slate-50">
       <div className="p-4 sm:p-6">
         <div className="flex items-center gap-3 mb-6">
-          <div className="w-10 h-10 rounded-full flex items-center justify-center bg-teal-600 text-white shadow-sm">
+          <div className="w-10 h-10 rounded-full flex items-center justify-center bg-pine text-white shadow-sm">
             <Share2 size={20} />
           </div>
           <div>
@@ -189,7 +189,7 @@ const ExportPanel: FC = () => {
           actions={
             <>
               <button onClick={handleDownloadJSON}
-                className="w-full py-2.5 flex items-center justify-center gap-2 bg-teal-600 text-white text-xs font-bold rounded-xl transition-all hover:bg-teal-700 shadow-sm">
+                className="w-full py-2.5 flex items-center justify-center gap-2 bg-pine text-white text-xs font-bold rounded-xl transition-all hover:bg-pine-deep shadow-sm">
                 <Download size={13} /> Download resume.json
               </button>
               <button onClick={handleCopyJSON}

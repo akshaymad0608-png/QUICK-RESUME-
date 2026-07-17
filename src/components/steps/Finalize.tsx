@@ -29,8 +29,12 @@ const Finalize: FC<FinalizeProps> = () => {
 
     setIsDownloading(true);
     try {
-      await exportElementToPdf(element, getFileName('pdf'));
-      toast.success('PDF downloaded successfully!');
+      const result = await exportElementToPdf(element, getFileName('pdf'));
+      if (result === 'print-dialog') {
+        toast.success("Print dialog opened — choose 'Save as PDF' as the destination.", { duration: 6000 });
+      } else {
+        toast.success('PDF downloaded successfully!');
+      }
     } catch (error) {
       console.error('Error generating PDF:', error);
       toast.error('Failed to generate PDF.');
@@ -177,7 +181,7 @@ const Finalize: FC<FinalizeProps> = () => {
               <button
                 onClick={handleDownloadPDF}
                 disabled={isDownloading}
-                className="flex items-center justify-center gap-2 bg-teal-600 text-white px-6 py-2.5 rounded-lg font-bold hover:bg-teal-700 hover:shadow-lg transition-all disabled:opacity-50"
+                className="flex items-center justify-center gap-2 bg-pine text-white px-6 py-2.5 rounded-lg font-bold hover:bg-pine-deep hover:shadow-lg transition-all disabled:opacity-50"
               >
                 {isDownloading ? <Loader2 size={18} className="animate-spin" /> : <Download size={18} />}
                 Download PDF
@@ -186,8 +190,18 @@ const Finalize: FC<FinalizeProps> = () => {
          </div>
 
          {/* Render LivePreview directly */}
-         <div ref={finalizeRef} className="shadow-[0_20px_60px_-15px_rgba(0,0,0,0.7)] hover:shadow-[0_30px_70px_-15px_rgba(0,0,0,0.1)] transition-shadow duration-500 rounded-lg overflow-hidden ring-1 ring-white/10">
+         <div className="shadow-[0_20px_60px_-15px_rgba(0,0,0,0.7)] hover:shadow-[0_30px_70px_-15px_rgba(0,0,0,0.1)] transition-shadow duration-500 rounded-lg overflow-hidden ring-1 ring-white/10">
              <LivePreview />
+         </div>
+
+         {/* Hidden natural-size print node used by the PDF exporter */}
+         <div
+           aria-hidden="true"
+           style={{ position: 'fixed', top: 0, left: '-20000px', width: '794px', background: '#ffffff', zIndex: -1, pointerEvents: 'none' }}
+         >
+           <div ref={finalizeRef} className="bg-white" style={{ width: '794px', minHeight: '1123px' }}>
+             <LivePreview />
+           </div>
          </div>
       </div>
     </div>

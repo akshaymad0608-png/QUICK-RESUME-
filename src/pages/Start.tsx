@@ -1,7 +1,8 @@
 import { FC, useState, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { Navbar } from '../components/layout/Navbar';
 import { useNavigate } from 'react-router-dom';
-import { UploadCloud, FileText, Feather, PenLine, Loader2, ArrowLeft} from 'lucide-react';
+import { UploadCloud, FileText, PenLine, Loader2, ArrowLeft} from 'lucide-react';
 import { ActualResume } from '../components/TemplateCard';
 import { useResume } from '../context/ResumeContext';
 import toast from 'react-hot-toast';
@@ -17,15 +18,29 @@ const Start: FC = () => {
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement> | { target: { files: FileList | null } }) => {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
+      // Client-side pre-checks — obvious problems never reach the server.
+      const okType = /\.(pdf|docx?)$/i.test(file.name) || file.type === 'application/pdf' || file.type.includes('wordprocessingml');
+      if (!okType) {
+        toast.error('Please upload a PDF or Word (.docx) file.');
+        return;
+      }
+      if (file.size > 15 * 1024 * 1024) {
+        toast.error('That file is over 15 MB — please upload a smaller resume.');
+        return;
+      }
+
       const formData = new FormData();
       formData.append('resume', file);
 
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 120000);
       try {
         setIsUploading(true);
-        toast.loading('Analyzing resume...', { id: 'upload' });
+        toast.loading('Analyzing resume... this can take up to a minute for scanned PDFs.', { id: 'upload' });
         const res = await fetch('/api/extract-resume', {
           method: 'POST',
           body: formData,
+          signal: controller.signal,
         });
 
         if (!res.ok) {
@@ -55,39 +70,34 @@ const Start: FC = () => {
           summary: extractedData.summary || prevData.summary,
         }));
 
-        toast.success('Resume imported successfully!', { id: 'upload' });
+        const found = [
+          extractedData.experience?.length ? `${extractedData.experience.length} experience` : '',
+          extractedData.education?.length ? `${extractedData.education.length} education` : '',
+          extractedData.skills?.length ? `${extractedData.skills.length} skills` : '',
+        ].filter(Boolean).join(' · ');
+        toast.success(found ? `Imported: ${found}` : 'Resume imported successfully!', { id: 'upload', duration: 5000 });
         navigate('/build');
       } catch (error: unknown) {
-        toast.error(error instanceof Error ? error.message : 'Error importing resume', { id: 'upload' });
+        const aborted = error instanceof DOMException && error.name === 'AbortError';
+        toast.error(aborted ? 'Reading took too long — please try again.' : (error instanceof Error ? error.message : 'Error importing resume'), { id: 'upload' });
         console.error(error);
       } finally {
+        clearTimeout(timer);
         setIsUploading(false);
       }
     }
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-600 flex flex-col font-sans pt-[72px] bg-grid-pattern relative">\n      <div className="absolute inset-0 bg-gradient-to-b from-slate-50/80 to-slate-50 pointer-events-none z-0"></div>
+    <div className="min-h-screen bg-paper text-body flex flex-col font-sans pt-16 md:pt-[72px] relative selection:bg-pine selection:text-white">
       <Helmet>
         <title>Dashboard | QuickResume</title>
       </Helmet>
 
       {/* Navbar Minimal */}
-      <nav className="fixed top-0 left-0 right-0 h-[72px] bg-white/80 backdrop-blur-md border-b border-slate-200 px-6 lg:px-10 flex items-center justify-between z-50">
-        <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')}>
-          <div className="w-10 h-10 bg-gradient-to-tr from-slate-900 to-slate-700 rounded-lg flex items-center justify-center shadow-lg shadow-slate-300/50">
-            <Feather className="text-white w-6 h-6" />
-          </div>
-          <span className="text-2xl font-bold text-slate-900 tracking-tight">QuickResume</span>
-        </div>
-        <div className="flex items-center gap-4">
-          <div className="w-8 h-8 bg-white border border-slate-200 rounded-full flex items-center justify-center text-slate-500 font-bold text-sm">
-            ME
-          </div>
-        </div>
-      </nav>
+      <Navbar />
 
-      <main className="flex-1 w-full max-w-6xl mx-auto px-6 py-12 flex flex-col relative z-10">\n        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] pointer-events-none -z-10 overflow-hidden">\n          <div className="absolute top-20 left-[5%] w-96 h-96 bg-blue-300/20 rounded-full blur-3xl"></div>\n          <div className="absolute top-40 right-[5%] w-96 h-96 bg-purple-300/20 rounded-full blur-3xl"></div>\n        </div>
+      <main className="flex-1 w-full max-w-6xl mx-auto px-6 py-12 flex flex-col relative z-10">        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] pointer-events-none -z-10 overflow-hidden">          <div className="absolute top-20 left-[5%] w-96 h-96 bg-blue-300/20 rounded-full blur-3xl"></div>          <div className="absolute top-40 right-[5%] w-96 h-96 bg-purple-300/20 rounded-full blur-3xl"></div>        </div>
         
         {!showUpload ? (
           <>
@@ -98,7 +108,7 @@ const Start: FC = () => {
               </div>
               <button 
                 onClick={() => setShowUpload(true)}
-                className="bg-teal-600 hover:bg-teal-700 text-white px-5 py-2.5 rounded-lg font-semibold flex items-center gap-2 transition-colors shadow-sm"
+                className="bg-pine hover:bg-pine-deep text-white px-5 py-2.5 rounded-lg font-semibold flex items-center gap-2 transition-colors shadow-sm"
               >
                 <FileText size={18} />
                 Create New Resume
@@ -107,7 +117,7 @@ const Start: FC = () => {
 
             <div className="grid md:grid-cols-3 gap-6 mb-8">
               <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4 cursor-pointer hover:border-slate-300 transition-colors" onClick={() => navigate('/build')}>
-                <div className="w-12 h-12 bg-teal-50 text-teal-600 border border-teal-100 rounded-xl flex items-center justify-center">
+                <div className="w-12 h-12 bg-pine-tint text-pine border border-teal-100 rounded-xl flex items-center justify-center">
                   <FileText size={20} />
                 </div>
                 <div>
@@ -160,7 +170,7 @@ const Start: FC = () => {
                    </p>
                    <div className="flex gap-2">
                      <button className="flex-1 py-1.5 px-3 bg-slate-50 text-slate-600 rounded font-bold text-[12px] text-center border-none hover:bg-slate-100 transition-colors">Duplicate</button>
-                     <button className="flex-1 py-1.5 px-3 bg-teal-600 text-white rounded font-bold text-[12px] text-center border-none hover:bg-teal-700 transition-colors">Edit</button>
+                     <button className="flex-1 py-1.5 px-3 bg-pine text-white rounded font-bold text-[12px] text-center border-none hover:bg-pine-deep transition-colors">Edit</button>
                    </div>
                  </div>
 
@@ -183,7 +193,7 @@ const Start: FC = () => {
                    </p>
                    <div className="flex gap-2">
                      <button className="flex-1 py-1.5 px-3 bg-slate-50 text-slate-600 rounded font-bold text-[12px] text-center border-none hover:bg-slate-100 transition-colors">Duplicate</button>
-                     <button className="flex-1 py-1.5 px-3 bg-teal-600 text-white rounded font-bold text-[12px] text-center border-none hover:bg-teal-700 transition-colors">Edit</button>
+                     <button className="flex-1 py-1.5 px-3 bg-pine text-white rounded font-bold text-[12px] text-center border-none hover:bg-pine-deep transition-colors">Edit</button>
                    </div>
                  </div>
 
@@ -216,7 +226,7 @@ const Start: FC = () => {
                 className="bg-white p-8 rounded-2xl border border-slate-200 hover:border-slate-400 hover:shadow-[0_0_30px_-5px_rgba(0,0,0,0.1)] transition-all cursor-pointer shadow-sm group text-center"
                 onClick={() => { if (!isUploading) fileInputRef.current?.click(); }}
               >
-                <div className="w-16 h-16 rounded-2xl bg-teal-50 text-teal-600 border border-teal-100 flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
+                <div className="w-16 h-16 rounded-2xl bg-pine-tint text-pine border border-teal-100 flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
                   {isUploading ? <Loader2 size={32} className="animate-spin" /> : <UploadCloud size={32} />}
                 </div>
                 <h2 className="text-2xl font-bold text-slate-900 mb-3">Upload your resume</h2>

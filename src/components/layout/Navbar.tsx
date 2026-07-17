@@ -1,33 +1,47 @@
 import { FC, useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X, LogOut } from 'lucide-react';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Menu, X, LogOut, ArrowRight, Moon, Sun } from 'lucide-react';
 import { LoginModal } from '../LoginModal';
 import { auth } from '../../firebase';
 import { onAuthStateChanged, signOut, User } from 'firebase/auth';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useDarkMode } from '../../hooks/useDarkMode';
 
-const Logo: FC<{ className?: string }> = ({ className = '' }) => (
-  <span className={`flex items-center gap-2.5 ${className}`}>
-    <span className="w-9 h-9 rounded-lg bg-ink flex items-center justify-center shrink-0">
-      {/* stacked-sheet mark: the resume, abstracted */}
-      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden>
-        <rect x="4" y="2.5" width="9" height="12" rx="1.5" fill="#FAFAF7" />
-        <rect x="6" y="5" width="5" height="1.2" rx="0.6" fill="#0D9488" />
-        <rect x="6" y="7.4" width="5" height="1" rx="0.5" fill="#9a9c90" />
-        <rect x="6" y="9.4" width="3.5" height="1" rx="0.5" fill="#9a9c90" />
-      </svg>
-    </span>
-    <span className="text-[1.35rem] font-display font-bold tracking-tight text-ink leading-none">
-      Quick<span className="text-brand">Resume</span>
+/* QuickResume mark — a resume sheet with a rising career arrow */
+export const LogoMark: FC<{ className?: string }> = ({ className = 'w-9 h-9' }) => (
+  <svg viewBox="0 0 36 36" className={className} aria-hidden="true">
+    <rect x="2" y="2" width="32" height="32" rx="9" fill="#171D2F" />
+    <rect x="9" y="10" width="12" height="2.6" rx="1.3" fill="#FAFAFC" />
+    <rect x="9" y="16" width="18" height="2.6" rx="1.3" fill="#5568E8" />
+    <rect x="9" y="22" width="10" height="2.6" rx="1.3" fill="#5568E8" opacity="0.65" />
+    <path
+      d="M10 27.5 L18 20.5 L22 24 L28.5 16.5"
+      stroke="#F97350"
+      strokeWidth="2.6"
+      fill="none"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path d="M23.5 15.5 h5.5 v5.5" stroke="#F97350" strokeWidth="2.6" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+export const Logo: FC<{ light?: boolean }> = ({ light }) => (
+  <span className="flex items-center gap-2.5">
+    <LogoMark />
+    <span className={`text-[21px] font-display font-semibold tracking-tight ${light ? 'text-paper' : 'text-ink'}`}>
+      Quick<span className="text-pine">Resume</span>
     </span>
   </span>
 );
 
-const links = [
-  { to: '/start', label: 'Builder' },
+const NAV_LINKS = [
   { to: '/templates', label: 'Templates' },
+  { to: '/improve', label: 'Improve Resume' },
+  { to: '/examples', label: 'Examples' },
   { to: '/ai-tools', label: 'AI Tools' },
-  { to: '/cover-letter', label: 'Cover Letters' },
+  { to: '/cover-letter', label: 'Cover Letter' },
+  { to: '/pricing', label: 'Pricing' },
 ];
 
 export const Navbar: FC = () => {
@@ -36,67 +50,82 @@ export const Navbar: FC = () => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [scrolled, setScrolled] = useState(false);
+  const { isDarkMode, toggleDarkMode } = useDarkMode();
 
-  useEffect(() => {
-    const unsub = onAuthStateChanged(auth, setUser);
-    return () => unsub();
-  }, []);
+  useEffect(() => onAuthStateChanged(auth, setUser), []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
-    window.addEventListener('scroll', onScroll);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  return (
-    <header
-      className={`fixed top-0 inset-x-0 z-50 h-[72px] transition-colors duration-300 ${
-        scrolled ? 'bg-paper/85 backdrop-blur-md border-b border-line' : 'bg-transparent border-b border-transparent'
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-5 sm:px-8 h-full flex items-center justify-between">
-        <div className="flex items-center gap-10">
-          <Link to="/" aria-label="QuickResume home"><Logo /></Link>
-          <nav className="hidden md:flex items-center gap-7 font-mono-ui text-[0.78rem] uppercase tracking-widest text-body">
-            {links.map((l) => (
-              <Link key={l.to} to={l.to} className="hover:text-ink transition-colors">
-                {l.label}
-              </Link>
-            ))}
-          </nav>
-        </div>
+  useEffect(() => {
+    document.body.style.overflow = mobileMenuOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [mobileMenuOpen]);
 
-        <div className="hidden md:flex items-center gap-4">
+  return (
+    <>
+    <header className={`fixed top-0 left-0 right-0 z-50 h-16 md:h-[72px] bg-paper/90 backdrop-blur-md transition-shadow ${scrolled ? 'border-b border-line shadow-[0_1px_0_rgba(26,36,32,0.02)]' : 'border-b border-transparent'}`}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 h-full flex justify-between items-center">
+        <Link to="/" aria-label="QuickResume home" className="shrink-0">
+          <Logo />
+        </Link>
+
+        <nav className="hidden lg:flex items-center gap-8 text-[14px] font-semibold" aria-label="Main">
+          {NAV_LINKS.map(l => (
+            <NavLink
+              key={l.to}
+              to={l.to}
+              className={({ isActive }) =>
+                `transition-colors ${isActive ? 'text-pine' : 'text-ink-soft hover:text-ink'}`
+              }
+            >
+              {l.label}
+            </NavLink>
+          ))}
+        </nav>
+
+        <div className="hidden lg:flex items-center gap-4">
+          <button
+            onClick={toggleDarkMode}
+            className="text-mist hover:text-ink transition-colors p-2 rounded-full hover:bg-pine-tint"
+            aria-label="Toggle dark mode"
+          >
+            {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+          </button>
           {user ? (
-            <div className="flex items-center gap-3">
-              <span className="text-ink text-sm font-medium">{user.displayName || 'Account'}</span>
+            <div className="flex items-center gap-2">
+              <span className="text-ink-soft text-sm font-semibold max-w-[140px] truncate">{user.displayName || 'My account'}</span>
               <button
                 onClick={() => signOut(auth)}
-                className="text-body hover:text-ink transition-colors p-2 rounded-full hover:bg-brand-soft"
+                className="text-mist hover:text-ink transition-colors p-2 rounded-full hover:bg-pine-tint"
                 title="Log out"
+                aria-label="Log out"
               >
-                <LogOut className="w-5 h-5" />
+                <LogOut className="w-4.5 h-4.5 w-[18px] h-[18px]" />
               </button>
             </div>
           ) : (
             <button
-              className="text-ink hover:text-brand font-medium text-sm transition-colors"
+              className="text-ink-soft hover:text-ink font-semibold text-sm transition-colors"
               onClick={() => setIsLoginModalOpen(true)}
             >
               Log in
             </button>
           )}
           <button
-            onClick={() => navigate('/build')}
-            className="group inline-flex items-center gap-2 bg-ink text-paper rounded-full pl-5 pr-4 py-2.5 text-sm font-semibold hover:bg-brand-deep transition-colors"
+            className="bg-pine text-white rounded-full px-5 py-2.5 text-sm font-bold hover:bg-pine-deep transition-colors inline-flex items-center gap-1.5"
+            onClick={() => navigate('/start')}
           >
-            Build my resume
-            <span className="w-5 h-5 rounded-full bg-brand text-white flex items-center justify-center text-xs group-hover:translate-x-0.5 transition-transform">→</span>
+            Create my resume <ArrowRight className="w-4 h-4" />
           </button>
         </div>
 
         <button
-          className="md:hidden p-2 -mr-2 text-ink"
+          className="lg:hidden p-2 -mr-2 text-ink"
           onClick={() => setMobileMenuOpen(true)}
           aria-label="Open menu"
         >
@@ -104,49 +133,64 @@ export const Navbar: FC = () => {
         </button>
       </div>
 
+    </header>
+      {/* Mobile menu */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-50 bg-paper md:hidden flex flex-col"
+            transition={{ duration: 0.18 }}
+            className="fixed inset-0 z-50 bg-paper lg:hidden flex flex-col"
           >
-            <div className="h-[72px] px-5 flex items-center justify-between border-b border-line">
+            <div className="h-16 px-4 sm:px-6 flex justify-between items-center border-b border-line">
               <Link to="/" onClick={() => setMobileMenuOpen(false)}><Logo /></Link>
-              <button className="p-2 -mr-2 text-ink" onClick={() => setMobileMenuOpen(false)} aria-label="Close menu">
-                <X className="w-6 h-6" />
-              </button>
+              <div className="flex items-center gap-2">
+                <button onClick={toggleDarkMode} className="p-2 text-ink" aria-label="Toggle dark mode">
+                  {isDarkMode ? <Sun className="w-6 h-6" /> : <Moon className="w-6 h-6" />}
+                </button>
+                <button className="p-2 -mr-2 text-ink" onClick={() => setMobileMenuOpen(false)} aria-label="Close menu">
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
             </div>
 
-            <nav className="flex-1 flex flex-col justify-center px-8 gap-1">
-              {links.map((l, i) => (
+            <nav className="flex-1 overflow-y-auto px-6 py-8 flex flex-col gap-1" aria-label="Mobile">
+              {[{ to: '/start', label: 'Resume Builder' }, ...NAV_LINKS, { to: '/resources', label: 'Resources' }].map(l => (
                 <Link
                   key={l.to}
                   to={l.to}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-baseline gap-4 py-3 border-b border-line group"
+                  className="py-3.5 text-lg font-semibold text-ink border-b border-line/70 flex justify-between items-center"
                 >
-                  <span className="font-mono-ui text-xs text-brand-deep w-8">0{i + 1}</span>
-                  <span className="font-display text-3xl font-semibold text-ink group-hover:text-brand transition-colors">{l.label}</span>
+                  {l.label}
+                  <ArrowRight className="w-4 h-4 text-mist" />
                 </Link>
               ))}
             </nav>
 
-            <div className="p-6 border-t border-line">
+            <div className="p-6 border-t border-line space-y-3">
               <button
-                className="w-full h-14 rounded-full text-base bg-ink text-paper font-semibold hover:bg-brand-deep transition-colors"
-                onClick={() => { setMobileMenuOpen(false); navigate('/build'); }}
+                className="w-full h-13 py-3.5 rounded-full text-base bg-pine hover:bg-pine-deep text-white font-bold transition-colors"
+                onClick={() => { setMobileMenuOpen(false); navigate('/start'); }}
               >
-                Build my resume
+                Create my resume
               </button>
+              {!user && (
+                <button
+                  className="w-full py-3 text-sm font-semibold text-ink-soft"
+                  onClick={() => { setMobileMenuOpen(false); setIsLoginModalOpen(true); }}
+                >
+                  Log in
+                </button>
+              )}
             </div>
           </motion.div>
         )}
       </AnimatePresence>
 
       <LoginModal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} onSuccess={() => {}} />
-    </header>
+    </>
   );
 };

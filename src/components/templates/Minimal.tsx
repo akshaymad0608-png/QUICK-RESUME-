@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { ResumeData } from '../../types';
+import CustomSectionsBlock from './CustomSectionsBlock';
 
 interface TemplateProps {
   data: ResumeData;
@@ -24,7 +25,7 @@ const Minimal: FC<TemplateProps> = ({ data }) => {
             <img src={personalInfo.photoUrl} alt="Profile" className="w-20 h-20 rounded-full object-cover shrink-0" />
           )}
           <div>
-            <h1 className="text-4xl lg:text-5xl font-light tracking-tight text-teal-600 mb-1" style={{ fontFamily: hf }}>
+            <h1 className="text-4xl lg:text-5xl font-light tracking-tight text-pine mb-1" style={{ fontFamily: hf }}>
               {personalInfo.firstName} {personalInfo.lastName}
             </h1>
             <div className="text-lg text-slate-500 font-medium tracking-wide">
@@ -66,7 +67,7 @@ const Minimal: FC<TemplateProps> = ({ data }) => {
             {experience.map(exp => (
               <div key={exp.id}>
                 <div className="flex justify-between items-baseline mb-1">
-                  <div className="font-bold text-teal-600 text-[15px]">{exp.jobTitle}</div>
+                  <div className="font-bold text-pine text-[15px]">{exp.jobTitle}</div>
                   <div className="text-xs font-medium text-slate-400 uppercase tracking-wider">
                     {exp.startDate} — {exp.isPresent ? 'Present' : exp.endDate}
                   </div>
@@ -93,7 +94,7 @@ const Minimal: FC<TemplateProps> = ({ data }) => {
             {education.map(edu => (
               <div key={edu.id} className="flex justify-between items-start">
                 <div>
-                   <div className="font-bold text-teal-600 text-[15px]">{edu.degree} in {edu.fieldOfStudy}</div>
+                   <div className="font-bold text-pine text-[15px]">{edu.degree} in {edu.fieldOfStudy}</div>
                    <div className="text-sm text-slate-600 font-medium mt-0.5">{edu.schoolName}</div>
                    {edu.description && <div className="text-sm text-slate-700 mt-2 whitespace-pre-wrap">{edu.description}</div>}
                 </div>
@@ -116,7 +117,7 @@ const Minimal: FC<TemplateProps> = ({ data }) => {
             {projects.map(proj => (
               <div key={proj.id}>
                 <div className="flex justify-between items-baseline mb-1">
-                  <div className="font-bold text-teal-600 text-[15px]">
+                  <div className="font-bold text-pine text-[15px]">
                     {proj.title}
                     {proj.link && <span className="text-sm font-normal text-slate-400 ml-2">({proj.link.replace('https://', '')})</span>}
                   </div>
@@ -150,7 +151,7 @@ const Minimal: FC<TemplateProps> = ({ data }) => {
             {certifications.map(cert => (
               <div key={cert.id} className="flex justify-between items-start">
                 <div>
-                   <div className="font-bold text-teal-600 text-[14px]">{cert.name}</div>
+                   <div className="font-bold text-pine text-[14px]">{cert.name}</div>
                    {cert.issuer && <div className="text-sm text-slate-600 font-medium">{cert.issuer}</div>}
                 </div>
                 <div className="text-xs font-medium text-slate-400 uppercase tracking-wider text-right shrink-0 ml-4">
@@ -185,13 +186,14 @@ const Minimal: FC<TemplateProps> = ({ data }) => {
           <div className="col-span-9 flex flex-wrap gap-x-6 gap-y-2">
             {languages.map(lang => (
               <div key={lang.id} className="text-sm">
-                <span className="font-bold text-teal-600">{lang.name}</span>
+                <span className="font-bold text-pine">{lang.name}</span>
                 <span className="text-slate-500 ml-1">({lang.proficiency})</span>
               </div>
             ))}
           </div>
         </div>
       )}
+      <CustomSectionsBlock data={data} />
     </div>
   );
 };

@@ -1,21 +1,19 @@
 import { FC, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useNavigate } from 'react-router-dom';
-import { FileText, Feather, Wand2, Copy, Download, Loader2 } from 'lucide-react';
+import { Navbar } from '../components/layout/Navbar';
+
+import { FileText, Wand2, Copy, Download, Loader2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useResume } from '../context/ResumeContext';
 import { generateCoverLetter } from '../services/geminiService';
-import html2canvas from 'html2canvas';
-import { jsPDF } from 'jspdf';
+import { exportTextToPdf } from '../utils/exportTextPdf';
 
 
 const CoverLetterGenerator: FC = () => {
-  const navigate = useNavigate();
   const { data } = useResume();
   const [jobDescription, setJobDescription] = useState('');
   const [coverLetter, setCoverLetter] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
-  const [isDownloading, setIsDownloading] = useState(false);
 
   const handleGenerate = async () => {
     if (!jobDescription || jobDescription.trim().length < 10) {
@@ -40,86 +38,32 @@ const CoverLetterGenerator: FC = () => {
     toast.success('Copied to clipboard');
   };
 
-  const handleDownloadPDF = async () => {
-    if (!coverLetter) return;
-    setIsDownloading(true);
-    
-    const el = document.createElement('div');
-    el.style.position = 'absolute';
-    el.style.left = '0';
-    el.style.top = '0';
-    el.style.zIndex = '-9999';
-    el.style.width = '800px';
-    el.style.padding = '40px';
-    el.style.backgroundColor = 'white';
-    el.style.color = 'black';
-    el.style.fontFamily = 'Arial, sans-serif';
-    el.style.fontSize = '14px';
-    el.style.lineHeight = '1.6';
-    el.style.whiteSpace = 'pre-wrap';
-    el.innerText = coverLetter;
-    
-    document.body.appendChild(el);
-
+  const handleDownloadPDF = () => {
+    if (!coverLetter.trim()) {
+      toast.error('Generate a cover letter first!');
+      return;
+    }
     try {
-      const canvas = await html2canvas(el, { scale: 2, useCORS: true });
-      const imgData = canvas.toDataURL('image/jpeg', 1.0);
-      const pdf = new jsPDF('p', 'mm', 'a4');
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = pdf.internal.pageSize.getHeight();
-      const contentHeight = (canvas.height * pdfWidth) / canvas.width;
-      
-      let heightLeft = contentHeight;
-      let position = 0;
-      
-      pdf.addImage(imgData, 'JPEG', 0, position, pdfWidth, contentHeight);
-      heightLeft -= pdfHeight;
-      
-      while (heightLeft > 0) {
-        position = position - pdfHeight;
-        pdf.addPage();
-        pdf.addImage(imgData, 'JPEG', 0, position, pdfWidth, contentHeight);
-        heightLeft -= pdfHeight;
-      }
-      
-      pdf.save('Cover_Letter.pdf');
+      exportTextToPdf(coverLetter, 'Cover_Letter.pdf');
       toast.success('PDF downloaded!');
     } catch (error) {
-      console.error("Error generating PDF:", error);
-      toast.error("Failed to generate PDF");
-    } finally {
-      document.body.removeChild(el);
-      setIsDownloading(false);
+      console.error('Error generating PDF:', error);
+      toast.error('Failed to generate PDF.');
     }
   };
   
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-600 flex flex-col font-sans pt-[72px] bg-grid-pattern relative">\n      <div className="absolute inset-0 bg-gradient-to-b from-slate-50/80 to-slate-50 pointer-events-none z-0"></div>
+    <div className="min-h-screen bg-paper text-body flex flex-col font-sans pt-16 md:pt-[72px] relative selection:bg-pine selection:text-white">
       <Helmet>
         <title>AI Cover Letter Builder | QuickResume</title>
         <meta name="description" content="Generate a customized, professional cover letter in seconds matching your resume using AI." />
       </Helmet>
 
       {/* Navbar Minimal */}
-      <nav className="fixed top-0 left-0 right-0 h-[72px] bg-white/80 backdrop-blur-md border-b border-slate-200 px-6 lg:px-10 flex items-center justify-between z-50">
-        <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')}>
-          <div className="w-10 h-10 bg-gradient-to-tr from-slate-900 to-slate-700 rounded-lg flex items-center justify-center shadow-lg shadow-slate-300/50">
-            <Feather className="text-white w-6 h-6" />
-          </div>
-          <span className="text-2xl font-bold text-slate-900 tracking-tight">QuickResume</span>
-        </div>
-        <div className="flex items-center gap-4">
-          <button 
-            onClick={() => navigate('/build')}
-            className="text-sm font-semibold text-slate-600 hover:text-slate-900 transition-colors border border-slate-200 rounded-lg px-4 py-2 bg-white hover:bg-slate-50 shadow-sm"
-          >
-            Back to Editor
-          </button>
-        </div>
-      </nav>
+      <Navbar />
 
       <main className="flex-1 w-full max-w-7xl mx-auto px-6 py-12 flex flex-col gap-8 lg:flex-row relative">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-gradient-to-b from-slate-100/50 to-transparent pointer-events-none"></div>\n        <div className="absolute top-20 left-10 w-96 h-96 bg-blue-400/10 rounded-full blur-3xl pointer-events-none"></div>\n        <div className="absolute top-40 right-10 w-96 h-96 bg-purple-400/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-gradient-to-b from-slate-100/50 to-transparent pointer-events-none"></div>        <div className="absolute top-20 left-10 w-96 h-96 bg-blue-400/10 rounded-full blur-3xl pointer-events-none"></div>        <div className="absolute top-40 right-10 w-96 h-96 bg-purple-400/10 rounded-full blur-3xl pointer-events-none"></div>
 
         {/* Left Column: Input */}
         <div className="w-full lg:w-1/2 flex flex-col gap-4 lg:h-[calc(100vh-140px)] relative z-10">
@@ -145,7 +89,7 @@ const CoverLetterGenerator: FC = () => {
             />
 
             <button
-              className="w-full bg-teal-600 text-white font-bold rounded-2xl py-4 flex items-center justify-center gap-2 hover:bg-teal-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-md shadow-slate-300/50"
+              className="w-full bg-pine text-white font-bold rounded-2xl py-4 flex items-center justify-center gap-2 hover:bg-pine-deep transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-md shadow-slate-300/50"
               onClick={handleGenerate}
               disabled={isGenerating || !jobDescription.trim()}
             >
@@ -171,11 +115,11 @@ const CoverLetterGenerator: FC = () => {
                 </button>
                 <button
                   onClick={handleDownloadPDF}
-                  disabled={!coverLetter || isDownloading}
+                  disabled={!coverLetter}
                   className="p-2.5 text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition-colors disabled:opacity-30 border border-transparent"
                   title="Download as PDF"
                 >
-                  {isDownloading ? <Loader2 size={20} className="animate-spin" /> : <Download size={20} />}
+                  <Download size={20} />
                 </button>
               </div>
             </div>

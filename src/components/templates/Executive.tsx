@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { ResumeData } from '../../types';
+import CustomSectionsBlock from './CustomSectionsBlock';
 
 interface TemplateProps {
   data: ResumeData;
@@ -18,7 +19,7 @@ const Executive: FC<TemplateProps> = ({ data }) => {
     <div className="w-full flex-1 flex flex-col bg-white p-12 lg:p-16 mx-auto" style={{ fontFamily: bf, fontSize: design.fontSize || '14px' , lineHeight: design.lineHeight || '1.6', color: '#111' }}>
       
       {/* Header */}
-      <div className="flex flex-col items-center text-center border-b-2 border-teal-600 pb-8" style={{ marginBottom: sectionGap }}>
+      <div className="flex flex-col items-center text-center border-b-2 border-pine pb-8" style={{ marginBottom: sectionGap }}>
         {personalInfo.photoUrl && data.design.showPhoto !== false && (
           <img src={personalInfo.photoUrl} alt="Profile" className="w-24 h-24 rounded-full object-cover mb-4 shadow-sm border border-gray-200" />
         )}
@@ -57,14 +58,14 @@ const Executive: FC<TemplateProps> = ({ data }) => {
       {/* Experience */}
       {experience.length > 0 && (
         <div style={{ marginBottom: sectionGap }}>
-          <h2 className="text-sm font-bold uppercase tracking-widest border-b border-teal-600 pb-2 mb-4" style={{ fontFamily: hf, color: c }}>
+          <h2 className="text-sm font-bold uppercase tracking-widest border-b border-pine pb-2 mb-4" style={{ fontFamily: hf, color: c }}>
             Professional Experience
           </h2>
           <div className="space-y-6">
             {experience.map(exp => (
               <div key={exp.id}>
                 <div className="flex justify-between items-baseline mb-1">
-                  <div className="font-bold text-teal-600 text-[15px]">{exp.company} {exp.city && <span className="font-normal text-slate-600">, {exp.city}</span>}</div>
+                  <div className="font-bold text-pine text-[15px]">{exp.company} {exp.city && <span className="font-normal text-slate-600">, {exp.city}</span>}</div>
                   <div className="text-[13px] font-bold text-slate-600">
                     {exp.startDate} – {exp.isPresent ? 'Present' : exp.endDate}
                   </div>
@@ -84,14 +85,14 @@ const Executive: FC<TemplateProps> = ({ data }) => {
       {/* Education */}
       {education.length > 0 && (
         <div style={{ marginBottom: sectionGap }}>
-          <h2 className="text-sm font-bold uppercase tracking-widest border-b border-teal-600 pb-2 mb-4" style={{ fontFamily: hf, color: c }}>
+          <h2 className="text-sm font-bold uppercase tracking-widest border-b border-pine pb-2 mb-4" style={{ fontFamily: hf, color: c }}>
             Education & Credentials
           </h2>
           <div className="space-y-4">
             {education.map(edu => (
               <div key={edu.id}>
                 <div className="flex justify-between items-baseline mb-1">
-                  <div className="font-bold text-teal-600 text-[15px]">{edu.schoolName} {edu.city && <span className="font-normal text-slate-600">, {edu.city}</span>}</div>
+                  <div className="font-bold text-pine text-[15px]">{edu.schoolName} {edu.city && <span className="font-normal text-slate-600">, {edu.city}</span>}</div>
                   <div className="text-[13px] font-bold text-slate-600">
                     {edu.startYear} – {edu.endYear}
                   </div>
@@ -111,14 +112,14 @@ const Executive: FC<TemplateProps> = ({ data }) => {
       {/* Projects */}
       {projects.length > 0 && (
         <div style={{ marginBottom: sectionGap }}>
-          <h2 className="text-sm font-bold uppercase tracking-widest border-b border-teal-600 pb-2 mb-4" style={{ fontFamily: hf, color: c }}>
+          <h2 className="text-sm font-bold uppercase tracking-widest border-b border-pine pb-2 mb-4" style={{ fontFamily: hf, color: c }}>
             Notable Projects
           </h2>
           <div className="space-y-4">
             {projects.map(proj => (
               <div key={proj.id}>
                 <div className="flex justify-between items-baseline mb-1">
-                  <div className="font-bold text-teal-600 text-[15px]">
+                  <div className="font-bold text-pine text-[15px]">
                     {proj.title}
                     {proj.link && <span className="text-[13px] font-normal text-slate-500 ml-2">({proj.link.replace('https://', '')})</span>}
                   </div>
@@ -145,14 +146,14 @@ const Executive: FC<TemplateProps> = ({ data }) => {
       {/* Certifications */}
       {certifications.length > 0 && (
         <div style={{ marginBottom: sectionGap }}>
-          <h2 className="text-sm font-bold uppercase tracking-widest border-b border-teal-600 pb-2 mb-4" style={{ fontFamily: hf, color: c }}>
+          <h2 className="text-sm font-bold uppercase tracking-widest border-b border-pine pb-2 mb-4" style={{ fontFamily: hf, color: c }}>
             Certifications
           </h2>
           <div className="space-y-3">
             {certifications.map(cert => (
               <div key={cert.id} className="flex justify-between items-baseline">
                 <div>
-                  <span className="font-bold text-teal-600 text-[15px]">{cert.name}</span>
+                  <span className="font-bold text-pine text-[15px]">{cert.name}</span>
                   {cert.issuer && <span className="text-[14px] text-slate-700 ml-1">— {cert.issuer}</span>}
                 </div>
                 <div className="text-[13px] font-bold text-slate-600 ml-4 whitespace-nowrap">
@@ -167,7 +168,7 @@ const Executive: FC<TemplateProps> = ({ data }) => {
       {/* Skills */}
       {skills.length > 0 && (
         <div style={{ marginBottom: sectionGap }}>
-          <h2 className="text-sm font-bold uppercase tracking-widest border-b border-teal-600 pb-2 mb-4" style={{ fontFamily: hf, color: c }}>
+          <h2 className="text-sm font-bold uppercase tracking-widest border-b border-pine pb-2 mb-4" style={{ fontFamily: hf, color: c }}>
             Core Competencies
           </h2>
           <div className="flex flex-wrap gap-x-2 gap-y-2">
@@ -183,7 +184,7 @@ const Executive: FC<TemplateProps> = ({ data }) => {
       {/* Languages */}
       {languages.length > 0 && (
         <div style={{ marginBottom: sectionGap }}>
-          <h2 className="text-sm font-bold uppercase tracking-widest border-b border-teal-600 pb-2 mb-4" style={{ fontFamily: hf, color: c }}>
+          <h2 className="text-sm font-bold uppercase tracking-widest border-b border-pine pb-2 mb-4" style={{ fontFamily: hf, color: c }}>
             Languages
           </h2>
           <div className="flex flex-wrap gap-x-6 gap-y-2">
@@ -196,6 +197,7 @@ const Executive: FC<TemplateProps> = ({ data }) => {
           </div>
         </div>
       )}
+      <CustomSectionsBlock data={data} />
     </div>
   );
 };

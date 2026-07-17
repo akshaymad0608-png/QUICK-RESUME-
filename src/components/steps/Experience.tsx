@@ -63,9 +63,16 @@ const Experience: FC = () => {
     }
   };
 
-  const [aiActions] = useState(['Generate', 'Improve', 'Shorten', 'Professional Tone', 'ATS Optimize']);
+  const aiActionMap: Record<string, 'improve' | 'numbers' | 'shorten' | 'expand' | 'grammar'> = {
+    'Improve': 'improve',
+    'Add Metrics': 'numbers',
+    'Shorten': 'shorten',
+    'Expand Detail': 'expand',
+    'Fix Grammar': 'grammar',
+  };
+  const aiActions = Object.keys(aiActionMap);
 
-  const handleEnhance = async (expId: string, actionType: string = 'improve') => {
+  const handleEnhance = async (expId: string, actionType: 'improve' | 'numbers' | 'shorten' | 'expand' | 'grammar' = 'improve') => {
     const exp = data.experience.find(e => e.id === expId);
     if (!exp || exp.description.trim().length < 5) {
       toast.error('Please write some basic description first.');
@@ -268,7 +275,7 @@ const Experience: FC = () => {
                    {aiActions.map(action => (
                      <button 
                         key={action}
-                        onClick={() => focusedExpId ? handleEnhance(focusedExpId, action.toLowerCase().replace(' ', '_')) : toast.error('Select an experience first')}
+                        onClick={() => focusedExpId ? handleEnhance(focusedExpId, aiActionMap[action]) : toast.error('Select an experience first')}
                         disabled={isEnhancingId === focusedExpId}
                         className="w-full py-3 bg-white border border-slate-200 hover:bg-slate-50 text-slate-600 font-bold text-sm rounded-xl shadow-sm transition-all flex items-center justify-center gap-2"
                      >

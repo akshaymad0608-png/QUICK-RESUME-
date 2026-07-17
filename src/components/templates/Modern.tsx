@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { ResumeData } from '../../types';
+import CustomSectionsBlock from './CustomSectionsBlock';
 import { Phone, Mail, MapPin, Linkedin, Globe } from 'lucide-react';
 
 interface TemplateProps {
@@ -194,6 +195,7 @@ const Modern: FC<TemplateProps> = ({ data }) => {
           </div>
         </div>
       </div>
+      <CustomSectionsBlock data={data} className="px-12 pb-10" />
     </div>
   );
 };

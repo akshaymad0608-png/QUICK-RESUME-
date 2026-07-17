@@ -1,143 +1,117 @@
-import React from 'react';
 import { Helmet } from 'react-helmet-async';
-import { FileText, Feather, MessageSquare, ArrowRight, Wand2, Search, Edit3, ShieldCheck } from 'lucide-react';
+import { FileText, MessageSquare, ArrowRight, Wand2, Search, Edit3, ShieldCheck, Upload } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { Navbar } from '../components/layout/Navbar';
+import { Footer } from '../components/layout/Footer';
 
 const tools = [
   {
     id: 'summary-generator',
     name: 'AI Summary Generator',
-    description: 'Instantly generate a compelling professional summary tailored to your target role.',
-    icon: <FileText className="w-6 h-6 text-slate-900" />,
-    color: 'bg-slate-100',
-    border: 'border-slate-200',
-    popular: true,
-  },
-  {
-    id: 'skills-suggestion',
-    name: 'Skills Suggestion',
-    description: 'Get AI recommendations for missing industry-standard skills to beat the ATS.',
-    icon: <Wand2 className="w-6 h-6 text-slate-700" />,
-    color: 'bg-slate-100',
-    border: 'border-slate-200',
-  },
-  {
-    id: 'jd-match',
-    name: 'Job Description Match',
-    description: 'Compare your resume against a job description to identify gaps and keywords.',
-    icon: <Search className="w-6 h-6 text-slate-700" />,
-    color: 'bg-slate-100',
-    border: 'border-slate-200',
-  },
-  {
-    id: 'cover-letter',
-    name: 'Cover Letter Generator',
-    description: 'Generate a highly personalized, targeted cover letter in seconds.',
-    icon: <MessageSquare className="w-6 h-6 text-rose-400" />,
-    color: 'bg-rose-500/10',
-    border: 'border-rose-500/20',
-  },
-  {
-    id: 'ats-checker',
-    name: 'ATS Score Checker',
-    description: 'Check your resume against common recruiter ATS requirements and get a score.',
-    icon: <ShieldCheck className="w-6 h-6 text-slate-700" />,
-    color: 'bg-slate-100',
-    border: 'border-slate-200',
+    description: 'A recruiter-ready professional summary written for your target role — generated from your actual experience, not a generic template.',
+    icon: FileText,
+    to: '/build',
     popular: true,
   },
   {
     id: 'bullet-rewriter',
     name: 'Bullet Point Rewriter',
-    description: 'Transform weak experience bullet points into impactful, action-oriented achievements.',
-    icon: <Edit3 className="w-6 h-6 text-slate-700" />,
-    color: 'bg-slate-100',
-    border: 'border-slate-200',
-  }
+    description: 'Turn plain duties into quantified achievements. Improve, shorten, expand, or add plausible metrics with one click.',
+    icon: Edit3,
+    to: '/build',
+  },
+  {
+    id: 'skills-suggestion',
+    name: 'Skill Suggestions',
+    description: 'AI recommends the industry-standard skills your resume is missing for your exact job title.',
+    icon: Wand2,
+    to: '/build',
+  },
+  {
+    id: 'ats-checker',
+    name: 'ATS Score Checker',
+    description: 'Score your resume against real applicant-tracking rules and get specific fixes, section by section.',
+    icon: ShieldCheck,
+    to: '/build',
+    popular: true,
+  },
+  {
+    id: 'jd-match',
+    name: 'Job Description Match',
+    description: 'Paste any job post and see exactly which keywords and requirements your resume is missing.',
+    icon: Search,
+    to: '/build',
+  },
+  {
+    id: 'cover-letter',
+    name: 'Cover Letter Generator',
+    description: 'A tailored cover letter drafted from your resume and the job description — in seconds.',
+    icon: MessageSquare,
+    to: '/cover-letter',
+  },
+  {
+    id: 'resume-import',
+    name: 'Resume Import',
+    description: 'Upload your existing PDF or DOCX and AI extracts your details automatically — no retyping.',
+    icon: Upload,
+    to: '/start',
+  },
 ];
 
 export default function AITools() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-600 flex flex-col font-sans pt-[72px] bg-grid-pattern relative">\n      <div className="absolute inset-0 bg-gradient-to-b from-slate-50/80 to-slate-50 pointer-events-none z-0"></div>
+    <div className="min-h-screen bg-paper text-body font-sans flex flex-col selection:bg-pine selection:text-white">
       <Helmet>
-        <title>AI Resume Tools | QuickResume</title>
-        <meta name="description" content="Discover our powerful suite of AI career tools to build, analyze, and optimize your resume, write cover letters, and match job descriptions." />
-        <meta property="og:title" content="AI Resume Tools | QuickResume" />
-        <meta property="og:description" content="Powerful AI career tools to help you land your dream job faster." />
+        <title>Free AI Resume Tools — Summary, ATS Check, Cover Letters | QuickResume</title>
+        <meta name="description" content="Seven free AI career tools: resume summary generator, ATS score checker, bullet point rewriter, skill suggestions, job description matcher and cover letter generator." />
+        <link rel="canonical" href="https://quickresume.business/ai-tools" />
       </Helmet>
 
-      {/* Navbar Minimal */}
-      <nav className="fixed top-0 left-0 right-0 h-[72px] bg-white/80 backdrop-blur-md border-b border-slate-200 px-6 lg:px-10 flex items-center justify-between z-50">
-        <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')}>
-          <div className="w-10 h-10 bg-gradient-to-tr from-slate-900 to-slate-700 rounded-lg flex items-center justify-center shadow-lg shadow-slate-300/50">
-            <Feather className="text-white w-6 h-6" />
-          </div>
-          <span className="text-2xl font-bold text-slate-900 tracking-tight">QuickResume</span>
-        </div>
-        <div className="flex items-center gap-4">
-          <button 
-            onClick={() => navigate('/build')}
-            className="text-sm font-bold text-white bg-teal-600 px-4 py-2 rounded-lg hover:bg-teal-700 transition-colors shadow-sm"
-          >
-            Create Resume
-          </button>
-        </div>
-      </nav>
+      <Navbar />
 
-      {/* Hero Section */}
-      <section className="bg-white py-24 px-6 border-b border-slate-200 relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-slate-100/50 to-transparent pointer-events-none"></div>\n        <div className="absolute -top-40 -left-40 w-96 h-96 bg-blue-400/20 rounded-full blur-3xl pointer-events-none"></div>\n        <div className="absolute top-20 -right-40 w-96 h-96 bg-purple-400/20 rounded-full blur-3xl pointer-events-none"></div>
-        <div className="max-w-3xl mx-auto text-center space-y-4 relative z-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 text-slate-900 text-sm font-semibold mb-4 border border-slate-200">
-            <Wand2 className="w-4 h-4" /> AI Powered
+      <main className="flex-1 pt-16 md:pt-[72px]">
+        <section className="bg-ruled border-b border-line">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-12 pb-12 lg:pt-16 lg:pb-16">
+            <p className="eyebrow mb-4">AI toolkit</p>
+            <h1 className="font-display text-4xl sm:text-5xl text-ink font-semibold mb-4 max-w-2xl leading-tight">
+              Seven tools that do the hard writing for you
+            </h1>
+            <p className="text-lg max-w-xl">
+              Each one is built into the resume editor — use them individually here, or let them work together as you build.
+            </p>
           </div>
-          <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight mb-4">
-            Supercharge your job search
-          </h1>
-          <p className="text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed">
-            Everything you need to land your dream job faster. Optimize your resume, write cover letters, and beat the ATS with our AI tools.
-          </p>
-        </div>
-      </section>
+        </section>
 
-      {/* Tools Grid */}
-      <section className="py-24 px-6 flex-1 bg-slate-50">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {tools.map((tool) => (
-              <div 
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 py-14 lg:py-20">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {tools.map(tool => (
+              <button
                 key={tool.id}
-                className="bg-white border border-slate-200 p-8 rounded-3xl hover:border-slate-300 hover:shadow-2xl hover:shadow-slate-200/50 hover:-translate-y-1 transition-all cursor-pointer flex flex-col group"
-                onClick={() => navigate(tool.id === 'cover-letter' ? '/cover-letter' : '/build')}
+                onClick={() => navigate(tool.to)}
+                className="bg-card border border-line rounded-2xl p-7 text-left shadow-card hover:shadow-lift hover:-translate-y-0.5 transition-all flex flex-col group"
               >
-                <div className="flex justify-between items-start mb-6">
-                  <div className={`w-14 h-14 ${tool.color} border ${tool.border} rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform`}>
-                    {tool.icon}
+                <div className="flex justify-between items-start mb-5">
+                  <div className="w-12 h-12 rounded-xl bg-pine-tint text-pine flex items-center justify-center">
+                    <tool.icon className="w-6 h-6" />
                   </div>
                   {tool.popular && (
-                    <span className="bg-slate-100 text-slate-700 border border-slate-200 text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-widest">
-                      Popular
-                    </span>
+                    <span className="font-mono text-[10px] tracking-[0.14em] uppercase bg-seal-tint text-[#B34A2E] border border-seal/40 px-2.5 py-1 rounded">Popular</span>
                   )}
                 </div>
-                <h3 className="text-xl font-bold text-slate-900 mb-3">{tool.name}</h3>
-                <p className="text-slate-500 mb-8 flex-grow leading-relaxed">{tool.description}</p>
-                
-                <div className="mt-auto flex items-center text-slate-900 font-bold group-hover:text-slate-800 transition-colors">
-                  Try it now <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-2" />
-                </div>
-              </div>
+                <h2 className="text-lg font-bold text-ink mb-2">{tool.name}</h2>
+                <p className="text-[15px] leading-relaxed mb-6 flex-1">{tool.description}</p>
+                <span className="inline-flex items-center gap-2 text-sm font-bold text-pine">
+                  Try it free <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                </span>
+              </button>
             ))}
           </div>
-        </div>
-      </section>
+        </section>
+      </main>
 
-      {/* Footer Minimal */}
-      <footer className="bg-white border-t border-slate-200 py-8 px-6 text-center text-sm font-medium text-slate-500">
-        © {new Date().getFullYear()} quickresume.business. All rights reserved.
-      </footer>
+      <Footer />
     </div>
   );
 }

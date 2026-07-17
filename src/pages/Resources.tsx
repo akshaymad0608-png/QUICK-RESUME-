@@ -1,7 +1,8 @@
 import { FC, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useNavigate } from 'react-router-dom';
-import { FileText, Feather, BookOpen, Compass, Search, ChevronDown, ChevronUp, Sparkles } from 'lucide-react';
+import { Navbar } from '../components/layout/Navbar';
+
+import { FileText, BookOpen, Compass, Search, ChevronDown, ChevronUp, Sparkles } from 'lucide-react';
 
 const resources = [
   {
@@ -39,7 +40,6 @@ const resources = [
 ];
 
 const Resources: FC = () => {
-  const navigate = useNavigate();
   const [expandedId, setExpandedId] = useState<number | null>(null);
 
   const toggleExpand = (idx: number) => {
@@ -47,7 +47,7 @@ const Resources: FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-600 flex flex-col font-sans pt-[72px] bg-grid-pattern relative">\n      <div className="absolute inset-0 bg-gradient-to-b from-slate-50/80 to-slate-50 pointer-events-none z-0"></div>
+    <div className="min-h-screen bg-paper text-body flex flex-col font-sans pt-16 md:pt-[72px] relative selection:bg-pine selection:text-white">
       <Helmet>
         <title>Career Resources & Guides | QuickResume</title>
         <meta name="description" content="Expert advice, resume templates, and formatting tips to help you build the perfect resume and land your dream job faster." />
@@ -59,22 +59,7 @@ const Resources: FC = () => {
       </Helmet>
 
       {/* Navbar Minimal */}
-      <nav className="fixed top-0 left-0 right-0 h-[72px] bg-white border-b border-slate-200 px-6 lg:px-10 flex items-center justify-between z-50">
-        <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')}>
-          <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center shadow-md">
-            <Feather className="text-white w-6 h-6" />
-          </div>
-          <span className="text-2xl font-bold text-slate-900 tracking-tight">QuickResume</span>
-        </div>
-        <div className="flex items-center gap-4">
-          <button 
-            onClick={() => navigate('/build')}
-            className="text-sm font-bold text-slate-900 bg-blue-600 px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors shadow-sm"
-          >
-            Create Resume
-          </button>
-        </div>
-      </nav>
+      <Navbar />
 
       <section className="bg-white py-24 px-6 border-b border-slate-200 relative overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-blue-50/50 to-transparent pointer-events-none"></div>
@@ -91,7 +76,7 @@ const Resources: FC = () => {
         </div>
       </section>
 
-      <main className="max-w-4xl mx-auto w-full px-6 py-24 flex-1 relative z-10">\n        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] pointer-events-none -z-10 overflow-hidden">\n          <div className="absolute top-20 left-[10%] w-96 h-96 bg-blue-300/20 rounded-full blur-3xl"></div>\n          <div className="absolute top-40 right-[10%] w-96 h-96 bg-purple-300/20 rounded-full blur-3xl"></div>\n        </div>
+      <main className="max-w-4xl mx-auto w-full px-6 py-24 flex-1 relative z-10">        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] pointer-events-none -z-10 overflow-hidden">          <div className="absolute top-20 left-[10%] w-96 h-96 bg-blue-300/20 rounded-full blur-3xl"></div>          <div className="absolute top-40 right-[10%] w-96 h-96 bg-purple-300/20 rounded-full blur-3xl"></div>        </div>
         <div className="grid gap-6">
           {resources.map((resource, idx) => (
             <div 

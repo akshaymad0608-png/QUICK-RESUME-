@@ -12,24 +12,24 @@ export interface ButtonProps extends Omit<HTMLMotionProps<"button">, "variant" |
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className = '', variant = 'primary', size = 'md', isLoading, leftIcon, rightIcon, children, disabled, ...props }, ref) => {
     
-    const baseStyles = "inline-flex items-center justify-center rounded-full font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 disabled:pointer-events-none disabled:opacity-50";
+    const baseStyles = "inline-flex items-center justify-center rounded-xl font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 disabled:pointer-events-none disabled:opacity-50";
     
     let variantStyles = "";
     switch (variant) {
       case 'primary':
-        variantStyles = "bg-ink text-paper shadow-sm hover:bg-brand-deep";
+        variantStyles = "bg-primary text-slate-900 shadow-sm hover:opacity-90";
         break;
       case 'secondary':
-        variantStyles = "bg-brand text-white shadow-sm hover:bg-brand-deep";
+        variantStyles = "bg-secondary text-slate-900 shadow-sm hover:opacity-90";
         break;
       case 'outline':
-        variantStyles = "border border-line bg-surface hover:border-ink text-ink";
+        variantStyles = "border border-border bg-transparent hover:bg-gray-50 text-main dark:hover:bg-gray-800";
         break;
       case 'ghost':
-        variantStyles = "hover:bg-brand-soft text-ink";
+        variantStyles = "hover:bg-gray-100 text-main dark:hover:bg-gray-800";
         break;
       case 'gradient':
-        variantStyles = "bg-brand text-white shadow-md hover:bg-brand-deep";
+        variantStyles = "gradient-bg text-slate-900 shadow-md hover:opacity-90";
         break;
     }
 
@@ -64,7 +64,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           </svg>
         )}
         {!isLoading && leftIcon && <span className="mr-2">{leftIcon}</span>}
-        {children}
+        {children as React.ReactNode}
         {!isLoading && rightIcon && <span className="ml-2">{rightIcon}</span>}
       </motion.button>
     );

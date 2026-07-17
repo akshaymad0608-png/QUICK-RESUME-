@@ -62,7 +62,7 @@ export const ChatAssistant: React.FC = () => {
             <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 \${msg.role === 'user' ? 'bg-slate-200 text-slate-900' : 'bg-slate-200 text-slate-900'}`}>
               {msg.role === 'user' ? <User size={16} /> : <Bot size={16} />}
             </div>
-            <div className={`px-4 py-3 rounded-2xl max-w-[85%] \${msg.role === 'user' ? 'bg-teal-600 text-white rounded-tr-none' : 'bg-gray-100 text-gray-800 rounded-tl-none'}`}>
+            <div className={`px-4 py-3 rounded-2xl max-w-[85%] \${msg.role === 'user' ? 'bg-pine text-white rounded-tr-none' : 'bg-gray-100 text-gray-800 rounded-tl-none'}`}>
               <div className="prose prose-sm text-current">
                 <Markdown>{msg.content}</Markdown>
               </div>
@@ -96,7 +96,7 @@ export const ChatAssistant: React.FC = () => {
           <button 
             onClick={handleSend}
             disabled={!input.trim() || isLoading}
-            className="absolute bottom-3 right-3 p-2 bg-teal-600 text-white rounded-lg disabled:opacity-50 hover:bg-teal-700 transition-colors"
+            className="absolute bottom-3 right-3 p-2 bg-pine text-white rounded-lg disabled:opacity-50 hover:bg-pine-deep transition-colors"
           >
             <Send size={16} />
           </button>

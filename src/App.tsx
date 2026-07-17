@@ -14,6 +14,7 @@ const Resources = lazy(() => import('./pages/Resources'));
 const AITools = lazy(() => import('./pages/AITools'));
 
 const CoverLetterGenerator = lazy(() => import('./pages/CoverLetterGenerator'));
+const ImproveResume = lazy(() => import('./pages/ImproveResume'));
 const Pricing = lazy(() => import('./pages/Pricing'));
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
               <Route path="/resources" element={<Resources />} />
               <Route path="/ai-tools" element={<AITools />} />
               <Route path="/cover-letter" element={<CoverLetterGenerator />} />
+              <Route path="/improve" element={<ImproveResume />} />
               <Route path="/pricing" element={<Pricing />} />
             </Routes>
           </BrowserRouter>

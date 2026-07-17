@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { ResumeData } from '../../types';
+import CustomSectionsBlock from './CustomSectionsBlock';
 import { MapPin, Phone, Mail, Linkedin } from 'lucide-react';
 
 interface TemplateProps {
@@ -182,6 +183,7 @@ const Timeline: FC<TemplateProps> = ({ data }) => {
            )}
         </div>
       </div>
+      <CustomSectionsBlock data={data} className="px-10 pb-8" />
     </div>
   );
 };

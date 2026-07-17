@@ -59,6 +59,12 @@ export interface Certification {
   link: string;
 }
 
+export interface CustomSection {
+  id: string;
+  title: string;
+  content: string;
+}
+
 export interface Language {
   id: string;
   name: string;
@@ -68,6 +74,7 @@ export interface Language {
 export interface DesignConfig {
   template: TemplateType;
   color: string;
+  fontFamily?: string;
   headingFont: string;
   bodyFont: string;
   fontSize: string;
@@ -84,6 +91,7 @@ export interface ResumeData {
   projects: Project[];
   certifications: Certification[];
   languages: Language[];
+  customSections?: CustomSection[];
   skills: string[];
   summary: string;
   design: DesignConfig;

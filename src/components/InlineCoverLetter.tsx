@@ -3,8 +3,7 @@ import { Mail, Loader2, Wand2, Copy, Download, CheckCircle2 } from 'lucide-react
 import { useResume } from '../context/ResumeContext';
 import { generateCoverLetter } from '../services/geminiService';
 import toast from 'react-hot-toast';
-import html2canvas from 'html2canvas';
-import { jsPDF } from 'jspdf';
+import { exportTextToPdf } from '../utils/exportTextPdf';
 
 import { coverLetterExamples } from '../data/examples';
 
@@ -42,51 +41,21 @@ const InlineCoverLetter: FC = () => {
     toast.success('Copied!');
   };
 
-  const handleDownload = async () => {
-    if (!letter) return;
-    setDownloading(true);
-    const el = document.createElement('div');
-    const NameStr = data.personalInfo.firstName ? `${data.personalInfo.firstName} ${data.personalInfo.lastName}` : '[Your Name]';
-    el.innerHTML = `<div style="font-family: Arial, sans-serif; padding: 2rem; font-size: 14px; line-height: 1.8; white-space: pre-wrap; color: #1e293b; width: 794px;">${letter.replace(/\[Your Name\]/gi, NameStr)}</div>`;
-    
-    // Put at top left with z-index to avoid scroll issues causing empty canvases
-    el.style.position = 'absolute';
-    el.style.top = '0';
-    el.style.left = '0';
-    el.style.zIndex = '-9999';
-    document.body.appendChild(el);
-
+  const handleDownload = () => {
+    if (!letter.trim()) {
+      toast.error('Generate a cover letter first!');
+      return;
+    }
+    const NameStr = [data.personalInfo.firstName, data.personalInfo.lastName].filter(Boolean).join(' ') || 'Your Name';
     const name = data.personalInfo.firstName ? `${data.personalInfo.firstName}_CoverLetter` : 'CoverLetter';
-    
+    setDownloading(true);
     try {
-      const canvas = await html2canvas(el, { scale: 2, useCORS: true });
-      const imgData = canvas.toDataURL('image/jpeg', 1.0);
-      const pdf = new jsPDF('p', 'mm', 'a4');
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = pdf.internal.pageSize.getHeight();
-      const contentHeight = (canvas.height * pdfWidth) / canvas.width;
-      
-      let heightLeft = contentHeight;
-      let position = 0;
-      
-      pdf.addImage(imgData, 'JPEG', 0, position, pdfWidth, contentHeight);
-      heightLeft -= pdfHeight;
-      
-      while (heightLeft > 0) {
-        position = position - pdfHeight;
-        pdf.addPage();
-        pdf.addImage(imgData, 'JPEG', 0, position, pdfWidth, contentHeight);
-        heightLeft -= pdfHeight;
-      }
-      
-      pdf.save(`${name}.pdf`);
-      
+      exportTextToPdf(letter.replace(/\[Your Name\]/gi, NameStr), `${name}.pdf`);
       toast.success('PDF downloaded!');
     } catch (error) {
-      console.error("Error generating PDF:", error);
+      console.error('Error generating PDF:', error);
       toast.error('Failed to generate PDF.');
     } finally {
-      document.body.removeChild(el);
       setDownloading(false);
     }
   };

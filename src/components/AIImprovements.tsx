@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import { Sparkles, Loader2, Lightbulb, ChevronDown, ChevronUp, AlertCircle, AlertTriangle, Info, CheckCircle2, Wand2, RefreshCw } from 'lucide-react';
 import { useResume } from '../context/ResumeContext';
-import { getResumeSuggestions, ResumeSuggestions } from '../services/geminiService';
+import { getResumeSuggestions, ResumeSuggestions, ResumeSectionResult } from '../services/geminiService';
 
 const PURPLE = '#7c3aed';
 const GRAD = 'linear-gradient(135deg, #7c3aed, #0ea5e9)';
@@ -130,7 +130,7 @@ const AIImprovements: FC = () => {
     setLoading(true);
     setResults(null);
     try {
-      const suggestions = await getResumeSuggestions(data as unknown as Record<string, unknown>);
+      const suggestions = await getResumeSuggestions(data);
       setResults(suggestions);
     } catch {
       // fallback: show error in UI
@@ -189,7 +189,7 @@ const AIImprovements: FC = () => {
         <div className="flex flex-col">
           <OverallScore score={results.overallScore} />
           <p className="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-3">Section Breakdown</p>
-          {results.sections.map((s, i) => (
+          {results.sections.map((s: ResumeSectionResult, i: number) => (
             <SectionCard key={i} result={s} onApplyFix={handleApplyFix} />
           ))}
           {appliedFixes.length > 0 && (

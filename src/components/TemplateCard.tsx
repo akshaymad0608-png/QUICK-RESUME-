@@ -66,6 +66,9 @@ const mockData = (color: string): ResumeData => ({
     }
   ],
   skills: ["Digital Marketing", "SEO/SEM", "Content Strategy", "Team Leadership", "Data Analysis", "CRM (Salesforce)", "Adobe Creative Suite"],
+  projects: [],
+  certifications: [],
+  languages: [],
   design: {
     template: "any",
     color: color,
@@ -80,7 +83,7 @@ const mockData = (color: string): ResumeData => ({
 
 export const ActualResume: FC<{ layout: string; color: string }> = ({ layout, color }) => {
   const data = mockData(color);
-  
+
   return (
     <div style={{ width: "794px", minWidth: "794px", height: "1123px", minHeight: "1123px" }} className="bg-white overflow-hidden text-left relative pointer-events-none">
        {layout === 'modern' && <Modern data={data} />}
@@ -95,47 +98,61 @@ export const ActualResume: FC<{ layout: string; color: string }> = ({ layout, co
   );
 };
 
+/* Accent swatches offered on every card */
+const SWATCHES = ['#171D2F', '#3A4FD8', '#1D4ED8', '#B91C1C', '#7C3AED'];
+
+const defaultColorFor = (template: TemplateData): string => {
+  if (template.id.includes('blue')) return '#1D4ED8';
+  if (template.id.includes('red')) return '#B91C1C';
+  if (template.id.includes('green')) return '#3A4FD8';
+  if (template.id.includes('black')) return '#171D2F';
+  switch (template.category) {
+    case 'Colorful': return '#1D4ED8';
+    case 'Creative':
+    case 'Designer': return '#7C3AED';
+    case 'Developer': return '#3A4FD8';
+    case 'Healthcare': return '#1D4ED8';
+    case 'Marketing': return '#B91C1C';
+    default: return '#171D2F';
+  }
+};
+
 export const ResumeTemplateCard: FC<{
   template: TemplateData;
   onSelect?: (id: string, color?: string) => void;
 }> = ({ template, onSelect }) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(0.1);
-  const [activeColor, setActiveColor] = useState('#000000');
-  
-  const colors = ['#000000', '#2563EB', '#16A34A', '#DC2626', '#9333EA'];
+  const [visible, setVisible] = useState(false); // lazy-mount heavy preview
+  const [activeColor, setActiveColor] = useState(() => defaultColorFor(template));
 
   useEffect(() => {
-    if (template.variant === 'Simple' || template.variant === 'Executive' || template.variant === 'Elegant' || template.variant === 'Standard') setActiveColor('#000000');
-    if (template.variant === 'Creative') setActiveColor('#0284C7');
-    if (template.variant === 'Developer') setActiveColor('#0F766E');
-    if (template.variant === 'AI') setActiveColor('#7C3AED'); 
-    if (template.category === 'Colorful') setActiveColor('#0284C7');
-    if (template.category === 'Creative') setActiveColor('#D97706');
-    if (template.category === 'Developer') setActiveColor('#16A34A');
-    if (template.category === 'Designer') setActiveColor('#C026D3');
-    if (template.category === 'Healthcare') setActiveColor('#0284C7');
-    if (template.variant === 'Marketing') setActiveColor('#EA580C');
-    
-    // Explicit color assignments based on specific IDs
-    if (template.id.includes('blue')) setActiveColor('#2563EB');
-    if (template.id.includes('red')) setActiveColor('#DC2626');
-    if (template.id.includes('green')) setActiveColor('#16A34A');
-    if (template.id.includes('black')) setActiveColor('#000000');
-  }, [template.variant, template.id, template.category]);
+    setActiveColor(defaultColorFor(template));
+  }, [template]);
+
+  /* Only mount the full resume DOM when the card scrolls near the viewport.
+     Rendering 60 previews at once made the templates page crawl. */
+  useEffect(() => {
+    const el = wrapperRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      entries => entries.forEach(e => e.isIntersecting && setVisible(true)),
+      { rootMargin: '400px' }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
   useEffect(() => {
     const obs = new ResizeObserver((entries) => {
       for (const e of entries) {
         const { width, height } = e.contentRect;
-        const scaleW = width / 794;
-        const scaleH = height / 1123;
-        setScale(Math.min(scaleW, scaleH));
+        setScale(Math.min(width / 794, height / 1123));
       }
     });
     if (wrapperRef.current) obs.observe(wrapperRef.current);
     return () => obs.disconnect();
-  }, [template.category]);
+  }, []);
 
   const handleSelect = (e?: React.MouseEvent) => {
     e?.stopPropagation();
@@ -143,68 +160,69 @@ export const ResumeTemplateCard: FC<{
   };
 
   return (
-    <div className="flex flex-col group h-full">
-      <div 
+    <div className="flex flex-col group h-full rounded-2xl border border-line bg-card shadow-card hover:shadow-lift transition-shadow overflow-hidden">
+      {/* Preview */}
+      <div
         ref={wrapperRef}
-        className="w-full bg-[#f1f5f9] border border-gray-200 rounded-t-2xl p-6 md:p-8 flex justify-center items-center h-[520px] md:h-[640px] relative transition-all duration-300 overflow-hidden cursor-pointer" 
+        className="w-full bg-[#F1EFE7] p-5 sm:p-7 flex justify-center items-center h-[420px] sm:h-[500px] relative overflow-hidden cursor-pointer border-b border-line"
         onClick={handleSelect}
       >
-        <div 
+        <div
           style={{ width: `${794 * scale}px`, height: `${1123 * scale}px` }}
-          className="bg-white shadow-xl flex-shrink-0 relative group-hover:shadow-[0_20px_50px_rgba(0,0,0,0.15)] group-hover:scale-[1.03] transition-all duration-500 origin-center overflow-hidden"
+          className="bg-white shadow-lg shrink-0 relative group-hover:scale-[1.02] transition-transform duration-500 origin-center overflow-hidden"
         >
-          <div className="origin-top-left absolute top-0 left-0" style={{ transform: `scale(${scale})`, width: "794px", height: "1123px" }}>
-            <ActualResume layout={template.layout} color={activeColor} />
-          </div>
+          {visible ? (
+            <div className="origin-top-left absolute top-0 left-0" style={{ transform: `scale(${scale})`, width: "794px", height: "1123px" }}>
+              <ActualResume layout={template.layout} color={activeColor} />
+            </div>
+          ) : (
+            <div className="absolute inset-0 animate-pulse bg-gradient-to-b from-white to-[#F1EFE7]" aria-hidden="true" />
+          )}
         </div>
-        
-        {/* Hover overlay */}
-        <div className="absolute inset-0 bg-transparent group-hover:bg-gray-900/5 transition-colors duration-300 flex items-center justify-center z-10 pointer-events-none">
-          <button 
-            className="opacity-0 group-hover:opacity-100 bg-teal-600 text-white rounded-[100px] px-8 py-3.5 font-bold shadow-xl transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 pointer-events-auto hover:bg-teal-700"
+
+        {/* Hover action */}
+        <div className="absolute inset-0 bg-ink/0 group-hover:bg-ink/5 transition-colors flex items-center justify-center pointer-events-none">
+          <button
+            className="opacity-0 group-hover:opacity-100 focus-visible:opacity-100 bg-pine hover:bg-pine-deep text-white rounded-full px-7 py-3 text-sm font-bold shadow-lift translate-y-3 group-hover:translate-y-0 transition-all duration-300 pointer-events-auto"
             onClick={handleSelect}
           >
             Use this template
           </button>
         </div>
-      </div>
-      
-      {/* Details */}
-      <div className="pt-6 pb-6 px-6 bg-white border border-t-0 border-gray-200 rounded-b-2xl shadow-sm group-hover:shadow-md transition-shadow h-full flex flex-col justify-between flex-1">
-        <div>
-          <div className="flex justify-between items-start mb-2 gap-2 flex-wrap">
-            <h3 className="text-[20px] font-bold text-gray-900">{template.name}</h3>
-            <div className="flex items-center gap-1.5 flex-wrap justify-end">
-              <span className="text-[10px] font-extrabold bg-slate-100 text-slate-900 px-2.5 py-1 rounded-[6px] uppercase tracking-wider border border-slate-300 whitespace-nowrap">
-                ✓ ATS Approved
-              </span>
-              {template.badge === 'Free' ? (
-                <span className="text-[10px] font-extrabold bg-[#f1f5f9] text-gray-700 px-2.5 py-1 rounded-[6px] uppercase tracking-wider border border-gray-200">Free</span>
-              ) : (
-                <span className="text-[10px] font-extrabold bg-slate-100 text-slate-900 px-2.5 py-1 rounded-[6px] uppercase tracking-wider border border-slate-300">Premium</span>
-              )}
-            </div>
-          </div>
-          <p className="text-[15px] text-gray-500 mb-6 line-clamp-2 min-h-[44px]">{template.description}</p>
+
+        {/* Badges */}
+        <div className="absolute top-3 left-3 flex gap-1.5">
+          <span className="font-mono text-[10px] tracking-[0.14em] uppercase bg-card/95 text-pine border border-line px-2 py-1 rounded">ATS ✓</span>
+          {template.badge === 'Premium' && (
+            <span className="font-mono text-[10px] tracking-[0.14em] uppercase bg-ink text-seal px-2 py-1 rounded">Pro</span>
+          )}
         </div>
-        
-        <div className="flex justify-between items-center mt-auto">
-          <div className="flex gap-2.5">
-            {colors.map(c => (
-              <button 
+      </div>
+
+      {/* Details */}
+      <div className="p-5 flex flex-col gap-3 flex-1">
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <h3 className="text-[17px] font-bold text-ink leading-snug">{template.name}</h3>
+            <p className="text-[13px] text-mist mt-0.5 line-clamp-2">{template.description}</p>
+          </div>
+          <span className="font-mono text-[10px] tracking-[0.14em] uppercase text-mist border border-line rounded px-2 py-1 whitespace-nowrap mt-0.5">{template.category}</span>
+        </div>
+
+        <div className="flex justify-between items-center mt-auto pt-1">
+          <div className="flex gap-2" role="group" aria-label="Accent color">
+            {SWATCHES.map(c => (
+              <button
                 key={c}
                 onClick={(e) => { e.stopPropagation(); setActiveColor(c); }}
-                className={`w-[22px] h-[22px] rounded-full border-[3px] transition-all bg-clip-padding ${activeColor === c ? 'border-gray-900 scale-110 shadow-sm' : 'border-transparent hover:scale-110'}`}
+                aria-label={`Accent ${c}`}
+                aria-pressed={activeColor === c}
+                className={`w-5 h-5 rounded-full transition-transform ring-offset-2 ${activeColor === c ? 'ring-2 ring-ink scale-110' : 'hover:scale-110'}`}
                 style={{ backgroundColor: c }}
-                title={c}
               />
             ))}
           </div>
-          
-          <div className="flex gap-2">
-            <span className="text-[10px] font-extrabold bg-[#f1f5f9] text-gray-600 px-2 py-0.5 rounded-[5px] uppercase tracking-wider border border-gray-200">PDF</span>
-            <span className="text-[10px] font-extrabold bg-[#f1f5f9] text-gray-600 px-2 py-0.5 rounded-[5px] uppercase tracking-wider border border-gray-200">DOCX</span>
-          </div>
+          <span className="font-mono text-[10px] tracking-[0.14em] uppercase text-mist">PDF · DOCX</span>
         </div>
       </div>
     </div>

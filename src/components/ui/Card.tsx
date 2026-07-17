@@ -10,7 +10,7 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
     const base = "rounded-2xl border border-border bg-bg-2 shadow-sm text-main";
     const glassStyle = glass ? "glass-card" : base;
     return (
-      <motion.div ref={ref} className={`${glassStyle} p-6 ${className}`} overflow="hidden" {...props}>
+      <motion.div ref={ref} className={`${glassStyle} p-6 ${className}`} {...props}>
         {children}
       </motion.div>
     );
