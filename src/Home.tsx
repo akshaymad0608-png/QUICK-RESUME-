@@ -9,6 +9,7 @@ import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 import { TemplateCard, ActualResume } from './components/TemplateCard';
 import { ContinueResume } from './components/ContinueResume';
+import { Testimonials } from './components/Testimonials';
 import { TEMPLATES } from './data/templates';
 import { motion } from 'framer-motion';
 import { useResume } from './context/ResumeContext';
@@ -351,6 +352,8 @@ export const Home: FC = () => {
             </div>
           </div>
         </section>
+
+        <Testimonials />
 
         {/* ── FAQ ──────────────────────────────────────────── */}
         <section className="max-w-4xl mx-auto px-4 sm:px-6 py-20 lg:py-28">
