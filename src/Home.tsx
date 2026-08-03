@@ -8,6 +8,7 @@ import {
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 import { TemplateCard, ActualResume } from './components/TemplateCard';
+import { ContinueResume } from './components/ContinueResume';
 import { TEMPLATES } from './data/templates';
 import { motion } from 'framer-motion';
 import { useResume } from './context/ResumeContext';
@@ -156,6 +157,8 @@ export const Home: FC = () => {
       <Navbar />
 
       <main className="pt-16 md:pt-[72px]">
+        <ContinueResume />
+
         {/* ── Hero ─────────────────────────────────────────── */}
         <section className="relative bg-ruled border-b border-line overflow-hidden">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-14 pb-20 lg:pt-24 lg:pb-28 grid lg:grid-cols-[1.1fr_0.9fr] gap-14 lg:gap-10 items-center">
