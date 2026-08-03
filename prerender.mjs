@@ -14,15 +14,33 @@ const SITE = 'https://quickresume.business';
 const OG_IMAGE = `${SITE}/og-image.png`;
 
 const ROUTES = [
-  { path: '/', title: 'QuickResume — Free AI Resume Builder | ATS-Friendly Templates', description: 'Build an ATS-friendly, job-winning resume in minutes. 60+ free templates for freshers, developers, designers and executives — with AI writing, ATS score checker and cover letters.' },
-  { path: '/templates', title: '60+ Free Resume Templates by Role & Industry | QuickResume', description: 'Browse ATS-friendly resume templates for freshers, developers, designers, executives, healthcare, finance and more. Every template is free to try and exports to PDF.' },
-  { path: '/improve', title: 'Improve My Resume — Free AI Resume Checker & Fixer | QuickResume', description: 'Already have a resume? Upload your PDF or DOCX, remove weak sections, get an instant ATS score, and let AI rewrite bullets, fix grammar and suggest missing skills — free.' },
-  { path: '/examples', title: 'Resume Examples by Role & Industry (2026) | QuickResume', description: 'See what a winning resume looks like for software engineers, product managers, freshers, nurses, sales and more — with the exact points recruiters scan for in each role.' },
-  { path: '/ai-tools', title: 'Free AI Resume Tools — Summary, ATS Check, Cover Letters | QuickResume', description: 'Free AI career tools: resume summary generator, ATS score checker, bullet point rewriter, skill suggestions, job description matcher and cover letter generator.' },
-  { path: '/cover-letter', title: 'Free AI Cover Letter Generator | QuickResume', description: 'Generate a tailored, professional cover letter in seconds. Our AI matches your resume to the job description — free to write and download.' },
-  { path: '/resources', title: 'Career Resources & Resume Guides | QuickResume', description: 'Expert advice, resume outlines, action verbs and ATS formatting tips to help you build the perfect resume and land your dream job faster.' },
-  { path: '/pricing', title: 'Pricing — Free & Pro Plans | QuickResume', description: 'Build a resume, check your ATS score and export a PDF for free. Upgrade to Pro for unlimited resumes, premium templates and all AI tools.' },
+  { path: '/', title: 'QuickResume — Free AI Resume Builder | ATS-Friendly Templates', description: 'Build a job-winning, ATS-friendly resume in minutes. 60+ free templates, plus AI writing, an ATS score checker and a cover letter generator.',
+    h1: 'Free AI Resume Builder — ATS-Friendly Templates',
+    intro: 'QuickResume helps you build a job-winning, ATS-friendly resume in minutes. Choose from 60+ free templates for freshers, developers, designers and executives, then use AI to write your summary, rewrite bullet points, check your ATS score and generate a matching cover letter — free, with no sign-up.' },
+  { path: '/templates', title: '60+ Free Resume Templates by Role & Industry | QuickResume', description: 'ATS-friendly resume templates for freshers, developers, designers, executives, healthcare and finance — free to try and exports to a clean PDF.',
+    h1: '60+ Free Resume Templates by Role & Industry',
+    intro: 'Browse ATS-friendly resume templates for freshers, developers, designers, executives, healthcare, finance and more. Every template is free to try, easy to edit and exports to a clean PDF that passes applicant tracking systems.' },
+  { path: '/improve', title: 'Improve My Resume — Free AI Resume Checker & Fixer | QuickResume', description: 'Upload your PDF or DOCX to get an instant ATS score, then let AI rewrite bullets, fix grammar and suggest the skills recruiters want — free.',
+    h1: 'Improve My Resume — Free AI Resume Checker',
+    intro: 'Already have a resume? Upload your PDF or DOCX and QuickResume gives you an instant ATS score, flags weak sections, rewrites your bullet points, fixes grammar and suggests the skills recruiters look for — all free and in your browser.' },
+  { path: '/examples', title: 'Resume Examples by Role & Industry (2026) | QuickResume', description: 'See what a winning resume looks like for software engineers, product managers, freshers, nurses and sales — the exact points recruiters scan for.',
+    h1: 'Resume Examples by Role & Industry (2026)',
+    intro: 'See what a winning resume looks like for software engineers, product managers, freshers, nurses, sales and more — with the exact skills, keywords and bullet points recruiters scan for in each role, ready to adapt for your own resume.' },
+  { path: '/ai-tools', title: 'Free AI Resume Tools — Summary, ATS Check, Cover Letters | QuickResume', description: 'Free AI career tools: resume summary generator, ATS score checker, bullet point rewriter, skill suggestions, job description matcher and cover letter generator.',
+    h1: 'Free AI Resume Tools',
+    intro: 'A full set of free AI career tools in one place: resume summary generator, ATS score checker, bullet point rewriter, skill suggestions, job-description matcher and a cover letter generator — everything you need to tailor your resume to any job.' },
+  { path: '/cover-letter', title: 'Free AI Cover Letter Generator | QuickResume', description: 'Generate a tailored, professional cover letter in seconds. Our AI matches your resume to the job description — free to write and download.',
+    h1: 'Free AI Cover Letter Generator',
+    intro: 'Generate a tailored, professional cover letter in seconds. Paste the job description and QuickResume’s AI matches it to your resume, writes a compelling letter in your voice, and lets you download it free — no sign-up required.' },
+  { path: '/resources', title: 'Career Resources & Resume Guides | QuickResume', description: 'Expert advice, resume outlines, action verbs and ATS formatting tips to help you build the perfect resume and land your dream job faster.',
+    h1: 'Career Resources & Resume Guides',
+    intro: 'Expert advice, ready-to-use resume outlines, strong action verbs and ATS formatting tips to help you build a resume that gets past the bots and in front of recruiters — so you land interviews faster.' },
+  { path: '/pricing', title: 'Pricing — Free & Pro Plans | QuickResume', description: 'Build a resume, check your ATS score and export a PDF for free. Upgrade to Pro for unlimited resumes, premium templates and all AI tools.',
+    h1: 'QuickResume Pricing — Free & Pro Plans',
+    intro: 'Build a resume, check your ATS score and export a PDF completely free. Upgrade to Pro for unlimited resumes, premium templates and every AI tool — with clear, simple pricing and no hidden fees.' },
 ];
+
+const NAV = '<nav aria-label="Sections"><a href="/templates">Resume templates</a> · <a href="/improve">Improve my resume</a> · <a href="/examples">Resume examples</a> · <a href="/ai-tools">AI resume tools</a> · <a href="/cover-letter">Cover letter generator</a> · <a href="/pricing">Pricing</a></nav>';
 
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
@@ -45,6 +63,13 @@ for (const route of ROUTES) {
   // Replace twitter title/description
   html = html.replace(/<meta name="twitter:title"[^>]*>/, `<meta name="twitter:title" content="${esc(route.title)}" />`);
   html = html.replace(/<meta name="twitter:description"[^>]*>/, `<meta name="twitter:description" content="${esc(route.description)}" />`);
+
+  // Give each route its own crawlable body: h1 + intro inside #root (React
+  // replaces it on mount). Fixes the empty-#root / no-h1 SPA problem per route.
+  if (route.h1) {
+    const seoBlock = `<div id="prerender-seo" style="max-width:760px;margin:0 auto;padding:48px 20px;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif"><h1 style="font-size:30px;line-height:1.2;margin:0 0 14px">${esc(route.h1)}</h1><p style="font-size:17px;line-height:1.6;color:#444">${esc(route.intro)}</p>${NAV}</div>`;
+    html = html.replace(/<div id="prerender-seo"[\s\S]*?<\/nav><\/div>/, seoBlock);
+  }
 
   const outPath = route.path === '/' ? join(DIST, 'index.html') : join(DIST, route.path.slice(1), 'index.html');
   if (route.path !== '/') mkdirSync(dirname(outPath), { recursive: true });
