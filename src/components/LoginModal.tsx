@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X} from 'lucide-react';
-import { signInWithGoogle } from '../firebase';
+import { signInWithGoogle, describeAuthError } from '../firebase';
 
 import toast from 'react-hot-toast';
 
@@ -15,12 +15,18 @@ export const LoginModal: FC<LoginModalProps> = ({ isOpen, onClose, onSuccess }) 
   
   const handleGoogleLogin = async () => {
     try {
-      await signInWithGoogle();
+      const user = await signInWithGoogle();
+      // On phones we hand off to the redirect flow: the page navigates to
+      // Google now and the sign-in completes when it comes back, so there is
+      // nothing to celebrate — or close — yet.
+      if (!user) return;
       toast.success('Successfully logged in with Google!');
       onSuccess();
       onClose();
-    } catch {
-      toast.error('Failed to log in with Google');
+    } catch (error: any) {
+      if (error?.code === 'auth/popup-closed-by-user') return; // user backed out
+      console.error('Google sign-in failed', error);
+      toast.error(describeAuthError(error));
     }
   };
 
