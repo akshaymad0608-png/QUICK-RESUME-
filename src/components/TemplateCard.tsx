@@ -217,7 +217,7 @@ export const ResumeTemplateCard: FC<{
                 onClick={(e) => { e.stopPropagation(); setActiveColor(c); }}
                 aria-label={`Accent ${c}`}
                 aria-pressed={activeColor === c}
-                className={`w-5 h-5 rounded-full transition-transform ring-offset-2 ${activeColor === c ? 'ring-2 ring-ink scale-110' : 'hover:scale-110'}`}
+                className={`w-6 h-6 rounded-full transition-transform ring-offset-2 ${activeColor === c ? 'ring-2 ring-ink scale-110' : 'hover:scale-110'}`}
                 style={{ backgroundColor: c }}
               />
             ))}
