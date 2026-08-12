@@ -38,6 +38,15 @@ const ROUTES = [
   { path: '/pricing', title: 'Pricing — Free & Pro Plans | QuickResume', description: 'Build a resume, check your ATS score and export a PDF for free. Upgrade to Pro for unlimited resumes, premium templates and all AI tools.',
     h1: 'QuickResume Pricing — Free & Pro Plans',
     intro: 'Build a resume, check your ATS score and export a PDF completely free. Upgrade to Pro for unlimited resumes, premium templates and every AI tool — with clear, simple pricing and no hidden fees.' },
+  // App entry points. These are React-only routes, so without a prerendered
+  // file the host returns 404 to anyone landing on them directly — including
+  // every "Start" link shared or bookmarked.
+  { path: '/start', title: 'Start Your Resume — Free AI Resume Builder | QuickResume', description: 'Start building your resume free: pick a template, import an existing resume, or let AI draft it from your details. No sign-up needed.',
+    h1: 'Start Your Resume',
+    intro: 'Start building your resume in the way that suits you: pick from 60+ ATS-friendly templates, import a resume you already have, or let AI draft one from a few details. It is free, runs in your browser and needs no sign-up.' },
+  { path: '/build', title: 'Resume Builder — Edit, Score & Export Free | QuickResume', description: 'Write, edit and export your resume with live ATS scoring, AI bullet rewrites and a clean PDF download — free, right in your browser.',
+    h1: 'Resume Builder',
+    intro: 'Write and edit your resume with live preview, AI-assisted bullet points, instant ATS scoring and one-click PDF export. Everything runs in your browser and your data stays on your device.' },
 ];
 
 const NAV = '<nav aria-label="Sections"><a href="/templates">Resume templates</a> · <a href="/improve">Improve my resume</a> · <a href="/examples">Resume examples</a> · <a href="/ai-tools">AI resume tools</a> · <a href="/cover-letter">Cover letter generator</a> · <a href="/pricing">Pricing</a></nav>';
