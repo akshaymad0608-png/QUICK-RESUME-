@@ -14,9 +14,23 @@ const SITE = 'https://quickresume.business';
 const OG_IMAGE = `${SITE}/og-image.png`;
 
 const ROUTES = [
-  { path: '/', title: 'QuickResume — Free AI Resume Builder | ATS-Friendly Templates', description: 'Build a job-winning, ATS-friendly resume in minutes. 60+ free templates, plus AI writing, an ATS score checker and a cover letter generator.',
+  { path: '/', title: 'QuickResume — Free AI Resume Builder, ATS Templates', description: 'Build a job-winning, ATS-friendly resume in minutes. 60+ free templates, plus AI writing, an ATS score checker and a cover letter generator.',
     h1: 'Free AI Resume Builder — ATS-Friendly Templates',
-    intro: 'QuickResume helps you build a job-winning, ATS-friendly resume in minutes. Choose from 60+ free templates for freshers, developers, designers and executives, then use AI to write your summary, rewrite bullet points, check your ATS score and generate a matching cover letter — free, with no sign-up.' },
+    intro: 'QuickResume helps you build a job-winning, ATS-friendly resume in minutes. Choose from 60+ free templates for freshers, developers, designers and executives, then use AI to write your summary, rewrite bullet points, check your ATS score and generate a matching cover letter — free, with no sign-up.',
+    sections: [
+      { h2: 'What you get', points: [
+        '60+ free, ATS-friendly resume templates by role and industry',
+        'AI writing — summary, bullet points and skills, rewritten for the job you want',
+        'ATS score checker — see how your resume reads to applicant tracking software before you submit it',
+        'Matching cover letter generator',
+        'Export to a clean, recruiter-ready PDF',
+      ] },
+      { h2: 'Who it is for', points: [
+        'Freshers building a first resume with no work history yet',
+        'Experienced hires tailoring one resume per application',
+        'Anyone whose resume is being filtered out by ATS software before a human sees it',
+      ] },
+    ] },
   { path: '/templates', title: '60+ Free Resume Templates by Role & Industry | QuickResume', description: 'ATS-friendly resume templates for freshers, developers, designers, executives, healthcare and finance — free to try and exports to a clean PDF.',
     h1: '60+ Free Resume Templates by Role & Industry',
     intro: 'Browse ATS-friendly resume templates for freshers, developers, designers, executives, healthcare, finance and more. Every template is free to try, easy to edit and exports to a clean PDF that passes applicant tracking systems.' },
@@ -76,7 +90,13 @@ for (const route of ROUTES) {
   // Give each route its own crawlable body: h1 + intro inside #root (React
   // replaces it on mount). Fixes the empty-#root / no-h1 SPA problem per route.
   if (route.h1) {
-    const seoBlock = `<div id="prerender-seo" style="max-width:760px;margin:0 auto;padding:48px 20px;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif"><h1 style="font-size:30px;line-height:1.2;margin:0 0 14px">${esc(route.h1)}</h1><p style="font-size:17px;line-height:1.6;color:#444">${esc(route.intro)}</p>${NAV}</div>`;
+    // Optional h2 sections give crawlers real heading structure and more
+    // than a single paragraph of body text, without touching what real
+    // visitors see (React replaces this whole block on mount).
+    const sectionsHtml = (route.sections || [])
+      .map((s) => `<h2 style="font-size:20px;margin:28px 0 10px">${esc(s.h2)}</h2><ul style="font-size:15px;line-height:1.6;color:#444;padding-left:20px">${s.points.map((p) => `<li>${esc(p)}</li>`).join('')}</ul>`)
+      .join('');
+    const seoBlock = `<div id="prerender-seo" style="max-width:760px;margin:0 auto;padding:48px 20px;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif"><h1 style="font-size:30px;line-height:1.2;margin:0 0 14px">${esc(route.h1)}</h1><p style="font-size:17px;line-height:1.6;color:#444">${esc(route.intro)}</p>${sectionsHtml}${NAV}</div>`;
     html = html.replace(/<div id="prerender-seo"[\s\S]*?<\/nav><\/div>/, seoBlock);
   }
 
