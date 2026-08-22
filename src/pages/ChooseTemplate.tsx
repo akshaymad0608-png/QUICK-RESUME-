@@ -1,6 +1,6 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { Seo } from '../components/Seo';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useResume } from '../context/ResumeContext';
 import { TemplateCard } from '../components/TemplateCard';
 import { TEMPLATES } from '../data/templates';
@@ -16,11 +16,29 @@ const CATEGORY_GROUPS: { label: string; items: string[] }[] = [
   { label: 'By style', items: ['Creative', 'Colorful', 'Two Column', 'Infographic', 'Google Docs Style'] },
 ];
 
+const ALL_CATEGORIES = CATEGORY_GROUPS.flatMap(g => g.items);
+
 export default function ChooseTemplate() {
   const navigate = useNavigate();
   const { data, updateSection } = useResume();
-  const [activeCategory, setActiveCategory] = useState('All');
+  const [searchParams, setSearchParams] = useSearchParams();
   const [searchTerm, setSearchTerm] = useState('');
+
+  /* The category lives in the URL so the resource pages can link straight to the
+     templates that fit them — /templates?category=Fresher from the fresher guide
+     rather than dropping everyone into the unfiltered grid. An unrecognised value
+     falls back to All. The canonical is a bare /templates (see <Seo path>), so the
+     parameter never splits the page in the index. */
+  const param = searchParams.get('category');
+  const activeCategory = param && ALL_CATEGORIES.includes(param) ? param : 'All';
+
+  const setActiveCategory = useCallback((category: string) => {
+    const next = new URLSearchParams(searchParams);
+    if (category === 'All') next.delete('category');
+    else next.set('category', category);
+    // replace: browsing chips should not fill the back button
+    setSearchParams(next, { replace: true });
+  }, [searchParams, setSearchParams]);
 
   const handleSelect = (templateId: string, selectedColor?: string) => {
     updateSection('design', {
