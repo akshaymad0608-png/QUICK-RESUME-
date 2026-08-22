@@ -36,4 +36,5 @@ User-agent: CCBot
 Allow: /
 
 # See /llms.txt for a structured summary for language models.
+# IndexNow key: /e93af2449d4f2f1f2a4d22b94f3e6bdf.txt
 Sitemap: https://quickresume.business/sitemap.xml
