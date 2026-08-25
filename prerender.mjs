@@ -79,6 +79,9 @@ const ROUTES = [
   { path: '/linkedin-headline-generator', title: 'Free LinkedIn Headline Generator (2026) — 8 Options in Seconds', description: 'Generate 8 LinkedIn headline options from your job title and skills — free, no sign-up. Fits LinkedIn’s 220-character limit, ready to paste in.',
     h1: 'LinkedIn Headline Generator',
     intro: 'Enter your job title, a few keywords and your experience level, and get 8 LinkedIn headline options — free, no sign-up, no resume required. Each fits inside LinkedIn’s 220-character headline limit and is ready to paste straight into your profile.' },
+  { path: '/interview-thank-you-email-generator', title: 'Free Interview Thank-You Email Generator (2026)', description: 'Generate a post-interview thank-you email in seconds — job title, company and what you discussed in, a ready-to-send email out. Free, no sign-up.',
+    h1: 'Interview Thank-You Email Generator',
+    intro: 'Enter the job title, company, interviewer\'s name and something specific you discussed, and get a ready-to-send thank-you email — free, no sign-up. Best sent within 24 hours of the interview.' },
 ];
 
 const NAV = '<nav aria-label="Sections"><a href="/templates">Resume templates</a> · <a href="/improve">Improve my resume</a> · <a href="/examples">Resume examples</a> · <a href="/ai-tools">AI resume tools</a> · <a href="/cover-letter">Cover letter generator</a> · <a href="/pricing">Pricing</a></nav>';

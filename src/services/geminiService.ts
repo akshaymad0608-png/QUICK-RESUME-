@@ -135,6 +135,48 @@ Rules:
   }
 };
 
+/**
+ * Also standalone, same reasoning as generateLinkedInHeadlines — a visitor
+ * searching "interview thank you email" has just left an interview and needs
+ * something in the next few hours, not after building a resume first.
+ */
+export const generateThankYouEmail = async (
+  interviewerName: string,
+  jobTitle: string,
+  company: string,
+  highlight: string,
+  tone: 'Formal' | 'Warm' | 'Brief',
+): Promise<string> => {
+  const toneGuide: Record<typeof tone, string> = {
+    Formal: 'Formal and professional — no contractions, measured tone.',
+    Warm: 'Warm and personable, while staying professional — like a genuine thank-you, not a template.',
+    Brief: 'Short — 3-4 sentences total. The reader is busy; respect that.',
+  };
+
+  const prompt = `You are an expert career coach. Write a post-interview thank-you email with this information:
+
+Interviewer's name: ${interviewerName || '(not given — use "Hi there," as the opener instead of a name)'}
+Job title interviewed for: ${jobTitle}
+Company: ${company}
+Something specific from the interview to reference (a topic discussed, a detail about the role or team): ${highlight || '(none given — keep this part general but still genuine, not generic)'}
+Tone: ${toneGuide[tone]}
+
+Rules:
+- Include a subject line on the first line, formatted as "Subject: ...".
+- Then the email body.
+- Do not use em dashes.
+- Do not invent specific facts (numbers, names, dates) beyond what was given.
+- Return ONLY the subject line and email body — no explanation, no notes before or after.`;
+
+  try {
+    const text = await askAI(prompt);
+    return text.trim();
+  } catch (error) {
+    console.error(error);
+    throw new Error('Failed to generate the email.');
+  }
+};
+
 export const generateSummary = async (resumeData: unknown): Promise<string> => {
   const prompt = `You are an expert resume writer. Write a professional, highly impactful resume summary based on the following resume data. 
 It should be concise (3-4 sentences), highlight top skills, and demonstrate value. Do not include introductory text, just the summary paragraph itself.
