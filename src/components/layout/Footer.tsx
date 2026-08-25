@@ -43,10 +43,25 @@ const COLUMNS = [
   },
 ];
 
+/*
+ * Guides live as static HTML in /public, not as React routes — App.tsx has no
+ * catch-all, so a client-side <Link> to one would match nothing and render
+ * blank while the URL changed underneath it. They get a plain <a> here, which
+ * does a real navigation, and this footer is the one piece of markup that
+ * appears on every page — the widest internal-link signal the site has for
+ * pages Google otherwise only knows about from a sitemap entry.
+ */
+const GUIDE_LINKS = [
+  { label: 'How to Make a Resume', href: '/how-to-make-a-resume' },
+  { label: 'ATS Resume Checker', href: '/ats-resume-checker' },
+  { label: 'Resume Format for Freshers', href: '/resume-format-for-freshers' },
+  { label: 'Skills to Put on a Resume', href: '/skills-for-resume' },
+];
+
 export const Footer: FC = () => (
   <footer className="bg-ink text-[#B9BFD6] pt-16 pb-8 px-4 sm:px-6">
     <div className="max-w-7xl mx-auto">
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-x-8 gap-y-12 mb-14">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-x-8 gap-y-12 mb-14">
         <div className="col-span-2 space-y-5">
           <Link to="/" aria-label="QuickResume home"><Logo light /></Link>
           <p className="text-sm max-w-xs leading-relaxed text-[#8B93B8]">
@@ -84,6 +99,22 @@ export const Footer: FC = () => (
             </ul>
           </div>
         ))}
+
+        <div>
+          <h4 className="font-mono text-[11px] uppercase tracking-[0.18em] text-[#8B93B8] mb-5">Guides</h4>
+          <ul className="space-y-3">
+            {GUIDE_LINKS.map(l => (
+              <li key={l.href}>
+                <a href={l.href} className="text-sm hover:text-white transition-colors">{l.label}</a>
+              </li>
+            ))}
+            <li>
+              <Link to="/resources" className="text-sm text-pine hover:text-white transition-colors">
+                All guides →
+              </Link>
+            </li>
+          </ul>
+        </div>
       </div>
 
       <div className="pt-7 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-[#8B93B8]">

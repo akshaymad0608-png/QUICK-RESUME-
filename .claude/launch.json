@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "quickresume-preview",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["vite", "preview"],
+      "port": 4173
+    }
+  ]
+}
