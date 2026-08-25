@@ -282,11 +282,18 @@ const Build: FC = () => {
           {/* Top Navbar */}
           <header className="h-[64px] bg-white border-b border-line flex items-center justify-between px-4 md:px-6 shrink-0 z-10">
             <div className="flex items-center gap-2 md:gap-4">
-              <input 
-                type="text" 
+              {/*
+                At 375px this input plus the three header action buttons
+                measured 403px wide — 28px past the viewport, with Export PDF
+                (the one action the bottom mobile nav doesn't duplicate)
+                partly clipped off-screen. w-[100px] here, and hiding the two
+                more dispensable buttons below sm: (next), closes that gap.
+              */}
+              <input
+                type="text"
                 value={resumeName}
                 onChange={(e) => setResumeName(e.target.value)}
-                className="text-base md:text-lg text-ink font-bold bg-transparent border-none outline-none focus:ring-1 focus:ring-pine rounded px-2 w-[140px] md:w-[200px]"
+                className="text-base md:text-lg text-ink font-bold bg-transparent border-none outline-none focus:ring-1 focus:ring-pine rounded px-2 w-[100px] sm:w-[140px] md:w-[200px]"
               />
               <div className="hidden md:flex items-center gap-1.5 text-xs font-bold text-mist bg-paper px-2.5 py-1 rounded-md border border-line">
                 <CheckCircle2 className="w-3.5 h-3.5" />
@@ -311,18 +318,25 @@ const Build: FC = () => {
                <button onClick={() => setPreviewZoom(z => Math.min(z + 25, 150))} className="text-mist hover:text-ink">+</button>
              </div>
 
+             {/*
+                Both hidden below sm: (640px) — not removed, the bottom mobile
+                nav's "AI Tools" tab covers AI actions and the live editor
+                already IS the preview on a phone screen. What can't be
+                hidden is Export: it's the one action a phone user has no
+                other way to reach, so it stays visible at every width.
+              */}
              <button
                 onClick={handlePreviewPdf}
-                className="text-sm font-bold text-ink-soft bg-white border border-line hover:bg-paper transition-colors rounded-lg px-4 py-2 flex items-center gap-2"
+                className="hidden sm:flex text-sm font-bold text-ink-soft bg-white border border-line hover:bg-paper transition-colors rounded-lg px-4 py-2 items-center gap-2"
               >
                 <Eye className="w-4 h-4" />
                 <span className="hidden xl:inline">Preview PDF</span>
               </button>
-            
-             <button 
+
+             <button
                 onClick={handleOptimizeResume}
                 disabled={isOptimizing}
-                className="text-sm font-bold text-pine bg-white border border-line hover:bg-paper transition-colors rounded-lg px-4 py-2 flex items-center gap-2"
+                className="hidden sm:flex text-sm font-bold text-pine bg-white border border-line hover:bg-paper transition-colors rounded-lg px-4 py-2 items-center gap-2"
               >
                 {isOptimizing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
                 <span className="hidden xl:inline">AI Optimize</span>
