@@ -1,25 +1,72 @@
-import { FC, useState, useRef } from 'react';
+import { FC, useState, useRef, useEffect } from 'react';
 import { Seo } from '../components/Seo';
 import { Navbar } from '../components/layout/Navbar';
 import { useNavigate } from 'react-router-dom';
-import { UploadCloud, FileText, PenLine, Loader2, ArrowLeft} from 'lucide-react';
-import { ActualResume } from '../components/TemplateCard';
+import { UploadCloud, PenLine, Loader2, ArrowLeft, FileText, ArrowRight } from 'lucide-react';
 import { useResume } from '../context/ResumeContext';
 import { uploadResumeFile } from '../utils/uploadResume';
 import toast from 'react-hot-toast';
 
-const Start: FC = () => {
+/*
+ * This page used to open on a "Dashboard" showing "3 My Resumes", two mock
+ * resume cards ("Software Engineer - Default", ATS: 92, "Edited 2 mins
+ * ago"), and an "Avg ATS Score: 85 — Excellent" stat — all hard-coded,
+ * none of it real. A visitor who had never built a resume saw exactly the
+ * same fabricated history as one on their fifth visit, because none of it
+ * came from anywhere. The app also only ever stores one resume at a time
+ * (ResumeContext keeps a single "resume_data" key in localStorage) — there
+ * is no multi-resume list for "3 My Resumes" to have counted in the first
+ * place.
+ *
+ * The real state is binary: either this browser has a saved draft or it
+ * doesn't (the same localStorage check ContinueResume.tsx uses on the home
+ * page). A draft gets one real card with a real completion percentage, not
+ * an invented ATS score. No draft skips straight to "how would you like to
+ * start" — no dashboard standing in for one.
+ */
+interface Draft {
+  name: string;
+  progress: number;
+}
 
+const readDraft = (): Draft | null => {
+  try {
+    const raw = localStorage.getItem('resume_data');
+    if (!raw) return null;
+    const d = JSON.parse(raw);
+    const pi = d.personalInfo || {};
+    const name = [pi.firstName, pi.lastName].filter(Boolean).join(' ').trim();
+    const sections = [
+      Boolean(name),
+      Boolean(d.summary),
+      (d.experience || []).length > 0,
+      (d.education || []).length > 0,
+      (d.skills || []).length > 0,
+      (d.projects || []).length > 0,
+    ];
+    const done = sections.filter(Boolean).length;
+    if (done === 0) return null;
+    return { name: name || 'your resume', progress: Math.round((done / 6) * 100) };
+  } catch {
+    return null;
+  }
+};
+
+const Start: FC = () => {
   const navigate = useNavigate();
   const { setData } = useResume();
-  const [showUpload, setShowUpload] = useState(false);
+  const [draft, setDraft] = useState<Draft | null>(null);
+  const [pickerOpen, setPickerOpen] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    setDraft(readDraft());
+  }, []);
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement> | { target: { files: FileList | null } }) => {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
-      // Client-side pre-checks — obvious problems never reach the server.
       const okType = /\.(pdf|docx?)$/i.test(file.name) || file.type === 'application/pdf' || file.type.includes('wordprocessingml');
       if (!okType) {
         toast.error('Please upload a PDF or Word (.docx) file.');
@@ -43,7 +90,7 @@ const Start: FC = () => {
         }
 
         const extractedData = await res.json();
-        
+
         if (extractedData.experience && Array.isArray(extractedData.experience)) {
           extractedData.experience = extractedData.experience.map((e: Record<string, unknown>) => ({ ...e, id: crypto.randomUUID() }));
         }
@@ -82,8 +129,10 @@ const Start: FC = () => {
     }
   };
 
+  const showPicker = pickerOpen || !draft;
+
   return (
-    <div className="min-h-screen bg-paper text-body flex flex-col font-sans pt-16 md:pt-[72px] relative selection:bg-pine selection:text-white">
+    <div className="min-h-screen bg-paper text-body flex flex-col font-sans pt-16 md:pt-[72px] selection:bg-pine selection:text-white">
       <Seo
         path="/start"
         title="Start Your Resume | QuickResume"
@@ -91,166 +140,83 @@ const Start: FC = () => {
         noindex
       />
 
-      {/* Navbar Minimal */}
       <Navbar />
 
-      <main className="flex-1 w-full max-w-6xl mx-auto px-6 py-12 flex flex-col relative z-10">        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] pointer-events-none -z-10 overflow-hidden">          <div className="absolute top-20 left-[5%] w-96 h-96 bg-blue-300/20 rounded-full blur-3xl"></div>          <div className="absolute top-40 right-[5%] w-96 h-96 bg-purple-300/20 rounded-full blur-3xl"></div>        </div>
-        
-        {!showUpload ? (
-          <>
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-4">
-              <div>
-                <h1 className="text-3xl font-bold text-slate-900 mb-1">Dashboard</h1>
-                <p className="text-slate-500">Manage your documents and track your applications.</p>
-              </div>
-              <button 
-                onClick={() => setShowUpload(true)}
-                className="bg-pine hover:bg-pine-deep text-white px-5 py-2.5 rounded-lg font-semibold flex items-center gap-2 transition-colors shadow-sm"
-              >
-                <FileText size={18} />
-                Create New Resume
-              </button>
+      <main className="flex-1 w-full max-w-4xl mx-auto px-6 py-16 flex flex-col">
+        {!showPicker && draft ? (
+          <div className="flex flex-col items-center text-center py-12">
+            <div className="w-16 h-16 rounded-2xl bg-pine-tint text-pine flex items-center justify-center mb-6">
+              <FileText size={30} />
             </div>
-
-            <div className="grid md:grid-cols-3 gap-6 mb-8">
-              <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4 cursor-pointer hover:border-slate-300 transition-colors" onClick={() => navigate('/build')}>
-                <div className="w-12 h-12 bg-pine-tint text-pine border border-teal-100 rounded-xl flex items-center justify-center">
-                  <FileText size={20} />
-                </div>
-                <div>
-                  <div className="text-2xl font-bold text-slate-900">3</div>
-                  <div className="text-sm font-medium text-slate-500">My Resumes</div>
-                </div>
-              </div>
-              <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4 cursor-pointer hover:border-slate-300 transition-colors" onClick={() => navigate('/build')}>
-                <div className="w-12 h-12 bg-blue-50 text-blue-600 border-blue-100 rounded-xl flex items-center justify-center">
-                  <PenLine size={20} />
-                </div>
-                <div>
-                  <div className="text-2xl font-bold text-slate-900">Software Eng</div>
-                  <div className="text-sm font-medium text-slate-500">Recently Edited</div>
-                </div>
-              </div>
-              <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4 cursor-pointer hover:border-slate-300 transition-colors" onClick={() => navigate('/build')}>
-                <div className="w-12 h-12 bg-blue-50 text-blue-600 border-blue-100 rounded-xl flex items-center justify-center text-xl font-bold">
-                  85
-                </div>
-                <div>
-                  <div className="text-xl font-bold text-slate-700">Excellent</div>
-                  <div className="text-sm font-medium text-slate-500">Avg ATS Score</div>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white border text-center border-slate-200 rounded-2xl p-8 mb-8 shadow-sm relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-slate-100 blur-3xl rounded-full pointer-events-none"></div>
-              
-              <h2 className="text-xl font-bold text-slate-900 mb-6 text-left relative z-10">Your Resumes</h2>
-              
-              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
-                 {/* Existing Resume Mock */}
-                 <div className="border border-slate-200 rounded-xl p-4 flex flex-col hover:border-slate-300 bg-white transition-colors cursor-pointer group text-left relative" onClick={() => navigate('/build')}>
-                   <div className="absolute top-2 right-2 bg-blue-50 text-blue-600 border-blue-100 text-[10px] font-bold px-2 py-0.5 rounded-[4px] z-10 border border-slate-200">
-                     ATS: 92
-                   </div>
-                   <div className="bg-slate-50 h-56 rounded-lg mb-4 flex justify-center items-start border border-slate-200 overflow-hidden relative pt-4 shadow-inner">
-                      <div className="bg-white border border-slate-200 rounded-t shadow-sm overflow-hidden relative w-[198px] h-[280px] shrink-0 opacity-90 group-hover:opacity-100 transition-opacity">
-                        <div className="w-[794px] h-[1123px] origin-top-left absolute top-0 left-0 scale-[0.25]">
-                          <ActualResume layout="minimal" color="#2563EB" />
-                        </div>
-                      </div>
-                   </div>
-                   <h3 className="font-semibold text-slate-900 text-[15px] mb-1 truncate group-hover:text-slate-900 transition-colors">Software Engineer - Default</h3>
-                   <p className="text-[12px] text-slate-500 mb-4 flex items-center gap-1.5">
-                     <span className="w-1.5 h-1.5 rounded-full bg-slate-900"></span>
-                     Edited 2 mins ago
-                   </p>
-                   <div className="flex gap-2">
-                     <button className="flex-1 py-1.5 px-3 bg-slate-50 text-slate-600 rounded font-bold text-[12px] text-center border-none hover:bg-slate-100 transition-colors">Duplicate</button>
-                     <button className="flex-1 py-1.5 px-3 bg-pine text-white rounded font-bold text-[12px] text-center border-none hover:bg-pine-deep transition-colors">Edit</button>
-                   </div>
-                 </div>
-
-                 {/* Existing Resume Mock 2 */}
-                 <div className="border border-slate-200 rounded-xl p-4 flex flex-col hover:border-slate-300 bg-white transition-colors cursor-pointer group text-left relative" onClick={() => navigate('/build')}>
-                   <div className="absolute top-2 right-2 bg-slate-500/10 text-slate-500 text-[10px] font-bold px-2 py-0.5 rounded-[4px] z-10 border border-slate-200">
-                     ATS: --
-                   </div>
-                   <div className="bg-slate-50 h-56 rounded-lg mb-4 flex justify-center items-start border border-slate-200 overflow-hidden relative pt-4 shadow-inner">
-                      <div className="bg-white border border-slate-200 rounded-t shadow-sm overflow-hidden relative w-[198px] h-[280px] shrink-0 opacity-90 group-hover:opacity-100 transition-opacity">
-                        <div className="w-[794px] h-[1123px] origin-top-left absolute top-0 left-0 scale-[0.25]">
-                          <ActualResume layout="modern" color="#0F766E" />
-                        </div>
-                      </div>
-                   </div>
-                   <h3 className="font-semibold text-slate-900 text-[15px] mb-1 truncate group-hover:text-slate-900 transition-colors">Product Manager Draft</h3>
-                   <p className="text-[12px] text-slate-500 mb-4 flex items-center gap-1.5">
-                     <span className="w-1.5 h-1.5 rounded-full bg-slate-600"></span>
-                     Edited 2 days ago
-                   </p>
-                   <div className="flex gap-2">
-                     <button className="flex-1 py-1.5 px-3 bg-slate-50 text-slate-600 rounded font-bold text-[12px] text-center border-none hover:bg-slate-100 transition-colors">Duplicate</button>
-                     <button className="flex-1 py-1.5 px-3 bg-pine text-white rounded font-bold text-[12px] text-center border-none hover:bg-pine-deep transition-colors">Edit</button>
-                   </div>
-                 </div>
-
-                 {/* Create New Card */}
-                 <div className="border-2 border-dashed border-slate-300 rounded-xl flex flex-col items-center justify-center bg-slate-100 hover:bg-slate-100 hover:border-slate-400/60 transition-all cursor-pointer group h-full min-h-[300px]" onClick={() => setShowUpload(true)}>
-                    <div className="w-12 h-12 rounded-full bg-slate-50 shadow-sm border border-slate-200 flex items-center justify-center text-slate-900 group-hover:scale-110 transition-transform mb-4">
-                      <FileText size={24} />
-                    </div>
-                    <span className="font-bold text-slate-900 group-hover:text-slate-800 transition-colors">Create New Resume</span>
-                 </div>
-              </div>
-            </div>
-          </>
-        ) : (
-          <div className="flex flex-col items-center justify-center py-12 relative">
-            <button 
-              onClick={() => setShowUpload(false)} 
-              disabled={isUploading}
-              className="flex items-center gap-2 text-slate-900 hover:text-slate-800 transition-colors font-semibold self-start mb-8 disabled:opacity-50"
+            <h1 className="font-display text-3xl md:text-4xl font-semibold text-ink mb-3">
+              Welcome back
+            </h1>
+            <p className="text-mist mb-2 max-w-md">
+              You have a saved draft on this device — {draft.progress}% complete.
+            </p>
+            <button
+              onClick={() => navigate('/build')}
+              className="mt-6 inline-flex items-center gap-2 rounded-lg bg-pine px-6 py-3.5 font-semibold text-white hover:bg-pine-deep transition-colors shadow-sm"
             >
-              <ArrowLeft size={18} /> Back to Dashboard
+              Continue editing <ArrowRight size={16} />
             </button>
+            <button
+              onClick={() => setPickerOpen(true)}
+              className="mt-3 text-sm font-medium text-mist hover:text-ink transition-colors"
+            >
+              Start a different resume instead
+            </button>
+          </div>
+        ) : (
+          <div className="flex flex-col items-center justify-center py-4">
+            {draft && (
+              <button
+                onClick={() => setPickerOpen(false)}
+                className="flex items-center gap-2 text-ink hover:text-pine transition-colors font-semibold self-start mb-8"
+              >
+                <ArrowLeft size={18} /> Back
+              </button>
+            )}
 
-            <h1 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4 text-center">How would you like to start?</h1>
-            <p className="text-lg text-slate-500 mb-12 text-center max-w-2xl">Create a new resume from scratch, or upload an existing one to redesign and improve it automatically.</p>
-            
-            <div className="grid md:grid-cols-2 gap-8 w-full max-w-4xl">
-              {/* Import Card */}
-              <div 
-                className="bg-white p-8 rounded-2xl border border-slate-200 hover:border-slate-400 hover:shadow-[0_0_30px_-5px_rgba(0,0,0,0.1)] transition-all cursor-pointer shadow-sm group text-center"
+            <h1 className="font-display text-3xl md:text-4xl font-semibold text-ink mb-4 text-center">
+              How would you like to start?
+            </h1>
+            <p className="text-lg text-mist mb-12 text-center max-w-2xl">
+              Create a new resume from scratch, or upload an existing one to redesign and improve it automatically.
+            </p>
+
+            <div className="grid md:grid-cols-2 gap-6 w-full max-w-3xl">
+              <div
+                className="bg-card p-8 rounded-2xl border border-line hover:border-pine hover:shadow-lift transition-all cursor-pointer shadow-card group text-center"
                 onClick={() => { if (!isUploading) fileInputRef.current?.click(); }}
               >
-                <div className="w-16 h-16 rounded-2xl bg-pine-tint text-pine border border-teal-100 flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
+                <div className="w-16 h-16 rounded-2xl bg-pine-tint text-pine flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
                   {isUploading ? <Loader2 size={32} className="animate-spin" /> : <UploadCloud size={32} />}
                 </div>
-                <h2 className="text-2xl font-bold text-slate-900 mb-3">Upload your resume</h2>
-                <p className="text-slate-500 mb-6">We'll automatically extract your information and format it.</p>
-                <div className="text-slate-900 font-semibold group-hover:underline">Browse files...</div>
-                
-                <input 
-                  type="file" 
-                  className="hidden" 
-                  ref={fileInputRef} 
-                  onChange={handleFileUpload} 
+                <h2 className="font-display text-xl font-semibold text-ink mb-2">Upload your resume</h2>
+                <p className="text-mist mb-6 text-sm">We'll automatically extract your information and format it.</p>
+                <div className="text-pine font-semibold group-hover:underline">Browse files...</div>
+
+                <input
+                  type="file"
+                  className="hidden"
+                  ref={fileInputRef}
+                  onChange={handleFileUpload}
                   accept=".pdf,.doc,.docx"
                   disabled={isUploading}
                 />
               </div>
 
-              {/* Start from scratch Card */}
-              <div 
-                className="bg-white p-8 rounded-2xl border border-slate-200 hover:border-slate-400 hover:shadow-[0_0_30px_-5px_rgba(0,0,0,0.1)] transition-all cursor-pointer shadow-sm group text-center"
+              <div
+                className="bg-card p-8 rounded-2xl border border-line hover:border-pine hover:shadow-lift transition-all cursor-pointer shadow-card group text-center"
                 onClick={() => navigate('/templates')}
               >
-                <div className="w-16 h-16 rounded-2xl bg-blue-50 text-blue-600 border-blue-100 flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
+                <div className="w-16 h-16 rounded-2xl bg-seal-tint text-seal flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
                   <PenLine size={32} />
                 </div>
-                <h2 className="text-2xl font-bold text-slate-900 mb-3">Start from scratch</h2>
-                <p className="text-slate-500 mb-6">Choose a template and follow our guided step-by-step assistant.</p>
-                <div className="text-slate-700 font-semibold group-hover:underline">Choose a template</div>
+                <h2 className="font-display text-xl font-semibold text-ink mb-2">Start from scratch</h2>
+                <p className="text-mist mb-6 text-sm">Choose a template and follow our guided step-by-step assistant.</p>
+                <div className="text-ink font-semibold group-hover:underline">Choose a template</div>
               </div>
             </div>
           </div>
