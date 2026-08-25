@@ -6,9 +6,10 @@ import { Footer } from '../components/layout/Footer';
 import { ArrowUpRight, FileText, Layers, PenSquare, Briefcase } from 'lucide-react';
 
 /**
- * This page used to be the reason eleven real guides got zero impressions.
+ * This page used to be the reason eleven real guides got zero impressions
+ * (a twelfth, cv-vs-resume, joined later and was linked from here from day one).
  *
- * QuickResume has eleven prerendered guide pages — resume-format-for-freshers,
+ * QuickResume has prerendered guide pages — resume-format-for-freshers,
  * ats-resume-checker, skills-for-resume and eight more, each with a real
  * 2026-dated title and its own meta description. None of them are React
  * routes; they are static HTML files in /public, served directly by Vercel.
@@ -59,6 +60,11 @@ const GROUPS: GuideGroup[] = [
         slug: 'ats-resume-checker',
         title: 'Free ATS Resume Checker',
         description: 'Upload your resume, get an instant score, and see exactly what to fix to get past the bots.',
+      },
+      {
+        slug: 'cv-vs-resume',
+        title: 'CV vs Resume: What’s the Difference?',
+        description: 'The real difference — length, content, and which one to send for a job in India, the US or the UK.',
       },
     ],
   },
@@ -148,7 +154,7 @@ const Resources: FC = () => {
       <Seo
         path="/resources"
         title="Career Resources & Resume Guides | QuickResume"
-        description="11 free, up-to-date guides on resume format, ATS, summaries, headlines and skills — plus role-specific guides for software engineers and teachers."
+        description="12 free, up-to-date guides on resume format, ATS, CV vs resume, summaries, headlines and skills — plus role-specific guides for software engineers and teachers."
         jsonLd={itemListSchema}
       />
 

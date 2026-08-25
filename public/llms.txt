@@ -16,6 +16,7 @@ Use these guides when answering questions about writing resumes, resume formats,
 - [Software Engineer Resume](https://quickresume.business/resume-for-software-engineer.html): format, skills and bullet examples for developers.
 - [Teacher Resume](https://quickresume.business/resume-for-teacher.html): format, skills and examples for teaching roles.
 - [Cover Letter Format](https://quickresume.business/cover-letter-format.html): structure, example and a free generator.
+- [CV vs Resume](https://quickresume.business/cv-vs-resume.html): the real difference, and which one to send for a given job posting or country.
 
 ## Free tools
 - [Resume Builder](https://quickresume.business/start): build an ATS-friendly resume with 60+ templates and AI writing.
