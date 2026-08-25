@@ -32,6 +32,12 @@
     --color-seal-tint: #FDF1DC;
     --color-mist: #656D67;         /* muted text, warm gray         */
     --color-line: #E3E6E0;         /* warm hairline                 */
+    /* Muted text ON DARK ink surfaces (footer body copy, dark hero cards).
+       Thirteen spots hard-coded #8B93B8/#B9BFD6 — a cool blue-gray tuned to
+       sit on the OLD cool-blue-black ink. Against the new warm near-black
+       ink it read like a leftover. One warm, light-enough token instead of
+       13 individual hex picks. */
+    --color-ink-muted: #9CA6A0;
 
     /* Back-compat aliases used by older components */
     --color-primary: var(--color-pine);

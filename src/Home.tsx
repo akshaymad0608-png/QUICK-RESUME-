@@ -55,7 +55,7 @@ const HeroResume: FC = () => {
         <Sparkles className="w-4 h-4 text-seal" />
         <div className="text-xs">
           <p className="font-semibold">AI rewrote 3 bullet points</p>
-          <p className="text-[#8B93B8]">Added measurable results</p>
+          <p className="text-ink-muted">Added measurable results</p>
         </div>
       </div>
     </div>
@@ -278,7 +278,7 @@ export const Home: FC = () => {
                     {t.title}
                     <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0 transition-all" />
                   </h3>
-                  <p className="text-[#B9BFD6] text-[15px] leading-relaxed">{t.body}</p>
+                  <p className="text-ink-muted text-[15px] leading-relaxed">{t.body}</p>
                 </button>
               ))}
             </div>
@@ -374,7 +374,7 @@ export const Home: FC = () => {
             <h2 className="font-display text-3xl sm:text-5xl text-paper font-semibold mb-5">
               Your next role starts with one page<span className="text-seal">.</span>
             </h2>
-            <p className="text-lg text-[#B9BFD6] mb-9 max-w-xl mx-auto">
+            <p className="text-lg text-ink-muted mb-9 max-w-xl mx-auto">
               Build it free in about ten minutes. Export a PDF recruiters — and their software — will actually read.
             </p>
             <button

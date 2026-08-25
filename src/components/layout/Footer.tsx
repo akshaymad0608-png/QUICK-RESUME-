@@ -59,12 +59,12 @@ const GUIDE_LINKS = [
 ];
 
 export const Footer: FC = () => (
-  <footer className="bg-ink text-[#B9BFD6] pt-16 pb-8 px-4 sm:px-6">
+  <footer className="bg-ink text-ink-muted pt-16 pb-8 px-4 sm:px-6">
     <div className="max-w-7xl mx-auto">
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-x-8 gap-y-12 mb-14">
         <div className="col-span-2 space-y-5">
           <Link to="/" aria-label="QuickResume home"><Logo light /></Link>
-          <p className="text-sm max-w-xs leading-relaxed text-[#8B93B8]">
+          <p className="text-sm max-w-xs leading-relaxed text-ink-muted">
             The AI resume builder that gets past the bots and in front of recruiters. Write less, land more interviews.
           </p>
           <div className="flex gap-3 pt-1">
@@ -89,7 +89,7 @@ export const Footer: FC = () => (
 
         {COLUMNS.map(col => (
           <div key={col.title}>
-            <h4 className="font-mono text-[11px] uppercase tracking-[0.18em] text-[#8B93B8] mb-5">{col.title}</h4>
+            <h4 className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-muted mb-5">{col.title}</h4>
             <ul className="space-y-3">
               {col.links.map(l => (
                 <li key={l.label}>
@@ -101,7 +101,7 @@ export const Footer: FC = () => (
         ))}
 
         <div>
-          <h4 className="font-mono text-[11px] uppercase tracking-[0.18em] text-[#8B93B8] mb-5">Guides</h4>
+          <h4 className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-muted mb-5">Guides</h4>
           <ul className="space-y-3">
             {GUIDE_LINKS.map(l => (
               <li key={l.href}>
@@ -119,7 +119,7 @@ export const Footer: FC = () => (
         </div>
       </div>
 
-      <div className="pt-7 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-[#8B93B8]">
+      <div className="pt-7 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-ink-muted">
         <p>© {new Date().getFullYear()} quickresume.business — All rights reserved.</p>
         <p className="font-mono tracking-wider">ATS-tested · Free PDF export</p>
       </div>

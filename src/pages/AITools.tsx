@@ -108,8 +108,12 @@ export default function AITools() {
                   <div className="w-12 h-12 rounded-xl bg-pine-tint text-pine flex items-center justify-center">
                     <tool.icon className="w-6 h-6" />
                   </div>
+                  {/* #B34A2E was tuned as a dark burnt-orange against the old
+                      seal — the same pairing already fixed once in .seal-stamp
+                      (index.css). Same fix, same reason: a dark amber-brown
+                      reads correctly against the new amber tint. */}
                   {tool.popular && (
-                    <span className="font-mono text-[10px] tracking-[0.14em] uppercase bg-seal-tint text-[#B34A2E] border border-seal/40 px-2.5 py-1 rounded">Popular</span>
+                    <span className="font-mono text-[10px] tracking-[0.14em] uppercase bg-seal-tint text-[#8A5A0A] border border-seal/40 px-2.5 py-1 rounded">Popular</span>
                   )}
                 </div>
                 <h2 className="text-lg font-bold text-ink mb-2">{tool.name}</h2>

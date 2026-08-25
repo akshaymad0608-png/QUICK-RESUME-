@@ -488,7 +488,7 @@ const ImproveResume: FC = () => {
                     {ats ? (
                       <div className="w-24 h-24 rounded-full border-4 flex flex-col items-center justify-center" style={{ borderColor: scoreColor(ats.score) }}>
                         <span className="font-display text-3xl font-semibold" style={{ color: scoreColor(ats.score) }}>{ats.score}</span>
-                        <span className="font-mono text-[9px] tracking-[0.18em] text-[#8B93B8]">ATS SCORE</span>
+                        <span className="font-mono text-[9px] tracking-[0.18em] text-ink-muted">ATS SCORE</span>
                       </div>
                     ) : (
                       <div className="w-24 h-24 rounded-full border-4 border-white/15 flex items-center justify-center">
@@ -499,11 +499,11 @@ const ImproveResume: FC = () => {
                   <div className="flex-1">
                     <h3 className="text-lg font-bold mb-1">{ats ? 'Your ATS report' : 'Check your ATS score'}</h3>
                     {ats ? (
-                      <ul className="text-sm text-[#B9BFD6] space-y-1.5 mb-4">
+                      <ul className="text-sm text-ink-muted space-y-1.5 mb-4">
                         {ats.tips.slice(0, 5).map((tip, i) => <li key={i} className="flex gap-2"><span className="text-seal">›</span>{tip}</li>)}
                       </ul>
                     ) : (
-                      <p className="text-sm text-[#B9BFD6] mb-4">See how your resume parses through tracking systems, with specific fixes.</p>
+                      <p className="text-sm text-ink-muted mb-4">See how your resume parses through tracking systems, with specific fixes.</p>
                     )}
                     <button
                       onClick={runATS}

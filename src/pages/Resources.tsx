@@ -203,7 +203,7 @@ const Resources: FC = () => {
           <h2 className="font-display text-2xl font-semibold text-paper">
             Ready to build, not just read?
           </h2>
-          <p className="mt-2 text-[#B9BFD6] max-w-xl mx-auto">
+          <p className="mt-2 text-ink-muted max-w-xl mx-auto">
             Pick a template, let AI write the first draft, and export a free ATS-ready PDF in about ten minutes.
           </p>
           <Link

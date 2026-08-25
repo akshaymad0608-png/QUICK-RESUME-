@@ -21,6 +21,7 @@ export default {
         'seal-tint': '#FDF1DC',
         mist: '#656D67',
         line: '#E3E6E0',
+        'ink-muted': '#9CA6A0', // muted text on dark bg-ink surfaces only
 
         /* Back-compat aliases */
         primary: '#086856',
