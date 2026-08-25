@@ -9,19 +9,19 @@ import { AnimatePresence, motion } from 'framer-motion';
 /* QuickResume mark — a resume sheet with a rising career arrow */
 export const LogoMark: FC<{ className?: string }> = ({ className = 'w-9 h-9' }) => (
   <svg viewBox="0 0 36 36" className={className} aria-hidden="true">
-    <rect x="2" y="2" width="32" height="32" rx="9" fill="#171D2F" />
-    <rect x="9" y="10" width="12" height="2.6" rx="1.3" fill="#FAFAFC" />
-    <rect x="9" y="16" width="18" height="2.6" rx="1.3" fill="#5568E8" />
-    <rect x="9" y="22" width="10" height="2.6" rx="1.3" fill="#5568E8" opacity="0.65" />
+    <rect x="2" y="2" width="32" height="32" rx="9" fill="#17211D" />
+    <rect x="9" y="10" width="12" height="2.6" rx="1.3" fill="#FAF9F4" />
+    <rect x="9" y="16" width="18" height="2.6" rx="1.3" fill="#2FA893" />
+    <rect x="9" y="22" width="10" height="2.6" rx="1.3" fill="#2FA893" opacity="0.65" />
     <path
       d="M10 27.5 L18 20.5 L22 24 L28.5 16.5"
-      stroke="#F97350"
+      stroke="#EFA425"
       strokeWidth="2.6"
       fill="none"
       strokeLinecap="round"
       strokeLinejoin="round"
     />
-    <path d="M23.5 15.5 h5.5 v5.5" stroke="#F97350" strokeWidth="2.6" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M23.5 15.5 h5.5 v5.5" stroke="#EFA425" strokeWidth="2.6" fill="none" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 
@@ -29,7 +29,15 @@ export const Logo: FC<{ light?: boolean }> = ({ light }) => (
   <span className="flex items-center gap-2.5">
     <LogoMark />
     <span className={`text-[21px] font-display font-semibold tracking-tight ${light ? 'text-paper' : 'text-ink'}`}>
-      Quick<span className="text-pine">Resume</span>
+      Quick
+      {/*
+        text-pine (#0A7561) is deliberately dark, to pass 4.5:1 on the paper/
+        card backgrounds it appears on almost everywhere. On the footer's
+        dark bg-ink it drops to ~2.9:1 — a dark-on-dark failure. The `light`
+        variant swaps to a brighter teal that clears contrast against ink
+        instead of reusing the token that's tuned for the opposite context.
+      */}
+      <span className={light ? 'text-[#2FA893]' : 'text-pine'}>Resume</span>
     </span>
   </span>
 );

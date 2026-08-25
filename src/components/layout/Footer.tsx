@@ -109,7 +109,9 @@ export const Footer: FC = () => (
               </li>
             ))}
             <li>
-              <Link to="/resources" className="text-sm text-pine hover:text-white transition-colors">
+              {/* text-pine reads ~2.9:1 on this dark footer — tuned for the
+                  opposite (light) context. See Navbar's Logo for the same fix. */}
+              <Link to="/resources" className="text-sm text-[#2FA893] hover:text-white transition-colors">
                 All guides →
               </Link>
             </li>

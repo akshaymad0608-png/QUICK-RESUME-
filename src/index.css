@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700;800&family=Merriweather:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,600;1,400&family=Roboto:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700;800&family=Merriweather:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,600;1,400&family=Roboto:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,18 +6,32 @@
 
 @layer base {
   :root {
-    /* ── QuickResume "Ink & Paper" system ─────────────────── */
-    --color-paper: #FAFAFC;        /* warm document white  */
-    --color-card: #FFFFFF;         /* raised surfaces      */
-    --color-ink: #171D2F;          /* green-black ink      */
-    --color-ink-soft: #333A52;
-    --color-pine: #3A4FD8;         /* primary action       */
-    --color-pine-deep: #2A3AAE;    /* hover                */
-    --color-pine-tint: #EEF1FD;    /* soft green wash      */
-    --color-seal: #F97350;         /* amber approval stamp */
-    --color-seal-tint: #FEEAE3;
-    --color-mist: #666D85;         /* muted text           */
-    --color-line: #E4E6EF;         /* warm hairline        */
+    /*
+      ── QuickResume "Field Notes" system ──────────────────────
+      Replaces the indigo/orange "Ink & Paper" system entirely — new hues,
+      new type, on request ("poora UI/UX, font, colours, theme change karo").
+      Names stay the same (pine, seal, ink, paper, mist, line) because every
+      component references them as bg-pine / text-ink / font-display etc. —
+      changing what a name POINTS TO restyles the whole site from one file;
+      changing the NAMES would mean touching every component for no reason.
+
+      Direction: away from another indigo SaaS blue, toward a warm
+      teal-and-amber pairing — a career-growth register instead of a
+      corporate one — carried by a bold geometric display face (Space
+      Grotesk) over a warm humanist body face (Plus Jakarta Sans) in place of
+      the old editorial serif/Public Sans pairing.
+    */
+    --color-paper: #FAF9F4;        /* warm cream, not cool white   */
+    --color-card: #FFFFFF;         /* raised surfaces              */
+    --color-ink: #17211D;          /* warm near-black, teal-leaning */
+    --color-ink-soft: #3B453F;
+    --color-pine: #086856;         /* primary action — deep teal    */
+    --color-pine-deep: #095F51;    /* hover                         */
+    --color-pine-tint: #E3F5F1;    /* soft teal wash                */
+    --color-seal: #EFA425;         /* accent — warm amber           */
+    --color-seal-tint: #FDF1DC;
+    --color-mist: #656D67;         /* muted text, warm gray         */
+    --color-line: #E3E6E0;         /* warm hairline                 */
 
     /* Back-compat aliases used by older components */
     --color-primary: var(--color-pine);
@@ -30,16 +44,16 @@
     --color-surface: var(--color-card);
     --color-text-heading: var(--color-ink);
     --color-heading: var(--color-ink);
-    --color-text-body: #494F66;
-    --color-body: #494F66;
+    --color-text-body: #414B45;
+    --color-body: #414B45;
     --color-text-muted: var(--color-mist);
     --color-muted: var(--color-mist);
     --color-border: var(--color-line);
-    --color-success: #3A4FD8;
-    --color-success-light: #EEF1FD;
+    --color-success: var(--color-pine);
+    --color-success-light: var(--color-pine-tint);
 
-    --font-sans: 'Public Sans', 'Inter', system-ui, sans-serif;
-    --font-display: 'Fraunces', 'Georgia', serif;
+    --font-sans: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+    --font-display: 'Space Grotesk', system-ui, sans-serif;
     --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
   }
 }
@@ -128,21 +142,21 @@ h1, h2, .font-display {
 
 /* Faint ruled-paper texture for hero surfaces */
 .bg-ruled {
-  background-image: linear-gradient(to bottom, rgba(23, 29, 47, 0.045) 1px, transparent 1px);
+  background-image: linear-gradient(to bottom, rgba(23, 33, 29, 0.045) 1px, transparent 1px);
   background-size: 100% 34px;
 }
 .bg-grid-pattern,
 .bg-grid-pattern-light {
   background-size: 40px 40px;
-  background-image: linear-gradient(to right, rgba(23, 29, 47, 0.04) 1px, transparent 1px),
-                    linear-gradient(to bottom, rgba(23, 29, 47, 0.04) 1px, transparent 1px);
+  background-image: linear-gradient(to right, rgba(23, 33, 29, 0.04) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(23, 33, 29, 0.04) 1px, transparent 1px);
 }
 
 /* Amber "ATS approved" seal */
 .seal-stamp {
   font-family: var(--font-mono);
   border: 1.5px solid var(--color-seal);
-  color: #B34A2E;
+  color: #8A5A0A;
   background: var(--color-seal-tint);
   transform: rotate(-4deg);
 }

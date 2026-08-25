@@ -36,7 +36,7 @@ const HeroResume: FC = () => {
         aria-hidden="true"
       >
         <div className="origin-top-left absolute top-0 left-0" style={{ transform: `scale(${scale})`, width: '794px', height: '1123px' }}>
-          <ActualResume layout="executive" color="#3A4FD8" />
+          <ActualResume layout="executive" color="#086856" />
         </div>
       </div>
 

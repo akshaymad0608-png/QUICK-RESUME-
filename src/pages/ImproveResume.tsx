@@ -256,7 +256,7 @@ const ImproveResume: FC = () => {
     }
   };
 
-  const scoreColor = (n: number) => n >= 80 ? '#3A4FD8' : n >= 60 ? '#F97350' : '#DC2626';
+  const scoreColor = (n: number) => n >= 80 ? '#086856' : n >= 60 ? '#EFA425' : '#DC2626';
 
   /* ── UI ─────────────────────────────────────────────────── */
 
