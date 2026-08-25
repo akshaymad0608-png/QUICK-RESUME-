@@ -56,8 +56,16 @@ const Pricing: FC = () => {
       <main className="flex-1 w-full max-w-4xl mx-auto px-6 pt-32 pb-20">
         <div className="text-center mb-4">
           <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-mist mb-3">Pricing</p>
+          {/*
+            Was "Free today. Simple when Pro launches." — true to the page,
+            but zero overlap with the <title> ("Pricing — Free & Pro Plans
+            Compared"). The small "Pricing" label above is a <p>, not a
+            heading, so it carries none of the keyword weight an <h1> does.
+            Same message, with the word the title and the page are actually
+            about now in the one tag Google reads structurally.
+          */}
           <h1 className="font-display text-4xl md:text-5xl font-semibold tracking-tight text-ink mb-4">
-            Free today. Simple when Pro launches.
+            Pricing: free today, simple when Pro launches
           </h1>
           <p className="text-lg text-mist max-w-xl mx-auto leading-relaxed">
             Every template and every AI tool is free to use right now — no card, no limit.

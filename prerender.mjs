@@ -59,7 +59,7 @@ const ROUTES = [
     h1: 'Career Resources & Resume Guides',
     intro: 'Expert advice, ready-to-use resume outlines, strong action verbs and ATS formatting tips to help you build a resume that gets past the bots and in front of recruiters — so you land interviews faster.' },
   { path: '/pricing', title: 'Pricing — Free & Pro Plans Compared | QuickResume', description: 'Every resume tool is free today, including AI writing and the ATS checker. See what’s included now and what Pro will add.',
-    h1: 'Free today. Simple when Pro launches.',
+    h1: 'Pricing: free today, simple when Pro launches',
     intro: 'Every template and every AI tool — summary writing, bullet rewrites, the ATS score checker, cover letter generation — is free to use right now, no card and no sign-up required. Pro is in early access and free for now too; we will email early users before anything becomes paid.' },
   // App entry points. These are React-only routes, so without a prerendered
   // file the host returns 404 to anyone landing on them directly — including
