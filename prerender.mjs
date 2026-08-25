@@ -76,6 +76,9 @@ const ROUTES = [
   { path: '/terms', title: 'Terms of Service | QuickResume', description: 'The terms for using QuickResume’s resume builder, templates and AI writing tools.',
     h1: 'Terms of Service',
     intro: 'The terms for using QuickResume’s templates, AI writing tools and ATS score checker — what your content is, how AI-generated suggestions should be treated, and acceptable use.' },
+  { path: '/linkedin-headline-generator', title: 'Free LinkedIn Headline Generator (2026) — 8 Options in Seconds', description: 'Generate 8 LinkedIn headline options from your job title and skills — free, no sign-up. Fits LinkedIn’s 220-character limit, ready to paste in.',
+    h1: 'LinkedIn Headline Generator',
+    intro: 'Enter your job title, a few keywords and your experience level, and get 8 LinkedIn headline options — free, no sign-up, no resume required. Each fits inside LinkedIn’s 220-character headline limit and is ready to paste straight into your profile.' },
 ];
 
 const NAV = '<nav aria-label="Sections"><a href="/templates">Resume templates</a> · <a href="/improve">Improve my resume</a> · <a href="/examples">Resume examples</a> · <a href="/ai-tools">AI resume tools</a> · <a href="/cover-letter">Cover letter generator</a> · <a href="/pricing">Pricing</a></nav>';

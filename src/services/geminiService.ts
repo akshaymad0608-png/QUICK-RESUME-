@@ -97,6 +97,44 @@ export const suggestSkills = async (jobTitles: string[]): Promise<string[]> => {
   return Array.from(allSkills).slice(0, 12);
 };
 
+/**
+ * Standalone — no resume data required. This is the one AI feature meant to
+ * be used before someone has built anything: a visitor arrives searching
+ * "linkedin headline generator", tries it with just a job title, and only
+ * then (maybe) goes on to build a resume. Keep the input surface that small.
+ */
+export const generateLinkedInHeadlines = async (
+  jobTitle: string,
+  keywords: string,
+  experienceLevel: string,
+): Promise<string[]> => {
+  const prompt = `You are an expert LinkedIn profile writer. Write 8 distinct LinkedIn headline options for someone with this profile:
+
+Job title / target role: ${jobTitle}
+Key skills or keywords to weave in: ${keywords || '(none given — use role-appropriate ones)'}
+Experience level: ${experienceLevel || 'not specified'}
+
+Rules:
+- Each headline must be under 220 characters (LinkedIn's limit is 220).
+- Vary the style across the 8: some keyword-dense and literal, some benefit-led, some a short "I help X do Y" framing, one or two with a light personality.
+- Do not use em dashes. Use " | " or " · " as separators if needed.
+- No hashtags, no emoji.
+- Return ONLY the 8 headlines, one per line, no numbering, no introductory text.`;
+
+  try {
+    const text = await askAI(prompt);
+    return text
+      .trim()
+      .split('\n')
+      .map((h) => h.replace(/^[\d.\-•*]+\s*/, '').trim())
+      .filter(Boolean)
+      .slice(0, 8);
+  } catch (error) {
+    console.error(error);
+    throw new Error('Failed to generate headlines.');
+  }
+};
+
 export const generateSummary = async (resumeData: unknown): Promise<string> => {
   const prompt = `You are an expert resume writer. Write a professional, highly impactful resume summary based on the following resume data. 
 It should be concise (3-4 sentences), highlight top skills, and demonstrate value. Do not include introductory text, just the summary paragraph itself.

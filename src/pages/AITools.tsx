@@ -1,5 +1,5 @@
 import { Seo } from '../components/Seo';
-import { FileText, MessageSquare, ArrowRight, Wand2, Search, Edit3, ShieldCheck, Upload } from 'lucide-react';
+import { FileText, MessageSquare, ArrowRight, Wand2, Search, Edit3, ShieldCheck, Upload, Sparkles } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Navbar } from '../components/layout/Navbar';
 import { Footer } from '../components/layout/Footer';
@@ -56,6 +56,14 @@ const tools = [
     icon: Upload,
     to: '/start',
   },
+  {
+    id: 'linkedin-headline',
+    name: 'LinkedIn Headline Generator',
+    description: '8 headline options from your job title and skills, no resume or sign-up needed — the one tool here you can use before you build anything.',
+    icon: Sparkles,
+    to: '/linkedin-headline-generator',
+    popular: true,
+  },
 ];
 
 export default function AITools() {
@@ -76,7 +84,8 @@ export default function AITools() {
             { "@type": "ListItem", "position": 2, "name": "ATS Score Checker" },
             { "@type": "ListItem", "position": 3, "name": "Bullet Point Rewriter" },
             { "@type": "ListItem", "position": 4, "name": "Skill Suggestions" },
-            { "@type": "ListItem", "position": 5, "name": "Cover Letter Generator" }
+            { "@type": "ListItem", "position": 5, "name": "Cover Letter Generator" },
+            { "@type": "ListItem", "position": 6, "name": "LinkedIn Headline Generator" }
           ]
         }}
       />
@@ -88,7 +97,7 @@ export default function AITools() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-12 pb-12 lg:pt-16 lg:pb-16">
             <p className="eyebrow mb-4">AI toolkit</p>
             <h1 className="font-display text-4xl sm:text-5xl text-ink font-semibold mb-4 max-w-2xl leading-tight">
-              Seven tools that do the hard writing for you
+              Eight tools that do the hard writing for you
             </h1>
             <p className="text-lg max-w-xl">
               Each one is built into the resume editor — use them individually here, or let them work together as you build.

@@ -19,6 +19,7 @@ const Pricing = lazy(() => import('./pages/Pricing'));
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
 const TermsOfService = lazy(() => import('./pages/TermsOfService'));
 const NotFound = lazy(() => import('./pages/NotFound'));
+const LinkedInHeadlineGenerator = lazy(() => import('./pages/LinkedInHeadlineGenerator'));
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
               <Route path="/cover-letter" element={<CoverLetterGenerator />} />
               <Route path="/improve" element={<ImproveResume />} />
               <Route path="/pricing" element={<Pricing />} />
+              <Route path="/linkedin-headline-generator" element={<LinkedInHeadlineGenerator />} />
               <Route path="/privacy" element={<PrivacyPolicy />} />
               <Route path="/terms" element={<TermsOfService />} />
               {/*
