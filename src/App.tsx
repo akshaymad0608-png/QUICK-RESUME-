@@ -16,6 +16,9 @@ const AITools = lazy(() => import('./pages/AITools'));
 const CoverLetterGenerator = lazy(() => import('./pages/CoverLetterGenerator'));
 const ImproveResume = lazy(() => import('./pages/ImproveResume'));
 const Pricing = lazy(() => import('./pages/Pricing'));
+const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
+const TermsOfService = lazy(() => import('./pages/TermsOfService'));
+const NotFound = lazy(() => import('./pages/NotFound'));
 
 function App() {
   return (
@@ -34,6 +37,17 @@ function App() {
               <Route path="/cover-letter" element={<CoverLetterGenerator />} />
               <Route path="/improve" element={<ImproveResume />} />
               <Route path="/pricing" element={<Pricing />} />
+              <Route path="/privacy" element={<PrivacyPolicy />} />
+              <Route path="/terms" element={<TermsOfService />} />
+              {/*
+                No catch-all existed before this. A mistyped URL, a removed
+                route, or a stale link from an old build all hit </Routes>
+                with nothing matching — React Router renders nothing, so the
+                visitor got a blank page at whatever URL they landed on, with
+                no way back in short of editing the address bar. This at least
+                gives them a page and a way home.
+              */}
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
           <Toaster position="bottom-right" />

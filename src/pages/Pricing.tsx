@@ -1,134 +1,124 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { Seo } from '../components/Seo';
 import { useNavigate } from 'react-router-dom';
-import { Check, X } from 'lucide-react';
+import { Check, Sparkles } from 'lucide-react';
 import { Navbar } from '../components/layout/Navbar';
 import { Footer } from '../components/layout/Footer';
 
-const plans = [
-  {
-    name: "Free",
-    price: "0",
-    description: "Perfect for entry-level professionals.",
-    features: [
-      { name: "1 Resume build", included: true },
-      { name: "Basic templates", included: true },
-      { name: "ATS score checker", included: true },
-      { name: "Export to PDF", included: true },
-      { name: "AI Cover letters", included: false },
-      { name: "Unlimited resumes", included: false }
-    ],
-    cta: "Start Free",
-    popular: false
-  },
-  {
-    name: "Pro",
-    price: "15",
-    period: "/mo",
-    description: "The complete toolkit to land your dream job faster.",
-    features: [
-      { name: "Unlimited resumes", included: true },
-      { name: "All premium templates", included: true },
-      { name: "Deep ATS score analysis", included: true },
-      { name: "Export to PDF & DOCX", included: true },
-      { name: "AI Cover letters", included: true },
-      { name: "Resume keyword matcher", included: true }
-    ],
-    cta: "Upgrade to Pro",
-    popular: true
-  }
+/*
+ * Two real fixes here, beyond bringing the page onto the site's own design
+ * tokens (it was slate/blue — not pine/ink/paper like everywhere else).
+ *
+ * 1. "Cancel anytime" and a working-looking "Upgrade to Pro" button are gone.
+ *    There is no payment processor anywhere in this codebase and no gating
+ *    logic anywhere restricts what a "Free" user can reach — every template
+ *    and every AI tool is open to everyone today. "Cancel anytime" describes
+ *    a subscription that cannot currently be started; keeping that line while
+ *    making the page look more trustworthy would have made the false claim
+ *    more convincing, not less.
+ *
+ * 2. Both CTAs now say what actually happens when you click them: you reach
+ *    the free builder, because that is the only thing behind either button
+ *    right now. Pro is framed as "free during early access" — true today,
+ *    and it reads as a real roadmap rather than a fake paywall. When billing
+ *    is wired up, this page needs its claims rewritten to match, not before.
+ */
+
+const FREE_FEATURES = [
+  'Every ATS-friendly template',
+  'AI summary, bullet rewrites & skill suggestions',
+  'ATS score checker',
+  'Cover letter generator',
+  'Export to PDF',
+];
+
+const PRO_FEATURES = [
+  'Everything in Free',
+  'Export to DOCX',
+  'Deep ATS score analysis with line-by-line fixes',
+  'Job description keyword matcher',
+  'Priority AI generation',
 ];
 
 const Pricing: FC = () => {
   const navigate = useNavigate();
-  const [billingCycle, setBillingCycle] = useState<'monthly' | 'annual'>('annual');
 
   return (
-    <div className="min-h-screen bg-paper text-body flex flex-col font-sans pt-16 md:pt-[72px] relative selection:bg-pine selection:text-white">
+    <div className="min-h-screen bg-paper text-body flex flex-col font-sans selection:bg-pine selection:text-white">
       <Seo
         path="/pricing"
-        title="Pricing — Free & Pro Plans | QuickResume"
-        description="Build a resume, check your ATS score and export a PDF for free. Upgrade to Pro for unlimited resumes, premium templates and all AI tools."
+        title="Pricing — Free & Pro Plans Compared | QuickResume"
+        description="Every resume tool is free today, including AI writing and the ATS checker. See what's included now and what Pro will add."
       />
 
       <Navbar />
 
-      <main className="flex-1 w-full max-w-5xl mx-auto px-6 py-20 relative z-10">        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] pointer-events-none -z-10 overflow-hidden">          <div className="absolute top-20 left-[10%] w-96 h-96 bg-blue-300/20 rounded-full blur-3xl"></div>          <div className="absolute top-40 right-[10%] w-96 h-96 bg-purple-300/20 rounded-full blur-3xl"></div>        </div>
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">Simple, transparent pricing.</h1>
-          <p className="text-lg text-slate-500 max-w-2xl mx-auto">
-            Choose the perfect plan to accelerate your job search. No hidden fees. Cancel anytime.
+      <main className="flex-1 w-full max-w-4xl mx-auto px-6 pt-32 pb-20">
+        <div className="text-center mb-4">
+          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-mist mb-3">Pricing</p>
+          <h1 className="font-display text-4xl md:text-5xl font-semibold tracking-tight text-ink mb-4">
+            Free today. Simple when Pro launches.
+          </h1>
+          <p className="text-lg text-mist max-w-xl mx-auto leading-relaxed">
+            Every template and every AI tool is free to use right now — no card, no limit.
+            Here's what's included, and what Pro adds when it launches.
           </p>
         </div>
 
-        {/* Billing Cycle Toggle */}
-        <div className="flex justify-center mb-16">
-          <div className="bg-white p-1 rounded-full border border-slate-200 shadow-sm inline-flex items-center">
-            <button 
-              onClick={() => setBillingCycle('monthly')}
-              className={`px-6 py-2.5 rounded-full text-sm font-semibold transition-colors ${billingCycle === 'monthly' ? 'bg-slate-50 text-slate-900 shadow-sm border border-slate-200' : 'text-slate-500 hover:text-slate-900'}`}
+        <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto mt-16">
+          <div className="rounded-2xl border border-line bg-card p-8 flex flex-col shadow-card">
+            <h2 className="font-display text-xl font-semibold text-ink mb-1">Free</h2>
+            <p className="text-sm text-mist mb-6">Available now, no sign-up required.</p>
+            <div className="flex items-end gap-1 border-b border-line pb-8 mb-8">
+              <span className="text-4xl font-bold text-ink">$0</span>
+            </div>
+            <ul className="space-y-3.5 mb-10 flex-1">
+              {FREE_FEATURES.map((f) => (
+                <li key={f} className="flex items-start gap-3 text-sm font-medium text-ink-soft">
+                  <Check className="w-4.5 h-4.5 text-pine shrink-0 mt-0.5" />
+                  <span>{f}</span>
+                </li>
+              ))}
+            </ul>
+            <button
+              className="w-full py-3.5 rounded-xl font-semibold text-center border border-line bg-paper text-ink hover:border-pine transition-colors"
+              onClick={() => navigate('/start')}
             >
-              Monthly
+              Start free
             </button>
-            <button 
-              onClick={() => setBillingCycle('annual')}
-              className={`px-6 py-2.5 rounded-full text-sm font-semibold transition-colors flex items-center gap-2 ${billingCycle === 'annual' ? 'bg-pine text-white shadow-sm' : 'text-slate-500 hover:text-slate-900'}`}
+          </div>
+
+          <div className="rounded-2xl border-2 border-pine bg-card p-8 flex flex-col shadow-lift relative">
+            <span className="absolute -top-3 left-8 inline-flex items-center gap-1.5 bg-pine text-white text-xs font-bold px-3 py-1 rounded-full">
+              <Sparkles size={12} /> Coming soon
+            </span>
+            <h2 className="font-display text-xl font-semibold text-ink mb-1">Pro</h2>
+            <p className="text-sm text-mist mb-6">Free during early access — pricing isn't set yet.</p>
+            <div className="flex items-end gap-1 border-b border-line pb-8 mb-8">
+              <span className="text-4xl font-bold text-ink">Free</span>
+              <span className="text-mist font-medium mb-1">for now</span>
+            </div>
+            <ul className="space-y-3.5 mb-10 flex-1">
+              {PRO_FEATURES.map((f) => (
+                <li key={f} className="flex items-start gap-3 text-sm font-medium text-ink-soft">
+                  <Check className="w-4.5 h-4.5 text-pine shrink-0 mt-0.5" />
+                  <span>{f}</span>
+                </li>
+              ))}
+            </ul>
+            <button
+              className="w-full py-3.5 rounded-xl font-semibold text-center bg-pine text-white hover:bg-pine-deep transition-colors shadow-sm"
+              onClick={() => navigate('/start')}
             >
-              Annually <span className="text-[10px] bg-slate-200 text-slate-700 px-2 py-0.5 rounded-md uppercase tracking-wider hidden sm:inline-block border border-slate-300">Save 20%</span>
+              Try Pro features free
             </button>
           </div>
         </div>
 
-        {/* Pricing Cards */}
-        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          {plans.map((plan) => (
-            <div 
-              key={plan.name}
-              className={`bg-white rounded-2xl p-8 flex flex-col h-full border hover:border-slate-300 transition-all ${
-                plan.popular ? 'border-slate-400 ring-1 ring-slate-400 shadow-[0_0_30px_-5px_rgba(0,0,0,0.1)]' : 'border-slate-200 shadow-sm'
-              }`}
-            >
-              <div className="flex justify-between items-center mb-2">
-                <h3 className="text-2xl font-bold text-slate-900">{plan.name}</h3>
-                {plan.popular && (
-                  <span className="bg-slate-100 text-slate-900 text-xs font-bold px-3 py-1 rounded-full border border-slate-200">
-                    Most Popular
-                  </span>
-                )}
-              </div>
-              <p className="text-slate-500 text-sm mb-6 h-10">{plan.description}</p>
-              
-              <div className="flex items-end gap-1 border-b border-slate-200 pb-8 mb-8">
-                <span className="text-4xl font-extrabold text-slate-900">
-                  ${billingCycle === 'annual' && plan.price !== "0" ? Math.floor(parseInt(plan.price) * 0.8) : plan.price}
-                </span>
-                {plan.period && <span className="text-slate-500 font-medium mb-1">{plan.period}</span>}
-              </div>
-              
-              <ul className="space-y-4 mb-10 flex-1">
-                {plan.features.map((feature, fIdx) => (
-                  <li key={fIdx} className="flex items-start gap-3 text-sm font-medium">
-                    {feature.included ? (
-                      <Check className="w-5 h-5 text-slate-700 shrink-0" />
-                    ) : (
-                      <X className="w-5 h-5 text-slate-600 shrink-0" />
-                    )}
-                    <span className={feature.included ? 'text-slate-600' : 'text-slate-600'}>{feature.name}</span>
-                  </li>
-                ))}
-              </ul>
-              
-              <button 
-                className={`w-full py-3.5 rounded-xl font-bold text-center transition-colors ${
-                  plan.popular ? 'bg-pine text-white hover:bg-pine-deep shadow-sm' : 'bg-white text-slate-900 border border-slate-200 hover:bg-slate-50'
-                }`}
-                onClick={() => navigate('/start')}
-              >
-                {plan.cta}
-              </button>
-            </div>
-          ))}
-        </div>
+        <p className="text-center text-sm text-mist mt-10 max-w-md mx-auto">
+          Both buttons take you to the same free builder — Pro isn't gated yet. We'll email early
+          users before anything becomes paid.
+        </p>
       </main>
 
       <Footer />

@@ -58,9 +58,9 @@ const ROUTES = [
   { path: '/resources', title: 'Career Resources and Resume Guides for Every Job Role', description: 'Expert advice, resume outlines, action verbs and ATS formatting tips to help you build the perfect resume and land your dream job faster.',
     h1: 'Career Resources & Resume Guides',
     intro: 'Expert advice, ready-to-use resume outlines, strong action verbs and ATS formatting tips to help you build a resume that gets past the bots and in front of recruiters — so you land interviews faster.' },
-  { path: '/pricing', title: 'Pricing — Free and Pro Plans Compared | QuickResume', description: 'Build a resume, check your ATS score and export a PDF for free. Upgrade to Pro for unlimited resumes, premium templates and all AI tools.',
-    h1: 'QuickResume Pricing — Free & Pro Plans',
-    intro: 'Build a resume, check your ATS score and export a PDF completely free. Upgrade to Pro for unlimited resumes, premium templates and every AI tool — with clear, simple pricing and no hidden fees.' },
+  { path: '/pricing', title: 'Pricing — Free & Pro Plans Compared | QuickResume', description: 'Every resume tool is free today, including AI writing and the ATS checker. See what’s included now and what Pro will add.',
+    h1: 'Free today. Simple when Pro launches.',
+    intro: 'Every template and every AI tool — summary writing, bullet rewrites, the ATS score checker, cover letter generation — is free to use right now, no card and no sign-up required. Pro is in early access and free for now too; we will email early users before anything becomes paid.' },
   // App entry points. These are React-only routes, so without a prerendered
   // file the host returns 404 to anyone landing on them directly — including
   // every "Start" link shared or bookmarked.
@@ -70,6 +70,12 @@ const ROUTES = [
   { path: '/build', title: 'Resume Builder — Edit, Score & Export Free | QuickResume', description: 'Write, edit and export your resume with live ATS scoring, AI bullet rewrites and a clean PDF download — free, right in your browser.',
     h1: 'Resume Builder',
     intro: 'Write and edit your resume with live preview, AI-assisted bullet points, instant ATS scoring and one-click PDF export. Everything runs in your browser and your data stays on your device.' },
+  { path: '/privacy', title: 'Privacy Policy | QuickResume', description: 'What QuickResume collects, why, and where your resume data actually lives.',
+    h1: 'Privacy Policy',
+    intro: 'Your resume is built in your browser and saved to your device, not to a server database. This page covers exactly what we collect when you sign in or use an AI tool, which third parties are involved — Google Firebase, the Gemini API, Google Analytics — and how to reach us with a question.' },
+  { path: '/terms', title: 'Terms of Service | QuickResume', description: 'The terms for using QuickResume’s resume builder, templates and AI writing tools.',
+    h1: 'Terms of Service',
+    intro: 'The terms for using QuickResume’s templates, AI writing tools and ATS score checker — what your content is, how AI-generated suggestions should be treated, and acceptable use.' },
 ];
 
 const NAV = '<nav aria-label="Sections"><a href="/templates">Resume templates</a> · <a href="/improve">Improve my resume</a> · <a href="/examples">Resume examples</a> · <a href="/ai-tools">AI resume tools</a> · <a href="/cover-letter">Cover letter generator</a> · <a href="/pricing">Pricing</a></nav>';

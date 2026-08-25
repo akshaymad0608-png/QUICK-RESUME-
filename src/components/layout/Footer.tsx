@@ -37,8 +37,8 @@ const COLUMNS = [
     links: [
       { label: 'Pricing', to: '/pricing' },
       { label: 'Career Resources', to: '/resources' },
-      { label: 'Privacy', to: '/' },
-      { label: 'Terms', to: '/' },
+      { label: 'Privacy', to: '/privacy' },
+      { label: 'Terms', to: '/terms' },
     ],
   },
 ];
