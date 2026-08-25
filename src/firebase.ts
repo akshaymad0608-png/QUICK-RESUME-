@@ -81,6 +81,16 @@ export const describeAuthError = (error: any): string => {
       return 'Too many attempts. Please wait a moment and try again.';
     case 'auth/account-exists-with-different-credential':
       return 'That email is already registered with a different sign-in method.';
+    case 'auth/operation-not-allowed':
+      return 'Google sign-in is not enabled for this app right now.';
+    case 'auth/internal-error':
+      // The one time this fired in production it was apis.google.com being
+      // blocked by the page's own Content-Security-Policy, not a Google
+      // outage — signInWithPopup's helper script never loaded, and the popup
+      // failed silently in a way that produces this exact generic code. The
+      // console.error in LoginModal carries the real FirebaseError; this text
+      // is just what a visitor sees while that gets fixed.
+      return 'Sign-in is temporarily unavailable. Please try again in a moment.';
     default:
       return 'Could not sign in with Google. Please try again.';
   }
