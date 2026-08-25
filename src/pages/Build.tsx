@@ -229,7 +229,7 @@ const Build: FC = () => {
   const currentScore = 86; // Example score
 
   return (
-    <div className="flex flex-col h-screen h-[100dvh] bg-slate-50 font-sans text-slate-600 overflow-hidden selection:bg-slate-900 selection:text-white">
+    <div className="flex flex-col h-screen h-[100dvh] bg-paper font-sans text-mist overflow-hidden selection:bg-ink selection:text-white">
       <Seo
         path="/build"
         title="Resume Builder | QuickResume"
@@ -239,7 +239,7 @@ const Build: FC = () => {
 
       <div className="flex flex-1 min-h-0 overflow-hidden relative">
         {/* Extreme Left Sidebar (90px) - Desktop Only */}
-        <aside className="w-[90px] bg-white border-r border-slate-200 flex-col items-center py-6 shrink-0 z-20 hidden md:flex">
+        <aside className="w-[90px] bg-white border-r border-line flex-col items-center py-6 shrink-0 z-20 hidden md:flex">
           <div className="w-10 h-10 bg-pine text-white rounded-xl flex items-center justify-center mb-8 cursor-pointer shadow-lg" onClick={() => navigate('/')}>
             <FileText className="w-5 h-5" />
           </div>
@@ -266,8 +266,8 @@ const Build: FC = () => {
                 onClick={() => setActiveTab(item.id as SidebarTab)}
                 className={`flex flex-col items-center justify-center py-3 rounded-xl transition-all w-full
                   ${activeTab === item.id 
-                    ? 'bg-slate-100 text-pine border border-slate-200 font-bold' 
-                    : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900 border border-transparent font-medium'}`}
+                    ? 'bg-paper text-pine border border-line font-bold' 
+                    : 'text-mist hover:bg-paper hover:text-ink border border-transparent font-medium'}`}
               >
                 {item.icon && React.createElement(item.icon, { className: "w-5 h-5 mb-1.5" })}
                 <span className="text-[10px] tracking-wide">{item.label}</span>
@@ -280,15 +280,15 @@ const Build: FC = () => {
         <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
           
           {/* Top Navbar */}
-          <header className="h-[64px] bg-white border-b border-slate-200 flex items-center justify-between px-4 md:px-6 shrink-0 z-10">
+          <header className="h-[64px] bg-white border-b border-line flex items-center justify-between px-4 md:px-6 shrink-0 z-10">
             <div className="flex items-center gap-2 md:gap-4">
               <input 
                 type="text" 
                 value={resumeName}
                 onChange={(e) => setResumeName(e.target.value)}
-                className="text-base md:text-lg text-slate-900 font-bold bg-transparent border-none outline-none focus:ring-1 focus:ring-pine rounded px-2 w-[140px] md:w-[200px]"
+                className="text-base md:text-lg text-ink font-bold bg-transparent border-none outline-none focus:ring-1 focus:ring-pine rounded px-2 w-[140px] md:w-[200px]"
               />
-              <div className="hidden md:flex items-center gap-1.5 text-xs font-bold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-md border border-slate-200">
+              <div className="hidden md:flex items-center gap-1.5 text-xs font-bold text-mist bg-paper px-2.5 py-1 rounded-md border border-line">
                 <CheckCircle2 className="w-3.5 h-3.5" />
                 Saved
               </div>
@@ -296,24 +296,24 @@ const Build: FC = () => {
 
           <div className="flex items-center justify-center">
              <div className="hidden md:flex items-center w-64">
-               <div className="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
+               <div className="w-full bg-paper rounded-full h-1.5 overflow-hidden">
                  <div className="bg-pine h-full rounded-full transition-all duration-500" style={{ width: `${completion}%` }}></div>
                </div>
-               <span className="ml-3 text-[10px] font-black text-slate-500 uppercase tracking-widest whitespace-nowrap">{completion}% Complete</span>
+               <span className="ml-3 text-[10px] font-black text-mist uppercase tracking-widest whitespace-nowrap">{completion}% Complete</span>
              </div>
           </div>
 
           <div className="flex items-center gap-2 md:gap-3 justify-end">
-             <div className="hidden lg:flex items-center gap-4 px-4 py-1.5 border border-slate-200 rounded-lg bg-white/5 text-sm font-medium text-slate-600">
+             <div className="hidden lg:flex items-center gap-4 px-4 py-1.5 border border-line rounded-lg bg-white/5 text-sm font-medium text-mist">
                <span>Zoom</span>
-               <button onClick={() => setPreviewZoom(z => Math.max(z - 25, 50))} className="text-slate-500 hover:text-slate-900">-</button>
-               <span className="w-10 text-center text-slate-900">{previewZoom}%</span>
-               <button onClick={() => setPreviewZoom(z => Math.min(z + 25, 150))} className="text-slate-500 hover:text-slate-900">+</button>
+               <button onClick={() => setPreviewZoom(z => Math.max(z - 25, 50))} className="text-mist hover:text-ink">-</button>
+               <span className="w-10 text-center text-ink">{previewZoom}%</span>
+               <button onClick={() => setPreviewZoom(z => Math.min(z + 25, 150))} className="text-mist hover:text-ink">+</button>
              </div>
 
              <button
                 onClick={handlePreviewPdf}
-                className="text-sm font-bold text-slate-700 bg-white border border-slate-200 hover:bg-slate-50 transition-colors rounded-lg px-4 py-2 flex items-center gap-2"
+                className="text-sm font-bold text-ink-soft bg-white border border-line hover:bg-paper transition-colors rounded-lg px-4 py-2 flex items-center gap-2"
               >
                 <Eye className="w-4 h-4" />
                 <span className="hidden xl:inline">Preview PDF</span>
@@ -322,7 +322,7 @@ const Build: FC = () => {
              <button 
                 onClick={handleOptimizeResume}
                 disabled={isOptimizing}
-                className="text-sm font-bold text-pine bg-white border border-slate-200 hover:bg-slate-50 transition-colors rounded-lg px-4 py-2 flex items-center gap-2"
+                className="text-sm font-bold text-pine bg-white border border-line hover:bg-paper transition-colors rounded-lg px-4 py-2 flex items-center gap-2"
               >
                 {isOptimizing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
                 <span className="hidden xl:inline">AI Optimize</span>
@@ -339,13 +339,13 @@ const Build: FC = () => {
                   <ChevronDown className="w-3.5 h-3.5 opacity-80" />
                 </button>
                 <div className="absolute right-0 top-full pt-2 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-30">
-                  <div className="bg-white border border-slate-200 rounded-xl shadow-xl overflow-hidden">
+                  <div className="bg-white border border-line rounded-xl shadow-xl overflow-hidden">
                     <button onClick={handleDownloadPDF} disabled={isDownloading}
-                      className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-pine-tint hover:text-pine-deep transition-colors">
+                      className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm font-semibold text-ink-soft hover:bg-pine-tint hover:text-pine-deep transition-colors">
                       <Download className="w-4 h-4" /> Download PDF
                     </button>
                     <button onClick={handleDownloadExcel}
-                      className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 transition-colors border-t border-slate-100">
+                      className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm font-semibold text-ink-soft hover:bg-emerald-50 hover:text-emerald-700 transition-colors border-t border-paper">
                       <FileSpreadsheet className="w-4 h-4" /> Download Excel
                     </button>
                   </div>
@@ -355,139 +355,139 @@ const Build: FC = () => {
         </header>
 
         {/* Workspace */}
-        <div className="flex flex-1 overflow-hidden min-h-0 bg-slate-50">
+        <div className="flex flex-1 overflow-hidden min-h-0 bg-paper">
           
           {/* Middle Column: Editor Tools */}
-          <div className={`${activeTab === 'preview' ? 'hidden' : 'flex'} w-full lg:flex lg:w-[500px] xl:w-[650px] shrink-0 bg-white border-r border-slate-200 overflow-y-auto custom-scrollbar flex-col relative z-0`}>
+          <div className={`${activeTab === 'preview' ? 'hidden' : 'flex'} w-full lg:flex lg:w-[500px] xl:w-[650px] shrink-0 bg-white border-r border-line overflow-y-auto custom-scrollbar flex-col relative z-0`}>
             {activeTab === 'builder' && (
               <div className="p-8">
                 <div className="mb-8">
-                  <h2 className="text-2xl font-black text-slate-900 mb-2 tracking-tight">Editor Workspace</h2>
-                  <p className="text-slate-500 text-sm">Fill in your information to build your professional resume.</p>
+                  <h2 className="text-2xl font-black text-ink mb-2 tracking-tight">Editor Workspace</h2>
+                  <p className="text-mist text-sm">Fill in your information to build your professional resume.</p>
                 </div>
                 
                 <div className="space-y-4">
                   {/* Personal Information Accordion */}
-                  <div className={`border rounded-xl transition-all overflow-hidden ${expandedSection === 'personal' ? 'border-slate-400 bg-slate-50' : 'border-slate-200 bg-white hover:border-slate-300'}`}>
+                  <div className={`border rounded-xl transition-all overflow-hidden ${expandedSection === 'personal' ? 'border-mist bg-paper' : 'border-line bg-white hover:border-line'}`}>
                     <button 
                       onClick={() => setExpandedSection(expandedSection === 'personal' ? null : 'personal')}
                       className="w-full flex items-center justify-between p-5 text-left"
                     >
                       <div className="flex items-center gap-4">
-                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${expandedSection === 'personal' ? 'bg-pine text-white' : 'bg-slate-100 text-slate-500'}`}>
+                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${expandedSection === 'personal' ? 'bg-pine text-white' : 'bg-paper text-mist'}`}>
                           <User size={18} />
                         </div>
-                        <h3 className="font-bold text-base text-slate-900 flex items-center gap-2">Personal Information{sectionDone.personal && <CheckCircle2 size={16} className="text-pine" />}</h3>
+                        <h3 className="font-bold text-base text-ink flex items-center gap-2">Personal Information{sectionDone.personal && <CheckCircle2 size={16} className="text-pine" />}</h3>
                       </div>
-                      <ChevronDown className={`w-5 h-5 text-slate-500 transition-transform ${expandedSection === 'personal' ? 'rotate-180 text-pine' : ''}`} />
+                      <ChevronDown className={`w-5 h-5 text-mist transition-transform ${expandedSection === 'personal' ? 'rotate-180 text-pine' : ''}`} />
                     </button>
                     {expandedSection === 'personal' && (
-                      <div className="p-5 border-t border-slate-200 bg-white editor-dark-theme">
+                      <div className="p-5 border-t border-line bg-white editor-dark-theme">
                         <Contacts />
                       </div>
                     )}
                   </div>
 
                   {/* Summary Accordion */}
-                  <div className={`border rounded-xl transition-all overflow-hidden ${expandedSection === 'summary' ? 'border-slate-400 bg-slate-50' : 'border-slate-200 bg-white hover:border-slate-300'}`}>
+                  <div className={`border rounded-xl transition-all overflow-hidden ${expandedSection === 'summary' ? 'border-mist bg-paper' : 'border-line bg-white hover:border-line'}`}>
                     <button 
                       onClick={() => setExpandedSection(expandedSection === 'summary' ? null : 'summary')}
                       className="w-full flex items-center justify-between p-5 text-left"
                     >
                       <div className="flex items-center gap-4">
-                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${expandedSection === 'summary' ? 'bg-pine text-white' : 'bg-slate-100 text-slate-500'}`}>
+                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${expandedSection === 'summary' ? 'bg-pine text-white' : 'bg-paper text-mist'}`}>
                           <FileText size={18} />
                         </div>
-                        <h3 className="font-bold text-base text-slate-900 flex items-center gap-2">Professional Summary{sectionDone.summary && <CheckCircle2 size={16} className="text-pine" />}</h3>
+                        <h3 className="font-bold text-base text-ink flex items-center gap-2">Professional Summary{sectionDone.summary && <CheckCircle2 size={16} className="text-pine" />}</h3>
                       </div>
-                      <ChevronDown className={`w-5 h-5 text-slate-500 transition-transform ${expandedSection === 'summary' ? 'rotate-180 text-pine' : ''}`} />
+                      <ChevronDown className={`w-5 h-5 text-mist transition-transform ${expandedSection === 'summary' ? 'rotate-180 text-pine' : ''}`} />
                     </button>
                     {expandedSection === 'summary' && (
-                      <div className="p-5 border-t border-slate-200 bg-white editor-dark-theme">
+                      <div className="p-5 border-t border-line bg-white editor-dark-theme">
                         <Summary />
                       </div>
                     )}
                   </div>
 
                   {/* Experience Accordion */}
-                  <div className={`border rounded-xl transition-all overflow-hidden ${expandedSection === 'experience' ? 'border-slate-400 bg-slate-50' : 'border-slate-200 bg-white hover:border-slate-300'}`}>
+                  <div className={`border rounded-xl transition-all overflow-hidden ${expandedSection === 'experience' ? 'border-mist bg-paper' : 'border-line bg-white hover:border-line'}`}>
                     <button 
                       onClick={() => setExpandedSection(expandedSection === 'experience' ? null : 'experience')}
                       className="w-full flex items-center justify-between p-5 text-left"
                     >
                       <div className="flex items-center gap-4">
-                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${expandedSection === 'experience' ? 'bg-pine text-white' : 'bg-slate-100 text-slate-500'}`}>
+                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${expandedSection === 'experience' ? 'bg-pine text-white' : 'bg-paper text-mist'}`}>
                           <Briefcase size={18} />
                         </div>
-                        <h3 className="font-bold text-base text-slate-900 flex items-center gap-2">Work Experience{sectionDone.experience && <CheckCircle2 size={16} className="text-pine" />}</h3>
+                        <h3 className="font-bold text-base text-ink flex items-center gap-2">Work Experience{sectionDone.experience && <CheckCircle2 size={16} className="text-pine" />}</h3>
                       </div>
-                      <ChevronDown className={`w-5 h-5 text-slate-500 transition-transform ${expandedSection === 'experience' ? 'rotate-180 text-pine' : ''}`} />
+                      <ChevronDown className={`w-5 h-5 text-mist transition-transform ${expandedSection === 'experience' ? 'rotate-180 text-pine' : ''}`} />
                     </button>
                     {expandedSection === 'experience' && (
-                      <div className="p-5 border-t border-slate-200 bg-white editor-dark-theme">
+                      <div className="p-5 border-t border-line bg-white editor-dark-theme">
                         <Experience />
                       </div>
                     )}
                   </div>
 
                   {/* Education Accordion */}
-                  <div className={`border rounded-xl transition-all overflow-hidden ${expandedSection === 'education' ? 'border-slate-400 bg-slate-50' : 'border-slate-200 bg-white hover:border-slate-300'}`}>
+                  <div className={`border rounded-xl transition-all overflow-hidden ${expandedSection === 'education' ? 'border-mist bg-paper' : 'border-line bg-white hover:border-line'}`}>
                     <button 
                       onClick={() => setExpandedSection(expandedSection === 'education' ? null : 'education')}
                       className="w-full flex items-center justify-between p-5 text-left"
                     >
                       <div className="flex items-center gap-4">
-                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${expandedSection === 'education' ? 'bg-pine text-white' : 'bg-slate-100 text-slate-500'}`}>
+                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${expandedSection === 'education' ? 'bg-pine text-white' : 'bg-paper text-mist'}`}>
                           <GraduationCap size={18} />
                         </div>
-                        <h3 className="font-bold text-base text-slate-900 flex items-center gap-2">Education{sectionDone.education && <CheckCircle2 size={16} className="text-pine" />}</h3>
+                        <h3 className="font-bold text-base text-ink flex items-center gap-2">Education{sectionDone.education && <CheckCircle2 size={16} className="text-pine" />}</h3>
                       </div>
-                      <ChevronDown className={`w-5 h-5 text-slate-500 transition-transform ${expandedSection === 'education' ? 'rotate-180 text-pine' : ''}`} />
+                      <ChevronDown className={`w-5 h-5 text-mist transition-transform ${expandedSection === 'education' ? 'rotate-180 text-pine' : ''}`} />
                     </button>
                     {expandedSection === 'education' && (
-                      <div className="p-5 border-t border-slate-200 bg-white editor-dark-theme">
+                      <div className="p-5 border-t border-line bg-white editor-dark-theme">
                         <Education />
                       </div>
                     )}
                   </div>
 
                   {/* Skills Accordion */}
-                  <div className={`border rounded-xl transition-all overflow-hidden ${expandedSection === 'skills' ? 'border-slate-400 bg-slate-50' : 'border-slate-200 bg-white hover:border-slate-300'}`}>
+                  <div className={`border rounded-xl transition-all overflow-hidden ${expandedSection === 'skills' ? 'border-mist bg-paper' : 'border-line bg-white hover:border-line'}`}>
                     <button 
                       onClick={() => setExpandedSection(expandedSection === 'skills' ? null : 'skills')}
                       className="w-full flex items-center justify-between p-5 text-left"
                     >
                       <div className="flex items-center gap-4">
-                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${expandedSection === 'skills' ? 'bg-pine text-white' : 'bg-slate-100 text-slate-500'}`}>
+                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${expandedSection === 'skills' ? 'bg-pine text-white' : 'bg-paper text-mist'}`}>
                           <Wrench size={18} />
                         </div>
-                        <h3 className="font-bold text-base text-slate-900 flex items-center gap-2">Skills{sectionDone.skills && <CheckCircle2 size={16} className="text-pine" />}</h3>
+                        <h3 className="font-bold text-base text-ink flex items-center gap-2">Skills{sectionDone.skills && <CheckCircle2 size={16} className="text-pine" />}</h3>
                       </div>
-                      <ChevronDown className={`w-5 h-5 text-slate-500 transition-transform ${expandedSection === 'skills' ? 'rotate-180 text-pine' : ''}`} />
+                      <ChevronDown className={`w-5 h-5 text-mist transition-transform ${expandedSection === 'skills' ? 'rotate-180 text-pine' : ''}`} />
                     </button>
                     {expandedSection === 'skills' && (
-                      <div className="p-5 border-t border-slate-200 bg-white editor-dark-theme">
+                      <div className="p-5 border-t border-line bg-white editor-dark-theme">
                         <Skills />
                       </div>
                     )}
                   </div>
 
                   {(data.projects?.length > 0 || expandedSection === 'projects') && (
-                    <div className={`border rounded-xl transition-all overflow-hidden ${expandedSection === 'projects' ? 'border-slate-400 bg-slate-50' : 'border-slate-200 bg-white hover:border-slate-300'}`}>
+                    <div className={`border rounded-xl transition-all overflow-hidden ${expandedSection === 'projects' ? 'border-mist bg-paper' : 'border-line bg-white hover:border-line'}`}>
                       <button 
                         onClick={() => setExpandedSection(expandedSection === 'projects' ? null : 'projects')}
                         className="w-full flex items-center justify-between p-5 text-left"
                       >
                         <div className="flex items-center gap-4">
-                          <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${expandedSection === 'projects' ? 'bg-pine text-white' : 'bg-slate-100 text-slate-500'}`}>
+                          <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${expandedSection === 'projects' ? 'bg-pine text-white' : 'bg-paper text-mist'}`}>
                             <Lightbulb size={18} />
                           </div>
-                          <h3 className="font-bold text-base text-slate-900">Projects</h3>
+                          <h3 className="font-bold text-base text-ink">Projects</h3>
                         </div>
-                        <ChevronDown className={`w-5 h-5 text-slate-500 transition-transform ${expandedSection === 'projects' ? 'rotate-180 text-pine' : ''}`} />
+                        <ChevronDown className={`w-5 h-5 text-mist transition-transform ${expandedSection === 'projects' ? 'rotate-180 text-pine' : ''}`} />
                       </button>
                       {expandedSection === 'projects' && (
-                        <div className="p-5 border-t border-slate-200 bg-white editor-dark-theme">
+                        <div className="p-5 border-t border-line bg-white editor-dark-theme">
                           <Projects />
                         </div>
                       )}
@@ -495,21 +495,21 @@ const Build: FC = () => {
                   )}
 
                   {(data.certifications?.length > 0 || expandedSection === 'certifications') && (
-                    <div className={`border rounded-xl transition-all overflow-hidden ${expandedSection === 'certifications' ? 'border-slate-400 bg-slate-50' : 'border-slate-200 bg-white hover:border-slate-300'}`}>
+                    <div className={`border rounded-xl transition-all overflow-hidden ${expandedSection === 'certifications' ? 'border-mist bg-paper' : 'border-line bg-white hover:border-line'}`}>
                       <button 
                         onClick={() => setExpandedSection(expandedSection === 'certifications' ? null : 'certifications')}
                         className="w-full flex items-center justify-between p-5 text-left"
                       >
                         <div className="flex items-center gap-4">
-                          <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${expandedSection === 'certifications' ? 'bg-pine text-white' : 'bg-slate-100 text-slate-500'}`}>
+                          <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${expandedSection === 'certifications' ? 'bg-pine text-white' : 'bg-paper text-mist'}`}>
                             <Award size={18} />
                           </div>
-                          <h3 className="font-bold text-base text-slate-900">Certifications</h3>
+                          <h3 className="font-bold text-base text-ink">Certifications</h3>
                         </div>
-                        <ChevronDown className={`w-5 h-5 text-slate-500 transition-transform ${expandedSection === 'certifications' ? 'rotate-180 text-pine' : ''}`} />
+                        <ChevronDown className={`w-5 h-5 text-mist transition-transform ${expandedSection === 'certifications' ? 'rotate-180 text-pine' : ''}`} />
                       </button>
                       {expandedSection === 'certifications' && (
-                        <div className="p-5 border-t border-slate-200 bg-white editor-dark-theme">
+                        <div className="p-5 border-t border-line bg-white editor-dark-theme">
                           <Certifications />
                         </div>
                       )}
@@ -517,21 +517,21 @@ const Build: FC = () => {
                   )}
 
                   {(data.languages?.length > 0 || expandedSection === 'languages') && (
-                    <div className={`border rounded-xl transition-all overflow-hidden ${expandedSection === 'languages' ? 'border-slate-400 bg-slate-50' : 'border-slate-200 bg-white hover:border-slate-300'}`}>
+                    <div className={`border rounded-xl transition-all overflow-hidden ${expandedSection === 'languages' ? 'border-mist bg-paper' : 'border-line bg-white hover:border-line'}`}>
                       <button 
                         onClick={() => setExpandedSection(expandedSection === 'languages' ? null : 'languages')}
                         className="w-full flex items-center justify-between p-5 text-left"
                       >
                         <div className="flex items-center gap-4">
-                          <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${expandedSection === 'languages' ? 'bg-pine text-white' : 'bg-slate-100 text-slate-500'}`}>
+                          <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${expandedSection === 'languages' ? 'bg-pine text-white' : 'bg-paper text-mist'}`}>
                             <Flag size={18} />
                           </div>
-                          <h3 className="font-bold text-base text-slate-900">Languages</h3>
+                          <h3 className="font-bold text-base text-ink">Languages</h3>
                         </div>
-                        <ChevronDown className={`w-5 h-5 text-slate-500 transition-transform ${expandedSection === 'languages' ? 'rotate-180 text-pine' : ''}`} />
+                        <ChevronDown className={`w-5 h-5 text-mist transition-transform ${expandedSection === 'languages' ? 'rotate-180 text-pine' : ''}`} />
                       </button>
                       {expandedSection === 'languages' && (
-                        <div className="p-5 border-t border-slate-200 bg-white editor-dark-theme">
+                        <div className="p-5 border-t border-line bg-white editor-dark-theme">
                           <Languages />
                         </div>
                       )}
@@ -542,31 +542,31 @@ const Build: FC = () => {
                   {(data.customSections || []).length > 0 && (
                     <div className="pt-2 space-y-4">
                       {(data.customSections || []).map(sec => (
-                        <div key={sec.id} className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm group relative">
+                        <div key={sec.id} className="bg-white border border-line rounded-2xl p-5 shadow-sm group relative">
                           <button
                             onClick={() => updateSection('customSections', (data.customSections || []).filter(x => x.id !== sec.id))}
-                            className="absolute top-4 right-4 text-slate-400 hover:text-red-500 transition-colors p-1.5 rounded-lg hover:bg-red-50"
+                            className="absolute top-4 right-4 text-mist hover:text-red-500 transition-colors p-1.5 rounded-lg hover:bg-red-50"
                             title={`Remove ${sec.title}`}
                             aria-label={`Remove ${sec.title} section`}
                           >
                             <Trash2 size={16} />
                           </button>
-                          <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">Section title</label>
+                          <label className="block text-xs font-bold uppercase tracking-wider text-mist mb-1.5">Section title</label>
                           <input
                             type="text"
                             value={sec.title}
                             onChange={e => updateSection('customSections', (data.customSections || []).map(x => x.id === sec.id ? { ...x, title: e.target.value } : x))}
-                            className="w-full mb-3 px-3 py-2.5 rounded-xl border border-slate-200 text-sm font-semibold text-slate-900 outline-none focus:border-pine transition-colors pr-10"
+                            className="w-full mb-3 px-3 py-2.5 rounded-xl border border-line text-sm font-semibold text-ink outline-none focus:border-pine transition-colors pr-10"
                           />
-                          <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">Content</label>
+                          <label className="block text-xs font-bold uppercase tracking-wider text-mist mb-1.5">Content</label>
                           <textarea
                             value={sec.content}
                             onChange={e => updateSection('customSections', (data.customSections || []).map(x => x.id === sec.id ? { ...x, content: e.target.value } : x))}
                             rows={4}
                             placeholder={customSectionPlaceholder(sec.title)}
-                            className="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm outline-none focus:border-pine transition-colors resize-y"
+                            className="w-full px-3 py-2.5 rounded-xl border border-line text-sm outline-none focus:border-pine transition-colors resize-y"
                           />
-                          <p className="text-[11px] text-slate-400 mt-1.5">Shows on your resume as soon as you type. Use a new line for each point.</p>
+                          <p className="text-[11px] text-mist mt-1.5">Shows on your resume as soon as you type. Use a new line for each point.</p>
                         </div>
                       ))}
                     </div>
@@ -574,7 +574,7 @@ const Build: FC = () => {
 
                   {/* Add More Section */}
                   <div className="pt-6">
-                    <h3 className="text-sm font-bold text-slate-900 mb-4 px-2 uppercase tracking-widest text-slate-500">Add Custom Sections</h3>
+                    <h3 className="text-sm font-bold text-ink mb-4 px-2 uppercase tracking-widest text-mist">Add Custom Sections</h3>
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                        {[
                          { icon: Lightbulb, label: "Projects", key: 'projects' },
@@ -604,10 +604,10 @@ const Build: FC = () => {
                                toast.success(`${sec.label} section added! Fill it in above.`);
                              }
                            }}
-                           className={`flex flex-col items-center justify-center gap-2 p-4 rounded-xl border transition-colors group ${alreadyAdded ? 'border-pine bg-pine-tint' : 'border-slate-200 bg-white hover:bg-slate-50 hover:border-pine'}`}
+                           className={`flex flex-col items-center justify-center gap-2 p-4 rounded-xl border transition-colors group ${alreadyAdded ? 'border-pine bg-pine-tint' : 'border-line bg-white hover:bg-paper hover:border-pine'}`}
                          >
-                           <sec.icon className={`w-5 h-5 ${alreadyAdded ? 'text-pine' : 'text-slate-500 group-hover:text-pine'}`} />
-                           <span className={`text-xs font-semibold ${alreadyAdded ? 'text-pine' : 'text-slate-500 group-hover:text-pine'}`}>{sec.label}</span>
+                           <sec.icon className={`w-5 h-5 ${alreadyAdded ? 'text-pine' : 'text-mist group-hover:text-pine'}`} />
+                           <span className={`text-xs font-semibold ${alreadyAdded ? 'text-pine' : 'text-mist group-hover:text-pine'}`}>{sec.label}</span>
                          </button>
                        );})}
                     </div>
@@ -620,30 +620,30 @@ const Build: FC = () => {
             {/* Render Other Sidebar Customizers Here */}
             {activeTab !== 'builder' && (
               <div className="p-8">
-                 <h2 className="text-2xl font-black text-slate-900 mb-8 capitalize">{activeTab} Settings</h2>
+                 <h2 className="text-2xl font-black text-ink mb-8 capitalize">{activeTab} Settings</h2>
                  
                  {activeTab === 'ats' && (
                    <div className="space-y-6">
-                     <div className="bg-slate-50 border border-slate-200 rounded-2xl p-8 text-center flex flex-col items-center">
-                        <h3 className="text-lg font-bold text-slate-900 mb-2">Resume ATS Score</h3>
-                        <div className="text-[64px] font-black text-pine leading-none mb-4">{currentScore}<span className="text-3xl text-slate-400">/100</span></div>
-                        <p className="text-slate-600 font-medium">Your resume is highly optimized for Applicant Tracking Systems.</p>
+                     <div className="bg-paper border border-line rounded-2xl p-8 text-center flex flex-col items-center">
+                        <h3 className="text-lg font-bold text-ink mb-2">Resume ATS Score</h3>
+                        <div className="text-[64px] font-black text-pine leading-none mb-4">{currentScore}<span className="text-3xl text-mist">/100</span></div>
+                        <p className="text-mist font-medium">Your resume is highly optimized for Applicant Tracking Systems.</p>
                      </div>
 
-                     <div className="bg-white border text-sm border-slate-200 rounded-2xl p-6">
-                        <h4 className="font-bold text-slate-900 mb-4 text-base">Score Breakdown</h4>
+                     <div className="bg-white border text-sm border-line rounded-2xl p-6">
+                        <h4 className="font-bold text-ink mb-4 text-base">Score Breakdown</h4>
                         <ul className="space-y-4">
-                          <li className="flex items-start gap-3 text-slate-600">
+                          <li className="flex items-start gap-3 text-mist">
                             <CheckCircle2 className="w-5 h-5 text-pine shrink-0" />
-                            <div><strong className="text-slate-900">Contact Details:</strong> All required fields present.</div>
+                            <div><strong className="text-ink">Contact Details:</strong> All required fields present.</div>
                           </li>
-                          <li className="flex items-start gap-3 text-slate-600">
+                          <li className="flex items-start gap-3 text-mist">
                             <CheckCircle2 className="w-5 h-5 text-pine shrink-0" />
-                            <div><strong className="text-slate-900">Keywords:</strong> High match density for target roles.</div>
+                            <div><strong className="text-ink">Keywords:</strong> High match density for target roles.</div>
                           </li>
-                          <li className="flex items-start gap-3 text-slate-600">
+                          <li className="flex items-start gap-3 text-mist">
                             <CheckCircle2 className="w-5 h-5 text-pine shrink-0" />
-                            <div><strong className="text-slate-900">Experience Length:</strong> Sufficient details and dates.</div>
+                            <div><strong className="text-ink">Experience Length:</strong> Sufficient details and dates.</div>
                           </li>
                         </ul>
                      </div>
@@ -653,13 +653,13 @@ const Build: FC = () => {
                  {activeTab === 'text' && (
                     <div className="space-y-8">
                       <div>
-                        <label className="block text-sm font-bold text-slate-500 uppercase tracking-widest mb-4">Font Family</label>
+                        <label className="block text-sm font-bold text-mist uppercase tracking-widest mb-4">Font Family</label>
                         <div className="grid grid-cols-2 gap-3">
                            {['Inter', 'Roboto', 'Arial', 'Times New Roman', 'Georgia', 'Space Grotesk'].map(f => (
                              <button 
                                key={f}
                                onClick={() => updateSection('design', { ...data.design, fontFamily: `"${f}", sans-serif` })}
-                               className={`py-3 px-4 rounded-xl border text-left font-medium outline-none ${data.design.fontFamily?.includes(f) ? 'border-pine bg-slate-50 text-pine' : 'border-slate-200 bg-white hover:border-slate-300 text-slate-600'}`}
+                               className={`py-3 px-4 rounded-xl border text-left font-medium outline-none ${data.design.fontFamily?.includes(f) ? 'border-pine bg-paper text-pine' : 'border-line bg-white hover:border-line text-mist'}`}
                                style={{ fontFamily: `"${f}", sans-serif` }}
                              >
                                {f}
@@ -669,25 +669,25 @@ const Build: FC = () => {
                       </div>
                       
                       <div>
-                        <label className="block text-sm font-bold text-slate-500 uppercase tracking-widest mb-4">Font Size</label>
+                        <label className="block text-sm font-bold text-mist uppercase tracking-widest mb-4">Font Size</label>
                         <input 
                            type="range" min="11" max="18" value={parseInt(data.design.fontSize || '14')} 
                            onChange={(e) => updateSection('design', { ...data.design, fontSize: `${e.target.value}px` })}
-                           className="w-full accent-teal-600"
+                           className="w-full accent-pine"
                         />
-                        <div className="flex justify-between text-xs font-bold text-slate-500 mt-2 uppercase tracking-widest">
+                        <div className="flex justify-between text-xs font-bold text-mist mt-2 uppercase tracking-widest">
                           <span>Small (11px)</span>
-                          <span className="text-slate-900">{parseInt(data.design.fontSize || '14')}px</span>
+                          <span className="text-ink">{parseInt(data.design.fontSize || '14')}px</span>
                           <span>Large (18px)</span>
                         </div>
                       </div>
 
                       <div>
-                        <label className="block text-sm font-bold text-slate-500 uppercase tracking-widest mb-4">Line Height</label>
-                        <div className="flex bg-white p-1 rounded-lg border border-slate-200">
-                           <button className="flex-1 py-1.5 rounded-md font-medium text-sm bg-white/10 text-slate-900 shadow-sm">Normal</button>
-                           <button className="flex-1 py-1.5 rounded-md font-medium text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50">Relaxed</button>
-                           <button className="flex-1 py-1.5 rounded-md font-medium text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50">Loose</button>
+                        <label className="block text-sm font-bold text-mist uppercase tracking-widest mb-4">Line Height</label>
+                        <div className="flex bg-white p-1 rounded-lg border border-line">
+                           <button className="flex-1 py-1.5 rounded-md font-medium text-sm bg-white/10 text-ink shadow-sm">Normal</button>
+                           <button className="flex-1 py-1.5 rounded-md font-medium text-sm text-mist hover:text-ink hover:bg-paper">Relaxed</button>
+                           <button className="flex-1 py-1.5 rounded-md font-medium text-sm text-mist hover:text-ink hover:bg-paper">Loose</button>
                         </div>
                       </div>
                     </div>
@@ -696,7 +696,7 @@ const Build: FC = () => {
                  {activeTab === 'colors' && (
                    <div className="space-y-8">
                      <div>
-                       <label className="block text-sm font-bold text-slate-500 uppercase tracking-widest mb-4">Professional Palettes</label>
+                       <label className="block text-sm font-bold text-mist uppercase tracking-widest mb-4">Professional Palettes</label>
                        <div className="grid grid-cols-4 sm:grid-cols-6 gap-4">
                          {[
                            '#000000', '#1F2937', '#475569', '#78716C', '#2563EB', '#1D4ED8', '#4F46E5', '#0284C7',
@@ -706,7 +706,7 @@ const Build: FC = () => {
                            <button 
                              key={color}
                              onClick={() => updateSection('design', { ...data.design, color })}
-                             className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${data.design.color === color ? 'ring-2 ring-offset-2 ring-offset-[#0F0F12] ring-slate-400 shadow-lg scale-110' : 'hover:scale-110 opacity-80 hover:opacity-100 shadow-sm'}`}
+                             className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${data.design.color === color ? 'ring-2 ring-offset-2 ring-offset-[#0F0F12] ring-mist shadow-lg scale-110' : 'hover:scale-110 opacity-80 hover:opacity-100 shadow-sm'}`}
                              style={{ backgroundColor: color }}
                            >
                              {data.design.color === color && <CheckCircle2 className="text-white w-5 h-5 drop-shadow-md" />}
@@ -715,8 +715,8 @@ const Build: FC = () => {
                        </div>
                      </div>
                      <div>
-                       <label className="block text-sm font-bold text-slate-500 uppercase tracking-widest mb-4">Custom Color HEX</label>
-                       <div className="flex items-center gap-4 bg-white border border-slate-200 rounded-xl p-2">
+                       <label className="block text-sm font-bold text-mist uppercase tracking-widest mb-4">Custom Color HEX</label>
+                       <div className="flex items-center gap-4 bg-white border border-line rounded-xl p-2">
                          <input 
                            type="color" 
                            value={data.design.color || '#2563EB'} 
@@ -727,7 +727,7 @@ const Build: FC = () => {
                            type="text" 
                            value={data.design.color || '#2563EB'}
                            onChange={(e) => updateSection('design', { ...data.design, color: e.target.value })}
-                           className="bg-transparent border-none text-slate-900 font-mono text-sm w-full outline-none px-2"
+                           className="bg-transparent border-none text-ink font-mono text-sm w-full outline-none px-2"
                          />
                        </div>
                      </div>
@@ -737,21 +737,21 @@ const Build: FC = () => {
                  {activeTab === 'layout' && (
                    <div className="space-y-8">
                       <div>
-                        <label className="block text-sm font-bold text-slate-500 uppercase tracking-widest mb-4">Margins & Spacing</label>
+                        <label className="block text-sm font-bold text-mist uppercase tracking-widest mb-4">Margins & Spacing</label>
                          <div className="grid grid-cols-3 gap-3 mb-6">
                            <button 
                               onClick={() => updateSection('design', { ...data.design, spacing: 'compact' })}
-                              className={`py-3 px-2 rounded-xl border text-center font-bold text-sm ${data.design.spacing === 'compact' ? 'border-pine bg-slate-50 text-pine' : 'border-slate-200 bg-white text-slate-500 hover:bg-slate-50 hover:text-slate-900'}`}>
+                              className={`py-3 px-2 rounded-xl border text-center font-bold text-sm ${data.design.spacing === 'compact' ? 'border-pine bg-paper text-pine' : 'border-line bg-white text-mist hover:bg-paper hover:text-ink'}`}>
                              Compact
                            </button>
                            <button 
                               onClick={() => updateSection('design', { ...data.design, spacing: 'normal' })}
-                              className={`py-3 px-2 rounded-xl border text-center font-bold text-sm ${data.design.spacing === 'normal' || !data.design.spacing ? 'border-pine bg-slate-50 text-pine' : 'border-slate-200 bg-white text-slate-500 hover:bg-slate-50 hover:text-slate-900'}`}>
+                              className={`py-3 px-2 rounded-xl border text-center font-bold text-sm ${data.design.spacing === 'normal' || !data.design.spacing ? 'border-pine bg-paper text-pine' : 'border-line bg-white text-mist hover:bg-paper hover:text-ink'}`}>
                              Normal
                            </button>
                            <button 
                               onClick={() => updateSection('design', { ...data.design, spacing: 'relaxed' })}
-                              className={`py-3 px-2 rounded-xl border text-center font-bold text-sm ${data.design.spacing === 'relaxed' ? 'border-pine bg-slate-50 text-pine' : 'border-slate-200 bg-white text-slate-500 hover:bg-slate-50 hover:text-slate-900'}`}>
+                              className={`py-3 px-2 rounded-xl border text-center font-bold text-sm ${data.design.spacing === 'relaxed' ? 'border-pine bg-paper text-pine' : 'border-line bg-white text-mist hover:bg-paper hover:text-ink'}`}>
                              Relaxed
                            </button>
                         </div>
@@ -761,16 +761,16 @@ const Build: FC = () => {
 
                  {activeTab === 'ai' && (
                    <div className="space-y-6">
-                     <div className="bg-pine border border-slate-800 rounded-3xl p-8 text-white relative overflow-hidden">
+                     <div className="bg-pine border border-ink-soft rounded-3xl p-8 text-white relative overflow-hidden">
                         <Sparkles className="w-8 h-8 mb-4 text-white relative z-10" />
                         <h3 className="text-2xl font-black mb-2 relative z-10">AI Superpowers</h3>
-                        <p className="text-slate-400 mb-8 leading-relaxed relative z-10 text-sm">Deploy advanced AI models to write, format, and perfect your professional narrative.</p>
+                        <p className="text-mist mb-8 leading-relaxed relative z-10 text-sm">Deploy advanced AI models to write, format, and perfect your professional narrative.</p>
                         
                         <div className="grid gap-3 relative z-10">
                            <button
                              onClick={handleFixGrammar}
                              disabled={aiAction !== null}
-                             className="flex items-center gap-4 bg-slate-900 hover:bg-pine-deep border border-slate-800 px-4 py-4 rounded-xl transition-all font-medium text-sm text-left disabled:opacity-60"
+                             className="flex items-center gap-4 bg-ink hover:bg-pine-deep border border-ink-soft px-4 py-4 rounded-xl transition-all font-medium text-sm text-left disabled:opacity-60"
                            >
                              <div className="p-2 bg-white text-pine rounded-lg">
                                {aiAction === 'grammar' ? <Loader2 size={18} className="animate-spin" /> : <Edit3 size={18} />}
@@ -780,7 +780,7 @@ const Build: FC = () => {
                            <button
                              onClick={handleOptimizeResume}
                              disabled={aiAction !== null || isOptimizing}
-                             className="flex items-center gap-4 bg-slate-900 hover:bg-pine-deep border border-slate-800 px-4 py-4 rounded-xl transition-all font-medium text-sm text-left disabled:opacity-60"
+                             className="flex items-center gap-4 bg-ink hover:bg-pine-deep border border-ink-soft px-4 py-4 rounded-xl transition-all font-medium text-sm text-left disabled:opacity-60"
                            >
                              <div className="p-2 bg-white text-pine rounded-lg">
                                {isOptimizing ? <Loader2 size={18} className="animate-spin" /> : <Briefcase size={18} />}
@@ -790,7 +790,7 @@ const Build: FC = () => {
                            <button
                              onClick={handleWriteSummary}
                              disabled={aiAction !== null}
-                             className="flex items-center gap-4 bg-slate-900 hover:bg-pine-deep border border-slate-800 px-4 py-4 rounded-xl transition-all font-medium text-sm text-left disabled:opacity-60"
+                             className="flex items-center gap-4 bg-ink hover:bg-pine-deep border border-ink-soft px-4 py-4 rounded-xl transition-all font-medium text-sm text-left disabled:opacity-60"
                            >
                              <div className="p-2 bg-white text-pine rounded-lg">
                                {aiAction === 'summary' ? <Loader2 size={18} className="animate-spin" /> : <FileText size={18} />}
@@ -805,18 +805,18 @@ const Build: FC = () => {
                  {activeTab === 'templates' && (
                    <div className="space-y-5 pb-20">
                      <div>
-                       <h2 className="text-xl font-bold text-slate-900 tracking-tight mb-1">Templates</h2>
-                       <p className="text-slate-500 text-sm">Switch anytime — your data adapts instantly. Colors follow your Colors tab choice.</p>
+                       <h2 className="text-xl font-bold text-ink tracking-tight mb-1">Templates</h2>
+                       <p className="text-mist text-sm">Switch anytime — your data adapts instantly. Colors follow your Colors tab choice.</p>
                      </div>
 
                      <div className="relative">
-                       <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                       <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-mist" />
                        <input
                          type="text"
                          value={templateSearch}
                          onChange={e => setTemplateSearch(e.target.value)}
                          placeholder="Search templates (e.g. fresher, developer, ATS)…"
-                         className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 bg-white text-sm outline-none focus:border-pine transition-colors"
+                         className="w-full pl-10 pr-4 py-3 rounded-xl border border-line bg-white text-sm outline-none focus:border-pine transition-colors"
                        />
                      </div>
 
@@ -828,7 +828,7 @@ const Build: FC = () => {
                            className={`whitespace-nowrap px-3 py-1.5 rounded-full text-xs font-semibold border transition-colors ${
                              templateCategory === cat
                                ? 'bg-ink text-white border-ink'
-                               : 'bg-white text-slate-600 border-slate-200 hover:border-slate-400'
+                               : 'bg-white text-mist border-line hover:border-mist'
                            }`}
                          >
                            {cat}
@@ -836,7 +836,7 @@ const Build: FC = () => {
                        ))}
                      </div>
 
-                     <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                     <p className="text-xs font-semibold text-mist uppercase tracking-wider">
                        {filteredBuilderTemplates.length} template{filteredBuilderTemplates.length === 1 ? '' : 's'}
                      </p>
 
@@ -851,7 +851,7 @@ const Build: FC = () => {
                              toast.success(`Template switched to ${tpl.name}`);
                            }}
                          >
-                           <div className={`border-2 rounded-xl overflow-hidden transition-all bg-white ${data.design.template === tpl.id ? 'border-pine shadow-[0_0_15px_-3px_rgba(0,0,0,0.2)]' : 'border-transparent hover:border-slate-300 opacity-80 hover:opacity-100'}`}>
+                           <div className={`border-2 rounded-xl overflow-hidden transition-all bg-white ${data.design.template === tpl.id ? 'border-pine shadow-[0_0_15px_-3px_rgba(0,0,0,0.2)]' : 'border-transparent hover:border-line opacity-80 hover:opacity-100'}`}>
                               <ScaledPreview>
                                 <ActualResume layout={tpl.layout} color={data.design.color || '#3A4FD8'} />
                               </ScaledPreview>
@@ -862,7 +862,7 @@ const Build: FC = () => {
                              </div>
                            )}
                            <div className="mt-2 flex items-center justify-center gap-2">
-                             <span className="text-xs font-bold text-slate-600 uppercase tracking-widest">{tpl.name}</span>
+                             <span className="text-xs font-bold text-mist uppercase tracking-widest">{tpl.name}</span>
                              {tpl.category === 'ATS Friendly' && (
                                <span className="text-[9px] font-bold bg-pine-tint text-pine px-1.5 py-0.5 rounded uppercase tracking-wider">ATS</span>
                              )}
@@ -872,7 +872,7 @@ const Build: FC = () => {
                      </div>
 
                      {filteredBuilderTemplates.length === 0 && (
-                       <div className="text-center py-16 text-slate-500 text-sm">
+                       <div className="text-center py-16 text-mist text-sm">
                          No templates match "{templateSearch}". <button className="text-pine font-bold" onClick={() => { setTemplateSearch(''); setTemplateCategory('All'); }}>Clear filters</button>
                        </div>
                      )}
@@ -884,7 +884,7 @@ const Build: FC = () => {
           </div>
 
           {/* Right Column: Live Preview Area (Keep this light mode for real paper look) */}
-          <div className={`${activeTab === 'preview' ? 'flex' : 'hidden'} lg:flex flex-1 bg-slate-50 overflow-y-auto overflow-x-hidden p-4 lg:p-10 relative justify-center items-start custom-scrollbar`}>
+          <div className={`${activeTab === 'preview' ? 'flex' : 'hidden'} lg:flex flex-1 bg-paper overflow-y-auto overflow-x-hidden p-4 lg:p-10 relative justify-center items-start custom-scrollbar`}>
             {/* Dark background for workspace, but the resume paper stays white */}
                         <div className="w-full h-full flex justify-center items-start">
                <ScaledPreview scale={currentScale}>
@@ -909,7 +909,7 @@ const Build: FC = () => {
             <button
               onClick={() => setShowChat(true)}
               aria-label="Ask AI Assistant"
-              className="fixed bottom-20 right-4 md:bottom-8 md:right-8 z-50 bg-pine text-white rounded-full p-4 shadow-xl hover:bg-pine-deep hover:scale-105 transition-all flex items-center gap-2 group border border-slate-700"
+              className="fixed bottom-20 right-4 md:bottom-8 md:right-8 z-50 bg-pine text-white rounded-full p-4 shadow-xl hover:bg-pine-deep hover:scale-105 transition-all flex items-center gap-2 group border border-ink-soft"
             >
               <Sparkles className="w-5 h-5 text-white group-hover:animate-pulse" />
               <span className="font-bold text-sm pr-2 hidden md:inline">Ask AI Assistant</span>
@@ -921,8 +921,8 @@ const Build: FC = () => {
                 <div className="absolute inset-0 bg-black/30" onClick={() => setShowChat(false)} />
                 <div className="relative w-full sm:w-[420px] h-full bg-white shadow-2xl flex flex-col p-4 animate-[slideIn_.2s_ease-out]">
                   <div className="flex items-center justify-between pb-3">
-                    <h3 className="font-bold text-slate-900 flex items-center gap-2"><Sparkles className="w-4 h-4 text-pine" /> AI Assistant</h3>
-                    <button onClick={() => setShowChat(false)} className="p-2 rounded-lg hover:bg-slate-100 text-slate-500" aria-label="Close assistant">✕</button>
+                    <h3 className="font-bold text-ink flex items-center gap-2"><Sparkles className="w-4 h-4 text-pine" /> AI Assistant</h3>
+                    <button onClick={() => setShowChat(false)} className="p-2 rounded-lg hover:bg-paper text-mist" aria-label="Close assistant">✕</button>
                   </div>
                   <div className="flex-1 min-h-0">
                     <ChatAssistant />
@@ -936,7 +936,7 @@ const Build: FC = () => {
 
       </div>
 {/* Mobile Bottom Navigation menu */}
-      <div className="md:hidden w-full flex items-center justify-between bg-white border-t border-slate-200 h-[64px] shrink-0 px-2 z-50">
+      <div className="md:hidden w-full flex items-center justify-between bg-white border-t border-line h-[64px] shrink-0 px-2 z-50">
          {[
            { id: 'builder', icon: Edit3, label: 'Builder' },
            { id: 'templates', icon: Feather, label: 'Templates' },
@@ -950,7 +950,7 @@ const Build: FC = () => {
              className={`flex flex-col items-center justify-center py-2 flex-1 min-w-[50px] rounded-lg transition-colors
                ${activeTab === item.id 
                  ? 'text-pine font-bold' 
-                 : 'text-slate-500 font-medium'}`}
+                 : 'text-mist font-medium'}`}
            >
              {item.icon && React.createElement(item.icon, { className: "w-5 h-5 mb-1" })}
              <span className="text-[10px] tracking-wide">{item.label}</span>
@@ -960,8 +960,8 @@ const Build: FC = () => {
 
       {showPdfPreview && pdfPreviewUrl && (
         <div className="fixed inset-0 z-[100] bg-black/80 flex flex-col backdrop-blur-sm">
-          <div className="flex items-center justify-between p-4 bg-white border-b border-slate-200">
-            <h3 className="font-bold text-slate-900 flex items-center gap-2">
+          <div className="flex items-center justify-between p-4 bg-white border-b border-line">
+            <h3 className="font-bold text-ink flex items-center gap-2">
               <FileText className="w-5 h-5 text-pine" />
               PDF Preview
             </h3>
@@ -979,20 +979,20 @@ const Build: FC = () => {
                   if (pdfPreviewUrl) URL.revokeObjectURL(pdfPreviewUrl);
                   setPdfPreviewUrl(null); 
                 }} 
-                className="p-2 bg-slate-100 hover:bg-slate-200 rounded-lg text-slate-600 transition-colors"
+                className="p-2 bg-paper hover:bg-line rounded-lg text-mist transition-colors"
                 aria-label="Close Preview"
               >
                 ✕
               </button>
             </div>
           </div>
-          <div className="flex-1 min-h-0 w-full bg-slate-200 p-4 sm:p-8 flex justify-center overflow-auto custom-scrollbar">
+          <div className="flex-1 min-h-0 w-full bg-line p-4 sm:p-8 flex justify-center overflow-auto custom-scrollbar">
             <object 
               data={`${pdfPreviewUrl}#view=FitH`} 
               type="application/pdf" 
               className="w-full max-w-5xl h-[calc(100vh-100px)] rounded shadow-2xl bg-white"
             >
-              <div className="flex items-center justify-center h-full bg-slate-50 text-slate-500 text-sm">
+              <div className="flex items-center justify-center h-full bg-paper text-mist text-sm">
                 Your browser does not support embedded PDFs. 
                 <a href={pdfPreviewUrl} target="_blank" rel="noreferrer" className="text-pine ml-1 hover:underline">Click here to view it</a>
               </div>
