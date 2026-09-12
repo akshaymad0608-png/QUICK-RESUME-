@@ -84,7 +84,14 @@ const ROUTES = [
     intro: 'Enter the job title, company, interviewer\'s name and something specific you discussed, and get a ready-to-send thank-you email — free, no sign-up. Best sent within 24 hours of the interview.' },
 ];
 
-const NAV = '<nav aria-label="Sections"><a href="/templates">Resume templates</a> · <a href="/improve">Improve my resume</a> · <a href="/examples">Resume examples</a> · <a href="/ai-tools">AI resume tools</a> · <a href="/cover-letter">Cover letter generator</a> · <a href="/pricing">Pricing</a></nav>';
+// Only 6 of the 14 routes above were ever in this nav. The other 8 —
+// /resources, /start, /build, the two free-tool generators, and the legal
+// pages — had a prerendered file each but nothing crawlable pointing at it,
+// which is exactly what Ahrefs flags as an orphan page (4 of them, in this
+// site's case). Adding them here doesn't change what a visitor sees — React
+// replaces this block on mount — it only gives a non-JS crawler a path to
+// every route that already exists.
+const NAV = '<nav aria-label="Sections"><a href="/templates">Resume templates</a> · <a href="/improve">Improve my resume</a> · <a href="/examples">Resume examples</a> · <a href="/ai-tools">AI resume tools</a> · <a href="/cover-letter">Cover letter generator</a> · <a href="/pricing">Pricing</a> · <a href="/resources">Career resources</a> · <a href="/start">Start your resume</a> · <a href="/build">Resume builder</a> · <a href="/linkedin-headline-generator">LinkedIn headline generator</a> · <a href="/interview-thank-you-email-generator">Interview thank-you email</a> · <a href="/privacy">Privacy</a> · <a href="/terms">Terms</a></nav>';
 
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
