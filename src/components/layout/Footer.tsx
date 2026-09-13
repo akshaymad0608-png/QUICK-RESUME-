@@ -54,7 +54,7 @@ const COLUMNS = [
 const GUIDE_LINKS = [
   { label: 'How to Make a Resume', href: '/how-to-make-a-resume' },
   { label: 'ATS Resume Checker', href: '/ats-resume-checker' },
-  { label: 'Resume Format for Freshers', href: '/resume-format-for-freshers' },
+  { label: 'Biodata Format for Job', href: '/resume-format-for-freshers' },
   { label: 'Skills to Put on a Resume', href: '/skills-for-resume' },
 ];
 
