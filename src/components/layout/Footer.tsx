@@ -52,7 +52,7 @@ const COLUMNS = [
  * pages Google otherwise only knows about from a sitemap entry.
  */
 const GUIDE_LINKS = [
-  { label: 'How to Make a Resume', href: '/how-to-make-a-resume' },
+  { label: 'Resume Kaise Banaye', href: '/how-to-make-a-resume' },
   { label: 'ATS Resume Checker', href: '/ats-resume-checker' },
   { label: 'Biodata Format for Job', href: '/resume-format-for-freshers' },
   { label: 'Skills to Put on a Resume', href: '/skills-for-resume' },

@@ -53,8 +53,8 @@ const GROUPS: GuideGroup[] = [
     guides: [
       {
         slug: 'how-to-make-a-resume',
-        title: 'How to Make a Resume in 2026',
-        description: 'A step-by-step guide — format, sections, what to write, and where AI can do it for you.',
+        title: 'Resume Kaise Banaye',
+        description: 'Mobile ya laptop se resume banane ka step-by-step tareeka, PDF format samet.',
       },
       {
         slug: 'ats-resume-checker',
