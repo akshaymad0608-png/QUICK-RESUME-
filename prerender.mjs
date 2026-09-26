@@ -70,10 +70,10 @@ const ROUTES = [
   { path: '/build', title: 'Resume Builder — Edit, Score & Export Free | QuickResume', description: 'Write, edit and export your resume with live ATS scoring, AI bullet rewrites and a clean PDF download — free, right in your browser.',
     h1: 'Resume Builder',
     intro: 'Write and edit your resume with live preview, AI-assisted bullet points, instant ATS scoring and one-click PDF export. Everything runs in your browser and your data stays on your device.' },
-  { path: '/privacy', title: 'Privacy Policy | QuickResume', description: 'What QuickResume collects, why, and where your resume data actually lives.',
+  { path: '/privacy', title: 'Privacy Policy | QuickResume', description: 'What QuickResume collects, why, and where your resume data actually lives — including what Firebase stores, what stays on-device, and your rights.',
     h1: 'Privacy Policy',
     intro: 'Your resume is built in your browser and saved to your device, not to a server database. This page covers exactly what we collect when you sign in or use an AI tool, which third parties are involved — Google Firebase, the Gemini API, Google Analytics — and how to reach us with a question.' },
-  { path: '/terms', title: 'Terms of Service | QuickResume', description: 'The terms for using QuickResume’s resume builder, templates and AI writing tools.',
+  { path: ‘/terms’, title: ‘Terms of Service | QuickResume’, description: ‘The terms for using QuickResume’s resume builder, templates and AI writing tools — what the service is, acceptable use, and the limits of AI-generated output.’,
     h1: 'Terms of Service',
     intro: 'The terms for using QuickResume’s templates, AI writing tools and ATS score checker — what your content is, how AI-generated suggestions should be treated, and acceptable use.' },
   { path: '/linkedin-headline-generator', title: 'Free LinkedIn Headline Generator (2026) — 8 Options in Seconds', description: 'Generate 8 LinkedIn headline options from your job title and skills — free, no sign-up. Fits LinkedIn’s 220-character limit, ready to paste in.',
@@ -117,6 +117,26 @@ for (const route of ROUTES) {
 
   // Give each route its own crawlable body: h1 + intro inside #root (React
   // replaces it on mount). Fixes the empty-#root / no-h1 SPA problem per route.
+  // FAQPage schema in index.html is correct on the homepage but wrong on every
+  // other page — a page that doesn't show FAQs shouldn't claim FAQPage markup.
+  // Strip it from non-homepage prerendered files so Google's validator passes.
+  if (route.path !== '/') {
+    html = html.replace(
+      /(<script type="application\/ld\+json">)([\s\S]*?)(<\/script>)/,
+      (_, open, body, close) => {
+        try {
+          const data = JSON.parse(body);
+          if (Array.isArray(data['@graph'])) {
+            data['@graph'] = data['@graph'].filter((n) => n['@type'] !== 'FAQPage');
+          }
+          return `${open}${JSON.stringify(data)}${close}`;
+        } catch {
+          return _;
+        }
+      },
+    );
+  }
+
   if (route.h1) {
     // Optional h2 sections give crawlers real heading structure and more
     // than a single paragraph of body text, without touching what real
