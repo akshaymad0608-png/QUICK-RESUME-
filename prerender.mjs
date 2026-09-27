@@ -165,6 +165,12 @@ const ROUTES = [
   { path: '/build', title: 'Resume Builder — Edit, Score & Export Free | QuickResume', description: 'Write, edit and export your resume with live ATS scoring, AI bullet rewrites and a clean PDF download — free, right in your browser.',
     h1: 'Resume Builder',
     intro: 'Write and edit your resume with live preview, AI-assisted bullet points, instant ATS scoring and one-click PDF export. Everything runs in your browser and your data stays on your device.' },
+  { path: '/contact', title: 'Contact QuickResume | Get in Touch', description: 'Have a question, found a bug, or want to suggest a feature? Send us a message and we will get back to you.',
+    h1: 'Contact QuickResume',
+    intro: 'Bug report, feature request or just a question — fill out the contact form and we will reply as soon as we can. You can also email akshaymad0608@gmail.com directly.' },
+  { path: '/about', title: 'About QuickResume | Free AI Resume Builder', description: 'QuickResume is a free AI-powered resume builder that helps job seekers create ATS-friendly resumes in minutes. Learn about our mission and how we help you land more interviews.',
+    h1: 'About QuickResume',
+    intro: 'QuickResume helps job seekers build ATS-friendly resumes in minutes. 60+ free templates, AI writing tools, an ATS score checker, and PDF export — all free, with no sign-up required for basic use.' },
   { path: '/privacy', title: 'Privacy Policy | QuickResume', description: 'What QuickResume collects, why, and where your resume data actually lives — including what Firebase stores, what stays on-device, and your rights.',
     h1: 'Privacy Policy',
     intro: 'Your resume is built in your browser and saved to your device, not to a server database. This page covers exactly what we collect when you sign in or use an AI tool, which third parties are involved — Google Firebase, the Gemini API, Google Analytics — and how to reach us with a question.' },
@@ -198,7 +204,7 @@ const ROUTES = [
 // site's case). Adding them here doesn't change what a visitor sees — React
 // replaces this block on mount — it only gives a non-JS crawler a path to
 // every route that already exists.
-const NAV = '<nav aria-label="Sections"><a href="/templates">Resume templates</a> · <a href="/improve">Improve my resume</a> · <a href="/examples">Resume examples</a> · <a href="/ai-tools">AI resume tools</a> · <a href="/cover-letter">Cover letter generator</a> · <a href="/pricing">Pricing</a> · <a href="/resources">Career resources</a> · <a href="/start">Start your resume</a> · <a href="/build">Resume builder</a> · <a href="/linkedin-headline-generator">LinkedIn headline generator</a> · <a href="/interview-thank-you-email-generator">Interview thank-you email</a> · <a href="/privacy">Privacy</a> · <a href="/terms">Terms</a></nav>';
+const NAV = '<nav aria-label="Sections"><a href="/templates">Resume templates</a> · <a href="/improve">Improve my resume</a> · <a href="/examples">Resume examples</a> · <a href="/ai-tools">AI resume tools</a> · <a href="/cover-letter">Cover letter generator</a> · <a href="/pricing">Pricing</a> · <a href="/resources">Career resources</a> · <a href="/start">Start your resume</a> · <a href="/build">Resume builder</a> · <a href="/linkedin-headline-generator">LinkedIn headline generator</a> · <a href="/interview-thank-you-email-generator">Interview thank-you email</a> · <a href="/about">About</a> · <a href="/contact">Contact</a> · <a href="/privacy">Privacy</a> · <a href="/terms">Terms</a></nav>';
 
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
