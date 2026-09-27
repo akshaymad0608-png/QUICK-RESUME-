@@ -18,6 +18,8 @@ const ImproveResume = lazy(() => import('./pages/ImproveResume'));
 const Pricing = lazy(() => import('./pages/Pricing'));
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
 const TermsOfService = lazy(() => import('./pages/TermsOfService'));
+const Contact = lazy(() => import('./pages/Contact'));
+const About = lazy(() => import('./pages/About'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 const LinkedInHeadlineGenerator = lazy(() => import('./pages/LinkedInHeadlineGenerator'));
 const ThankYouEmailGenerator = lazy(() => import('./pages/ThankYouEmailGenerator'));
@@ -41,6 +43,8 @@ function App() {
               <Route path="/pricing" element={<Pricing />} />
               <Route path="/linkedin-headline-generator" element={<LinkedInHeadlineGenerator />} />
               <Route path="/interview-thank-you-email-generator" element={<ThankYouEmailGenerator />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/about" element={<About />} />
               <Route path="/privacy" element={<PrivacyPolicy />} />
               <Route path="/terms" element={<TermsOfService />} />
               {/*
