@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useResume } from '../context/ResumeContext';
 import { 
   Type, Palette, Layout as LayoutIcon, FileText, FileSpreadsheet, Feather, Download, 
-  Sparkles, ShieldCheck, History, Settings, Home, Edit3, 
+  Sparkles, ShieldCheck, Edit3,
   CheckCircle2, ChevronDown, Trash2, 
   User, Briefcase, GraduationCap, Wrench, Loader2,
   Search, Award, Medal, BookOpen, FlaskConical, HeartHandshake, Link as LinkIcon, Code, Flag, Users, Lightbulb, Eye
@@ -23,11 +23,12 @@ import Languages from '../components/steps/Languages';
 import LivePreview from '../components/Preview/LivePreview';
 import { ChatAssistant } from '../components/ChatAssistant';
 
-type SidebarTab = 'dashboard' | 'builder' | 'text' | 'colors' | 'layout' | 'templates' | 'ai' | 'ats' | 'history' | 'settings' | 'preview';
+type SidebarTab = 'builder' | 'text' | 'colors' | 'layout' | 'templates' | 'ai' | 'ats' | 'preview';
 export type BuilderSection = 'personal' | 'summary' | 'experience' | 'education' | 'skills' | 'projects' | 'certifications' | 'languages' | 'add_more';
 
 import { ActualResume } from '../components/TemplateCard';
 import { ScaledPreview } from '../components/Preview/ScaledPreview';
+import ATSMatcher from '../components/ATSMatcher';
 import { TEMPLATES } from '../data/templates';
 import { optimizeWorkExperience, enhanceBulletPoints, generateSummary } from '../services/geminiService';
 
@@ -226,8 +227,6 @@ const Build: FC = () => {
     }
   };
 
-  const currentScore = 86; // Example score
-
   return (
     <div className="flex flex-col h-screen h-[100dvh] bg-paper font-sans text-mist overflow-hidden selection:bg-ink selection:text-white">
       <Seo
@@ -246,7 +245,6 @@ const Build: FC = () => {
 
           <div className="flex flex-col gap-2 w-full px-2 mt-2">
             {[
-              { id: 'dashboard', icon: Home, label: 'Dashboard' },
               { id: 'builder', icon: Edit3, label: 'Builder' },
               { id: 'text', icon: Type, label: 'Text' },
               { id: 'colors', icon: Palette, label: 'Colors' },
@@ -255,9 +253,6 @@ const Build: FC = () => {
               { id: 'div1', divider: true },
               { id: 'ai', icon: Sparkles, label: 'AI Tools' },
               { id: 'ats', icon: ShieldCheck, label: 'ATS' },
-              { id: 'div2', divider: true },
-              { id: 'history', icon: History, label: 'History' },
-              { id: 'settings', icon: Settings, label: 'Settings' }
             ].map((item) => item.divider ? (
               <div key={item.id} className="w-6 h-px bg-white/5 mx-auto my-2" />
             ) : (
@@ -636,33 +631,7 @@ const Build: FC = () => {
               <div className="p-8">
                  <h2 className="text-2xl font-black text-ink mb-8 capitalize">{activeTab} Settings</h2>
                  
-                 {activeTab === 'ats' && (
-                   <div className="space-y-6">
-                     <div className="bg-paper border border-line rounded-2xl p-8 text-center flex flex-col items-center">
-                        <h3 className="text-lg font-bold text-ink mb-2">Resume ATS Score</h3>
-                        <div className="text-[64px] font-black text-pine leading-none mb-4">{currentScore}<span className="text-3xl text-mist">/100</span></div>
-                        <p className="text-mist font-medium">Your resume is highly optimized for Applicant Tracking Systems.</p>
-                     </div>
-
-                     <div className="bg-white border text-sm border-line rounded-2xl p-6">
-                        <h4 className="font-bold text-ink mb-4 text-base">Score Breakdown</h4>
-                        <ul className="space-y-4">
-                          <li className="flex items-start gap-3 text-mist">
-                            <CheckCircle2 className="w-5 h-5 text-pine shrink-0" />
-                            <div><strong className="text-ink">Contact Details:</strong> All required fields present.</div>
-                          </li>
-                          <li className="flex items-start gap-3 text-mist">
-                            <CheckCircle2 className="w-5 h-5 text-pine shrink-0" />
-                            <div><strong className="text-ink">Keywords:</strong> High match density for target roles.</div>
-                          </li>
-                          <li className="flex items-start gap-3 text-mist">
-                            <CheckCircle2 className="w-5 h-5 text-pine shrink-0" />
-                            <div><strong className="text-ink">Experience Length:</strong> Sufficient details and dates.</div>
-                          </li>
-                        </ul>
-                     </div>
-                   </div>
-                 )}
+                 {activeTab === 'ats' && <ATSMatcher />}
 
                  {activeTab === 'text' && (
                     <div className="space-y-8">
@@ -670,9 +639,9 @@ const Build: FC = () => {
                         <label className="block text-sm font-bold text-mist uppercase tracking-widest mb-4">Font Family</label>
                         <div className="grid grid-cols-2 gap-3">
                            {['Inter', 'Roboto', 'Arial', 'Times New Roman', 'Georgia', 'Space Grotesk'].map(f => (
-                             <button 
+                             <button
                                key={f}
-                               onClick={() => updateSection('design', { ...data.design, fontFamily: `"${f}", sans-serif` })}
+                               onClick={() => updateSection('design', { ...data.design, fontFamily: `"${f}", sans-serif`, headingFont: `"${f}", sans-serif`, bodyFont: `"${f}", sans-serif` })}
                                className={`py-3 px-4 rounded-xl border text-left font-medium outline-none ${data.design.fontFamily?.includes(f) ? 'border-pine bg-paper text-pine' : 'border-line bg-white hover:border-line text-mist'}`}
                                style={{ fontFamily: `"${f}", sans-serif` }}
                              >
@@ -699,9 +668,13 @@ const Build: FC = () => {
                       <div>
                         <label className="block text-sm font-bold text-mist uppercase tracking-widest mb-4">Line Height</label>
                         <div className="flex bg-white p-1 rounded-lg border border-line">
-                           <button className="flex-1 py-1.5 rounded-md font-medium text-sm bg-white/10 text-ink shadow-sm">Normal</button>
-                           <button className="flex-1 py-1.5 rounded-md font-medium text-sm text-mist hover:text-ink hover:bg-paper">Relaxed</button>
-                           <button className="flex-1 py-1.5 rounded-md font-medium text-sm text-mist hover:text-ink hover:bg-paper">Loose</button>
+                           {([['Normal', '1.4'], ['Relaxed', '1.6'], ['Loose', '1.8']] as [string, string][]).map(([label, value]) => (
+                             <button
+                               key={value}
+                               onClick={() => updateSection('design', { ...data.design, lineHeight: value })}
+                               className={`flex-1 py-1.5 rounded-md font-medium text-sm transition-all ${data.design.lineHeight === value ? 'bg-paper text-ink shadow-sm border border-line' : 'text-mist hover:text-ink hover:bg-paper'}`}
+                             >{label}</button>
+                           ))}
                         </div>
                       </div>
                     </div>

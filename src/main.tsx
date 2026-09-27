@@ -2,7 +2,6 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
-import { HelmetProvider } from 'react-helmet-async'
 import { completeGoogleRedirect } from './firebase'
 
 // Finish a Google sign-in that used the redirect flow (phones). onAuthStateChanged
@@ -14,8 +13,6 @@ completeGoogleRedirect().catch((error) => {
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <HelmetProvider>
-      <App />
-    </HelmetProvider>
+    <App />
   </React.StrictMode>,
 )

@@ -101,7 +101,7 @@ Use the following format. Ensure it follows this exact JSON structure. Respond w
         : `${schemaPrompt}\n\nText to extract from:\n${text.slice(0, 16000)}`;
 
       // 3. Known-good model first, then fallbacks.
-      const models = [process.env.GEMINI_MODEL, 'gemini-2.5-flash', 'gemini-3.5-flash', 'gemini-2.0-flash'].filter(Boolean) as string[];
+      const models = [process.env.GEMINI_MODEL, 'gemini-2.5-flash', 'gemini-1.5-flash', 'gemini-2.0-flash'].filter(Boolean) as string[];
       let resultText = '';
       let lastErr: unknown = null;
       for (const model of models) {
@@ -210,7 +210,7 @@ Use the following format. Ensure it follows this exact JSON structure. Respond w
         }
       });
       const response = await ai.models.generateContent({
-        model: 'gemini-3.5-flash',
+        model: 'gemini-2.5-flash',
         contents: prompt,
       });
 
