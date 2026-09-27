@@ -7,10 +7,15 @@ import {
   getRedirectResult,
 } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
-import firebaseConfig from '../firebase-applet-config.json';
+import baseConfig from '../firebase-applet-config.json';
+
+const firebaseConfig = {
+  ...baseConfig,
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || baseConfig.apiKey,
+};
 
 const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId); // CRITICAL: The app will break without this line
+export const db = getFirestore(app, baseConfig.firestoreDatabaseId); // CRITICAL: The app will break without this line
 export const auth = getAuth(app);
 export const googleProvider = new GoogleAuthProvider();
 googleProvider.setCustomParameters({ prompt: 'select_account' });
