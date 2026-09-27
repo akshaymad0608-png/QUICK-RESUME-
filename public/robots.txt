@@ -1,6 +1,22 @@
 User-agent: *
 Allow: /
 
+# Traditional search engines — explicitly welcome
+User-agent: Bingbot
+Allow: /
+
+User-agent: YandexBot
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
+
 # AI answer engines & crawlers are welcome (GEO/AEO)
 User-agent: GPTBot
 Allow: /

@@ -14,7 +14,7 @@ const SITE = 'https://quickresume.business';
 const OG_IMAGE = `${SITE}/og-image.png`;
 
 const ROUTES = [
-  { path: '/', title: 'QuickResume — Free AI Resume Builder, ATS Templates', description: 'Build a job-winning, ATS-friendly resume in minutes. 60+ free templates, plus AI writing, an ATS score checker and a cover letter generator.',
+  { path: '/', title: 'QuickResume — Free AI Resume Builder, ATS Templates', keywords: 'free resume builder, AI resume builder, ATS resume builder, resume templates, free resume maker, resume creator, ATS friendly resume, resume builder for freshers', description: 'Build a job-winning, ATS-friendly resume in minutes. 60+ free templates, plus AI writing, an ATS score checker and a cover letter generator.',
     h1: 'Free AI Resume Builder — ATS-Friendly Templates',
     intro: 'QuickResume helps you build a job-winning, ATS-friendly resume in minutes. Choose from 60+ free templates for freshers, developers, designers and executives, then use AI to write your summary, rewrite bullet points, check your ATS score and generate a matching cover letter — free, with no sign-up.',
     sections: [
@@ -40,7 +40,7 @@ const ROUTES = [
         'ATS Friendly, Two Column, Infographic and Google Docs Style — format-specific picks',
       ] },
     ] },
-  { path: '/templates', title: '60+ Free Resume Templates by Role & Industry | QuickResume', description: 'ATS-friendly resume templates for freshers, developers, designers, executives, healthcare and finance — free to try and exports to a clean PDF.',
+  { path: '/templates', title: '60+ Free Resume Templates by Role & Industry | QuickResume', keywords: 'free resume templates, ATS resume templates, resume templates for freshers, resume templates for developers, professional resume templates, CV templates, resume format', description: 'ATS-friendly resume templates for freshers, developers, designers, executives, healthcare and finance — free to try and exports to a clean PDF.',
     h1: '60+ Free Resume Templates by Role & Industry',
     intro: 'Browse ATS-friendly resume templates for freshers, developers, designers, executives, healthcare, finance and more. Every template is free to try, easy to edit and exports to a clean PDF that passes applicant tracking systems.',
     sections: [
@@ -66,7 +66,7 @@ const ROUTES = [
       { question: 'Can I download the resume as a PDF?', answer: 'Yes. Every template can be exported to a clean, recruiter-ready PDF in one click — no sign-up or payment required.' },
       { question: 'Which template should I use for a software engineer resume?', answer: 'The Developer and Designer category has 8 templates built around technical skills, projects and GitHub/portfolio links. The ATS Friendly templates also work well for software engineering roles where the resume may be screened automatically.' },
     ] },
-  { path: '/improve', title: 'Improve My Resume — Free AI Resume Checker and Fixer', description: 'Upload your PDF or DOCX to get an instant ATS score, then let AI rewrite bullets, fix grammar and suggest the skills recruiters want — free.',
+  { path: '/improve', title: 'Improve My Resume — Free AI Resume Checker and Fixer', keywords: 'resume checker, ATS score checker, improve resume, resume fixer, AI resume checker, ATS resume score, resume optimization, how to improve resume', description: 'Upload your PDF or DOCX to get an instant ATS score, then let AI rewrite bullets, fix grammar and suggest the skills recruiters want — free.',
     h1: 'Improve My Resume — Free AI Resume Checker',
     intro: 'Already have a resume? Upload your PDF or DOCX and QuickResume gives you an instant ATS score, flags weak sections, rewrites your bullet points, fixes grammar and suggests the skills recruiters look for — all free and in your browser.',
     sections: [
@@ -84,7 +84,7 @@ const ROUTES = [
       { question: 'What file formats can I upload?', answer: 'You can upload a PDF or DOCX file. Both are supported. The checker reads your resume, analyses it and returns feedback and rewrites in your browser — your file is not stored on a server.' },
       { question: 'Is the resume checker really free?', answer: 'Yes, fully free — no sign-up, no credit card, no limit on how many times you use it.' },
     ] },
-  { path: '/examples', title: 'Resume Examples by Role & Industry (2026) | QuickResume', description: 'See what a winning resume looks like for software engineers, product managers, freshers, nurses and sales — the exact points recruiters scan for.',
+  { path: '/examples', title: 'Resume Examples by Role & Industry (2026) | QuickResume', keywords: 'resume examples, resume samples, resume example for software engineer, fresher resume example, resume example 2026, CV examples, sample resume', description: 'See what a winning resume looks like for software engineers, product managers, freshers, nurses and sales — the exact points recruiters scan for.',
     h1: 'Resume Examples by Role & Industry (2026)',
     intro: 'See what a winning resume looks like for software engineers, product managers, freshers, nurses, sales and more — with the exact skills, keywords and bullet points recruiters scan for in each role, ready to adapt for your own resume.',
     sections: [
@@ -99,7 +99,7 @@ const ROUTES = [
         'Graphic Designer — portfolio link, tools (Figma, Adobe), and project outcomes',
       ] },
     ] },
-  { path: '/ai-tools', title: 'Free AI Resume Tools — Summary, ATS Check, Cover Letter', description: 'Free AI career tools: resume summary generator, ATS score checker, bullet point rewriter, skill suggestions, job description matcher and cover letter generator.',
+  { path: '/ai-tools', title: 'Free AI Resume Tools — Summary, ATS Check, Cover Letter', keywords: 'AI resume tools, resume summary generator, ATS score checker, bullet point rewriter, AI career tools, job description matcher, free AI resume writer', description: 'Free AI career tools: resume summary generator, ATS score checker, bullet point rewriter, skill suggestions, job description matcher and cover letter generator.',
     h1: 'Free AI Resume Tools',
     intro: 'A full set of free AI career tools in one place: resume summary generator, ATS score checker, bullet point rewriter, skill suggestions, job-description matcher and a cover letter generator — everything you need to tailor your resume to any job.',
     sections: [
@@ -117,7 +117,7 @@ const ROUTES = [
       { question: 'How does the AI resume summary generator work?', answer: 'Enter your job title, years of experience and key skills, and the AI writes a professional resume summary optimised for your target role. You can regenerate as many versions as you need and copy the one that fits best.' },
       { question: 'Is the AI resume writer really free?', answer: 'Yes. Every AI tool on QuickResume is free to use with no account or credit card required. There are no hidden limits on the free tools.' },
     ] },
-  { path: '/cover-letter', title: 'Free AI Cover Letter Generator — Tailored in Minutes', description: 'Generate a tailored, professional cover letter in seconds. Our AI matches your resume to the job description — free to write and download.',
+  { path: '/cover-letter', title: 'Free AI Cover Letter Generator — Tailored in Minutes', keywords: 'cover letter generator, AI cover letter, free cover letter generator, cover letter writer, cover letter maker, how to write cover letter, cover letter template', description: 'Generate a tailored, professional cover letter in seconds. Our AI matches your resume to the job description — free to write and download.',
     h1: 'Free AI Cover Letter Generator',
     intro: "Generate a tailored, professional cover letter in seconds. Paste the job description and QuickResume's AI matches it to your resume, writes a compelling letter in your voice, and lets you download it free — no sign-up required.",
     sections: [
@@ -171,7 +171,7 @@ const ROUTES = [
   { path: '/terms', title: 'Terms of Service | QuickResume', description: "The terms for using QuickResume's resume builder, templates and AI writing tools — what the service is, acceptable use, and the limits of AI-generated output.",
     h1: 'Terms of Service',
     intro: "The terms for using QuickResume's templates, AI writing tools and ATS score checker — what your content is, how AI-generated suggestions should be treated, and acceptable use." },
-  { path: '/linkedin-headline-generator', title: 'Free LinkedIn Headline Generator (2026) — 8 Options in Seconds', description: "Generate 8 LinkedIn headline options from your job title and skills — free, no sign-up. Fits LinkedIn's 220-character limit, ready to paste in.",
+  { path: '/linkedin-headline-generator', title: 'Free LinkedIn Headline Generator (2026) — 8 Options in Seconds', keywords: 'LinkedIn headline generator, LinkedIn headline examples, best LinkedIn headline, LinkedIn profile headline, LinkedIn headline ideas, how to write LinkedIn headline', description: "Generate 8 LinkedIn headline options from your job title and skills — free, no sign-up. Fits LinkedIn's 220-character limit, ready to paste in.",
     h1: 'LinkedIn Headline Generator',
     intro: "Enter your job title, a few keywords and your experience level, and get 8 LinkedIn headline options — free, no sign-up, no resume required. Each fits inside LinkedIn's 220-character headline limit and is ready to paste straight into your profile.",
     faq: [
@@ -180,7 +180,7 @@ const ROUTES = [
       { question: 'Does the LinkedIn headline affect profile views?', answer: "Yes. Your headline appears next to your name in search results, connection requests and comments — it is the first thing people read about you on LinkedIn. A clear, keyword-rich headline improves your chances of appearing in recruiter searches and getting profile visits." },
       { question: 'What keywords should I use in my LinkedIn headline?', answer: 'Use the job titles and skills that recruiters in your field search for. For example, a software engineer might include \"Python\", \"backend\" and \"distributed systems\". The generator helps you pick strong keywords based on your job title and experience.' },
     ] },
-  { path: '/interview-thank-you-email-generator', title: 'Free Interview Thank-You Email Generator (2026)', description: 'Generate a post-interview thank-you email in seconds — job title, company and what you discussed in, a ready-to-send email out. Free, no sign-up.',
+  { path: '/interview-thank-you-email-generator', title: 'Free Interview Thank-You Email Generator (2026)', keywords: 'interview thank you email generator, thank you email after interview, post interview email, interview follow up email, thank you email template interview', description: 'Generate a post-interview thank-you email in seconds — job title, company and what you discussed in, a ready-to-send email out. Free, no sign-up.',
     h1: 'Interview Thank-You Email Generator',
     intro: 'Enter the job title, company, interviewer\'s name and something specific you discussed, and get a ready-to-send thank-you email — free, no sign-up. Best sent within 24 hours of the interview.',
     faq: [
@@ -212,6 +212,7 @@ for (const route of ROUTES) {
   html = html.replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(route.title)}</title>`);
   // Replace meta description
   html = html.replace(/<meta name="description"[^>]*>/, `<meta name="description" content="${esc(route.description)}" />`);
+  if (route.keywords) html = html.replace(/<meta name="keywords"[^>]*>/, `<meta name="keywords" content="${esc(route.keywords)}" />`);
   // Replace canonical
   html = html.replace(/<link rel="canonical"[^>]*>/, `<link rel="canonical" href="${url}" />`);
   // Replace OG title/description/url
