@@ -1,4 +1,5 @@
 import { FC, useState } from 'react';
+import toast from 'react-hot-toast';
 import { Target, Loader2, CheckCircle2, XCircle, AlertCircle, ChevronDown, ChevronUp, Zap } from 'lucide-react';
 import { useResume } from '../context/ResumeContext';
 
@@ -86,8 +87,9 @@ ${JSON.stringify({
       }
       const text = raw.text.trim().replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim();
       setResult(JSON.parse(text));
-    } catch {
-      // silent fail
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'ATS analysis failed. Please try again.';
+      toast.error(msg);
     } finally {
       setLoading(false);
     }
