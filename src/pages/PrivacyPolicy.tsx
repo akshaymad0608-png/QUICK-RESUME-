@@ -86,6 +86,7 @@ const PrivacyPolicy: FC = () => (
             <li><strong className="text-ink">Google Firebase</strong> — authentication.</li>
             <li><strong className="text-ink">Google Gemini API</strong> — generates AI writing suggestions from text you submit.</li>
             <li><strong className="text-ink">Google Analytics</strong> — site usage analytics.</li>
+            <li><strong className="text-ink">Google AdSense</strong> — displays advertising on some pages.</li>
           </ul>
           <p className="mt-3">
             Each operates under its own privacy policy in addition to this one. We don't sell resume
@@ -98,8 +99,18 @@ const PrivacyPolicy: FC = () => (
           <h2 className="font-display text-xl font-semibold text-ink mb-3">Cookies</h2>
           <p>
             Google Analytics sets cookies to distinguish visitors. Firebase Authentication uses local
-            storage and cookies to keep you signed in. We don't run advertising or cross-site tracking
-            cookies.
+            storage and cookies to keep you signed in.
+          </p>
+          <p className="mt-3">
+            We show ads through Google AdSense. Google and its partners, as third-party vendors, use
+            cookies (including the DoubleClick cookie) to serve ads based on your visits to this and
+            other websites. You can opt out of personalised advertising in{' '}
+            <a className="underline" href="https://adssettings.google.com" rel="noopener noreferrer" target="_blank">Google Ads Settings</a>{' '}
+            or at{' '}
+            <a className="underline" href="https://www.aboutads.info" rel="noopener noreferrer" target="_blank">aboutads.info</a>.{' '}
+            See how Google uses data from sites that use its services at{' '}
+            <a className="underline" href="https://policies.google.com/technologies/partner-sites" rel="noopener noreferrer" target="_blank">policies.google.com/technologies/partner-sites</a>.
+            Ads never appear inside your resume or its downloaded files.
           </p>
         </section>
 
