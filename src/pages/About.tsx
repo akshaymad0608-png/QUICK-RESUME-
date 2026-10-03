@@ -8,7 +8,7 @@ const About: FC = () => (
     <Seo
       path="/about"
       title="About QuickResume | Free AI Resume Builder"
-      description="QuickResume is a free AI-powered resume builder that helps job seekers create ATS-friendly resumes in minutes. Learn about our mission and how we help you land more interviews."
+      description="QuickResume is a free AI resume builder for creating ATS-friendly resumes in minutes. Read our mission and how we help job seekers land more interviews."
     />
     <Navbar />
 

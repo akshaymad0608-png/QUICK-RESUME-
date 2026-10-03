@@ -168,7 +168,7 @@ const ROUTES = [
   { path: '/contact', title: 'Contact QuickResume | Get in Touch', description: 'Have a question, found a bug, or want to suggest a feature? Send us a message and we will get back to you.',
     h1: 'Contact QuickResume',
     intro: 'Bug report, feature request or just a question — fill out the contact form and we will reply as soon as we can. You can also email akshaymad0608@gmail.com directly.' },
-  { path: '/about', title: 'About QuickResume | Free AI Resume Builder', description: 'QuickResume is a free AI-powered resume builder that helps job seekers create ATS-friendly resumes in minutes. Learn about our mission and how we help you land more interviews.',
+  { path: '/about', title: 'About QuickResume | Free AI Resume Builder', description: 'QuickResume is a free AI resume builder for creating ATS-friendly resumes in minutes. Read our mission and how we help job seekers land more interviews.',
     h1: 'About QuickResume',
     intro: 'QuickResume helps job seekers build ATS-friendly resumes in minutes. 60+ free templates, AI writing tools, an ATS score checker, and PDF export — all free, with no sign-up required for basic use.' },
   { path: '/privacy', title: 'Privacy Policy | QuickResume', description: 'What QuickResume collects, why, and where your resume data actually lives — including what Firebase stores, what stays on-device, and your rights.',

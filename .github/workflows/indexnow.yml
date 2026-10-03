@@ -1,0 +1,47 @@
+name: IndexNow
+
+# Tells Bing, Yandex, Seznam and Naver which pages changed, so they recrawl
+# them without waiting for the next scheduled crawl. A page counts as changed
+# when its <lastmod> in public/sitemap.xml is added or bumped, so bump the
+# lastmod whenever a page's content changes. The key file
+# public/e93af2449d4f2f1f2a4d22b94f3e6bdf.txt proves ownership.
+
+on:
+  push:
+    branches: [main]
+    paths: ['public/sitemap.xml']
+  workflow_dispatch:
+
+jobs:
+  submit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Wait for the Vercel deployment
+        run: sleep 150
+
+      - name: Submit changed pages
+        env:
+          HOST: quickresume.business
+          KEY: e93af2449d4f2f1f2a4d22b94f3e6bdf
+          BEFORE: ${{ github.event.before }}
+        run: |
+          # Manual runs, and pushes whose base is unknown, submit the whole sitemap.
+          if [ "${{ github.event_name }}" = "push" ] && git cat-file -e "$BEFORE" 2>/dev/null; then
+            urls=$(git diff -U0 "$BEFORE" HEAD -- public/sitemap.xml | grep '^+' | grep -o '<loc>[^<]*' | sed 's/<loc>//' || true)
+          else
+            urls=$(grep -o '<loc>[^<]*' public/sitemap.xml | sed 's/<loc>//')
+          fi
+          if [ -z "$urls" ]; then echo "No page changed."; exit 0; fi
+          echo "$urls"
+          list=$(printf '%s\n' $urls | jq -R . | jq -s -c .)
+          code=$(curl -sS -o response.txt -w '%{http_code}' \
+            -H 'Content-Type: application/json; charset=utf-8' \
+            -d "{\"host\":\"$HOST\",\"key\":\"$KEY\",\"keyLocation\":\"https://$HOST/$KEY.txt\",\"urlList\":$list}" \
+            https://api.indexnow.org/indexnow)
+          cat response.txt; echo "HTTP $code"
+          # 200 = accepted, 202 = accepted while the key is being verified.
+          [ "$code" = 200 ] || [ "$code" = 202 ]
