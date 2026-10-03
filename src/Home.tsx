@@ -146,13 +146,6 @@ export const Home: FC = () => {
         path="/"
         title="QuickResume — Free AI Resume Builder | ATS-Friendly Templates"
         description="Build an ATS-friendly, job-winning resume in minutes. 60+ free templates for freshers, developers, designers and executives — with AI writing, ATS score checker and cover letters."
-        jsonLd={{
-          "@context": "https://schema.org",
-          "@type": "BreadcrumbList",
-          "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://quickresume.business/" }
-          ]
-        }}
       />
 
       <Navbar />
