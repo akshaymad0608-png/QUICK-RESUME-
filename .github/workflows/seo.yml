@@ -1,0 +1,22 @@
+name: SEO checks
+
+# Builds the site and runs scripts/seo-validate.mjs against the output. It fails
+# on hard errors only (missing title/canonical, broken internal links, noindex
+# pages in the sitemap, collapsed sitemap ...); warnings are reported, not gated.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  seo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: node scripts/seo-validate.mjs

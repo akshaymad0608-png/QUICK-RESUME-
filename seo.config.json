@@ -1,0 +1,8 @@
+{
+  "origin": "https://quickresume.business",
+  "distDir": "dist",
+  "important": ["/", "/about", "/contact"],
+  "minSitemapUrls": 5,
+  "adsense": true,
+  "gsc": { "brandTerms": ["quickresume", "quick resume"], "minImpressions": 10 }
+}
