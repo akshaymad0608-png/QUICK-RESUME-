@@ -7,3 +7,7 @@ dist
 coverage
 .cache
 firebase-applet-config.json
+
+# SEO tooling output (generated / personal Search Console exports)
+reports/
+seo-data/
