@@ -123,7 +123,7 @@ export const Footer: FC = () => (
 
       <div className="pt-7 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-ink-muted">
         <p>© {new Date().getFullYear()} quickresume.business — All rights reserved.</p>
-        <p className="font-mono tracking-wider">ATS-tested · Free PDF export</p>
+        <p className="font-mono tracking-wider">ATS-friendly · Free PDF export</p>
       </div>
     </div>
   </footer>

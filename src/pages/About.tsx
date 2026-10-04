@@ -33,9 +33,9 @@ const About: FC = () => (
           <h2 className="font-display text-xl font-semibold text-ink mb-3">What we built</h2>
           <ul className="list-disc pl-5 space-y-2">
             <li>
-              <strong className="text-ink">60+ free templates</strong> designed to parse cleanly
-              through ATS software like Workday, Greenhouse and Lever, while still looking sharp
-              when a recruiter opens the PDF.
+              <strong className="text-ink">60+ free templates</strong> built with standard section
+              headings and text-based layouts that applicant tracking software can read, while still
+              looking sharp when a recruiter opens the PDF.
             </li>
             <li>
               <strong className="text-ink">AI writing tools</strong> that draft your professional
@@ -66,8 +66,8 @@ const About: FC = () => (
           <h2 className="font-display text-xl font-semibold text-ink mb-3">How we're kept free</h2>
           <p>
             The core tools — resume builder, AI writing, ATS score checker and PDF export — are
-            free. We offer a Pro plan for unlimited resume saves and premium templates. Some pages
-            carry advertising via Google AdSense. That's it: no data selling, no hidden fees.
+            free. Everything is free during early access, and a Pro plan is planned but not on sale yet.
+            Some pages carry advertising via Google AdSense. That's it: no data selling, no hidden fees.
           </p>
         </section>
 
