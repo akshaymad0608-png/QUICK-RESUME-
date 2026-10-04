@@ -9,7 +9,6 @@ import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 import { TemplateCard, ActualResume } from './components/TemplateCard';
 import { ContinueResume } from './components/ContinueResume';
-import { Testimonials } from './components/Testimonials';
 import { TEMPLATES } from './data/templates';
 import { motion } from 'framer-motion';
 import { useResume } from './context/ResumeContext';
@@ -63,7 +62,7 @@ const HeroResume: FC = () => {
 };
 
 const STEPS = [
-  { n: '01', title: 'Pick a template', body: 'Choose from 60+ ATS-tested layouts, organised by role — fresher, developer, designer, executive and more.' },
+  { n: '01', title: 'Pick a template', body: 'Choose from 60+ ATS-friendly layouts, organised by role — fresher, developer, designer, executive and more.' },
   { n: '02', title: 'Let AI do the writing', body: 'Generate your summary, turn plain duties into measurable achievements, and get skill suggestions for your exact role.' },
   { n: '03', title: 'Check, export, apply', body: 'Score your resume against real ATS rules, fix the gaps, and download a pixel-perfect PDF or DOCX — free.' },
 ];
@@ -102,8 +101,8 @@ const AUDIENCES = [
 ];
 
 const FAQS = [
-  { q: 'Is QuickResume free to use?', a: 'Yes. You can build a resume, check your ATS score, and export a PDF for free. Premium templates and unlimited resumes are available on the Pro plan.' },
-  { q: 'Are the templates really ATS-friendly?', a: 'Every template parses cleanly through systems like Workday, Greenhouse and Lever — single reading flow, standard section headings, no tables or graphics that break parsers.' },
+  { q: 'Is QuickResume free to use?', a: 'Yes. You can build a resume, check your ATS score, and export a PDF for free. Everything is free during early access; a Pro plan is planned but not on sale yet.' },
+  { q: 'Are the templates really ATS-friendly?', a: 'Every template uses standard section headings and text-based layouts rather than images. No format can promise how every applicant tracking system will read it, so run your own resume through the ATS score checker before you apply.' },
   { q: 'Can the AI write my resume for me?', a: 'The AI drafts your summary, rewrites bullet points into measurable achievements, suggests skills for your role, and generates tailored cover letters. Every word stays editable.' },
   { q: 'Do you have templates for freshers and students?', a: 'Yes — dedicated fresher, student and internship templates that put education, projects and skills first when experience is limited.' },
   { q: 'Can I import my existing resume?', a: 'Upload your current PDF or DOCX and QuickResume extracts your details automatically, so you start from your real history instead of a blank page.' },
@@ -166,7 +165,7 @@ export const Home: FC = () => {
                 The resume that gets past the bots<span className="text-pine">.</span>
               </h1>
               <p className="text-lg sm:text-xl leading-relaxed max-w-xl mb-9">
-                Pick an ATS-tested template, let AI turn your experience into measurable achievements, and export a recruiter-ready PDF — in about ten minutes.
+                Pick an ATS-friendly template, let AI turn your experience into measurable achievements, and export a recruiter-ready PDF — in about ten minutes.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-3 mb-6">
@@ -204,10 +203,10 @@ export const Home: FC = () => {
         <section className="border-b border-line bg-card">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 grid grid-cols-2 md:grid-cols-4 gap-y-8">
             {[
-              ['100k+', 'Resumes created'],
-              ['99%', 'ATS parse rate'],
               ['60+', 'Templates by role'],
               ['Free', 'PDF export'],
+              ['Free', 'ATS score checker'],
+              ['Free', 'AI writing tools'],
             ].map(([n, l]) => (
               <div key={l} className="text-center md:border-r md:last:border-r-0 border-line px-4">
                 <div className="font-display text-3xl text-ink font-semibold mb-1">{n}</div>
@@ -346,7 +345,6 @@ export const Home: FC = () => {
           </div>
         </section>
 
-        <Testimonials />
 
         {/* ── FAQ ──────────────────────────────────────────── */}
         <section className="max-w-4xl mx-auto px-4 sm:px-6 py-20 lg:py-28">

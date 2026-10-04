@@ -87,7 +87,7 @@ export default function ChooseTemplate() {
               Pick the template your industry expects
             </h1>
             <p className="text-lg max-w-xl">
-              {TEMPLATES.length} ATS-tested layouts, organised by role, career stage and style. Change template anytime — your content adapts instantly.
+              {TEMPLATES.length} ATS-friendly layouts, organised by role, career stage and style. Change template anytime — your content adapts instantly.
             </p>
           </div>
         </section>
