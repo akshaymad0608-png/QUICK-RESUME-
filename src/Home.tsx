@@ -3,7 +3,8 @@ import { Seo } from './components/Seo';
 import { useNavigate, Link } from 'react-router-dom';
 import {
   ArrowRight, Sparkles, ShieldCheck, FileText, Wand2, Search,
-  MessageSquare, Edit3, GraduationCap, Briefcase, Building2, ChevronDown, Upload
+  MessageSquare, Edit3, GraduationCap, Briefcase, Building2, ChevronDown, Upload,
+  Code2, Palette, Megaphone, Stethoscope, Landmark
 } from 'lucide-react';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
@@ -100,6 +101,22 @@ const AUDIENCES = [
   },
 ];
 
+/* The eight categories that get a tile, each with the icon it reads as. The
+ * count is not written here: it is taken from TEMPLATES below, so a template
+ * added or removed changes the number on the page without anyone remembering
+ * to edit it. A category whose templates all disappear drops off the grid
+ * rather than advertising zero. */
+const CATEGORY_TILES = [
+  { category: 'Fresher', icon: GraduationCap, blurb: 'Education and projects first' },
+  { category: 'Developer', icon: Code2, blurb: 'Stack, repos and impact' },
+  { category: 'Designer', icon: Palette, blurb: 'Portfolio-led layouts' },
+  { category: 'Executive', icon: Building2, blurb: 'Scale, P&L and leadership' },
+  { category: 'Marketing', icon: Megaphone, blurb: 'Campaigns and numbers' },
+  { category: 'Healthcare', icon: Stethoscope, blurb: 'Licences and clinical detail' },
+  { category: 'Finance', icon: Landmark, blurb: 'Formal, metrics-forward' },
+  { category: 'ATS Friendly', icon: ShieldCheck, blurb: 'Plain, parser-safe' },
+];
+
 const FAQS = [
   { q: 'Is QuickResume free to use?', a: 'Yes. You can build a resume, check your ATS score, and export a PDF for free. Everything is free during early access; a Pro plan is planned but not on sale yet.' },
   { q: 'Are the templates really ATS-friendly?', a: 'Every template uses standard section headings and text-based layouts rather than images. No format can promise how every applicant tracking system will read it, so run your own resume through the ATS score checker before you apply.' },
@@ -134,10 +151,16 @@ export const Home: FC = () => {
     navigate('/build');
   };
 
-  const featuredCategories = ['Fresher', 'Developer', 'Executive'];
+  /* Six featured templates, one per category, so the row shows range rather
+     than six variations of the same look. */
+  const featuredCategories = ['Fresher', 'Developer', 'Designer', 'Executive', 'Marketing', 'ATS Friendly'];
   const featured = featuredCategories
     .map(cat => TEMPLATES.find(t => t.category === cat))
     .filter(Boolean);
+
+  const tiles = CATEGORY_TILES
+    .map(t => ({ ...t, count: TEMPLATES.filter(x => x.category === t.category).length }))
+    .filter(t => t.count > 0);
 
   return (
     <div className="min-h-screen bg-paper text-body font-sans selection:bg-pine selection:text-white overflow-x-hidden">
@@ -291,19 +314,33 @@ export const Home: FC = () => {
             </Link>
           </div>
 
-          <div className="flex gap-2 overflow-x-auto no-scrollbar pb-2 mb-10 -mx-4 px-4 sm:mx-0 sm:px-0">
-            {['ATS Friendly', 'Fresher', 'Student', 'Developer', 'Designer', 'Executive', 'Marketing', 'Healthcare', 'Finance', 'Teacher'].map(cat => (
-              <Link
-                key={cat}
-                to="/templates"
-                className="whitespace-nowrap px-4 py-2 rounded-full border border-line bg-card text-sm font-semibold text-ink-soft hover:border-pine hover:text-pine transition-colors"
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-16">
+            {tiles.map((t, i) => (
+              <motion.div
+                key={t.category}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-40px' }}
+                transition={{ duration: 0.35, delay: Math.min(i, 4) * 0.05 }}
               >
-                {cat}
-              </Link>
+                <Link
+                  to={`/templates?category=${encodeURIComponent(t.category)}`}
+                  className="group h-full flex flex-col rounded-2xl border border-line bg-card p-5 sm:p-6 shadow-card hover:border-pine hover:shadow-lift focus-visible:border-pine transition-all"
+                >
+                  <span className="w-11 h-11 rounded-xl bg-pine-tint text-pine flex items-center justify-center mb-4 group-hover:bg-pine group-hover:text-white transition-colors">
+                    <t.icon className="w-5 h-5" />
+                  </span>
+                  <h3 className="font-bold text-ink text-[15px] mb-1">{t.category}</h3>
+                  <p className="text-[13px] leading-snug text-mist mb-4 flex-1">{t.blurb}</p>
+                  <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-pine">
+                    {t.count} {t.count === 1 ? 'template' : 'templates'}
+                  </span>
+                </Link>
+              </motion.div>
             ))}
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {featured.map((tpl, idx) => tpl && (
               <motion.div
                 key={tpl.id}
@@ -345,6 +382,62 @@ export const Home: FC = () => {
           </div>
         </section>
 
+
+        {/* ── Already have a resume ────────────────────────── */}
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20 lg:py-24">
+          <div className="relative overflow-hidden rounded-3xl bg-pine text-white px-6 sm:px-12 py-12 lg:py-16">
+            {/* Ruled texture, kept faint so the copy stays legible on it. */}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 opacity-[0.07]"
+              style={{
+                backgroundImage: 'repeating-linear-gradient(0deg, #fff 0, #fff 1px, transparent 1px, transparent 32px)',
+              }}
+            />
+            <div className="relative grid lg:grid-cols-[1.25fr_0.75fr] gap-10 lg:gap-14 items-center">
+              <div>
+                <p className="eyebrow mb-5 !text-seal">Already have one?</p>
+                <h2 className="font-display text-3xl sm:text-[40px] leading-tight font-semibold mb-5">
+                  Upload your current resume and let AI tighten it
+                </h2>
+                <p className="text-white/80 text-[17px] leading-relaxed max-w-xl mb-8">
+                  Drop a PDF or DOCX and QuickResume reads your real history out of it — no retyping. You get an ATS score,
+                  the specific lines holding it back, and rewritten bullet points with the numbers put back in.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <button
+                    onClick={() => navigate('/improve')}
+                    className="bg-seal text-ink rounded-full px-8 py-4 text-[15px] font-bold hover:bg-white transition-colors inline-flex items-center justify-center gap-2"
+                  >
+                    <Upload className="w-4 h-4" /> Upload my resume
+                  </button>
+                  <Link
+                    to="/ai-tools"
+                    className="rounded-full px-8 py-4 text-[15px] font-bold border border-white/25 text-white hover:border-white transition-colors inline-flex items-center justify-center gap-2"
+                  >
+                    See what it checks <ArrowRight className="w-4 h-4" />
+                  </Link>
+                </div>
+              </div>
+
+              <ul className="space-y-4 lg:border-l lg:border-white/15 lg:pl-12">
+                {[
+                  ['PDF and DOCX', 'Parsed into editable sections'],
+                  ['ATS score', 'With the exact rules you failed'],
+                  ['Rewritten bullets', 'Duties turned into measurable results'],
+                ].map(([t, b]) => (
+                  <li key={t} className="flex gap-3">
+                    <ShieldCheck className="w-5 h-5 text-seal shrink-0 mt-0.5" />
+                    <div>
+                      <p className="font-bold text-[15px] leading-snug">{t}</p>
+                      <p className="text-white/70 text-[14px] leading-snug">{b}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </section>
 
         {/* ── FAQ ──────────────────────────────────────────── */}
         <section className="max-w-4xl mx-auto px-4 sm:px-6 py-20 lg:py-28">
