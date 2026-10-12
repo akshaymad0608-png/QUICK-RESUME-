@@ -31,12 +31,12 @@ const HeroResume: FC = () => {
     <div className="relative mx-auto w-full max-w-[440px]">
       <div
         ref={ref}
-        className="relative w-full rounded-md bg-white shadow-lift border border-line overflow-hidden rotate-[1.5deg]"
+        className="relative w-full rounded-[3px] bg-white shadow-lift border border-line overflow-hidden rotate-[0.6deg]"
         style={{ height: `${1123 * scale}px` }}
         aria-hidden="true"
       >
         <div className="origin-top-left absolute top-0 left-0" style={{ transform: `scale(${scale})`, width: '794px', height: '1123px' }}>
-          <ActualResume layout="executive" color="#086856" />
+          <ActualResume layout="executive" color="#14213D" />
         </div>
       </div>
 
@@ -45,13 +45,13 @@ const HeroResume: FC = () => {
         initial={{ opacity: 0, scale: 1.6 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.6, duration: 0.35, type: 'spring', stiffness: 260, damping: 18 }}
-        className="seal-stamp absolute -top-4 -right-3 sm:-right-6 rounded-md px-4 py-3 text-center shadow-card"
+        className="seal-stamp absolute -top-4 -right-3 sm:-right-6 rounded-[3px] px-4 py-3 text-center shadow-card"
       >
         <div className="text-[26px] font-semibold leading-none">92</div>
         <div className="text-[10px] tracking-[0.18em] mt-1">ATS SCORE</div>
       </motion.div>
 
-      <div className="absolute -bottom-5 left-4 sm:-left-6 bg-ink text-paper rounded-lg px-4 py-3 shadow-lift flex items-center gap-3">
+      <div className="absolute -bottom-5 left-4 sm:-left-6 bg-ink text-white rounded-[4px] border border-white/10 px-4 py-3 shadow-lift flex items-center gap-3">
         <Sparkles className="w-4 h-4 text-seal" />
         <div className="text-xs">
           <p className="font-semibold">AI rewrote 3 bullet points</p>
@@ -130,14 +130,14 @@ const FaqItem: FC<{ q: string; a: string }> = ({ q, a }) => {
   return (
     <div className="border-b border-line">
       <button
-        className="w-full py-5 flex justify-between items-center gap-4 text-left"
+        className="w-full py-6 flex justify-between items-center gap-4 text-left"
         onClick={() => setOpen(o => !o)}
         aria-expanded={open}
       >
-        <span className="font-semibold text-ink text-[15px] sm:text-base">{q}</span>
+        <span className="font-display font-semibold text-ink text-[17px] sm:text-[19px] pr-2">{q}</span>
         <ChevronDown className={`w-5 h-5 text-mist shrink-0 transition-transform ${open ? 'rotate-180' : ''}`} />
       </button>
-      {open && <p className="pb-5 text-[15px] leading-relaxed text-body max-w-3xl">{a}</p>}
+      {open && <p className="pb-6 text-[15px] leading-[1.75] text-body max-w-3xl">{a}</p>}
     </div>
   );
 };
@@ -147,7 +147,7 @@ export const Home: FC = () => {
   const { data, updateSection } = useResume();
 
   const handleSelectTemplate = (id: string, color?: string) => {
-    updateSection('design', { ...data.design, template: id, color: color || '#3A4FD8' });
+    updateSection('design', { ...data.design, template: id, color: color || '#14213D' });
     navigate('/build');
   };
 
@@ -184,23 +184,23 @@ export const Home: FC = () => {
               transition={{ duration: 0.5 }}
             >
               <p className="eyebrow mb-6">AI resume builder</p>
-              <h1 className="font-display text-[40px] leading-[1.05] sm:text-6xl lg:text-[68px] text-ink font-semibold mb-6">
-                The resume that gets past the bots<span className="text-pine">.</span>
+              <h1 className="font-display text-[42px] leading-[1.03] sm:text-[60px] lg:text-[72px] text-ink font-semibold mb-7">
+                The resume that gets past the bots<span className="text-seal-deep">.</span>
               </h1>
-              <p className="text-lg sm:text-xl leading-relaxed max-w-xl mb-9">
+              <p className="text-[17px] sm:text-xl leading-[1.65] max-w-[34rem] mb-10 text-body">
                 Pick an ATS-friendly template, let AI turn your experience into measurable achievements, and export a recruiter-ready PDF — in about ten minutes.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-3 mb-6">
                 <button
                   onClick={() => navigate('/start')}
-                  className="bg-pine text-white rounded-full px-8 py-4 text-[15px] font-bold hover:bg-pine-deep transition-colors flex items-center justify-center gap-2"
+                  className="bg-pine text-white rounded-[6px] px-8 py-[17px] text-[15px] font-semibold tracking-[0.01em] hover:bg-pine-deep transition-colors flex items-center justify-center gap-2 shadow-card"
                 >
                   Create my resume <ArrowRight className="w-4 h-4" />
                 </button>
                 <button
                   onClick={() => navigate('/improve')}
-                  className="rounded-full px-8 py-4 text-[15px] font-bold border border-ink/15 text-ink hover:border-ink/40 transition-colors flex items-center justify-center gap-2 bg-card"
+                  className="rounded-[6px] px-8 py-[17px] text-[15px] font-semibold tracking-[0.01em] border border-line text-ink hover:border-ink/35 hover:bg-card transition-colors flex items-center justify-center gap-2 bg-card shadow-hair"
                 >
                   <Upload className="w-4 h-4" /> Improve my existing resume
                 </button>
@@ -224,7 +224,7 @@ export const Home: FC = () => {
 
         {/* ── Trust ledger ─────────────────────────────────── */}
         <section className="border-b border-line bg-card">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 grid grid-cols-2 md:grid-cols-4 gap-y-8">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 grid grid-cols-2 md:grid-cols-4 gap-y-10">
             {[
               ['60+', 'Templates by role'],
               ['Free', 'PDF export'],
@@ -232,8 +232,9 @@ export const Home: FC = () => {
               ['Free', 'AI writing tools'],
             ].map(([n, l]) => (
               <div key={l} className="text-center md:border-r md:last:border-r-0 border-line px-4">
-                <div className="font-display text-3xl text-ink font-semibold mb-1">{n}</div>
-                <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-mist">{l}</div>
+                <div className="w-7 h-px bg-seal mx-auto mb-4" aria-hidden="true" />
+                <div className="font-display text-[34px] leading-none text-ink font-semibold mb-2.5">{n}</div>
+                <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-mist">{l}</div>
               </div>
             ))}
           </div>
@@ -243,7 +244,7 @@ export const Home: FC = () => {
         <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20 lg:py-28">
           <div className="max-w-2xl mb-14">
             <p className="eyebrow mb-4">How it works</p>
-            <h2 className="font-display text-3xl sm:text-[42px] leading-tight text-ink font-semibold">
+            <h2 className="font-display text-[30px] sm:text-[44px] leading-[1.12] text-ink font-semibold">
               From blank page to job application in three steps
             </h2>
           </div>
@@ -256,11 +257,11 @@ export const Home: FC = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-60px' }}
                 transition={{ duration: 0.45, delay: i * 0.08 }}
-                className="relative border-t-2 border-ink pt-6"
+                className="relative border-t border-line pt-7"
               >
-                <span className="font-mono text-xs text-pine tracking-[0.18em]">{s.n}</span>
-                <h3 className="text-xl font-bold text-ink mt-2 mb-3">{s.title}</h3>
-                <p className="leading-relaxed text-[15px]">{s.body}</p>
+                <span className="font-mono text-[11px] text-seal-deep tracking-[0.2em]">{s.n}</span>
+                <h3 className="font-display text-[22px] font-semibold text-ink mt-3 mb-3.5">{s.title}</h3>
+                <p className="leading-[1.7] text-[15px] text-body">{s.body}</p>
               </motion.div>
             ))}
           </div>
@@ -272,7 +273,7 @@ export const Home: FC = () => {
             <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14">
               <div className="max-w-2xl">
                 <p className="eyebrow mb-4 !text-seal">AI toolkit</p>
-                <h2 className="font-display text-3xl sm:text-[42px] leading-tight font-semibold text-paper">
+                <h2 className="font-display text-[30px] sm:text-[44px] leading-[1.12] font-semibold text-white">
                   Six writing tools, built into every step
                 </h2>
               </div>
@@ -281,19 +282,19 @@ export const Home: FC = () => {
               </Link>
             </div>
 
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/10 border border-white/10 rounded-2xl overflow-hidden">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/[0.09] border border-white/[0.09] rounded-xl overflow-hidden">
               {TOOLS.map(t => (
                 <button
                   key={t.title}
                   onClick={() => navigate(t.to)}
-                  className="bg-ink text-left p-7 sm:p-8 hover:bg-[#212842] transition-colors group"
+                  className="bg-ink text-left p-7 sm:p-9 hover:bg-[#161D33] transition-colors group"
                 >
-                  <t.icon className="w-6 h-6 text-seal mb-5" />
-                  <h3 className="text-lg font-bold text-paper mb-2 flex items-center gap-2">
+                  <t.icon className="w-[22px] h-[22px] text-seal mb-6" />
+                  <h3 className="font-display text-[19px] font-semibold text-white mb-2.5 flex items-center gap-2">
                     {t.title}
                     <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0 transition-all" />
                   </h3>
-                  <p className="text-ink-muted text-[15px] leading-relaxed">{t.body}</p>
+                  <p className="text-ink-muted text-[14.5px] leading-[1.7]">{t.body}</p>
                 </button>
               ))}
             </div>
@@ -305,7 +306,7 @@ export const Home: FC = () => {
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
             <div className="max-w-2xl">
               <p className="eyebrow mb-4">Templates</p>
-              <h2 className="font-display text-3xl sm:text-[42px] leading-tight text-ink font-semibold">
+              <h2 className="font-display text-[30px] sm:text-[44px] leading-[1.12] text-ink font-semibold">
                 A template for every stage of your career
               </h2>
             </div>
@@ -325,14 +326,14 @@ export const Home: FC = () => {
               >
                 <Link
                   to={`/templates?category=${encodeURIComponent(t.category)}`}
-                  className="group h-full flex flex-col rounded-2xl border border-line bg-card p-5 sm:p-6 shadow-card hover:border-pine hover:shadow-lift focus-visible:border-pine transition-all"
+                  className="group h-full flex flex-col rounded-[8px] border border-line bg-card p-5 sm:p-6 hover:border-ink/25 hover:shadow-card focus-visible:border-pine transition-all"
                 >
-                  <span className="w-11 h-11 rounded-xl bg-pine-tint text-pine flex items-center justify-center mb-4 group-hover:bg-pine group-hover:text-white transition-colors">
-                    <t.icon className="w-5 h-5" />
+                  <span className="w-10 h-10 rounded-[6px] bg-pine-tint text-pine flex items-center justify-center mb-5 group-hover:bg-pine group-hover:text-seal transition-colors">
+                    <t.icon className="w-[18px] h-[18px]" />
                   </span>
-                  <h3 className="font-bold text-ink text-[15px] mb-1">{t.category}</h3>
-                  <p className="text-[13px] leading-snug text-mist mb-4 flex-1">{t.blurb}</p>
-                  <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-pine">
+                  <h3 className="font-semibold text-ink text-[15px] mb-1.5">{t.category}</h3>
+                  <p className="text-[13px] leading-[1.55] text-mist mb-5 flex-1">{t.blurb}</p>
+                  <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-seal-deep">
                     {t.count} {t.count === 1 ? 'template' : 'templates'}
                   </span>
                 </Link>
@@ -360,19 +361,19 @@ export const Home: FC = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <div className="max-w-2xl mb-14">
               <p className="eyebrow mb-4">Made for you</p>
-              <h2 className="font-display text-3xl sm:text-[42px] leading-tight text-ink font-semibold">
+              <h2 className="font-display text-[30px] sm:text-[44px] leading-[1.12] text-ink font-semibold">
                 Built for freshers, professionals and leaders alike
               </h2>
             </div>
 
             <div className="grid md:grid-cols-3 gap-6">
               {AUDIENCES.map(a => (
-                <div key={a.title} className="bg-paper border border-line rounded-2xl p-7 sm:p-8 flex flex-col shadow-card">
-                  <div className="w-12 h-12 rounded-xl bg-pine-tint text-pine flex items-center justify-center mb-6">
-                    <a.icon className="w-6 h-6" />
+                <div key={a.title} className="bg-paper border border-line rounded-[10px] p-7 sm:p-9 flex flex-col">
+                  <div className="w-11 h-11 rounded-[6px] bg-pine text-seal flex items-center justify-center mb-7">
+                    <a.icon className="w-5 h-5" />
                   </div>
-                  <h3 className="text-xl font-bold text-ink mb-3">{a.title}</h3>
-                  <p className="text-[15px] leading-relaxed mb-7 flex-1">{a.body}</p>
+                  <h3 className="font-display text-[23px] font-semibold text-ink mb-3.5">{a.title}</h3>
+                  <p className="text-[15px] leading-[1.7] text-body mb-8 flex-1">{a.body}</p>
                   <Link to="/templates" className="inline-flex items-center gap-2 text-sm font-bold text-pine hover:text-pine-deep transition-colors">
                     {a.cta} <ArrowRight className="w-4 h-4" />
                   </Link>
@@ -385,35 +386,38 @@ export const Home: FC = () => {
 
         {/* ── Already have a resume ────────────────────────── */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20 lg:py-24">
-          <div className="relative overflow-hidden rounded-3xl bg-pine text-white px-6 sm:px-12 py-12 lg:py-16">
-            {/* Ruled texture, kept faint so the copy stays legible on it. */}
+          <div className="relative overflow-hidden rounded-[14px] bg-pine text-white px-6 sm:px-14 py-14 lg:py-20">
+            {/* Ruled texture, kept faint so the copy stays legible on it. Gold
+                rather than white: on navy, white rules grey out the band. */}
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute inset-0 opacity-[0.07]"
+              className="pointer-events-none absolute inset-0 opacity-[0.10]"
               style={{
-                backgroundImage: 'repeating-linear-gradient(0deg, #fff 0, #fff 1px, transparent 1px, transparent 32px)',
+                backgroundImage: 'repeating-linear-gradient(0deg, #C9A24A 0, #C9A24A 1px, transparent 1px, transparent 34px)',
               }}
             />
+            {/* A single hairline inset reads as a plate edge. */}
+            <div aria-hidden="true" className="pointer-events-none absolute inset-3 rounded-[10px] border border-white/10" />
             <div className="relative grid lg:grid-cols-[1.25fr_0.75fr] gap-10 lg:gap-14 items-center">
               <div>
                 <p className="eyebrow mb-5 !text-seal">Already have one?</p>
-                <h2 className="font-display text-3xl sm:text-[40px] leading-tight font-semibold mb-5">
+                <h2 className="font-display text-[30px] sm:text-[42px] leading-[1.12] font-semibold mb-6">
                   Upload your current resume and let AI tighten it
                 </h2>
-                <p className="text-white/80 text-[17px] leading-relaxed max-w-xl mb-8">
+                <p className="text-white/75 text-[16.5px] leading-[1.7] max-w-xl mb-9">
                   Drop a PDF or DOCX and QuickResume reads your real history out of it — no retyping. You get an ATS score,
                   the specific lines holding it back, and rewritten bullet points with the numbers put back in.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <button
                     onClick={() => navigate('/improve')}
-                    className="bg-seal text-ink rounded-full px-8 py-4 text-[15px] font-bold hover:bg-white transition-colors inline-flex items-center justify-center gap-2"
+                    className="bg-seal text-ink rounded-[6px] px-8 py-[17px] text-[15px] font-semibold tracking-[0.01em] hover:bg-[#D9B463] transition-colors inline-flex items-center justify-center gap-2"
                   >
                     <Upload className="w-4 h-4" /> Upload my resume
                   </button>
                   <Link
                     to="/ai-tools"
-                    className="rounded-full px-8 py-4 text-[15px] font-bold border border-white/25 text-white hover:border-white transition-colors inline-flex items-center justify-center gap-2"
+                    className="rounded-[6px] px-8 py-[17px] text-[15px] font-semibold tracking-[0.01em] border border-white/25 text-white hover:border-white/60 transition-colors inline-flex items-center justify-center gap-2"
                   >
                     See what it checks <ArrowRight className="w-4 h-4" />
                   </Link>
@@ -426,11 +430,11 @@ export const Home: FC = () => {
                   ['ATS score', 'With the exact rules you failed'],
                   ['Rewritten bullets', 'Duties turned into measurable results'],
                 ].map(([t, b]) => (
-                  <li key={t} className="flex gap-3">
-                    <ShieldCheck className="w-5 h-5 text-seal shrink-0 mt-0.5" />
+                  <li key={t} className="flex gap-3.5">
+                    <ShieldCheck className="w-[18px] h-[18px] text-seal shrink-0 mt-[3px]" />
                     <div>
-                      <p className="font-bold text-[15px] leading-snug">{t}</p>
-                      <p className="text-white/70 text-[14px] leading-snug">{b}</p>
+                      <p className="font-semibold text-[15px] leading-snug">{t}</p>
+                      <p className="text-white/65 text-[14px] leading-snug mt-0.5">{b}</p>
                     </div>
                   </li>
                 ))}
@@ -443,7 +447,7 @@ export const Home: FC = () => {
         <section className="max-w-4xl mx-auto px-4 sm:px-6 py-20 lg:py-28">
           <div className="mb-10">
             <p className="eyebrow mb-4">FAQ</p>
-            <h2 className="font-display text-3xl sm:text-[42px] leading-tight text-ink font-semibold">
+            <h2 className="font-display text-[30px] sm:text-[44px] leading-[1.12] text-ink font-semibold">
               Common questions
             </h2>
           </div>
@@ -455,15 +459,15 @@ export const Home: FC = () => {
         {/* ── Final CTA ────────────────────────────────────── */}
         <section className="bg-ink py-20 lg:py-24 border-t border-line">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
-            <h2 className="font-display text-3xl sm:text-5xl text-paper font-semibold mb-5">
+            <h2 className="font-display text-[32px] sm:text-[52px] leading-[1.1] text-white font-semibold mb-6">
               Your next role starts with one page<span className="text-seal">.</span>
             </h2>
-            <p className="text-lg text-ink-muted mb-9 max-w-xl mx-auto">
+            <p className="text-[17px] leading-[1.65] text-ink-muted mb-10 max-w-xl mx-auto">
               Build it free in about ten minutes. Export a PDF recruiters — and their software — will actually read.
             </p>
             <button
               onClick={() => navigate('/start')}
-              className="bg-seal text-ink rounded-full px-10 py-4 text-[15px] font-bold hover:bg-[#FB8D6E] transition-colors inline-flex items-center gap-2"
+              className="bg-seal text-ink rounded-[6px] px-10 py-[17px] text-[15px] font-semibold tracking-[0.01em] hover:bg-[#D9B463] transition-colors inline-flex items-center gap-2"
             >
               Start building for free <ArrowRight className="w-4 h-4" />
             </button>

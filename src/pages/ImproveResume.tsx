@@ -256,7 +256,7 @@ const ImproveResume: FC = () => {
     }
   };
 
-  const scoreColor = (n: number) => n >= 80 ? '#086856' : n >= 60 ? '#EFA425' : '#DC2626';
+  const scoreColor = (n: number) => n >= 80 ? '#15803D' : n >= 60 ? '#B45309' : '#B91C1C';
 
   /* ── UI ─────────────────────────────────────────────────── */
 
@@ -508,7 +508,7 @@ const ImproveResume: FC = () => {
                     <button
                       onClick={runATS}
                       disabled={aiBusy !== null}
-                      className="bg-seal text-ink rounded-full px-6 py-2.5 text-sm font-bold hover:bg-[#FB8D6E] transition-colors inline-flex items-center gap-2 disabled:opacity-60"
+                      className="bg-seal text-ink rounded-full px-6 py-2.5 text-sm font-bold hover:bg-seal-tint transition-colors inline-flex items-center gap-2 disabled:opacity-60"
                     >
                       {aiBusy === 'ats' ? <Loader2 className="w-4 h-4 animate-spin" /> : ats ? <RefreshCw className="w-4 h-4" /> : <ShieldCheck className="w-4 h-4" />}
                       {ats ? 'Re-check score' : 'Run ATS check'}

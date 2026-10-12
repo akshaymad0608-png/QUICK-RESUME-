@@ -164,7 +164,7 @@ export const ResumeTemplateCard: FC<{
       {/* Preview */}
       <div
         ref={wrapperRef}
-        className="w-full bg-[#F1EFE7] p-5 sm:p-7 flex justify-center items-center h-[420px] sm:h-[500px] relative overflow-hidden cursor-pointer border-b border-line"
+        className="w-full bg-[#EDEFF4] p-5 sm:p-7 flex justify-center items-center h-[420px] sm:h-[500px] relative overflow-hidden cursor-pointer border-b border-line"
         onClick={handleSelect}
       >
         <div
@@ -176,7 +176,7 @@ export const ResumeTemplateCard: FC<{
               <ActualResume layout={template.layout} color={activeColor} />
             </div>
           ) : (
-            <div className="absolute inset-0 animate-pulse bg-gradient-to-b from-white to-[#F1EFE7]" aria-hidden="true" />
+            <div className="absolute inset-0 animate-pulse bg-gradient-to-b from-white to-[#EDEFF4]" aria-hidden="true" />
           )}
         </div>
 
