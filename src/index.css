@@ -7,37 +7,45 @@
 @layer base {
   :root {
     /*
-      ── QuickResume "Field Notes" system ──────────────────────
-      Replaces the indigo/orange "Ink & Paper" system entirely — new hues,
-      new type, on request ("poora UI/UX, font, colours, theme change karo").
-      Names stay the same (pine, seal, ink, paper, mist, line) because every
-      component references them as bg-pine / text-ink / font-display etc. —
-      changing what a name POINTS TO restyles the whole site from one file;
-      changing the NAMES would mean touching every component for no reason.
+      ── QuickResume "Counsel" system ────────────────────
+      Replaces the teal-and-amber "Field Notes" system, on request
+      ("poora colours and design aese karo look premium aana chaiye").
 
-      Direction: away from another indigo SaaS blue, toward a warm
-      teal-and-amber pairing — a career-growth register instead of a
-      corporate one — carried by a bold geometric display face (Space
-      Grotesk) over a warm humanist body face (Plus Jakarta Sans) in place of
-      the old editorial serif/Public Sans pairing.
+      Names stay the same (pine, seal, ink, paper, mist, line) because every
+      component references them as bg-pine / text-ink / font-display —
+      changing what a name POINTS TO restyles the whole site from one place;
+      changing the NAMES would mean touching every component for no reason.
+      tailwind.config.js carries the same values; the two must move together.
+
+      Direction: warm cream and amber read friendly but inexpensive — a
+      notebook. Premium in this category is the register of a law firm or a
+      private bank: a deep navy that is almost black, champagne gold used
+      sparingly as punctuation rather than as a second brand colour, true
+      white cards on a cool off-white page, and hairlines thin enough to
+      read as ruled lines on paper stock.
+
+      Type does as much of the work as colour: a high-contrast serif
+      (Playfair Display) for headings over a neutral grotesque (Inter) for
+      body, with the mono kept for eyebrow labels so the structure still
+      reads like a spec sheet. All three were already being fetched.
     */
-    --color-paper: #FAF9F4;        /* warm cream, not cool white   */
-    --color-card: #FFFFFF;         /* raised surfaces              */
-    --color-ink: #17211D;          /* warm near-black, teal-leaning */
-    --color-ink-soft: #3B453F;
-    --color-pine: #086856;         /* primary action — deep teal    */
-    --color-pine-deep: #095F51;    /* hover                         */
-    --color-pine-tint: #E3F5F1;    /* soft teal wash                */
-    --color-seal: #EFA425;         /* accent — warm amber           */
-    --color-seal-tint: #FDF1DC;
-    --color-mist: #656D67;         /* muted text, warm gray         */
-    --color-line: #E3E6E0;         /* warm hairline                 */
-    /* Muted text ON DARK ink surfaces (footer body copy, dark hero cards).
-       Thirteen spots hard-coded #8B93B8/#B9BFD6 — a cool blue-gray tuned to
-       sit on the OLD cool-blue-black ink. Against the new warm near-black
-       ink it read like a leftover. One warm, light-enough token instead of
-       13 individual hex picks. */
-    --color-ink-muted: #9CA6A0;
+    --color-paper: #F6F7FA;        /* cool off-white page            */
+    --color-card: #FFFFFF;         /* raised surfaces — true white   */
+    --color-ink: #0B1020;          /* near-black, navy-leaning       */
+    --color-ink-soft: #283044;
+    --color-pine: #14213D;         /* primary action — deep navy     */
+    --color-pine-deep: #0E1830;    /* hover                          */
+    --color-pine-tint: #EDF0F6;    /* soft navy wash                 */
+    --color-seal: #C9A24A;         /* accent — champagne gold        */
+    /* Gold is a mid tone: ~7:1 against ink, only ~2.5:1 against white. Use
+       seal on dark surfaces and seal-deep wherever gold has to sit on a
+       light one, or it fails contrast as text. */
+    --color-seal-deep: #8A6A1E;
+    --color-seal-tint: #F7F1E1;
+    --color-mist: #5B6478;         /* muted text, cool gray          */
+    --color-line: #E3E7EF;         /* cool hairline                  */
+    /* Muted text ON DARK ink surfaces (footer copy, dark tool cards). */
+    --color-ink-muted: #9BA4B9;
 
     /* Back-compat aliases used by older components */
     --color-primary: var(--color-pine);
@@ -50,16 +58,16 @@
     --color-surface: var(--color-card);
     --color-text-heading: var(--color-ink);
     --color-heading: var(--color-ink);
-    --color-text-body: #414B45;
-    --color-body: #414B45;
+    --color-text-body: #39414F;
+    --color-body: #39414F;
     --color-text-muted: var(--color-mist);
     --color-muted: var(--color-mist);
     --color-border: var(--color-line);
     --color-success: var(--color-pine);
     --color-success-light: var(--color-pine-tint);
 
-    --font-sans: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
-    --font-display: 'Space Grotesk', system-ui, sans-serif;
+    --font-sans: 'Inter', system-ui, sans-serif;
+    --font-display: 'Playfair Display', Georgia, serif;
     --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
   }
 }
@@ -79,7 +87,7 @@ body {
 
 h1, h2, .font-display {
   font-family: var(--font-display);
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
 }
 
 /* Mono eyebrow labels — the structural voice of the site */
@@ -87,19 +95,22 @@ h1, h2, .font-display {
   font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--color-pine);
+  /* Was the primary, which is now near-black and read as body text rather
+     than as a label. The darkened gold is the accent and still clears
+     4.5:1 on paper and card. Dark sections override it with !text-seal. */
+  color: var(--color-seal-deep);
   display: inline-flex;
   align-items: center;
   gap: 10px;
 }
 .eyebrow::before {
   content: "";
-  width: 22px;
+  width: 26px;
   height: 1px;
   background: currentColor;
-  opacity: .6;
+  opacity: .75;
 }
 
 /* Visible keyboard focus, everywhere */
@@ -127,7 +138,7 @@ h1, h2, .font-display {
 
 .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
 .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-.custom-scrollbar::-webkit-scrollbar-thumb { background: #cfcabb; border-radius: 9999px; }
+.custom-scrollbar::-webkit-scrollbar-thumb { background: #C3C9D6; border-radius: 9999px; }
 .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: var(--color-mist); }
 
 .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -148,21 +159,21 @@ h1, h2, .font-display {
 
 /* Faint ruled-paper texture for hero surfaces */
 .bg-ruled {
-  background-image: linear-gradient(to bottom, rgba(23, 33, 29, 0.045) 1px, transparent 1px);
+  background-image: linear-gradient(to bottom, rgba(11, 16, 32, 0.05) 1px, transparent 1px);
   background-size: 100% 34px;
 }
 .bg-grid-pattern,
 .bg-grid-pattern-light {
   background-size: 40px 40px;
-  background-image: linear-gradient(to right, rgba(23, 33, 29, 0.04) 1px, transparent 1px),
-                    linear-gradient(to bottom, rgba(23, 33, 29, 0.04) 1px, transparent 1px);
+  background-image: linear-gradient(to right, rgba(11, 16, 32, 0.045) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(11, 16, 32, 0.045) 1px, transparent 1px);
 }
 
 /* Amber "ATS approved" seal */
 .seal-stamp {
   font-family: var(--font-mono);
   border: 1.5px solid var(--color-seal);
-  color: #8A5A0A;
+  color: var(--color-seal-deep);
   background: var(--color-seal-tint);
   transform: rotate(-4deg);
 }

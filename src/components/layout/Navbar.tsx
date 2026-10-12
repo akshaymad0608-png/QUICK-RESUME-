@@ -7,37 +7,44 @@ import { onAuthStateChanged, signOut, User } from 'firebase/auth';
 import { AnimatePresence, motion } from 'framer-motion';
 
 /* QuickResume mark — a resume sheet with a rising career arrow */
-export const LogoMark: FC<{ className?: string }> = ({ className = 'w-9 h-9' }) => (
+export const LogoMark: FC<{ className?: string; light?: boolean }> = ({ className = 'w-9 h-9', light }) => (
   <svg viewBox="0 0 36 36" className={className} aria-hidden="true">
-    <rect x="2" y="2" width="32" height="32" rx="9" fill="#17211D" />
-    <rect x="9" y="10" width="12" height="2.6" rx="1.3" fill="#FAF9F4" />
-    <rect x="9" y="16" width="18" height="2.6" rx="1.3" fill="#2FA893" />
-    <rect x="9" y="22" width="10" height="2.6" rx="1.3" fill="#2FA893" opacity="0.65" />
+    {/* The plate is near-black navy, so on the dark footer it would vanish
+        and leave the bars floating. There it becomes a hairline instead. */}
+    <rect
+      x="2" y="2" width="32" height="32" rx="7"
+      fill={light ? 'none' : '#0B1020'}
+      stroke={light ? 'rgba(255,255,255,0.22)' : 'none'}
+      strokeWidth="1.5"
+    />
+    <rect x="9" y="10" width="12" height="2.6" rx="1.3" fill="#FFFFFF" />
+    <rect x="9" y="16" width="18" height="2.6" rx="1.3" fill="#9BA4B9" />
+    <rect x="9" y="22" width="10" height="2.6" rx="1.3" fill="#9BA4B9" opacity="0.6" />
     <path
       d="M10 27.5 L18 20.5 L22 24 L28.5 16.5"
-      stroke="#EFA425"
+      stroke="#C9A24A"
       strokeWidth="2.6"
       fill="none"
       strokeLinecap="round"
       strokeLinejoin="round"
     />
-    <path d="M23.5 15.5 h5.5 v5.5" stroke="#EFA425" strokeWidth="2.6" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M23.5 15.5 h5.5 v5.5" stroke="#C9A24A" strokeWidth="2.6" fill="none" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 
 export const Logo: FC<{ light?: boolean }> = ({ light }) => (
   <span className="flex items-center gap-2.5">
-    <LogoMark />
+    <LogoMark light={light} />
     <span className={`text-[21px] font-display font-semibold tracking-tight ${light ? 'text-paper' : 'text-ink'}`}>
       Quick
       {/*
-        text-pine (#0A7561) is deliberately dark, to pass 4.5:1 on the paper/
+        text-pine (#14213D) is nearly black, to sit firmly on the paper and
         card backgrounds it appears on almost everywhere. On the footer's
-        dark bg-ink it drops to ~2.9:1 — a dark-on-dark failure. The `light`
-        variant swaps to a brighter teal that clears contrast against ink
-        instead of reusing the token that's tuned for the opposite context.
+        dark bg-ink it would be dark-on-dark. The `light` variant swaps to
+        the champagne accent, which clears 4.5:1 against ink, rather than
+        reusing a token tuned for the opposite context.
       */}
-      <span className={light ? 'text-[#2FA893]' : 'text-pine'}>Resume</span>
+      <span className={light ? 'text-seal' : 'text-pine'}>Resume</span>
     </span>
   </span>
 );
@@ -74,7 +81,7 @@ export const Navbar: FC = () => {
 
   return (
     <>
-      <header className={`fixed top-0 left-0 right-0 z-50 h-16 md:h-[72px] bg-paper/90 backdrop-blur-md transition-shadow ${scrolled ? 'border-b border-line shadow-[0_1px_0_rgba(26,36,32,0.02)]' : 'border-b border-transparent'}`}>
+      <header className={`fixed top-0 left-0 right-0 z-50 h-16 md:h-[72px] bg-paper/90 backdrop-blur-md transition-shadow ${scrolled ? 'border-b border-line shadow-[0_1px_0_rgba(11,16,32,0.04)]' : 'border-b border-transparent'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-full flex justify-between items-center">
           <Link to="/" aria-label="QuickResume home" className="shrink-0">
             <Logo />
@@ -100,7 +107,7 @@ export const Navbar: FC = () => {
                 <span className="text-ink-soft text-sm font-semibold max-w-[140px] truncate">{user.displayName || 'My account'}</span>
                 <button
                   onClick={() => signOut(auth)}
-                  className="text-mist hover:text-ink transition-colors p-2 rounded-full hover:bg-pine-tint"
+                  className="text-mist hover:text-ink transition-colors p-2 rounded-[5px] hover:bg-pine-tint"
                   title="Log out"
                   aria-label="Log out"
                 >
@@ -116,7 +123,7 @@ export const Navbar: FC = () => {
               </button>
             )}
             <button
-              className="bg-pine text-white rounded-full px-5 py-2.5 text-sm font-bold hover:bg-pine-deep transition-colors inline-flex items-center gap-1.5"
+              className="bg-pine text-white rounded-[5px] px-5 py-2.5 text-sm font-semibold tracking-[0.01em] hover:bg-pine-deep transition-colors inline-flex items-center gap-1.5"
               onClick={() => navigate('/start')}
             >
               Create my resume <ArrowRight className="w-4 h-4" />
@@ -167,7 +174,7 @@ export const Navbar: FC = () => {
 
               <div className="p-6 border-t border-line space-y-3 shrink-0">
                 <button
-                  className="w-full h-13 py-3.5 rounded-full text-base bg-pine hover:bg-pine-deep text-white font-bold transition-colors"
+                  className="w-full h-13 py-3.5 rounded-[6px] text-base bg-pine hover:bg-pine-deep text-white font-semibold transition-colors"
                   onClick={() => { setMobileMenuOpen(false); navigate('/start'); }}
                 >
                   Create my resume
