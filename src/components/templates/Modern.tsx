@@ -26,9 +26,9 @@ const Modern: FC<TemplateProps> = ({ data }) => {
         {/* Header */}
         <div className="flex justify-between items-end border-b-2 pb-6" style={{ borderColor: c, marginBottom: sectionGap }}>
           <div className="max-w-2xl">
-            <h1 className="text-5xl font-black tracking-tighter mb-2" style={{ fontFamily: hf, color: c }}>
+            <div className="text-5xl font-black tracking-tighter mb-2" style={{ fontFamily: hf, color: c }}>
               {personalInfo.firstName} {personalInfo.lastName}
-            </h1>
+            </div>
             <div className="text-xl font-medium text-slate-500 uppercase tracking-widest" style={{ fontFamily: hf }}>
               {personalInfo.jobTitle}
             </div>

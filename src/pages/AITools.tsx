@@ -80,7 +80,7 @@ export default function AITools() {
     <div className="min-h-screen bg-paper text-body font-sans flex flex-col selection:bg-pine selection:text-white">
       <Seo
         path="/ai-tools"
-        title="Free AI Resume Tools — Summary, ATS Check, Cover Letters | QuickResume"
+        title="Free AI Resume Tools: Summary, ATS Check | QuickResume"
         description="Free AI career tools: resume summary generator, ATS score checker, bullet point rewriter, skill suggestions, job description matcher and cover letter generator."
         jsonLd={{
           "@context": "https://schema.org",

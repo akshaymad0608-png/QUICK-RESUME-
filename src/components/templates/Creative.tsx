@@ -21,9 +21,9 @@ const Creative: FC<TemplateProps> = ({ data }) => {
         
         <div className="relative z-10 px-12 pt-16 pb-12 text-slate-900 flex justify-between items-start gap-8">
           <div className="flex-1">
-            <h1 className="text-6xl font-black uppercase mb-4 tracking-tighter mix-blend-difference" style={{ fontFamily: hf }}>
+            <div className="text-6xl font-black uppercase mb-4 tracking-tighter mix-blend-difference" style={{ fontFamily: hf }}>
               {personalInfo.firstName} {personalInfo.lastName}
-            </h1>
+            </div>
             <h2 className="text-3xl font-light mb-8 opacity-90 mix-blend-difference" style={{ fontFamily: hf }}>
               {personalInfo.jobTitle}
             </h2>

@@ -22,9 +22,9 @@ const Sidebar: FC<TemplateProps> = ({ data }) => {
               <img src={personalInfo.photoUrl} alt="Profile" className="w-32 h-32 rounded-full border-4 border-white/30 object-cover" />
             </div>
           )}
-          <h1 className="text-4xl font-bold uppercase leading-[1.1] mb-2" style={{ fontFamily: hf }}>
+          <div className="text-4xl font-bold uppercase leading-[1.1] mb-2" style={{ fontFamily: hf }}>
             {personalInfo.firstName} <br/> {personalInfo.lastName}
-          </h1>
+          </div>
           <h2 className="text-lg font-medium opacity-90 mb-10 tracking-wide" style={{ fontFamily: hf }}>
             {personalInfo.jobTitle}
           </h2>
