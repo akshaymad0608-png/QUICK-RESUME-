@@ -23,9 +23,9 @@ const Executive: FC<TemplateProps> = ({ data }) => {
         {personalInfo.photoUrl && data.design.showPhoto !== false && (
           <img src={personalInfo.photoUrl} alt="Profile" className="w-24 h-24 rounded-full object-cover mb-4 shadow-sm border border-gray-200" />
         )}
-        <h1 className="text-4xl lg:text-5xl font-bold uppercase tracking-wider mb-2" style={{ fontFamily: hf }}>
+        <div className="text-4xl lg:text-5xl font-bold uppercase tracking-wider mb-2" style={{ fontFamily: hf }}>
           {personalInfo.firstName} {personalInfo.lastName}
-        </h1>
+        </div>
         {personalInfo.jobTitle && (
           <div className="text-lg lg:text-xl font-medium tracking-widest uppercase mb-4" style={{ fontFamily: hf, color: c }}>
             {personalInfo.jobTitle}

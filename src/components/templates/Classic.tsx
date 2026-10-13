@@ -24,9 +24,9 @@ const Classic: FC<TemplateProps> = ({ data }) => {
         {personalInfo.photoUrl && data.design.showPhoto !== false && (
           <img src={personalInfo.photoUrl} alt="Profile" className="w-24 h-24 rounded-full object-cover mb-4 shadow-sm border border-gray-200" />
         )}
-        <h1 className="text-4xl font-extrabold tracking-tight mb-2 uppercase" style={{ color: c, fontFamily: hf }}>
+        <div className="text-4xl font-extrabold tracking-tight mb-2 uppercase" style={{ color: c, fontFamily: hf }}>
           {personalInfo.firstName} {personalInfo.lastName}
-        </h1>
+        </div>
         {personalInfo.jobTitle && (
           <div className="text-lg font-medium text-slate-500 tracking-wider uppercase mb-4" style={{ fontFamily: hf }}>
             {personalInfo.jobTitle}

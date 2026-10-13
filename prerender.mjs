@@ -66,7 +66,7 @@ const ROUTES = [
       { question: 'Can I download the resume as a PDF?', answer: 'Yes. Every template can be exported to a clean, recruiter-ready PDF in one click — no sign-up or payment required.' },
       { question: 'Which template should I use for a software engineer resume?', answer: 'The Developer and Designer category has 8 templates built around technical skills, projects and GitHub/portfolio links. The ATS Friendly templates also work well for software engineering roles where the resume may be screened automatically.' },
     ] },
-  { path: '/improve', title: 'Improve My Resume — Free AI Resume Checker and Fixer', keywords: 'resume checker, ATS score checker, improve resume, resume fixer, AI resume checker, ATS resume score, resume optimization, how to improve resume', description: 'Upload your PDF or DOCX to get an instant ATS score, then let AI rewrite bullets, fix grammar and suggest the skills recruiters want — free.',
+  { path: '/improve', title: 'Free AI Resume Checker and Fixer', keywords: 'resume checker, ATS score checker, improve resume, resume fixer, AI resume checker, ATS resume score, resume optimization, how to improve resume', description: 'Upload your PDF or DOCX to get an instant ATS score, then let AI rewrite bullets, fix grammar and suggest the skills recruiters want — free.',
     h1: 'Improve My Resume — Free AI Resume Checker',
     intro: 'Already have a resume? Upload your PDF or DOCX and QuickResume gives you an instant ATS score, flags weak sections, rewrites your bullet points, fixes grammar and suggests the skills recruiters look for — all free and in your browser.',
     sections: [
@@ -99,7 +99,7 @@ const ROUTES = [
         'Graphic Designer — portfolio link, tools (Figma, Adobe), and project outcomes',
       ] },
     ] },
-  { path: '/ai-tools', title: 'Free AI Resume Tools — Summary, ATS Check, Cover Letter', keywords: 'AI resume tools, resume summary generator, ATS score checker, bullet point rewriter, AI career tools, job description matcher, free AI resume writer', description: 'Free AI career tools: resume summary generator, ATS score checker, bullet point rewriter, skill suggestions, job description matcher and cover letter generator.',
+  { path: '/ai-tools', title: 'Free AI Resume Tools: Summary, ATS Check', keywords: 'AI resume tools, resume summary generator, ATS score checker, bullet point rewriter, AI career tools, job description matcher, free AI resume writer', description: 'Free AI career tools: resume summary generator, ATS score checker, bullet point rewriter, skill suggestions, job description matcher and cover letter generator.',
     h1: 'Free AI Resume Tools',
     intro: 'A full set of free AI career tools in one place: resume summary generator, ATS score checker, bullet point rewriter, skill suggestions, job-description matcher and a cover letter generator — everything you need to tailor your resume to any job.',
     sections: [

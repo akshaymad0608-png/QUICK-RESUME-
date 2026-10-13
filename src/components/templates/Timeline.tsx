@@ -21,9 +21,9 @@ const Timeline: FC<TemplateProps> = ({ data }) => {
              <img src={personalInfo.photoUrl} alt="Profile" className="w-20 h-20 rounded-full object-cover shadow-sm border border-gray-200 shrink-0" />
           )}
           <div>
-             <h1 className="text-4xl font-black uppercase tracking-tight mb-2 text-gray-900" style={{ fontFamily: hf }}>
+             <div className="text-4xl font-black uppercase tracking-tight mb-2 text-gray-900" style={{ fontFamily: hf }}>
                {personalInfo.firstName} {personalInfo.lastName}
-             </h1>
+             </div>
              <h2 className="text-xl font-medium tracking-widest text-gray-500" style={{ fontFamily: hf }}>
                {personalInfo.jobTitle}
              </h2>

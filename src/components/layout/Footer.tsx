@@ -91,7 +91,7 @@ export const Footer: FC = () => (
 
         {COLUMNS.map(col => (
           <div key={col.title}>
-            <h4 className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-muted mb-5">{col.title}</h4>
+            <h3 className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-muted mb-5">{col.title}</h3>
             <ul className="space-y-3">
               {col.links.map(l => (
                 <li key={l.label}>
@@ -103,7 +103,7 @@ export const Footer: FC = () => (
         ))}
 
         <div>
-          <h4 className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-muted mb-5">Guides</h4>
+          <h3 className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-muted mb-5">Guides</h3>
           <ul className="space-y-3">
             {GUIDE_LINKS.map(l => (
               <li key={l.href}>

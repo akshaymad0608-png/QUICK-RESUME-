@@ -371,7 +371,7 @@ const Build: FC = () => {
             {activeTab === 'builder' && (
               <div className="p-8">
                 <div className="mb-8">
-                  <h2 className="text-2xl font-black text-ink mb-2 tracking-tight">Editor Workspace</h2>
+                  <h1 className="text-2xl font-black text-ink mb-2 tracking-tight">Editor Workspace</h1>
                   <p className="text-mist text-sm">Fill in your information to build your professional resume.</p>
                 </div>
                 

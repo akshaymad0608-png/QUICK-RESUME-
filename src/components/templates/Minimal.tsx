@@ -25,9 +25,9 @@ const Minimal: FC<TemplateProps> = ({ data }) => {
             <img src={personalInfo.photoUrl} alt="Profile" className="w-20 h-20 rounded-full object-cover shrink-0" />
           )}
           <div>
-            <h1 className="text-4xl lg:text-5xl font-light tracking-tight text-pine mb-1" style={{ fontFamily: hf }}>
+            <div className="text-4xl lg:text-5xl font-light tracking-tight text-pine mb-1" style={{ fontFamily: hf }}>
               {personalInfo.firstName} {personalInfo.lastName}
-            </h1>
+            </div>
             <div className="text-lg text-slate-500 font-medium tracking-wide">
               {personalInfo.jobTitle}
             </div>

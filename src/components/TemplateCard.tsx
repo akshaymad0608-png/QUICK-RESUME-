@@ -210,14 +210,14 @@ export const ResumeTemplateCard: FC<{
         </div>
 
         <div className="flex justify-between items-center mt-auto pt-1">
-          <div className="flex gap-2" role="group" aria-label="Accent color">
+          <div className="flex gap-4" role="group" aria-label="Accent color">
             {SWATCHES.map(c => (
               <button
                 key={c}
                 onClick={(e) => { e.stopPropagation(); setActiveColor(c); }}
                 aria-label={`Accent ${c}`}
                 aria-pressed={activeColor === c}
-                className={`w-6 h-6 rounded-full transition-transform ring-offset-2 ${activeColor === c ? 'ring-2 ring-ink scale-110' : 'hover:scale-110'}`}
+                className={`relative w-7 h-7 rounded-full transition-transform ring-offset-2 after:content-[''] after:absolute after:-inset-2 ${activeColor === c ? 'ring-2 ring-ink scale-110' : 'hover:scale-110'}`}
                 style={{ backgroundColor: c }}
               />
             ))}

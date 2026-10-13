@@ -21,9 +21,9 @@ const TwoColumn: FC<TemplateProps> = ({ data }) => {
             <img src={personalInfo.photoUrl} alt="Profile" className="w-24 h-24 rounded-full object-cover border-4" style={{ borderColor: c }} />
           )}
           <div>
-            <h1 className="text-4xl font-extrabold uppercase tracking-tight" style={{ fontFamily: hf, color: c }}>
+            <div className="text-4xl font-extrabold uppercase tracking-tight" style={{ fontFamily: hf, color: c }}>
               {personalInfo.firstName} {personalInfo.lastName}
-            </h1>
+            </div>
             <h2 className="text-xl mt-2 font-medium bg-gray-100 inline-block px-3 py-1 rounded" style={{ fontFamily: hf, color: c }}>
               {personalInfo.jobTitle}
             </h2>
