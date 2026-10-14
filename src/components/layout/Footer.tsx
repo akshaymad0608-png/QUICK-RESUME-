@@ -95,7 +95,7 @@ export const Footer: FC = () => (
             <ul className="space-y-3">
               {col.links.map(l => (
                 <li key={l.label}>
-                  <Link to={l.to} className="text-sm hover:text-white transition-colors">{l.label}</Link>
+                  <Link to={l.to} className="inline-block py-1 text-sm hover:text-white transition-colors">{l.label}</Link>
                 </li>
               ))}
             </ul>

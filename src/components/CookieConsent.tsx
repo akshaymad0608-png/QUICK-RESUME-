@@ -69,7 +69,7 @@ export const CookieConsent: FC = () => {
           <p className="font-display text-[17px] font-semibold leading-tight">Cookies</p>
           <p className="text-[13px] leading-[1.55] text-paper/80 mt-1">
             We use cookies for analytics and ads. Choose what you allow; the resume builder works either way.{' '}
-            <Link to="/privacy" className="underline underline-offset-2 hover:text-white">Privacy policy</Link>
+            <Link to="/privacy" className="inline-block py-1 underline underline-offset-2 hover:text-white">Privacy policy</Link>
           </p>
 
           {configuring && (
