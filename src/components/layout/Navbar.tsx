@@ -81,24 +81,22 @@ export const Navbar: FC = () => {
 
   return (
     <>
-      <header className="fixed top-3 inset-x-0 z-50 flex justify-center px-3 pointer-events-none">
-        <div
-          className={`pointer-events-auto w-full max-w-6xl h-14 md:h-[58px] rounded-full bg-pine text-paper flex items-center justify-between gap-4 pl-4 pr-2 transition-shadow ${scrolled ? 'shadow-[0_10px_30px_rgba(20,33,61,0.38)]' : 'shadow-[0_6px_20px_rgba(20,33,61,0.26)]'}`}
-        >
+      <header className={`fixed top-0 left-0 right-0 z-50 h-16 md:h-[68px] bg-card/95 backdrop-blur-md border-b border-line transition-shadow ${scrolled ? 'shadow-[0_6px_20px_rgba(11,16,32,0.07)]' : ''}`}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-full flex items-center justify-between gap-6">
           <Link to="/" aria-label="QuickResume home" className="shrink-0 flex items-center gap-2.5">
             <LogoMark className="w-9 h-9" />
-            <span className="text-[21px] font-display font-semibold tracking-tight text-white">
-              Quick<span className="text-seal">Resume</span>
+            <span className="text-[22px] font-display font-semibold tracking-tight text-ink">
+              Quick<span className="text-seal-deep">Resume</span>
             </span>
           </Link>
 
-          <nav className="hidden lg:flex items-center gap-1 text-[14px] font-semibold" aria-label="Main">
+          <nav className="hidden lg:flex items-center gap-1 text-[14.5px] font-semibold flex-1 ml-8 h-full" aria-label="Main">
             {NAV_LINKS.map(l => (
               <NavLink
                 key={l.to}
                 to={l.to}
                 className={({ isActive }) =>
-                  `px-3.5 py-1.5 rounded-full transition-colors ${isActive ? 'bg-white/15 text-white' : 'text-[#E6E9F2] hover:text-white hover:bg-white/10'}`
+                  `relative h-full flex items-center px-3 transition-colors ${isActive ? 'text-ink after:absolute after:left-3 after:right-3 after:bottom-0 after:h-[3px] after:rounded-t after:bg-seal' : 'text-ink-soft hover:text-ink'}`
                 }
               >
                 {l.label}
@@ -109,10 +107,10 @@ export const Navbar: FC = () => {
           <div className="hidden lg:flex items-center gap-2">
             {user ? (
               <div className="flex items-center gap-2">
-                <span className="text-paper/80 text-sm font-semibold max-w-[140px] truncate">{user.displayName || 'My account'}</span>
+                <span className="text-ink-soft text-sm font-semibold max-w-[140px] truncate">{user.displayName || 'My account'}</span>
                 <button
                   onClick={() => signOut(auth)}
-                  className="text-paper/70 hover:text-white transition-colors p-2 rounded-full hover:bg-white/10"
+                  className="text-mist hover:text-ink transition-colors p-2 rounded-[6px] hover:bg-pine-tint"
                   title="Log out"
                   aria-label="Log out"
                 >
@@ -121,14 +119,14 @@ export const Navbar: FC = () => {
               </div>
             ) : (
               <button
-                className="text-[#E6E9F2] hover:text-white font-semibold text-sm px-3 transition-colors"
+                className="text-ink-soft hover:text-ink font-semibold text-sm px-3 py-2 transition-colors"
                 onClick={() => setIsLoginModalOpen(true)}
               >
                 Log in
               </button>
             )}
             <button
-              className="bg-seal text-ink rounded-full px-5 py-2.5 text-sm font-semibold hover:bg-[#D8B461] transition-colors inline-flex items-center gap-1.5"
+              className="bg-pine text-white rounded-[6px] px-5 py-2.5 text-sm font-semibold hover:bg-pine-deep transition-colors inline-flex items-center gap-1.5"
               onClick={() => navigate('/start')}
             >
               Create my resume <ArrowRight className="w-4 h-4" />
@@ -136,7 +134,7 @@ export const Navbar: FC = () => {
           </div>
 
           <button
-            className="lg:hidden p-2.5 text-paper rounded-full hover:bg-white/10"
+            className="lg:hidden p-2 -mr-2 text-ink"
             onClick={() => setMobileMenuOpen(true)}
             aria-label="Open menu"
           >
