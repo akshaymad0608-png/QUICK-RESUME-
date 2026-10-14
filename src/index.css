@@ -176,3 +176,14 @@ h1, h2, .font-display {
   background: var(--color-seal-tint);
   transform: rotate(-4deg);
 }
+
+/* AdSense: never show ads on builder, tool, sign-in or error screens (see AdGuard in App.tsx).
+   Default is hidden: ads appear only once a content route has set data-ads="on". */
+html:not([data-ads="on"]) ins.adsbygoogle,
+html:not([data-ads="on"]) .google-auto-placed,
+html:not([data-ads="on"]) ins[data-anchor-status],
+html:not([data-ads="on"]) ins[data-vignette-loaded],
+html:not([data-ads="on"]) iframe[id^="aswift_"],
+html:not([data-ads="on"]) [id^="google_ads_iframe"] {
+  display: none !important;
+}
