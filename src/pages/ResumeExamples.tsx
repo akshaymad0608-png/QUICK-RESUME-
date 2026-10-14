@@ -21,7 +21,7 @@ const ResumeExamples: FC = () => (
       <Seo
       path="/examples"
       title="Resume Examples by Role & Industry (2026) | QuickResume"
-      description="See what a winning resume looks like for software engineers, product managers, freshers, nurses, sales and more — with the exact points recruiters scan for in each role."
+      description="See what a winning resume looks like for software engineers, product managers, freshers, nurses and sales — the exact points recruiters scan for."
     />
 
     <Navbar />

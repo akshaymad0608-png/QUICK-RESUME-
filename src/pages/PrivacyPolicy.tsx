@@ -35,8 +35,8 @@ const PrivacyPolicy: FC = () => (
   <div className="min-h-screen bg-paper text-body flex flex-col font-sans selection:bg-pine selection:text-white">
     <Seo
       path="/privacy"
-      title="Privacy Policy | QuickResume"
-      description="What QuickResume collects, why, and where your resume data actually lives."
+      title="Privacy Policy — How QuickResume Handles Your Data"
+      description="What QuickResume collects, why, and where your resume data actually lives — including what Firebase stores, what stays on-device, and your rights."
     />
     <Navbar />
 

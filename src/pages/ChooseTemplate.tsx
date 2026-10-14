@@ -66,7 +66,7 @@ export default function ChooseTemplate() {
       <Seo
         path="/templates"
         title="60+ Free Resume Templates by Role & Industry | QuickResume"
-        description="Browse ATS-friendly resume templates for freshers, developers, designers, executives, healthcare, finance and more. Every template is free to try and exports to PDF."
+        description="ATS-friendly resume templates for freshers, developers, designers, executives, healthcare and finance — free to try and exports to a clean PDF."
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "CollectionPage",

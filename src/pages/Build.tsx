@@ -231,8 +231,8 @@ const Build: FC = () => {
     <div className="flex flex-col h-screen h-[100dvh] bg-paper font-sans text-mist overflow-hidden selection:bg-ink selection:text-white">
       <Seo
         path="/build"
-        title="Resume Builder | QuickResume"
-        description="Build your professional resume with QuickResume's editor — ATS-friendly templates, examples and AI text generation."
+        title="Resume Builder — Edit, Score & Export Free | QuickResume"
+        description="Write, edit and export your resume with live ATS scoring, AI bullet rewrites and a clean PDF download — free, right in your browser."
         noindex
       />
 

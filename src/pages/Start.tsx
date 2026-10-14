@@ -135,8 +135,8 @@ const Start: FC = () => {
     <div className="min-h-screen bg-paper text-body flex flex-col font-sans pt-16 md:pt-[72px] selection:bg-pine selection:text-white">
       <Seo
         path="/start"
-        title="Start Your Resume | QuickResume"
-        description="Create a new resume from scratch or import your existing CV to get started."
+        title="Start Your Resume — Free AI Resume Builder | QuickResume"
+        description="Start building your resume free: pick a template, import an existing resume, or let AI draft it from your details. No sign-up needed."
         noindex
       />
 

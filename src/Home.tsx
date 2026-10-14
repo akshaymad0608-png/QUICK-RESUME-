@@ -65,14 +65,14 @@ const HeroResume: FC = () => {
 const STEPS = [
   { n: '01', title: 'Pick a template', body: 'Choose from 60+ ATS-friendly layouts, organised by role — fresher, developer, designer, executive and more.' },
   { n: '02', title: 'Let AI do the writing', body: 'Generate your summary, turn plain duties into measurable achievements, and get skill suggestions for your exact role.' },
-  { n: '03', title: 'Check, export, apply', body: 'Score your resume against real ATS rules, fix the gaps, and download a pixel-perfect PDF or DOCX — free.' },
+  { n: '03', title: 'Check, export, apply', body: 'Score your resume against common ATS best practices, fix the gaps, and download a pixel-perfect PDF or DOCX — free.' },
 ];
 
 const TOOLS = [
   { icon: FileText, title: 'AI Summary Generator', body: 'A recruiter-ready professional summary written for your target role in one click.', to: '/build' },
   { icon: Edit3, title: 'Bullet Point Rewriter', body: 'Weak duties become quantified achievements — improve, shorten, or add numbers.', to: '/build' },
   { icon: Wand2, title: 'Skill Suggestions', body: 'AI recommends the industry-standard skills your resume is missing.', to: '/build' },
-  { icon: ShieldCheck, title: 'ATS Score Checker', body: 'Instant score with specific fixes, tested against real tracking systems.', to: '/build' },
+  { icon: ShieldCheck, title: 'ATS Score Checker', body: 'Instant score with specific fixes, based on common ATS best practices.', to: '/build' },
   { icon: Search, title: 'Job Description Match', body: 'Paste a JD and see exactly which keywords and gaps to close.', to: '/build' },
   { icon: MessageSquare, title: 'Cover Letter Generator', body: 'A tailored cover letter drafted from your resume and the job post.', to: '/cover-letter' },
 ];
@@ -166,8 +166,8 @@ export const Home: FC = () => {
     <div className="min-h-screen bg-paper text-body font-sans selection:bg-pine selection:text-white overflow-x-hidden">
       <Seo
         path="/"
-        title="QuickResume — Free AI Resume Builder | ATS-Friendly Templates"
-        description="Build an ATS-friendly, job-winning resume in minutes. 60+ free templates for freshers, developers, designers and executives — with AI writing, ATS score checker and cover letters."
+        title="Free AI Resume Builder — ATS Templates | QuickResume"
+        description="Build a job-winning, ATS-friendly resume in minutes. 60+ free templates, plus AI writing, an ATS score checker and a cover letter generator."
       />
 
       <Navbar />

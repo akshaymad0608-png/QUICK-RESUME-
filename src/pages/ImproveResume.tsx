@@ -264,8 +264,8 @@ const ImproveResume: FC = () => {
     <div className="min-h-screen bg-paper text-body font-sans flex flex-col pt-16 md:pt-[72px] selection:bg-pine selection:text-white">
       <Seo
         path="/improve"
-        title="Free AI Resume Checker & Fixer | QuickResume"
-        description="Already have a resume? Upload your PDF or DOCX, remove weak sections, get an instant ATS score, and let AI rewrite bullets, fix grammar and suggest missing skills — free."
+        title="Free AI Resume Checker and Fixer"
+        description="Upload your PDF or DOCX to get an instant ATS score, then let AI rewrite bullets, fix grammar and suggest the skills recruiters want — free."
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "HowTo",

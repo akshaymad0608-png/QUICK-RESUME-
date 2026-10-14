@@ -25,8 +25,8 @@ const TermsOfService: FC = () => (
   <div className="min-h-screen bg-paper text-body flex flex-col font-sans selection:bg-pine selection:text-white">
     <Seo
       path="/terms"
-      title="Terms of Service | QuickResume"
-      description="The terms for using QuickResume's resume builder, templates and AI writing tools."
+      title="Terms of Service — Using QuickResume | QuickResume"
+      description="The terms for using QuickResume's resume builder, templates and AI writing tools — what the service is, acceptable use, and the limits of AI-generated output."
     />
     <Navbar />
 
