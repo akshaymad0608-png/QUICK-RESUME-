@@ -1,6 +1,6 @@
-import { Suspense, lazy } from 'react';
+import { Suspense, lazy, useEffect } from 'react';
 
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { ResumeProvider } from './context/ResumeContext';
 import { HelmetProvider } from 'react-helmet-async';
@@ -24,12 +24,33 @@ const NotFound = lazy(() => import('./pages/NotFound'));
 const LinkedInHeadlineGenerator = lazy(() => import('./pages/LinkedInHeadlineGenerator'));
 const ThankYouEmailGenerator = lazy(() => import('./pages/ThankYouEmailGenerator'));
 
+
+/**
+ * AdSense policy: ads must not appear on screens without real publisher content
+ * (the builder, the upload/score tools, sign-in, error pages). The AdSense script
+ * stays in index.html so Google's review finds it, and Auto ads would otherwise
+ * be allowed anywhere. This marks every route that is not a content page, and
+ * index.css hides Google's auto-placed ads on those routes (including after a
+ * client-side navigation, when ads from an earlier page could still be in the DOM).
+ * Long-form guides are static HTML files, not React routes, so they are unaffected.
+ */
+const AD_FRIENDLY_ROUTES = ['/', '/resources', '/examples'];
+function AdGuard() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    const clean = pathname.length > 1 ? pathname.replace(/\/+$/, '') : pathname;
+    document.documentElement.setAttribute('data-ads', AD_FRIENDLY_ROUTES.includes(clean) ? 'on' : 'off');
+  }, [pathname]);
+  return null;
+}
+
 function App() {
   return (
     <HelmetProvider>
       <Suspense fallback={<div className="min-h-screen bg-white flex items-center justify-center">Loading...</div>}>
         <ResumeProvider>
           <BrowserRouter>
+            <AdGuard />
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/start" element={<Start />} />
