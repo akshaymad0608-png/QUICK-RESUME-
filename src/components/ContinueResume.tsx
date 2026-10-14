@@ -64,7 +64,7 @@ export const ContinueResume: React.FC = () => {
               <FileText className="w-5 h-5" aria-hidden="true" />
             </div>
             <div className="min-w-0">
-              <p className="eyebrow">Draft saved on this device</p>
+              <p className="eyebrow">Draft saved in this browser · no login needed</p>
               <p className="font-display text-lg text-ink font-semibold sm:truncate">{label}</p>
             </div>
           </div>
