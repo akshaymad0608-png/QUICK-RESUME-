@@ -83,10 +83,13 @@ export const Navbar: FC = () => {
     <>
       <header className="fixed top-3 inset-x-0 z-50 flex justify-center px-3 pointer-events-none">
         <div
-          className={`pointer-events-auto w-full max-w-6xl h-14 md:h-[56px] rounded-full bg-ink text-paper flex items-center justify-between gap-4 pl-4 pr-2 transition-shadow ${scrolled ? 'shadow-[0_10px_30px_rgba(11,16,32,0.28)]' : 'shadow-[0_4px_16px_rgba(11,16,32,0.16)]'}`}
+          className={`pointer-events-auto w-full max-w-6xl h-14 md:h-[58px] rounded-full bg-pine text-paper flex items-center justify-between gap-4 pl-4 pr-2 transition-shadow ${scrolled ? 'shadow-[0_10px_30px_rgba(20,33,61,0.38)]' : 'shadow-[0_6px_20px_rgba(20,33,61,0.26)]'}`}
         >
-          <Link to="/" aria-label="QuickResume home" className="shrink-0">
-            <Logo light />
+          <Link to="/" aria-label="QuickResume home" className="shrink-0 flex items-center gap-2.5">
+            <LogoMark className="w-9 h-9" />
+            <span className="text-[21px] font-display font-semibold tracking-tight text-white">
+              Quick<span className="text-seal">Resume</span>
+            </span>
           </Link>
 
           <nav className="hidden lg:flex items-center gap-1 text-[14px] font-semibold" aria-label="Main">
@@ -95,7 +98,7 @@ export const Navbar: FC = () => {
                 key={l.to}
                 to={l.to}
                 className={({ isActive }) =>
-                  `px-3.5 py-1.5 rounded-full transition-colors ${isActive ? 'bg-white/15 text-white' : 'text-paper/75 hover:text-white hover:bg-white/10'}`
+                  `px-3.5 py-1.5 rounded-full transition-colors ${isActive ? 'bg-white/15 text-white' : 'text-[#E6E9F2] hover:text-white hover:bg-white/10'}`
                 }
               >
                 {l.label}
@@ -118,14 +121,14 @@ export const Navbar: FC = () => {
               </div>
             ) : (
               <button
-                className="text-paper/80 hover:text-white font-semibold text-sm px-3 transition-colors"
+                className="text-[#E6E9F2] hover:text-white font-semibold text-sm px-3 transition-colors"
                 onClick={() => setIsLoginModalOpen(true)}
               >
                 Log in
               </button>
             )}
             <button
-              className="bg-paper text-ink rounded-full px-5 py-2 text-sm font-semibold hover:bg-white transition-colors inline-flex items-center gap-1.5"
+              className="bg-seal text-ink rounded-full px-5 py-2.5 text-sm font-semibold hover:bg-[#D8B461] transition-colors inline-flex items-center gap-1.5"
               onClick={() => navigate('/start')}
             >
               Create my resume <ArrowRight className="w-4 h-4" />
