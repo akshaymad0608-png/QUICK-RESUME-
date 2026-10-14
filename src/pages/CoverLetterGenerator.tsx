@@ -56,7 +56,7 @@ const CoverLetterGenerator: FC = () => {
     <div className="min-h-screen bg-paper text-body flex flex-col font-sans pt-16 md:pt-[72px] relative selection:bg-pine selection:text-white">
       <Seo
         path="/cover-letter"
-        title="Free AI Cover Letter Generator | QuickResume"
+        title="Free AI Cover Letter Generator — Tailored in Minutes"
         description="Generate a tailored, professional cover letter in seconds. Our AI matches your resume to the job description — free to write and download."
       />
 

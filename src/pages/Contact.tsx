@@ -34,7 +34,7 @@ const Contact: FC = () => {
       <Seo
         path="/contact"
         title="Contact QuickResume | Get in Touch"
-        description="Have a question, found a bug, or want to suggest a feature? Send us a message and we'll get back to you."
+        description="Have a question about the free resume builder, found a bug, or want to suggest a feature? Send QuickResume a message and we will get back to you."
       />
       <Navbar />
 

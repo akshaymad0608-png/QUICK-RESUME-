@@ -63,6 +63,15 @@ const About: FC = () => (
         </section>
 
         <section>
+          <h2 className="font-display text-xl font-semibold text-ink mb-3">Who runs QuickResume</h2>
+          <p>
+            QuickResume is built and maintained by Akshay Mahajan, an independent developer in India
+            who also builds other free web tools. Questions, bug reports and feature requests go to
+            the email address below.
+          </p>
+        </section>
+
+        <section>
           <h2 className="font-display text-xl font-semibold text-ink mb-3">How we're kept free</h2>
           <p>
             The core tools — resume builder, AI writing, ATS score checker and PDF export — are

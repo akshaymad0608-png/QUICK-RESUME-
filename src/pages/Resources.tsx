@@ -62,6 +62,16 @@ const GROUPS: GuideGroup[] = [
         description: 'Upload your resume, get an instant score, and see exactly what to fix to get past the bots.',
       },
       {
+        slug: 'what-is-an-ats-resume',
+        title: 'What Is an ATS Resume?',
+        description: 'How applicant tracking systems read your file, and a step-by-step checklist to make your resume ATS-friendly.',
+      },
+      {
+        slug: 'resume-banane-wala-app',
+        title: 'Resume Banane Wala App',
+        description: 'Mobile se free resume banane ka aasan tareeka, bina app install kiye. Fresher ke liye step-by-step.',
+      },
+      {
         slug: 'cv-vs-resume',
         title: 'CV vs Resume: What’s the Difference?',
         description: 'The real difference — length, content, and which one to send for a job in India, the US or the UK.',
@@ -74,8 +84,18 @@ const GROUPS: GuideGroup[] = [
     guides: [
       {
         slug: 'resume-format-for-freshers',
+        title: 'Resume Format for Freshers',
+        description: 'A one-page structure for freshers with little or no experience: section order, a sample, and what to write instead of work history.',
+      },
+      {
+        slug: 'biodata-format-for-job',
         title: 'Biodata Format for Job',
-        description: 'The exact biodata format for a job application — personal details, education, experience and the declaration line.',
+        description: 'The exact biodata format for a job application: personal details, education, experience and the declaration line.',
+      },
+      {
+        slug: 'how-long-should-a-resume-be',
+        title: 'How Long Should a Resume Be?',
+        description: 'One page or two? A simple rule of thumb by experience level, and how to shorten a resume that is too long.',
       },
       {
         slug: 'resume-format-for-experienced',
@@ -153,8 +173,8 @@ const Resources: FC = () => {
     <div className="min-h-screen bg-paper text-body flex flex-col font-sans selection:bg-pine selection:text-white">
       <Seo
         path="/resources"
-        title="Career Resources & Resume Guides | QuickResume"
-        description="12 free, up-to-date guides on resume format, ATS, CV vs resume, summaries, headlines and skills — plus role-specific guides for software engineers and teachers."
+        title="Free Resume Guides & Career Resources | QuickResume"
+        description="15 free guides on resume format, ATS, CV vs resume, summaries, headlines and skills, plus role guides for software engineers and teachers."
         jsonLd={itemListSchema}
       />
 

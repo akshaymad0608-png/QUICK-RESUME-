@@ -338,34 +338,39 @@ Use the following format. Ensure it follows this exact JSON structure. Respond w
   });
 
 
-  // Sitemap
-  app.get('/sitemap.xml', (_req, res) => {
-    const urls = [
-      ['/', 'weekly', '1.0'],
-      ['/templates', 'weekly', '0.9'],
-      ['/improve', 'monthly', '0.8'],
-      ['/examples', 'monthly', '0.7'],
-      ['/ai-tools', 'monthly', '0.7'],
-      ['/cover-letter', 'monthly', '0.6'],
-      ['/resources', 'monthly', '0.5'],
-      ['/pricing', 'monthly', '0.5'],
-    ];
-    const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
-      urls.map(([path, freq, pri]) => `  <url><loc>https://quickresume.business${path}</loc><changefreq>${freq}</changefreq><priority>${pri}</priority></url>`).join('\n') +
-      `\n</urlset>`;
-    res.header('Content-Type', 'application/xml');
-    res.send(sitemap);
-  });
+  // Dev-only sitemap/robots. In production the real files in dist/ (public/sitemap.xml and
+  // public/robots.txt) are served by express.static below, so they are not shadowed by this
+  // shorter, out-of-date list.
+  if (process.env.NODE_ENV !== "production") {
+    // Sitemap
+    app.get('/sitemap.xml', (_req, res) => {
+      const urls = [
+        ['/', 'weekly', '1.0'],
+        ['/templates', 'weekly', '0.9'],
+        ['/improve', 'monthly', '0.8'],
+        ['/examples', 'monthly', '0.7'],
+        ['/ai-tools', 'monthly', '0.7'],
+        ['/cover-letter', 'monthly', '0.6'],
+        ['/resources', 'monthly', '0.5'],
+        ['/pricing', 'monthly', '0.5'],
+      ];
+      const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
+        urls.map(([path, freq, pri]) => `  <url><loc>https://quickresume.business${path}</loc><changefreq>${freq}</changefreq><priority>${pri}</priority></url>`).join('\n') +
+        `\n</urlset>`;
+      res.header('Content-Type', 'application/xml');
+      res.send(sitemap);
+    });
 
-  // Robots.txt
-  app.get('/robots.txt', (_req, res) => {
-    const robots = `User-agent: *
-Allow: /
+    // Robots.txt
+    app.get('/robots.txt', (_req, res) => {
+      const robots = `User-agent: *
+  Allow: /
 
-Sitemap: https://quickresume.business/sitemap.xml`;
-    res.header('Content-Type', 'text/plain');
-    res.send(robots);
-  });
+  Sitemap: https://quickresume.business/sitemap.xml`;
+      res.header('Content-Type', 'text/plain');
+      res.send(robots);
+    });
+  }
   // Vite middleware for development
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
@@ -377,7 +382,7 @@ Sitemap: https://quickresume.business/sitemap.xml`;
     const distPath = path.join(process.cwd(), 'dist');
     // Serve hashed assets and files, but disable directory index + redirect so
     // requests like /templates reach our prerender-aware router below.
-    app.use(express.static(distPath, { index: false, redirect: false }));
+    app.use(express.static(distPath, { index: false, redirect: false, extensions: ['html'] }));
     // Important: Express 5 requires named wildcard parameters like '*all'
     app.get('*all', (req, res) => {
       const cleanPath = req.path.replace(/^\/+|\/+$/g, '');

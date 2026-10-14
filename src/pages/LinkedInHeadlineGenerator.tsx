@@ -87,7 +87,7 @@ const LinkedInHeadlineGenerator: FC = () => {
     <div className="min-h-screen bg-paper text-body flex flex-col font-sans selection:bg-pine selection:text-white">
       <Seo
         path="/linkedin-headline-generator"
-        title="Free LinkedIn Headline Generator (2026) — 8 Options in Seconds"
+        title="Free LinkedIn Headline Generator — 8 Options (2026)"
         description="Generate 8 LinkedIn headline options from your job title and skills — free, no sign-up. Fits LinkedIn's 220-character limit, ready to paste in."
         jsonLd={faqSchema}
       />
