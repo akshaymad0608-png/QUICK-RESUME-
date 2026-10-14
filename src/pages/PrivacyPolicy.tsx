@@ -148,6 +148,11 @@ const PrivacyPolicy: FC = () => (
             setting, as described above.
           </p>
           <p className="mt-3">
+            When you first visit, a cookie banner asks what you allow. Analytics and advertising cookies stay off until
+            you choose "Accept all" or enable them under "Configure". Your choice is saved in your browser's local
+            storage under the key "qr_consent_v1"; clear it to see the banner again.
+          </p>
+          <p className="mt-3">
             We show ads through Google AdSense. Google and its partners, as third-party vendors, use cookies
             (including the DoubleClick cookie) to serve ads based on your visits to this and other websites. You
             can opt out of personalised advertising in{' '}

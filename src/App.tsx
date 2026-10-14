@@ -1,3 +1,4 @@
+import CookieConsent from './components/CookieConsent';
 import { Suspense, lazy, useEffect } from 'react';
 
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
@@ -51,6 +52,7 @@ function App() {
         <ResumeProvider>
           <BrowserRouter>
             <AdGuard />
+            <CookieConsent />
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/start" element={<Start />} />

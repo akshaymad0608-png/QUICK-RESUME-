@@ -62,6 +62,12 @@ const HeroResume: FC = () => {
   );
 };
 
+const TICKER_NAMES = TEMPLATES.map(t => t.name);
+const TICKER_A = TICKER_NAMES.filter((_, i) => i % 2 === 0).slice(0, 18);
+const TICKER_B = TICKER_NAMES.filter((_, i) => i % 2 === 1).slice(0, 18);
+
+const STEP_ICONS = [FileText, Wand2, ShieldCheck];
+
 const STEPS = [
   { n: '01', title: 'Pick a template', body: 'Choose from 60+ ATS-friendly layouts, organised by role — fresher, developer, designer, executive and more.' },
   { n: '02', title: 'Let AI do the writing', body: 'Generate your summary, turn plain duties into measurable achievements, and get skill suggestions for your exact role.' },
@@ -240,6 +246,31 @@ export const Home: FC = () => {
           </div>
         </section>
 
+        {/* ── Template ticker ──────────────────────────────── */}
+        <section className="qr-gradient-band py-16 sm:py-20 overflow-hidden" aria-label="Resume templates">
+          <h2 className="font-display text-[28px] sm:text-[44px] leading-[1.12] font-semibold text-white text-center max-w-3xl mx-auto px-4">
+            60+ resume templates for every role and career stage
+          </h2>
+          <div className="mt-10 space-y-3" aria-hidden="true">
+            {[TICKER_A, TICKER_B].map((row, r) => (
+              <div key={r} className="qr-marquee-mask overflow-hidden">
+                <div className={`qr-marquee ${r === 1 ? 'qr-marquee-rev' : ''} flex gap-3 w-max`}>
+                  {[...row, ...row].map((name, i) => (
+                    <span key={i} className="rounded-full bg-white text-ink px-6 py-3 text-[15px] sm:text-[17px] font-semibold whitespace-nowrap shadow-sm">
+                      {name}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="text-center mt-10">
+            <Link to="/templates" className="inline-flex items-center gap-2 rounded-full bg-white text-ink px-6 py-3 text-sm font-semibold hover:bg-paper transition-colors">
+              Browse all templates <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </section>
+
         {/* ── How it works ─────────────────────────────────── */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20 lg:py-28">
           <div className="max-w-2xl mb-14">
@@ -249,21 +280,27 @@ export const Home: FC = () => {
             </h2>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-10 md:gap-8">
-            {STEPS.map((s, i) => (
-              <motion.div
-                key={s.n}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-60px' }}
-                transition={{ duration: 0.45, delay: i * 0.08 }}
-                className="relative border-t border-line pt-7"
-              >
-                <span className="font-mono text-[11px] text-seal-deep tracking-[0.2em]">{s.n}</span>
-                <h3 className="font-display text-[22px] font-semibold text-ink mt-3 mb-3.5">{s.title}</h3>
-                <p className="leading-[1.7] text-[15px] text-body">{s.body}</p>
-              </motion.div>
-            ))}
+          <div className="grid md:grid-cols-3 gap-5">
+            {STEPS.map((s, i) => {
+              const Icon = STEP_ICONS[i];
+              return (
+                <motion.div
+                  key={s.n}
+                  initial={{ opacity: 0, y: 28 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-60px' }}
+                  transition={{ duration: 0.5, delay: i * 0.1 }}
+                  className="relative rounded-[28px] bg-card border border-line p-7 sm:p-8 flex flex-col"
+                >
+                  <div className="w-14 h-14 rounded-2xl bg-ink text-seal flex items-center justify-center mb-8">
+                    <Icon className="w-6 h-6" aria-hidden="true" />
+                  </div>
+                  <span className="font-mono text-[11px] text-seal-deep tracking-[0.2em]">{s.n}</span>
+                  <h3 className="font-display text-[22px] font-semibold text-ink mt-2 mb-3">{s.title}</h3>
+                  <p className="leading-[1.7] text-[15px] text-body">{s.body}</p>
+                </motion.div>
+              );
+            })}
           </div>
         </section>
 
