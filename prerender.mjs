@@ -348,6 +348,21 @@ for (const route of ROUTES) {
   console.log(`prerendered ${route.path} → ${outPath.replace(DIST + '/', '')}`);
 }
 
+// Branded 404. Vercel serves dist/404.html with a real 404 status for unknown
+// URLs; before this it returned a bare "NOT_FOUND" text page. React shows its
+// own NotFound screen on top once the bundle loads.
+{
+  let nf = template
+    .replace(/<title>[\s\S]*?<\/title>/, '<title>Page not found | QuickResume</title>')
+    .replace(/<meta name="robots"[^>]*>/, '<meta name="robots" content="noindex, follow" />')
+    .replace(/<link rel="canonical"[^>]*>/, '')
+    .replace(/<meta name="description"[^>]*>/, '<meta name="description" content="This page does not exist. Browse QuickResume templates, the ATS checker and resume guides." />');
+  const nfBlock = `<div id="prerender-seo" style="max-width:760px;margin:0 auto;padding:48px 20px;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif"><h1 style="font-size:30px;line-height:1.2;margin:0 0 14px">Page not found</h1><p style="font-size:17px;line-height:1.6;color:#444">The page you tried to open does not exist or has moved. Try one of these instead.</p>${NAV}${GUIDE_NAV}</div>`;
+  nf = nf.replace(/<div id="prerender-seo"[\s\S]*?<\/nav><\/div>/, nfBlock);
+  writeFileSync(join(DIST, '404.html'), nf);
+  console.log('prerendered 404.html (noindex)');
+}
+
 // Ensure og-image referenced correctly
 if (!existsSync(join(DIST, 'og-image.png'))) {
   console.warn('WARNING: og-image.png not found in dist');
