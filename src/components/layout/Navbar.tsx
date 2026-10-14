@@ -81,19 +81,21 @@ export const Navbar: FC = () => {
 
   return (
     <>
-      <header className={`fixed top-0 left-0 right-0 z-50 h-16 md:h-[72px] bg-paper/90 backdrop-blur-md transition-shadow ${scrolled ? 'border-b border-line shadow-[0_1px_0_rgba(11,16,32,0.04)]' : 'border-b border-transparent'}`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-full flex justify-between items-center">
+      <header className="fixed top-3 inset-x-0 z-50 flex justify-center px-3 pointer-events-none">
+        <div
+          className={`pointer-events-auto w-full max-w-6xl h-14 md:h-[56px] rounded-full bg-ink text-paper flex items-center justify-between gap-4 pl-4 pr-2 transition-shadow ${scrolled ? 'shadow-[0_10px_30px_rgba(11,16,32,0.28)]' : 'shadow-[0_4px_16px_rgba(11,16,32,0.16)]'}`}
+        >
           <Link to="/" aria-label="QuickResume home" className="shrink-0">
-            <Logo />
+            <Logo light />
           </Link>
 
-          <nav className="hidden lg:flex items-center gap-8 text-[14px] font-semibold" aria-label="Main">
+          <nav className="hidden lg:flex items-center gap-1 text-[14px] font-semibold" aria-label="Main">
             {NAV_LINKS.map(l => (
               <NavLink
                 key={l.to}
                 to={l.to}
                 className={({ isActive }) =>
-                  `transition-colors ${isActive ? 'text-pine' : 'text-ink-soft hover:text-ink'}`
+                  `px-3.5 py-1.5 rounded-full transition-colors ${isActive ? 'bg-white/15 text-white' : 'text-paper/75 hover:text-white hover:bg-white/10'}`
                 }
               >
                 {l.label}
@@ -101,29 +103,29 @@ export const Navbar: FC = () => {
             ))}
           </nav>
 
-          <div className="hidden lg:flex items-center gap-4">
+          <div className="hidden lg:flex items-center gap-2">
             {user ? (
               <div className="flex items-center gap-2">
-                <span className="text-ink-soft text-sm font-semibold max-w-[140px] truncate">{user.displayName || 'My account'}</span>
+                <span className="text-paper/80 text-sm font-semibold max-w-[140px] truncate">{user.displayName || 'My account'}</span>
                 <button
                   onClick={() => signOut(auth)}
-                  className="text-mist hover:text-ink transition-colors p-2 rounded-[5px] hover:bg-pine-tint"
+                  className="text-paper/70 hover:text-white transition-colors p-2 rounded-full hover:bg-white/10"
                   title="Log out"
                   aria-label="Log out"
                 >
-                  <LogOut className="w-4.5 h-4.5 w-[18px] h-[18px]" />
+                  <LogOut className="w-[18px] h-[18px]" />
                 </button>
               </div>
             ) : (
               <button
-                className="text-ink-soft hover:text-ink font-semibold text-sm transition-colors"
+                className="text-paper/80 hover:text-white font-semibold text-sm px-3 transition-colors"
                 onClick={() => setIsLoginModalOpen(true)}
               >
                 Log in
               </button>
             )}
             <button
-              className="bg-pine text-white rounded-[5px] px-5 py-2.5 text-sm font-semibold tracking-[0.01em] hover:bg-pine-deep transition-colors inline-flex items-center gap-1.5"
+              className="bg-paper text-ink rounded-full px-5 py-2 text-sm font-semibold hover:bg-white transition-colors inline-flex items-center gap-1.5"
               onClick={() => navigate('/start')}
             >
               Create my resume <ArrowRight className="w-4 h-4" />
@@ -131,7 +133,7 @@ export const Navbar: FC = () => {
           </div>
 
           <button
-            className="lg:hidden p-2 -mr-2 text-ink"
+            className="lg:hidden p-2.5 text-paper rounded-full hover:bg-white/10"
             onClick={() => setMobileMenuOpen(true)}
             aria-label="Open menu"
           >
