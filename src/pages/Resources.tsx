@@ -84,8 +84,13 @@ const GROUPS: GuideGroup[] = [
     guides: [
       {
         slug: 'resume-format-for-freshers',
+        title: 'Resume Format for Freshers',
+        description: 'A one-page structure for freshers with little or no experience: section order, a sample, and what to write instead of work history.',
+      },
+      {
+        slug: 'biodata-format-for-job',
         title: 'Biodata Format for Job',
-        description: 'The exact biodata format for a job application — personal details, education, experience and the declaration line.',
+        description: 'The exact biodata format for a job application: personal details, education, experience and the declaration line.',
       },
       {
         slug: 'how-long-should-a-resume-be',

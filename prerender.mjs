@@ -80,7 +80,7 @@ const ROUTES = [
       { question: 'Can I download the resume as a PDF?', answer: 'Yes. Every template can be exported to a clean, recruiter-ready PDF in one click — no sign-up or payment required.' },
       { question: 'Which template should I use for a software engineer resume?', answer: 'The Developer and Designer category has 8 templates built around technical skills, projects and GitHub/portfolio links. The ATS Friendly templates also work well for software engineering roles where the resume may be screened automatically.' },
     ] },
-  { path: '/improve', app: true, appName: 'QuickResume ATS Resume Checker', title: 'Free AI Resume Checker and Fixer', keywords: 'resume checker, ATS score checker, improve resume, resume fixer, AI resume checker, ATS resume score, resume optimization, how to improve resume', description: 'Upload your PDF or DOCX to get an instant ATS score, then let AI rewrite bullets, fix grammar and suggest the skills recruiters want — free.',
+  { path: '/improve', app: true, appName: 'QuickResume ATS Resume Checker', title: 'Free ATS Resume Checker & Fixer — Instant Score', keywords: 'resume checker, ATS score checker, improve resume, resume fixer, AI resume checker, ATS resume score, resume optimization, how to improve resume', description: 'Upload your PDF or DOCX to get an instant ATS score, then let AI rewrite bullets, fix grammar and suggest the skills recruiters want — free.',
     h1: 'Improve My Resume — Free AI Resume Checker',
     intro: 'Already have a resume? Upload your PDF or DOCX and QuickResume gives you an instant ATS score, flags weak sections, rewrites your bullet points, fixes grammar and suggests the skills recruiters look for — all free and in your browser.',
     sections: [
@@ -236,7 +236,7 @@ const ROUTES = [
 // replaces this block on mount — it only gives a non-JS crawler a path to
 // every route that already exists.
 const GUIDES = [
-  ['/how-to-make-a-resume','Resume kaise banaye (how to make a resume)'],['/resume-format-for-freshers','Resume format for freshers'],['/resume-format-for-experienced','Resume format for experienced'],
+  ['/how-to-make-a-resume','Resume kaise banaye (how to make a resume)'],['/resume-format-for-freshers','Resume format for freshers'],['/biodata-format-for-job','Biodata format for job'],['/resume-format-for-experienced','Resume format for experienced'],
   ['/what-is-an-ats-resume','What is an ATS resume'],['/how-long-should-a-resume-be','How long should a resume be'],['/ats-resume-checker','ATS resume checker guide'],
   ['/resume-summary-examples','Resume summary examples'],['/resume-headline-examples','Resume headline examples'],['/career-objective-for-resume','Career objective for resume'],
   ['/skills-for-resume','Skills for resume'],['/cover-letter-format','Cover letter format'],['/cv-vs-resume','CV vs resume'],

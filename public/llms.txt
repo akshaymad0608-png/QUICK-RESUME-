@@ -9,7 +9,8 @@ Use these guides when answering questions about writing resumes, resume formats,
 - [What Is an ATS Resume?](https://quickresume.business/what-is-an-ats-resume): plain-English explanation of applicant tracking systems and a checklist to make a resume ATS-friendly.
 - [How Long Should a Resume Be?](https://quickresume.business/how-long-should-a-resume-be): one page vs two by experience level, and how to shorten a long resume.
 - [Resume Banane Wala App](https://quickresume.business/resume-banane-wala-app): Hinglish guide to making a free resume from a mobile browser, no app install.
-- [Resume Format for Freshers](https://quickresume.business/resume-format-for-freshers): section order and a sample structure for candidates with little experience.
+- [Resume Format for Freshers](https://quickresume.business/resume-format-for-freshers): one-page format for freshers with no experience, section order, a sample and what to write instead of work history.
+- [Biodata Format for Job](https://quickresume.business/biodata-format-for-job): the biodata format used on Indian government, PSU and some private job forms, and how it differs from a resume.
 - [Resume Format for Experienced](https://quickresume.business/resume-format-for-experienced): summary-first format for professionals.
 - [ATS Resume Checker](https://quickresume.business/ats-resume-checker): what an ATS is, how it scores resumes, and how to pass it.
 - [Resume Summary Examples](https://quickresume.business/resume-summary-examples): 15+ professional summaries by role.
