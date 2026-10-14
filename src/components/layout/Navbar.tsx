@@ -96,7 +96,7 @@ export const Navbar: FC = () => {
                 key={l.to}
                 to={l.to}
                 className={({ isActive }) =>
-                  `relative h-full flex items-center px-3 transition-colors ${isActive ? 'text-ink after:absolute after:left-3 after:right-3 after:bottom-0 after:h-[3px] after:rounded-t after:bg-seal' : 'text-ink-soft hover:text-ink'}`
+                  `relative h-full flex items-center px-3 whitespace-nowrap transition-colors ${isActive ? 'text-ink after:absolute after:left-3 after:right-3 after:bottom-0 after:h-[3px] after:rounded-t after:bg-seal' : 'text-ink-soft hover:text-ink'}`
                 }
               >
                 {l.label}
@@ -106,15 +106,18 @@ export const Navbar: FC = () => {
 
           <div className="hidden lg:flex items-center gap-2">
             {user ? (
-              <div className="flex items-center gap-2">
-                <span className="text-ink-soft text-sm font-semibold max-w-[140px] truncate">{user.displayName || 'My account'}</span>
+              <div className="flex items-center gap-3">
+                <span className="flex items-center gap-2 min-w-0" title={user.email || undefined}>
+                  <span className="w-8 h-8 rounded-full bg-ink text-seal grid place-items-center text-[13px] font-semibold shrink-0" aria-hidden="true">
+                    {(user.displayName || user.email || 'U').trim().charAt(0).toUpperCase()}
+                  </span>
+                  <span className="hidden 2xl:inline text-ink-soft text-sm font-semibold max-w-[130px] truncate">{user.displayName || 'My account'}</span>
+                </span>
                 <button
                   onClick={() => signOut(auth)}
-                  className="text-mist hover:text-ink transition-colors p-2 rounded-[6px] hover:bg-pine-tint"
-                  title="Log out"
-                  aria-label="Log out"
+                  className="inline-flex items-center gap-1.5 whitespace-nowrap text-sm font-semibold text-ink-soft hover:text-ink border border-line hover:border-ink-soft rounded-[6px] px-3 py-2 transition-colors"
                 >
-                  <LogOut className="w-[18px] h-[18px]" />
+                  <LogOut className="w-4 h-4" aria-hidden="true" /> Log out
                 </button>
               </div>
             ) : (
@@ -126,7 +129,7 @@ export const Navbar: FC = () => {
               </button>
             )}
             <button
-              className="bg-pine text-white rounded-[6px] px-5 py-2.5 text-sm font-semibold hover:bg-pine-deep transition-colors inline-flex items-center gap-1.5"
+              className="bg-pine text-white rounded-[6px] px-5 py-2.5 text-sm font-semibold hover:bg-pine-deep transition-colors inline-flex items-center gap-1.5 whitespace-nowrap shrink-0"
               onClick={() => navigate('/start')}
             >
               Create my resume <ArrowRight className="w-4 h-4" />
@@ -161,7 +164,26 @@ export const Navbar: FC = () => {
             </div>
 
             <div className="flex-1 overflow-y-auto flex flex-col justify-between min-h-0 custom-scrollbar">
-              <nav className="px-6 py-8 flex flex-col gap-1" aria-label="Mobile">
+              {user && (
+                <div className="mx-6 mt-5 flex items-center justify-between gap-3 rounded-2xl border border-line bg-card px-4 py-3 shrink-0">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <span className="w-9 h-9 rounded-full bg-ink text-seal grid place-items-center text-sm font-semibold shrink-0" aria-hidden="true">
+                      {(user.displayName || user.email || 'U').trim().charAt(0).toUpperCase()}
+                    </span>
+                    <span className="min-w-0">
+                      <span className="block text-[11px] uppercase tracking-[0.14em] text-mist">Signed in</span>
+                      <span className="block text-sm font-semibold text-ink truncate">{user.displayName || user.email || 'Your account'}</span>
+                    </span>
+                  </div>
+                  <button
+                    className="inline-flex items-center gap-1.5 shrink-0 text-sm font-semibold text-ink-soft hover:text-ink border border-line rounded-[6px] px-3 py-2"
+                    onClick={() => { setMobileMenuOpen(false); signOut(auth); }}
+                  >
+                    <LogOut className="w-4 h-4" aria-hidden="true" /> Log out
+                  </button>
+                </div>
+              )}
+              <nav className="px-6 py-6 flex flex-col gap-1" aria-label="Mobile">
                 {[{ to: '/start', label: 'Resume Builder' }, ...NAV_LINKS, { to: '/resources', label: 'Resources' }].map(l => (
                   <Link
                     key={l.to}
@@ -182,7 +204,7 @@ export const Navbar: FC = () => {
                 >
                   Create my resume
                 </button>
-                {!user && (
+                {user ? null : (
                   <button
                     className="w-full py-3 text-sm font-semibold text-ink-soft"
                     onClick={() => { setMobileMenuOpen(false); setIsLoginModalOpen(true); }}
