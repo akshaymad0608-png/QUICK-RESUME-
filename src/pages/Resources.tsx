@@ -107,6 +107,21 @@ const GROUPS: GuideGroup[] = [
         title: 'Cover Letter Format',
         description: 'The right structure, a worked example, and a free generator that matches your resume.',
       },
+      {
+        slug: 'cover-letter-for-freshers',
+        title: 'Cover Letter for Freshers',
+        description: 'A three-paragraph structure and a fictional sample for applicants with no work experience.',
+      },
+      {
+        slug: 'pdf-or-word-resume',
+        title: 'PDF or Word Resume?',
+        description: 'Which file type to send, how to name it, and how to check that it is readable.',
+      },
+      {
+        slug: 'photo-on-resume-india',
+        title: 'Photo on Resume in India',
+        description: 'When a photo is expected, when to leave it off, and how to decide.',
+      },
     ],
   },
   {
@@ -133,6 +148,11 @@ const GROUPS: GuideGroup[] = [
         title: 'Skills to Put on a Resume',
         description: '100+ hard and soft skills by role, and how to match them to a job description.',
       },
+      {
+        slug: 'projects-section-for-resume',
+        title: 'Projects Section in Resume',
+        description: 'How freshers can describe projects as evidence, with a format and fictional examples.',
+      },
     ],
   },
   {
@@ -148,6 +168,11 @@ const GROUPS: GuideGroup[] = [
         slug: 'resume-for-teacher',
         title: 'Teacher Resume',
         description: 'Format, key skills, and the classroom achievements that get you shortlisted.',
+      },
+      {
+        slug: 'resume-for-internship',
+        title: 'Resume for Internship',
+        description: 'A one-page structure for students applying to internships, with sample entries.',
       },
     ],
   },
@@ -174,7 +199,7 @@ const Resources: FC = () => {
       <Seo
         path="/resources"
         title="Free Resume Guides & Career Resources | QuickResume"
-        description="15 free guides on resume format, ATS, CV vs resume, summaries, headlines and skills, plus role guides for software engineers and teachers."
+        description="20 free guides on resume format, ATS, CV vs resume, summaries, headlines and skills, plus role guides for software engineers and teachers."
         jsonLd={itemListSchema}
       />
 

@@ -149,7 +149,7 @@ const ROUTES = [
       { question: 'How long should a cover letter be?', answer: 'Three paragraphs and under one page is the standard. Opening paragraph: why you want this role and company. Middle paragraph: your most relevant achievement or two with evidence. Closing: a clear call to action. QuickResume\'s generator follows this structure automatically.' },
       { question: 'Is this cover letter generator free?', answer: 'Yes — free to generate and download, no sign-up or credit card required.' },
     ] },
-  { path: '/resources', title: 'Free Resume Guides & Career Resources | QuickResume', description: '15 free guides on resume format, ATS, CV vs resume, summaries, headlines and skills, plus role guides for software engineers and teachers.',
+  { path: '/resources', title: 'Free Resume Guides & Career Resources | QuickResume', description: '20 free guides on resume format, ATS, CV vs resume, summaries, headlines and skills, plus role guides for software engineers and teachers.',
     h1: 'Career Resources & Resume Guides',
     intro: 'Expert advice, ready-to-use resume outlines, strong action verbs and ATS formatting tips to help you build a resume that gets past the bots and in front of recruiters — so you land interviews faster.',
     sections: [
@@ -241,6 +241,7 @@ const GUIDES = [
   ['/resume-summary-examples','Resume summary examples'],['/resume-headline-examples','Resume headline examples'],['/career-objective-for-resume','Career objective for resume'],
   ['/skills-for-resume','Skills for resume'],['/cover-letter-format','Cover letter format'],['/cv-vs-resume','CV vs resume'],
   ['/resume-for-software-engineer','Software engineer resume'],['/resume-for-teacher','Teacher resume'],
+  ['/cover-letter-for-freshers','Cover letter for freshers'],['/resume-for-internship','Resume for internship'],['/photo-on-resume-india','Photo on resume in India'],['/pdf-or-word-resume','PDF or Word resume'],['/projects-section-for-resume','Projects section in resume'],
 ];
 const GUIDE_NAV = '<nav aria-label="Resume guides"><h2 style="font-size:16px;margin:24px 0 8px">Resume guides</h2>' + GUIDES.map(([h,t]) => `<a href="${h}">${t}</a>`).join(' · ') + '</nav>';
 const NAV = '<nav aria-label="Sections"><a href="/templates">Resume templates</a> · <a href="/improve">Improve my resume</a> · <a href="/examples">Resume examples</a> · <a href="/ai-tools">AI resume tools</a> · <a href="/cover-letter">Cover letter generator</a> · <a href="/pricing">Pricing</a> · <a href="/resources">Career resources</a> · <a href="/start">Start your resume</a> · <a href="/build">Resume builder</a> · <a href="/linkedin-headline-generator">LinkedIn headline generator</a> · <a href="/interview-thank-you-email-generator">Interview thank-you email</a> · <a href="/about">About</a> · <a href="/contact">Contact</a> · <a href="/privacy">Privacy</a> · <a href="/terms">Terms</a></nav>';
