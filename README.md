@@ -2,7 +2,11 @@
 <img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
 </div>
 
-# Run and deploy your AI Studio app
+# QuickResume
+
+**Live site:** [quickresume.business](https://quickresume.business) — free AI resume builder with ATS-friendly templates, an ATS score checker and a cover letter generator.
+
+This repo was started from an AI Studio app. To run it locally:
 
 This contains everything you need to run your app locally.
 
