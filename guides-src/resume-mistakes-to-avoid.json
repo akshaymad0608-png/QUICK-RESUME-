@@ -1,0 +1,86 @@
+{
+ "slug": "resume-mistakes-to-avoid",
+ "title": "Common Resume Mistakes to Avoid and How to Fix Them (2026)",
+ "h1": "Common Resume Mistakes and How to Fix Them",
+ "description": "Avoid resume mistakes that cost interviews: typos, wrong email, ATS-breaking tables, duties vs achievements, dates and photos in India. Includes a checklist.",
+ "lede": "Most resumes are not rejected for lack of talent. They get passed over for small, fixable errors that make the reader doubt your care or clarity.",
+ "quickAnswer": "<b>The most common resume mistakes are typos, an unprofessional email, long paragraphs, tables or graphics that confuse ATS software, and bullets that list duties instead of results.</b> Fix them by proofreading aloud, using a simple one-column layout, and writing short achievement-based bullets with consistent dates.",
+ "published": "2026-10-23",
+ "sections": [
+  {
+   "h2": "Typos, grammar and a careless first impression",
+   "html": "<p>A single spelling error will not end your chances, but several in a short document suggest you did not check your work. Names of tools and companies are common trouble spots, such as 'Javascript' versus 'JavaScript', or 'Micrsoft'.</p><h3>How to fix it</h3><ul><li>Run a spell check, then read the resume aloud, slowly. Your ear catches what your eye skips.</li><li>Read it backwards, line by line, to spot wrong words.</li><li>Ask a friend or senior to read it once.</li><li>Pick one tense: past tense for old jobs, present tense for your current job.</li></ul><p>Do not trust autocorrect for names of places and institutions. Check each one against the official spelling.</p>"
+  },
+  {
+   "h2": "Wrong or unprofessional contact details",
+   "html": "<p>If the recruiter cannot reach you, nothing else matters. Look at your contact block with fresh eyes.</p><div class=\"card\"><p><b>Weak:</b> cutie_boy_786@mail.com, an old number that is often switched off, no city.</p><p><b>Better:</b> rahul.sharma.dev@gmail.com, a mobile number with WhatsApp, and 'Jaipur, Rajasthan'.</p></div><ul><li>Use an email built from your name.</li><li>Check that your phone number has no missing digit.</li><li>Add your city; the full home address is not needed.</li><li>If you add LinkedIn or portfolio links, test them. A broken link looks worse than no link.</li></ul>"
+  },
+  {
+   "h2": "Long paragraphs and walls of text",
+   "html": "<p>Resumes are scanned quickly. Dense paragraphs hide your best points. Each bullet should carry one idea in one or two lines.</p><h3>Before</h3><div class=\"card\"><p>I was responsible for managing the social media accounts of the company and also I used to create posts and reply to customers and prepare monthly reports for my manager which were also shared with the team.</p></div><h3>After</h3><div class=\"card\"><ul><li>Managed 3 social media pages and posted 5 times a week.</li><li>Replied to customer messages within one working day.</li><li>Prepared monthly engagement reports for the marketing manager.</li></ul></div><p>Aim for 3 to 5 bullets per role, with the strongest first. For length rules, see <a href=\"https://quickresume.business/how-long-should-a-resume-be\">how long should a resume be</a>.</p>"
+  },
+  {
+   "h2": "Tables, graphics and fancy layouts that confuse ATS",
+   "html": "<p>Many companies use applicant tracking systems (ATS) that read your file as text. Designs that look great to people can be read in a jumbled order by software.</p><ul><li><b>Risky:</b> multi-column layouts built from tables, text inside images, skill bars and star ratings, icons instead of words, headers and footers holding key details.</li><li><b>Safer:</b> one clear column, standard headings such as Experience, Education and Skills, normal fonts, and text for every important detail.</li></ul><p>Skill bars also say little. 'Excel 80%' means nothing to a reader; 'Excel: pivot tables, lookups, dashboards' says what you can do. Learn more in <a href=\"https://quickresume.business/what-is-an-ats-resume\">what is an ATS resume</a> and run a check with our <a href=\"https://quickresume.business/ats-resume-checker\">ATS resume checker</a>.</p>"
+  },
+  {
+   "h2": "Duties instead of achievements, and unexplained jargon",
+   "html": "<p>A list of duties tells the reader what the job was. An achievement tells them how well <i>you</i> did it. Use a simple pattern: action verb + what you did + result or scale.</p><table><thead><tr><th>Duty-style line</th><th>Stronger version</th></tr></thead><tbody><tr><td>Responsible for billing</td><td>Prepared 60+ GST invoices a month with zero pending corrections</td></tr><tr><td>Handled customer calls</td><td>Resolved about 30 customer calls a day and escalated complex cases to seniors</td></tr><tr><td>Worked on website</td><td>Built a 5-page website in React and cut page load time by compressing images</td></tr></tbody></table><p>Only use numbers you can defend. If you have no exact figure, describe the scale instead: 'daily', 'weekly', 'for a team of 6'.</p><p>Also avoid internal short forms such as project codes or team nicknames. If a stranger would not understand 'migrated the QRT-9 pipeline', explain it in plain words.</p>"
+  },
+  {
+   "h2": "Inconsistent dates, formats and missing links",
+   "html": "<p>Small inconsistencies make the document feel untidy and can raise questions about your timeline.</p><ul><li>Use one date style everywhere, for example 'Jun 2022 – Mar 2024'.</li><li>Keep experience in reverse order, newest first.</li><li>Use the same bullet style, font and spacing across sections.</li><li>Make sure dates in the resume match your LinkedIn profile and documents.</li><li>If you are a developer, designer or writer, add a working link to GitHub, a portfolio or published work. See our <a href=\"https://quickresume.business/projects-section-for-resume\">projects section guide</a> for how to describe it.</li></ul><div class=\"note\">Check any link by opening it in a private browser window to confirm it is public.</div>"
+  },
+  {
+   "h2": "Photos and personal details in India",
+   "html": "<p>Indian resumes often carry details that are no longer required. Unless the job post asks, you generally do not need a photo, date of birth, father's name, marital status, religion or full address. Government forms and some campus drives may differ, so follow instructions given by the employer. Our guide on <a href=\"https://quickresume.business/photo-on-resume-india\">photo on resume in India</a> explains when a photo is useful.</p><p>The same applies to the older biodata style. For private-sector jobs, a focused resume is usually the better choice; compare them in <a href=\"https://quickresume.business/biodata-format-for-job\">biodata format for job</a>.</p><p>Also check your file name. 'resume_final_final2.pdf' looks careless. Use <b>Firstname_Lastname_Resume.pdf</b>, or add the role if you apply to many, such as <b>Rahul_Sharma_Data_Analyst.pdf</b>. For file type advice, read <a href=\"https://quickresume.business/pdf-or-word-resume\">PDF or Word resume</a>.</p>"
+  },
+  {
+   "h2": "Pre-send checklist (fictional example included)",
+   "html": "<p><i>Fictional example.</i> Anita (invented) was about to send her file named 'new resume 3.docx' with the email 'anitaa_cool@mail.com' and a two-column table layout. After this checklist she renamed it Anita_Das_Resume.pdf, switched to a name-based email, moved to a single column and rewrote four duty lines into results.</p><div class=\"card\"><ol><li>Spelling and grammar checked, and read aloud once.</li><li>Email, phone number and links tested.</li><li>One-column layout; standard headings; no text inside images.</li><li>Every role has 3 to 5 short bullets that show results.</li><li>Dates are consistent, in order and match other profiles.</li><li>No unnecessary personal details or low-value skill bars.</li><li>Keywords from the job post are used honestly where they apply.</li><li>Saved as PDF with a clean name, and opened once on your phone to confirm it looks right.</li><li>Email subject and message are polite and name the role.</li></ol></div>"
+  }
+ ],
+ "faqs": [
+  {
+   "q": "What is the biggest resume mistake?",
+   "a": "There is no single one, but unclear contact details, typos and bullets with no results are among the most damaging. All of them are easy to fix before you apply."
+  },
+  {
+   "q": "Do tables really break ATS reading?",
+   "a": "Some systems read table-based layouts out of order or skip content. A single-column text layout is the safer choice."
+  },
+  {
+   "q": "Should I put a photo on my resume in India?",
+   "a": "Usually not for private-sector corporate jobs unless the employer asks. Follow the instructions of each application."
+  },
+  {
+   "q": "How many bullets should I write per job?",
+   "a": "Three to five concise bullets are enough for most roles, with the strongest results first."
+  },
+  {
+   "q": "Is it okay to use a fancy template?",
+   "a": "Yes, if the layout is simple, text-based and readable on screen and in print. Heavy graphics and columns can create problems."
+  },
+  {
+   "q": "How should I name my resume file?",
+   "a": "Use your name and the word resume, such as Firstname_Lastname_Resume.pdf, so it is easy to find in a recruiter's folder."
+  }
+ ],
+ "related": [
+  "how-to-make-a-resume",
+  "ats-resume-checker",
+  "what-is-an-ats-resume",
+  "photo-on-resume-india",
+  "pdf-or-word-resume",
+  "how-long-should-a-resume-be",
+  "projects-section-for-resume",
+  "biodata-format-for-job"
+ ],
+ "cta": {
+  "title": "Build your clean, ATS-friendly resume — free",
+  "text": "Start from a simple one-column template and avoid the common mistakes.",
+  "href": "https://quickresume.business/templates",
+  "label": "Create my resume →"
+ },
+ "note": "Before sending, change the file to PDF, open it on your phone, and read the first ten lines as if you were the recruiter."
+}

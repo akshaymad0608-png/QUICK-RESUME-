@@ -1,0 +1,81 @@
+{
+ "slug": "resume-for-data-analyst",
+ "title": "Data Analyst Resume for India: Format & Examples (2026)",
+ "h1": "Data Analyst Resume for India",
+ "description": "Write a data analyst resume for Indian jobs: SQL, Excel, Power BI, Python, dataset projects, fresher and experienced formats, and honest impact lines.",
+ "lede": "A data analyst resume should prove one thing: you can turn messy data into a clear answer someone acted on. This guide shows how to do that, whether you are a fresher or have a few years of experience.",
+ "quickAnswer": "A good data analyst resume in India is <b>one page for freshers</b> (up to two for experienced), puts <b>SQL, Excel, a BI tool and Python</b> in a clear skills block, and shows <b>2-3 projects or achievements</b> with the question asked, the data used, the method, and the result. Use real numbers only; if you cannot measure impact, describe the decision it supported.",
+ "published": "2026-10-23",
+ "sections": [
+  {
+   "h2": "What a data analyst resume needs to show",
+   "html": "<p>Hiring managers reading analyst resumes want to see three things: that you can handle data (SQL, spreadsheets, a programming language), that you can communicate findings (dashboards, summaries), and that you understand the business question behind the numbers.</p><p>A list of tools alone proves none of these. A line such as \"Analysed customer churn data in SQL and Python to find which plan types left earliest\" proves all three at once. Aim for that kind of line throughout your resume.</p><p>Keep the layout simple. Many companies in India use an applicant tracking system, so avoid tables for the main content, multi-column layouts and icons for skills. Our guide on <a href=\"https://quickresume.business/what-is-an-ats-resume\">what an ATS resume is</a> explains why.</p>"
+  },
+  {
+   "h2": "The best section order",
+   "html": "<p>Order depends on how much work experience you have. Use the table as a starting point.</p><table><thead><tr><th>Section</th><th>Fresher</th><th>1-5 years experience</th></tr></thead><tbody><tr><td>Header (name, phone, email, LinkedIn, GitHub or portfolio)</td><td>1st</td><td>1st</td></tr><tr><td>Summary (2-3 lines)</td><td>2nd</td><td>2nd</td></tr><tr><td>Skills</td><td>3rd</td><td>3rd</td></tr><tr><td>Projects</td><td>4th</td><td>After experience</td></tr><tr><td>Experience or internships</td><td>5th</td><td>4th</td></tr><tr><td>Education and certifications</td><td>6th</td><td>Last</td></tr></tbody></table><p>Freshers lead with projects because that is their proof of skill. Experienced candidates lead with work history because results at a real job carry more weight than practice projects. For wording ideas, see <a href=\"https://quickresume.business/resume-summary-examples\">resume summary examples</a>.</p>"
+  },
+  {
+   "h2": "How to list SQL, Excel, Power BI, Tableau and Python",
+   "html": "<p>Group tools by purpose so a reader can scan them in a few seconds. Do not rate yourself with stars or percentage bars; they mean nothing to a recruiter and ATS software cannot read them.</p><div class=\"card\"><b>Fictional example: skills block</b><ul><li><b>Querying:</b> SQL (joins, window functions, CTEs, subqueries), MySQL, PostgreSQL</li><li><b>Spreadsheets:</b> Excel (pivot tables, XLOOKUP, Power Query), Google Sheets</li><li><b>Visualisation:</b> Power BI (DAX basics, dashboards), Tableau (basic)</li><li><b>Programming:</b> Python (pandas, NumPy, Matplotlib), basic statistics</li></ul></div><p>Be honest about depth. Writing \"Tableau (basic)\" is better than claiming expertise and failing a practical test. Only list what you could explain or demonstrate in an interview. If a job post asks for a tool you have only used once, mention it in a project instead of listing it as a core skill. More on this in <a href=\"https://quickresume.business/skills-for-resume\">skills for resume</a>.</p>"
+  },
+  {
+   "h2": "Projects with datasets: a fictional worked example",
+   "html": "<p>For freshers, projects are the heart of the resume. A strong project states the question, the dataset, what you did, and what you found. Name the data source so a reader can check it, for example a public government open-data portal or a Kaggle dataset. Add a GitHub or dashboard link.</p><div class=\"card\"><b>Fictional example: project entry</b><p><b>Metro Ride Demand Analysis</b> | Python, SQL, Power BI | GitHub link</p><ul><li>Question: at which hours and zones do cab requests exceed available cars?</li><li>Cleaned a public ride-booking dataset of about 80,000 rows (removed duplicates, fixed timestamp formats, handled missing pickup zones) using pandas.</li><li>Wrote SQL queries to compare weekday and weekend demand by zone and hour.</li><li>Built a Power BI dashboard with hour and zone filters; the findings suggested that evening demand in two zones was the main gap.</li></ul></div><p>Notice what is missing: no invented business impact. The project does not claim it \"increased revenue by 30%\" because it was a practice dataset. It states what was found. That honesty reads as credible. Our <a href=\"https://quickresume.business/projects-section-for-resume\">projects section guide</a> has more layouts.</p>"
+  },
+  {
+   "h2": "Describing impact without inflating numbers",
+   "html": "<p>Numbers help, but only true ones. If you cannot defend a figure in an interview, remove it. Ask what changed, how you know, and who used it.</p><div class=\"card\"><b>Before and after rewrites</b><ul><li><b>Before:</b> Responsible for making reports.<br><b>After:</b> Built a weekly sales report in Excel using pivot tables, replacing a manual copy-paste process the team used earlier.</li><li><b>Before:</b> Improved company performance by 50%.<br><b>After:</b> Analysed repeat-order data and shared three findings with the operations lead, who changed the packing schedule for slow-moving items.</li><li><b>Before:</b> Expert in data analysis.<br><b>After:</b> Used window functions in SQL to rank products by monthly sales across 12 stores.</li></ul></div><p>If you do have a measured result, state how it was measured: \"report preparation time reduced from about two hours to 30 minutes (my own timing over four weeks)\". If you only know the direction, say so: \"reduced manual effort\". Use counts you actually know, such as rows, tables, stores, reports or users, rather than guessing percentages.</p>"
+  },
+  {
+   "h2": "Freshers versus experienced analysts",
+   "html": "<h3>If you are a fresher</h3><p>Show two or three projects, any internship, and relevant certifications. Include your degree, college and CGPA or percentage if your target company asks for it. Certificates from training providers can show learning effort, but projects matter more than certificate count.</p><h3>If you have experience</h3><p>Give each role two to four bullets. Start with the business problem, then the tool, then the outcome. Mention the size of data or the number of stakeholders. Career changers, for example from operations or finance, should highlight earlier work that already involved reports, reconciliations or forecasts. The <a href=\"https://quickresume.business/resume-format-for-experienced\">experienced resume format</a> and <a href=\"https://quickresume.business/resume-format-for-freshers\">fresher resume format</a> guides cover the layout in detail.</p>"
+  },
+  {
+   "h2": "Common mistakes to avoid",
+   "html": "<ul><li>Listing 25 tools with no evidence of using them.</li><li>Describing duties (\"responsible for dashboards\") instead of what you did and what it helped decide.</li><li>Pasting dashboard screenshots as images; ATS software cannot read them. Link to a live dashboard or GitHub instead.</li><li>Including an old-style objective line like \"seeking a challenging role\". Use a short summary with your tools and domain.</li><li>Sending a Word file with broken formatting. Check <a href=\"https://quickresume.business/pdf-or-word-resume\">PDF or Word</a> before you submit.</li></ul>"
+  },
+  {
+   "h2": "Final checklist before you apply",
+   "html": "<ol><li>Can every tool in your skills block be backed by a project or job bullet?</li><li>Does each bullet say what you did, with what, and what happened next?</li><li>Is every number something you could explain in an interview?</li><li>Do your GitHub or dashboard links open without a login?</li><li>Are job-post keywords such as SQL, Power BI or Excel used where they are true?</li><li>Run the final file through an <a href=\"https://quickresume.business/ats-resume-checker\">ATS resume checker</a> and read it once on a phone screen.</li></ol>"
+  }
+ ],
+ "faqs": [
+  {
+   "q": "Should a data analyst fresher include projects?",
+   "a": "Yes. Projects are the main proof of skill when you have no work history. Pick two or three with a clear question, a named dataset, and a link to your code or dashboard."
+  },
+  {
+   "q": "Which tools should I list first: SQL, Excel or Python?",
+   "a": "List the tools that the job post mentions first, and that you can actually use. For many entry-level analyst roles, SQL and Excel are asked for before Python, but check each job description."
+  },
+  {
+   "q": "How do I show impact if I only have practice projects?",
+   "a": "Describe the finding or decision your analysis supports, not a made-up business gain. For example, say what pattern you found and how the dashboard helps a reader see it."
+  },
+  {
+   "q": "Do I need certifications for a data analyst job?",
+   "a": "They are optional. A certificate can help a fresher show learning effort, but projects with real data and clear explanations usually say more about your ability."
+  },
+  {
+   "q": "How long should a data analyst resume be?",
+   "a": "One page for freshers and up to two pages for candidates with several years of relevant experience. Cut older or unrelated content before reducing font size."
+  }
+ ],
+ "related": [
+  "resume-for-software-engineer",
+  "skills-for-resume",
+  "projects-section-for-resume",
+  "resume-format-for-freshers",
+  "resume-summary-examples",
+  "ats-resume-checker",
+  "resume-for-internship"
+ ],
+ "cta": {
+  "title": "Build your data analyst resume — free",
+  "text": "Pick a clean, ATS-friendly template and add your skills and projects in minutes.",
+  "href": "https://quickresume.business/templates",
+  "label": "Create my resume →"
+ },
+ "note": "Before sending, open every project link in a private browser window to confirm a stranger can see your code or dashboard."
+}
