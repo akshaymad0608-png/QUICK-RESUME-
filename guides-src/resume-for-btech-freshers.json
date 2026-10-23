@@ -1,0 +1,82 @@
+{
+ "slug": "resume-for-btech-freshers",
+ "title": "B.Tech Fresher Resume for Campus Placements India (2026)",
+ "h1": "B.Tech Fresher Resume for Campus Placements",
+ "description": "Build a B.Tech fresher resume for Indian campus placements: CGPA, projects, skills order, coding profiles, internships, certifications and branch-wise tips.",
+ "lede": "Placement season gives you very little time to impress, and most B.Tech resumes look alike. This guide shows how to organise yours so your real work stands out, whatever your branch or CGPA.",
+ "quickAnswer": "A B.Tech fresher resume for campus placements should be <b>one page</b>, in this order: <b>education with CGPA, skills, projects, internships, coding profiles, certifications and achievements</b>. Put your strongest evidence near the top, describe projects by what you built and how, and keep every claim something you can explain in a technical interview.",
+ "published": "2026-10-23",
+ "sections": [
+  {
+   "h2": "Start with the right order",
+   "html": "<p>Your college may give a fixed placement format. If it does, follow it. If you are free to choose, this order works for most engineering students:</p><ol><li>Name and contact details, with LinkedIn and GitHub links</li><li>Education (B.Tech, class XII, class X)</li><li>Technical skills</li><li>Projects</li><li>Internships or training</li><li>Coding profiles and competitions</li><li>Certifications</li><li>Positions of responsibility and achievements</li></ol><p>If you have a strong internship, move it above projects. If you have no internship, give projects the most room. The general principle is in our <a href=\"https://quickresume.business/resume-format-for-freshers\">resume format for freshers</a> guide: lead with whatever proves your ability best.</p>"
+  },
+  {
+   "h2": "Writing CGPA and marks",
+   "html": "<p>Many companies set a minimum CGPA or percentage for campus drives, but the cut-off differs by company and year, so always read each company's notification. Do not assume a number applies everywhere.</p><ul><li>Write your CGPA on the scale your university uses, for example \"7.8 / 10\", and give the percentage equivalent only if your university provides a conversion formula.</li><li>Use the same marks that appear on your official records. Placement teams verify them, and a mismatch can cost you an offer.</li><li>If your CGPA is lower than you would like, do not hide it or alter it. Strengthen the rest of the page with projects, coding practice and internships.</li><li>If you have active backlogs, answer honestly if asked. Some companies do not allow them, so check eligibility before applying.</li></ul>"
+  },
+  {
+   "h2": "Skills ordering",
+   "html": "<p>Arrange skills so the most relevant ones for the job come first. A recruiter at a software company does not need your AutoCAD skills at the top; a core mechanical company does.</p><div class=\"card\"><b>Fictional example: skills for a CSE student</b><ul><li><b>Languages:</b> Java, Python, C++, SQL</li><li><b>Core subjects:</b> Data structures and algorithms, DBMS, operating systems, computer networks</li><li><b>Web and tools:</b> HTML, CSS, JavaScript, React, Git, GitHub, VS Code</li><li><b>Databases:</b> MySQL, MongoDB</li></ul></div><p>Skip progress bars and self-ratings. List only what you have used in a project, assignment or lab. A skills list of 30 items invites 30 questions. More guidance is in <a href=\"https://quickresume.business/skills-for-resume\">skills for resume</a>.</p>"
+  },
+  {
+   "h2": "Projects: a worked example",
+   "html": "<p>Projects are the main proof for a fresher. Use three bullets: what the project does, how you built it, and what you can show for it (a live link, test results, a user count that is true).</p><div class=\"card\"><b>Fictional example: project entry</b><p><b>Campus Lost-and-Found Portal</b> | React, Node.js, MongoDB | GitHub and live link</p><ul><li>Built a web app where students post found items with photos and owners claim them after answering a verification question.</li><li>Designed REST APIs for posts, search and claims; added login with hashed passwords and image upload.</li><li>Tested with a group of 25 classmates for two weeks and fixed search bugs reported by them.</li></ul></div><p>Say which parts you built if it was a team project. Avoid the generic \"calculator\" or \"to-do list\" entries unless you added something unusual. Non-CSE students can use the same pattern: a mechanical student might describe a design, the software used for simulation, and what the test showed. See <a href=\"https://quickresume.business/projects-section-for-resume\">projects section for resume</a> for more.</p>"
+  },
+  {
+   "h2": "Coding profiles and competitions",
+   "html": "<p>Include links to profiles you actually use, such as GitHub, LeetCode, CodeChef or Codeforces. Add a short line only if it is true and checkable, for example \"Solved 250+ problems on LeetCode, mostly arrays, strings and trees\" with your current count. Do not round up.</p><p>A GitHub profile with a few well-described repositories and a README for each is better than twenty empty ones. Make sure at least the pinned repositories have clear titles and short descriptions. If you took part in a hackathon, mention the event, your role and what you built, not only the rank.</p>"
+  },
+  {
+   "h2": "Internships and certifications",
+   "html": "<p>Even a short internship or virtual internship is worth including. Write the company, duration, what you worked on and one result or deliverable. If the work was mainly learning, say what you built during it rather than inflating your role. See <a href=\"https://quickresume.business/resume-for-internship\">resume for internship</a> if you are still applying.</p><p>For certifications, list only those relevant to the role, with the provider and year. Five related certificates are more convincing than fifteen random ones. If a certificate matters for the job, you should be able to explain what it taught you.</p>"
+  },
+  {
+   "h2": "Branch-wise emphasis",
+   "html": "<table><thead><tr><th>Branch</th><th>What to highlight</th></tr></thead><tbody><tr><td>CSE / IT</td><td>Data structures, one or two full projects, GitHub, coding practice, internship</td></tr><tr><td>ECE / EEE</td><td>Embedded or circuit projects, microcontrollers, MATLAB or Verilog, lab work, signal processing basics</td></tr><tr><td>Mechanical</td><td>CAD and simulation tools, manufacturing or design projects, industry visits, core subjects</td></tr><tr><td>Civil</td><td>Structural or site projects, AutoCAD, STAAD or similar tools, survey and site training</td></tr><tr><td>Any branch applying to IT roles</td><td>Programming skills, a coding profile, and projects showing logic; read <a href=\"https://quickresume.business/resume-for-software-engineer\">resume for software engineer</a></td></tr></tbody></table><p>If you are switching from a core branch to IT roles, make this obvious in your skills section and projects rather than leaving recruiters to guess.</p>"
+  },
+  {
+   "h2": "Final checks before the drive",
+   "html": "<ol><li>One page, PDF, readable on a phone.</li><li>Every link opens without a login.</li><li>Marks and dates match your official records.</li><li>No spelling errors in project names or tools (for example, \"JavaScript\", not \"Java script\").</li><li>No photo or personal details unless your placement format requires them.</li><li>File name is clear, such as Name_Branch_Resume.pdf.</li></ol><p>You can test the file with an <a href=\"https://quickresume.business/ats-resume-checker\">ATS resume checker</a> to make sure the text reads in the right order.</p>"
+  }
+ ],
+ "faqs": [
+  {
+   "q": "What CGPA do I need for campus placements?",
+   "a": "It depends on the company and the year. Many set a minimum in their notification, so check each one. If your CGPA is lower, use projects, coding practice and internships to show your skills."
+  },
+  {
+   "q": "Should freshers put projects before skills?",
+   "a": "Either order can work. Many freshers list skills first, then projects, because the skills block is short and gives context. Follow your college format if one is given."
+  },
+  {
+   "q": "Can I include online course certificates?",
+   "a": "Yes, if they are relevant to the job and you actually learned the material. List the course name, provider and year, and keep the list short."
+  },
+  {
+   "q": "How many projects should a B.Tech fresher show?",
+   "a": "Two or three well-described projects are usually enough. It is better to explain fewer projects in depth than to list many you cannot discuss."
+  },
+  {
+   "q": "Is a one-page resume enough for engineering freshers?",
+   "a": "Yes. One page is the standard for freshers. If you have more material, keep the most relevant items for the role and remove the rest."
+  }
+ ],
+ "related": [
+  "resume-format-for-freshers",
+  "resume-for-software-engineer",
+  "projects-section-for-resume",
+  "skills-for-resume",
+  "resume-for-internship",
+  "ats-resume-checker",
+  "career-objective-for-resume",
+  "resume-summary-examples"
+ ],
+ "cta": {
+  "title": "Build your B.Tech fresher resume — free",
+  "text": "Choose a simple one-page template and fill in your projects and skills.",
+  "href": "https://quickresume.business/templates",
+  "label": "Create my resume →"
+ },
+ "note": "Keep a master document of all your projects and certificates, then pick only the three or four most relevant for each company."
+}

@@ -176,6 +176,78 @@ const GROUPS: GuideGroup[] = [
       },
     ],
   },
+  {
+    label: 'Resumes by role and situation',
+    icon: Briefcase,
+    guides: [
+      {
+        slug: 'resume-for-accountant',
+        title: 'Accountant Resume for India',
+        description: 'How to write an accountant resume in India: Tally, GST, TDS, Excel, reconciliations, audits, CA Inter and bullet rewrites with a fictional example.',
+      },
+      {
+        slug: 'resume-for-btech-freshers',
+        title: 'B.Tech Fresher Resume for Campus Placements',
+        description: 'Build a B.Tech fresher resume for Indian campus placements: CGPA, projects, skills order, coding profiles, internships, certifications and branch-wise tips.',
+      },
+      {
+        slug: 'resume-for-career-change',
+        title: 'How to Write a Career Change Resume',
+        description: 'Switching careers? Learn how to show transferable skills, rewrite your summary, pick a hybrid layout and add projects, with a before/after example for India.',
+      },
+      {
+        slug: 'resume-for-customer-support',
+        title: 'Customer Support Resume',
+        description: 'How to write a customer support or BPO resume in India: voice vs non-voice, typing speed, CRM tools, shifts, languages and fresher vs experienced examples.',
+      },
+      {
+        slug: 'resume-for-data-analyst',
+        title: 'Data Analyst Resume for India',
+        description: 'Write a data analyst resume for Indian jobs: SQL, Excel, Power BI, Python, dataset projects, fresher and experienced formats, and honest impact lines.',
+      },
+      {
+        slug: 'resume-for-graphic-designer',
+        title: 'Graphic Designer Resume',
+        description: 'Write a graphic designer resume that works: portfolio link first, tools, role-problem-outcome project lines, ATS vs creative layouts and freelancer tips.',
+      },
+      {
+        slug: 'resume-for-mba-freshers',
+        title: 'MBA Fresher Resume for Campus Placements',
+        description: 'Write an MBA fresher resume for Indian campus placements: one-page format, summer internship bullets, academic projects, PoRs and specialisation tips.',
+      },
+      {
+        slug: 'resume-for-nurse',
+        title: 'Nurse Resume for India',
+        description: 'Write a nurse resume for Indian hospitals: GNM or B.Sc Nursing, council registration, ward and ICU experience, BLS/ACLS and a fictional example to adapt.',
+      },
+      {
+        slug: 'resume-for-sales-executive',
+        title: 'Sales Executive Resume',
+        description: 'How to write a sales or business development executive resume in India: targets, pipeline, field vs inside sales, CRM, confidential numbers and fresher tips.',
+      },
+    ],
+  },
+  {
+    label: 'Writing tips and fixes',
+    icon: PenSquare,
+    guides: [
+      {
+        slug: 'resume-career-gap',
+        title: 'How to Explain a Career Gap on a Resume',
+        description: 'Learn how to explain a career gap on your resume in India: where to show it, wording samples for study, health, family care and more, and what to avoid.',
+      },
+      {
+        slug: 'resume-keywords-from-job-description',
+        title: 'How to Find Resume Keywords in a Job Description',
+        description: 'Learn how to pick keywords from a job description and use them honestly on your resume, with a step-by-step example, placement tips and what to avoid.',
+      },
+      {
+        slug: 'resume-mistakes-to-avoid',
+        title: 'Common Resume Mistakes and How to Fix Them',
+        description: 'Avoid resume mistakes that cost interviews: typos, wrong email, ATS-breaking tables, duties vs achievements, dates and photos in India. Includes a checklist.',
+      },
+    ],
+  },
 ];
 
 const ALL_GUIDES = GROUPS.flatMap((g) => g.guides);
