@@ -1,0 +1,86 @@
+{
+ "slug": "resume-keywords-from-job-description",
+ "title": "How to Pick Resume Keywords from a Job Description (2026)",
+ "h1": "How to Find Resume Keywords in a Job Description",
+ "description": "Learn how to pick keywords from a job description and use them honestly on your resume, with a step-by-step example, placement tips and what to avoid.",
+ "lede": "The job description tells you which words the employer cares about. Using those words truthfully helps both software and people see that you fit.",
+ "quickAnswer": "<b>Read the job description, highlight repeated skills, tools and responsibilities, and use the exact wording on your resume only where it is true.</b> Place keywords in your summary, skills and experience bullets. <b>Never stuff keywords or hide them in white text.</b> If you cannot honestly match most of the core requirements, the role may not be a fit.",
+ "published": "2026-10-23",
+ "sections": [
+  {
+   "h2": "What resume keywords really are",
+   "html": "<p>Keywords are the specific words a job post uses to describe the work: tool names, skills, qualifications and duties. Recruiters search with them, and applicant tracking systems (ATS) may compare them with your resume. You can read the basics in <a href=\"https://quickresume.business/what-is-an-ats-resume\">what is an ATS resume</a>.</p><p>The purpose is not to trick anyone. It is to describe your real experience in the language the employer uses. 'Looked after client accounts' and 'account management' may mean the same to you, but the second phrase is easier to match.</p>"
+  },
+  {
+   "h2": "Step 1: Read the job description and mark what repeats",
+   "html": "<p>Copy the job description into a document and read it twice. On the second pass, highlight:</p><ul><li><b>Job title and level</b> as written.</li><li><b>Hard skills:</b> tools, software, methods, languages, certifications.</li><li><b>Soft skills:</b> communication, teamwork, ownership, but only when the post gives them real weight.</li><li><b>Responsibilities:</b> verbs such as 'analyse', 'coordinate', 'prepare reports'.</li><li><b>Words that appear more than once.</b> Repetition shows priority.</li></ul><p>Pay more attention to the 'requirements' and 'must have' sections than to the 'nice to have' list.</p>"
+  },
+  {
+   "h2": "A worked example with a fictional job description",
+   "html": "<p><i>Fictional example.</i> A made-up company, Lotus Retail Pvt Ltd, advertises for a Junior Data Analyst.</p><div class=\"card\"><p><b>Job description (excerpt):</b> We need a Junior Data Analyst to prepare weekly sales reports in Excel, write simple SQL queries, build dashboards in Power BI, and explain trends to the sales team. Good communication and attention to detail are important. Knowledge of retail data is a plus.</p></div><p>Highlighted keywords:</p><table><thead><tr><th>Type</th><th>Keywords</th></tr></thead><tbody><tr><td>Hard skills</td><td>Excel, SQL queries, Power BI, dashboards, sales reports</td></tr><tr><td>Soft skills</td><td>Communication, attention to detail</td></tr><tr><td>Nice to have</td><td>Retail data</td></tr></tbody></table><p>The writer of the post asked for <b>reports, SQL and dashboards</b> first, so those deserve the most space.</p>"
+  },
+  {
+   "h2": "Step 2: Match each keyword to real evidence",
+   "html": "<p>Go through your list and ask for each item: 'Where have I actually done this?' Write the answer as a resume line. If the answer is 'nowhere', leave it out.</p><div class=\"card\"><ul><li><b>Excel + sales reports:</b> 'Prepared weekly sales reports in Excel using pivot tables for a 5-store team.'</li><li><b>SQL queries:</b> 'Wrote SQL queries to extract customer and order data for monthly review.'</li><li><b>Power BI dashboards:</b> 'Built a Power BI dashboard showing sales by region, used in team meetings.'</li><li><b>Communication:</b> 'Presented monthly findings to sales managers and suggested two stock changes.'</li><li><b>Attention to detail:</b> 'Cross-checked report totals against billing data before sharing.'</li></ul></div><p>Each line shows the keyword in action, which is far stronger than a bare list. If you only did a course on Power BI, say so: 'Completed Power BI course; built a practice dashboard on public retail data.'</p>"
+  },
+  {
+   "h2": "Hard skills versus soft skills",
+   "html": "<p>Hard skills are measurable and testable, such as SQL, Tally, Photoshop or GST filing. They deserve a dedicated skills section <i>and</i> mentions in your bullets.</p><p>Soft skills like teamwork or leadership are weak when listed alone, since anyone can write them. Show them through a short story: 'Coordinated a team of 4 to finish a month-end report two days early.' See <a href=\"https://quickresume.business/skills-for-resume\">skills for resume</a> for ideas on grouping both kinds.</p><p>Use the employer's spelling and form. If the post says 'MS Excel', write 'MS Excel'. If it says 'Customer Relationship Management (CRM)', write it in full once, with the short form beside it.</p>"
+  },
+  {
+   "h2": "Step 3: Place keywords where they count",
+   "html": "<ul><li><b>Headline and summary:</b> your target title and two or three top skills. See <a href=\"https://quickresume.business/resume-headline-examples\">resume headline examples</a>.</li><li><b>Skills section:</b> a tidy list of the tools and methods you truly know.</li><li><b>Experience bullets:</b> the most important place, because keywords have context.</li><li><b>Projects and certifications:</b> useful for freshers and career changers.</li><li><b>Job titles:</b> keep your real title; you may add a clarifying line such as 'Sales Executive (Retail Analytics)' only if it is accurate.</li></ul><p>Use each key term naturally, once or twice, in a place where it makes sense. Repeating it ten times does not help a human reader.</p>"
+  },
+  {
+   "h2": "Keyword stuffing, white text and other tricks to avoid",
+   "html": "<p>Some people paste the entire job description into a hidden block of white text, or fill a skills section with every tool they have heard of. This is a poor idea.</p><ul><li>Human readers who open the file or check it with a different tool may notice, and it damages trust.</li><li>Some systems and recruiters flag unnatural repetition.</li><li>You may be asked about every skill in the interview. Listing a skill you cannot discuss will show quickly.</li></ul><div class=\"note\">A good test: if an interviewer asked you to explain or demonstrate any word on your resume, could you? If not, remove it.</div>"
+  },
+  {
+   "h2": "When the role is not a fit, and how to check your resume",
+   "html": "<p>After matching, count honestly. If you can support most of the core requirements, apply. If you can support only a small part, the resume will not fix that gap and the interview will expose it. In that case, either build the missing skill through a course and a project first, or look at roles one level closer to your experience.</p><p>You can test your keyword match with an <a href=\"https://quickresume.business/ats-resume-checker\">ATS resume checker</a> and adjust the wording. For general structure, see <a href=\"https://quickresume.business/how-to-make-a-resume\">how to make a resume</a>.</p><div class=\"card\"><ol><li>Highlight repeated skills in the job post.</li><li>Split into hard and soft skills.</li><li>Match each to real evidence.</li><li>Place in summary, skills and bullets.</li><li>Remove anything you cannot defend.</li><li>Proofread and save as PDF.</li></ol></div>"
+  }
+ ],
+ "faqs": [
+  {
+   "q": "How many keywords should I use in my resume?",
+   "a": "There is no magic number. Include the key skills and tools from the job post that you truly have, using them naturally in your summary, skills and bullets."
+  },
+  {
+   "q": "Should I copy sentences from the job description?",
+   "a": "No. Use the same key terms, but describe your own work in your own words with real results."
+  },
+  {
+   "q": "Is white text in a resume allowed?",
+   "a": "It is a bad practice. Hidden text can be detected and may lead to rejection or loss of trust, so avoid it."
+  },
+  {
+   "q": "Do I need different keywords for every job?",
+   "a": "Adjust the top part of your resume for each role, particularly the summary and skills, while keeping your experience truthful."
+  },
+  {
+   "q": "What if I have only some of the skills listed?",
+   "a": "Apply if you meet the main requirements. List what you have honestly, and mention willingness to learn the rest only if it is true."
+  },
+  {
+   "q": "Do keywords matter for human recruiters too?",
+   "a": "Yes. Recruiters scan for the terms they were asked to find, so clear, matching words make your resume easy to approve."
+  }
+ ],
+ "related": [
+  "ats-resume-checker",
+  "what-is-an-ats-resume",
+  "skills-for-resume",
+  "resume-headline-examples",
+  "resume-summary-examples",
+  "how-to-make-a-resume",
+  "resume-for-software-engineer",
+  "projects-section-for-resume"
+ ],
+ "cta": {
+  "title": "Check your resume against the job — free",
+  "text": "Paste your resume and see which job keywords you cover and which are missing.",
+  "href": "https://quickresume.business/improve",
+  "label": "Check my resume →"
+ },
+ "note": "Keep one master resume with all your true skills, and for each application copy it and move the most relevant points to the top."
+}
