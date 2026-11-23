@@ -13,6 +13,18 @@ const DIST = 'dist';
 const SITE = 'https://quickresume.business';
 const OG_IMAGE = `${SITE}/og-image.png`;
 
+
+// Template names for the /templates ItemList, read from the same data file the
+// React grid uses so the schema cannot drift from what the page shows.
+function readTemplates() {
+  const src = readFileSync(join('src', 'data', 'templates.ts'), 'utf8');
+  const out = [];
+  const re = /\{\s*id:\s*'([^']+)',\s*name:\s*'((?:[^'\\]|\\.)*)',\s*description:\s*'((?:[^'\\]|\\.)*)'/g;
+  let m;
+  while ((m = re.exec(src))) out.push({ id: m[1], name: m[2].replace(/\\'/g, "'"), description: m[3].replace(/\\'/g, "'") });
+  return out;
+}
+
 const ROUTES = [
   { path: '/', app: true, title: 'Free AI Resume Builder — ATS Templates | QuickResume', keywords: 'free resume builder, AI resume builder, ATS resume builder, resume templates, free resume maker, resume creator, ATS friendly resume, resume builder for freshers', description: 'Build a job-winning, ATS-friendly resume in minutes. 60+ free templates, plus AI writing, an ATS score checker and a cover letter generator.',
     h1: 'Free AI Resume Builder — ATS-Friendly Templates',
@@ -54,7 +66,7 @@ const ROUTES = [
     ],
     faqVisibleOnly: true,
   },
-  { path: '/templates', title: '60+ Free Resume Templates by Role & Industry | QuickResume', keywords: 'free resume templates, ATS resume templates, resume templates for freshers, resume templates for developers, professional resume templates, CV templates, resume format', description: 'ATS-friendly resume templates for freshers, developers, designers, executives, healthcare and finance — free to try and exports to a clean PDF.',
+  { path: '/templates', itemListFromTemplates: true, title: '60+ Free Resume Templates by Role & Industry | QuickResume', keywords: 'free resume templates, ATS resume templates, resume templates for freshers, resume templates for developers, professional resume templates, CV templates, resume format', description: 'ATS-friendly resume templates for freshers, developers, designers, executives, healthcare and finance — free to try and exports to a clean PDF.',
     h1: '60+ Free Resume Templates by Role & Industry',
     intro: 'Browse ATS-friendly resume templates for freshers, developers, designers, executives, healthcare, finance and more. Every template is free to try, easy to edit and exports to a clean PDF that passes applicant tracking systems.',
     sections: [
@@ -306,6 +318,26 @@ for (const route of ROUTES) {
       })),
     });
     html = html.replace('</head>', `<script type="application/ld+json">${faqSchema}</script></head>`);
+  }
+
+  // ItemList of the template library, so crawlers that do not run JavaScript
+  // still see what the (client-rendered) grid contains.
+  if (route.itemListFromTemplates) {
+    const items = readTemplates();
+    if (items.length < 10) throw new Error(`prerender: only ${items.length} templates parsed from src/data/templates.ts`);
+    const itemList = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'ItemList',
+      name: 'QuickResume resume templates',
+      numberOfItems: items.length,
+      itemListElement: items.map((t, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: t.name,
+        description: t.description,
+      })),
+    });
+    html = html.replace('</head>', `<script type="application/ld+json">${itemList}</script></head>`);
   }
 
   // WebApplication structured data for the pages that are genuinely free tools.
